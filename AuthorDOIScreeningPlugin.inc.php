@@ -31,6 +31,7 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 			\HookRegistry::register('Settings::Workflow::listScreeningPlugins', [$this, 'listRules']);
 
 			//Hora de fazer uns testes
+			HookRegistry::register('Templates::Submission::SubmissionMetadataForm::AdditionalMetadata', array($this, 'metadataFieldEdit'));
 			HookRegistry::register('Template::Workflow::Publication', array($this, 'addToPublicationForms'));
 
 		}
@@ -77,7 +78,17 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 	}
 
 	/**
-	 * Insert DOI grid in the publication tabs
+	 * Insert DOI screening in the submission metadata form
+	 */
+	function metadataFieldEdit($hookName, $params) {
+		$smarty =& $params[1];
+		$output =& $params[2];
+		$output .= $smarty->fetch($this->getTemplateResource('editDOISubmission.tpl'));
+		return false;
+	}
+
+	/**
+	 * Insert DOI screening in the publication tabs
 	 */
 	function addToPublicationForms($hookName, $params) {
 		$smarty =& $params[1];
@@ -90,7 +101,7 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 		$output .= sprintf(
 			'<tab id="doiScreeningInWorkflow" label="%s">%s</tab>',
 			__('plugins.generic.authorDOIScreening.nome'),
-			$smarty->fetch($this->getTemplateResource('editDOIs.tpl'))
+			$smarty->fetch($this->getTemplateResource('editDOIWorkflow.tpl'))
 		);
 		
 		return false;

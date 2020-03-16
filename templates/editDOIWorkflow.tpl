@@ -4,7 +4,7 @@
  * Form for editing DOIs from a submission
  *}
 
-<link rel="stylesheet" type="text/css" href="/plugins/generic/authorDOIScreening/submissionEdit.css">
+<link rel="stylesheet" type="text/css" href="/plugins/generic/authorDOIScreening/styles/submissionWorkflow.css">
 
 <form class="pkpForm" id="funderForm" method="post" action="{$actionUrl}">
     {fbvFormArea id="funderFormArea" class="pkpFormGroup"}
@@ -16,13 +16,13 @@
                 <div class="pkpFormField__heading">
                     <label class="pkpFormFieldLabel">{translate key="plugins.generic.authorDOIScreening.submission.first"}</label>
                 </div>
-                <input type="text" class="pkpFormField__input">
+                <input type="text" class="pkpFormField__input" placeholder="Ex.: 10.1000/182">
             </div>
             <div class="pkpFormField">
                 <div class="pkpFormField__heading">
                     <label class="pkpFormFieldLabel">{translate key="plugins.generic.authorDOIScreening.submission.second"}</label>
                 </div>
-                <input type="text" class="pkpFormField__input">
+                <input type="text" class="pkpFormField__input" placeholder="Ex.: 10.1000/182">
             </div>
         </div>
     {/fbvFormArea}
