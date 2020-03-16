@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
+<!--
+  * plugins/generic/authorDOIScreening/locale/pt_BR/locale.xml
+  *
+  -->
+<locale name="en_US" full_name="U.S. English">
+	<message key="plugins.generic.authorDOIScreening.displayName">Plugin de verificação de DOIs do autor</message>
+  <message key="plugins.generic.authorDOIScreening.nome">Verificação de DOIs</message>
+	<message key="plugins.generic.authorDOIScreening.description">Autores podem publicar apenas se possuírem publicações prévias em periódicos nos últimos 3 anos</message>
+	<message key="plugins.generic.authorDOIScreening.required.publishedBefore">Você precisa ter ao menos uma publicação aceita em periódico nos últimos 3 anos</message>
+
+  <message key="plugins.generic.authorDOIScreening.submission.description">Por favor insira dois DOIs de publicações suas em periódicos</message>
+  <message key="plugins.generic.authorDOIScreening.submission.first">Primeiro DOI</message>
+  <message key="plugins.generic.authorDOIScreening.submission.second">Segundo DOI</message>
+</locale>

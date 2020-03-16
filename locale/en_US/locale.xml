@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
+<!--
+  * plugins/generic/authorDOIScreening/locale/en_US/locale.xml
+  *
+  -->
+<locale name="en_US" full_name="U.S. English">
+	<message key="plugins.generic.authorDOIScreening.displayName">Author DOI Screening Plugin</message>
+  <message key="plugins.generic.authorDOIScreening.nome">DOI Screening</message>
+	<message key="plugins.generic.authorDOIScreening.description">Authors can only publish if they have prior journal publications in the last 3 years</message>
+	<message key="plugins.generic.authorDOIScreening.required.publishedBefore">You need to have at least one published journal publication in the last 3 years</message>
+
+  <message key="plugins.generic.authorDOIScreening.submission.description">Please insert two DOIs from your previous publications in journals</message>
+  <message key="plugins.generic.authorDOIScreening.submission.first">First DOI</message>
+  <message key="plugins.generic.authorDOIScreening.submission.second">Second DOI</message>
+
+  </locale>
