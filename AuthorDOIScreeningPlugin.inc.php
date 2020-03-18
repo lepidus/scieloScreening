@@ -34,8 +34,26 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 			HookRegistry::register('Templates::Submission::SubmissionMetadataForm::AdditionalMetadata', array($this, 'metadataFieldEdit'));
 			HookRegistry::register('Template::Workflow::Publication', array($this, 'addToPublicationForms'));
 
+			HookRegistry::register('LoadComponentHandler', array($this, 'setupGridHandler'));
+
+
 		}
 		return $success;
+	}
+
+	/**
+	 * Permit requests to the DOI grid handler
+	 * @param $hookName string The name of the hook being invoked
+	 * @param $args array The parameters to the invoked hook
+	 */
+	function setupGridHandler($hookName, $params) {
+		$component =& $params[0];
+		if ($component == 'plugins.generic.authorDOIScreening.controllers.grid.DOIGridHandler') {
+			import($component);
+			DOIGridHandler::setPlugin($this);
+			return true;
+		}
+		return false;
 	}
 
 	//

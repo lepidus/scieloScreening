@@ -6,12 +6,15 @@
   -->
 <locale name="en_US" full_name="U.S. English">
 	<message key="plugins.generic.authorDOIScreening.displayName">Plugin de verificación de DOIs del autor</message>
-    <message key="plugins.generic.authorDOIScreening.nome">Verificación de DOIs</message>
+  <message key="plugins.generic.authorDOIScreening.nome">Verificación de DOIs</message>
 	<message key="plugins.generic.authorDOIScreening.description">Los autores solo pueden publicar si han tenido publicaciones previas en revistas en los ultimos 3 años</message>
 	<message key="plugins.generic.authorDOIScreening.required.publishedBefore">Debe tener al menos una publicación aceptada en una revista en los últimos 3 años</message>
 
-    <message key="plugins.generic.authorDOIScreening.submission.description">Inserte dos DOIs de sus publicaciones en revistas</message>
-    <message key="plugins.generic.authorDOIScreening.submission.first">Primero DOI</message>
-    <message key="plugins.generic.authorDOIScreening.submission.second">Segundo DOI</message>
+  <message key="plugins.generic.authorDOIScreening.submission.description">Inserte dos DOIs de sus publicaciones en revistas</message>
+  <message key="plugins.generic.authorDOIScreening.submission.first">Primero DOI</message>
+  <message key="plugins.generic.authorDOIScreening.submission.second">Segundo DOI</message>
 
-  </locale>
+  <message key="plugins.generic.authorDOIScreening.doiValidRequirement">Por favor, ingrese un DOI válido</message>
+  <message key="plugins.generic.authorDOIScreening.doiDifferentRequirement">Los DOI no pueden ser lo mismo</message>
+  <message key="plugins.generic.authorDOIScreening.doiCrossrefRequirement">Sólo se aceptan DOIs de la Crossref</message>
+</locale>

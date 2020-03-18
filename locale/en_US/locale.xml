@@ -14,4 +14,7 @@
   <message key="plugins.generic.authorDOIScreening.submission.first">First DOI</message>
   <message key="plugins.generic.authorDOIScreening.submission.second">Second DOI</message>
 
-  </locale>
+  <message key="plugins.generic.authorDOIScreening.doiValidRequirement">Please, provide a valid DOI</message>
+  <message key="plugins.generic.authorDOIScreening.doiDifferentRequirement">DOI cannot be the same</message>
+  <message key="plugins.generic.authorDOIScreening.doiCrossrefRequirement">Only DOIs from Crossref are allowed</message>
+</locale>

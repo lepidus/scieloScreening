@@ -13,4 +13,8 @@
   <message key="plugins.generic.authorDOIScreening.submission.description">Por favor insira dois DOIs de publicações suas em periódicos</message>
   <message key="plugins.generic.authorDOIScreening.submission.first">Primeiro DOI</message>
   <message key="plugins.generic.authorDOIScreening.submission.second">Segundo DOI</message>
+
+  <message key="plugins.generic.authorDOIScreening.doiValidRequirement">Por favor, insira um DOI válido</message>
+  <message key="plugins.generic.authorDOIScreening.doiDifferentRequirement">Os DOIs não podem ser iguais</message>
+  <message key="plugins.generic.authorDOIScreening.doiCrossrefRequirement">Apenas DOIs da Crossref são aceitos</message>
 </locale>

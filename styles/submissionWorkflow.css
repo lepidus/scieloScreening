@@ -5,3 +5,13 @@
 .pkpFormField__heading {
     margin-bottom: 5px;
 }
+
+.error {
+    margin-top: 4px;
+    margin-bottom: 4px;
+    padding-left: 0.5em;
+    border-left: 8px solid #d00a6c;
+    font-size: 14px;
+    line-height: 24px;
+    color: #d00a6c;
+}
