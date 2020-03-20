@@ -5,16 +5,19 @@
   *
   -->
 <locale name="en_US" full_name="U.S. English">
-	<message key="plugins.generic.authorDOIScreening.displayName">Author DOI Screening Plugin</message>
-  <message key="plugins.generic.authorDOIScreening.nome">DOI Screening</message>
+    <message key="plugins.generic.authorDOIScreening.displayName">Author DOI Screening Plugin</message>
+    <message key="plugins.generic.authorDOIScreening.nome">DOI Screening</message>
 	<message key="plugins.generic.authorDOIScreening.description">Authors can only publish if they have prior journal publications in the last 3 years</message>
 	<message key="plugins.generic.authorDOIScreening.required.publishedBefore">You need to have at least one published journal publication in the last 3 years</message>
 
-  <message key="plugins.generic.authorDOIScreening.submission.description">Please insert two DOIs from your previous publications in journals</message>
-  <message key="plugins.generic.authorDOIScreening.submission.first">First DOI</message>
-  <message key="plugins.generic.authorDOIScreening.submission.second">Second DOI</message>
+    <message key="plugins.generic.authorDOIScreening.submission.description">Please insert two DOIs from your previous publications in journals</message>
+    <message key="plugins.generic.authorDOIScreening.submission.first">First DOI</message>
+    <message key="plugins.generic.authorDOIScreening.submission.second">Second DOI</message>
 
-  <message key="plugins.generic.authorDOIScreening.doiValidRequirement">Please, provide a valid DOI</message>
-  <message key="plugins.generic.authorDOIScreening.doiDifferentRequirement">DOI cannot be the same</message>
-  <message key="plugins.generic.authorDOIScreening.doiCrossrefRequirement">Only DOIs from Crossref are allowed</message>
+    <message key="plugins.generic.authorDOIScreening.doiValidRequirement">Please, provide a valid DOI</message>
+    <message key="plugins.generic.authorDOIScreening.doiDifferentRequirement">DOI cannot be the same</message>
+    <message key="plugins.generic.authorDOIScreening.doiCrossrefRequirement">Only DOIs from Crossref are allowed</message>
+    <message key="plugins.generic.authorDOIScreening.doiFromAuthor">Please, enter a DOI of yours</message>
+    <message key="plugins.generic.authorDOIScreening.doiFromJournal">Please, enter a DOI of a journal publication</message>
+    <message key="plugins.generic.authorDOIScreening.doiFromLastThree">Please, enter a DOI from the last three years</message>
 </locale>

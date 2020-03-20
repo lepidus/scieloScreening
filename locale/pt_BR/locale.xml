@@ -6,15 +6,18 @@
   -->
 <locale name="en_US" full_name="U.S. English">
 	<message key="plugins.generic.authorDOIScreening.displayName">Plugin de verificação de DOIs do autor</message>
-  <message key="plugins.generic.authorDOIScreening.nome">Verificação de DOIs</message>
+    <message key="plugins.generic.authorDOIScreening.nome">Verificação de DOIs</message>
 	<message key="plugins.generic.authorDOIScreening.description">Autores podem publicar apenas se possuírem publicações prévias em periódicos nos últimos 3 anos</message>
 	<message key="plugins.generic.authorDOIScreening.required.publishedBefore">Você precisa ter ao menos uma publicação aceita em periódico nos últimos 3 anos</message>
 
-  <message key="plugins.generic.authorDOIScreening.submission.description">Por favor insira dois DOIs de publicações suas em periódicos</message>
-  <message key="plugins.generic.authorDOIScreening.submission.first">Primeiro DOI</message>
-  <message key="plugins.generic.authorDOIScreening.submission.second">Segundo DOI</message>
+    <message key="plugins.generic.authorDOIScreening.submission.description">Por favor insira dois DOIs de publicações suas em periódicos</message>
+    <message key="plugins.generic.authorDOIScreening.submission.first">Primeiro DOI</message>
+    <message key="plugins.generic.authorDOIScreening.submission.second">Segundo DOI</message>
 
-  <message key="plugins.generic.authorDOIScreening.doiValidRequirement">Por favor, insira um DOI válido</message>
-  <message key="plugins.generic.authorDOIScreening.doiDifferentRequirement">Os DOIs não podem ser iguais</message>
-  <message key="plugins.generic.authorDOIScreening.doiCrossrefRequirement">Apenas DOIs da Crossref são aceitos</message>
+    <message key="plugins.generic.authorDOIScreening.doiValidRequirement">Por favor, insira um DOI válido</message>
+    <message key="plugins.generic.authorDOIScreening.doiDifferentRequirement">Os DOIs não podem ser iguais</message>
+    <message key="plugins.generic.authorDOIScreening.doiCrossrefRequirement">Apenas DOIs da Crossref são aceitos</message>
+    <message key="plugins.generic.authorDOIScreening.doiFromAuthor">Por favor, insira um DOI que seja seu</message>
+    <message key="plugins.generic.authorDOIScreening.doiFromJournal">Por favor, insira um DOI de uma publicação em periódico</message>
+    <message key="plugins.generic.authorDOIScreening.doiFromLastThree">Por favor, insira um DOI dos últimos três anos</message>
 </locale>

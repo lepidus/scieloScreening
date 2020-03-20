@@ -5,40 +5,92 @@
  *}
 
 <script>
-    function validaDOI(doi){ldelim}
-        const padrao = "^10.\\d{ldelim}4,9{rdelim}\/[-._;()/:A-Za-z0-9]+$";
-        const regex = RegExp(padrao);
-
+    function noPadrao(doi){ldelim}
+        const regex = RegExp("^10[.]\\d{ldelim}4,9{rdelim}\/[-._;()\/:A-Za-z0-9]+$");
         return regex.test(doi);
+    {rdelim}
+
+    async function getFromCrossref(doi){ldelim}
+        const response = await fetch('https://api.crossref.org/works?filter=doi:' + doi);
+        const johnson = response.json();
+
+        return johnson;
+    {rdelim}
+
+    async function validaDOI(doiInput, doiError){ldelim}
+        if( !noPadrao(doiInput.val()) ){ldelim}
+            doiError.text("{translate key="plugins.generic.authorDOIScreening.doiValidRequirement"}");
+            doiError.css('display', 'block');
+            return;
+        {rdelim}
+        
+        const result = await getFromCrossref(doiInput.val());
+        const status = result.status, items = result.message.items;
+
+        if(status !=  'ok' || items.length == 0){ldelim}
+            doiError.text("{translate key="plugins.generic.authorDOIScreening.doiCrossrefRequirement"}");
+            doiError.css('display', 'block');
+            return;
+        {rdelim}
+
+        const authors = items[0]['author'];
+        var found = false;
+        for(i=0;i<authors.length;i++){ldelim}
+            const given1 = authors[i].given, family1 = authors[i].family;
+            const given2 = '{$authors[0]->getGivenName('en_US')}',
+                family2 = '{$authors[0]->getFamilyName('en_US')}';
+
+            if(given1==given2 && family1==family2){ldelim}
+                found = true;
+                break;
+            {rdelim}
+        {rdelim}
+
+        if(!found){ldelim}
+            doiError.text("{translate key="plugins.generic.authorDOIScreening.doiFromAuthor"}");
+            doiError.css('display', 'block');
+            return;
+        {rdelim}
+        
+        const doiType = items[0]['type'];
+        if(doiType != 'journal-article'){ldelim}
+            doiError.text("{translate key="plugins.generic.authorDOIScreening.doiFromJournal"}");
+            doiError.css('display', 'block');
+            return;
+        {rdelim}
+        
+        const anoDOI = items[0]['published-print']['date-parts'][0][0];
+        console.log(anoDOI);
+        const anoAtual = (new Date()).getFullYear();
+        if(anoDOI < anoAtual-3){ldelim}
+            doiError.text("{translate key="plugins.generic.authorDOIScreening.doiFromLastThree"}");
+            doiError.css('display', 'block');
+            return;
+        {rdelim}
+        
+        //Se chegou aqui, tudo esta ok
+        if(doiError.css('display') == 'block')
+            doiError.css('display', 'none');
+
+    {rdelim}
+
+    function validaCampos(doiInput, doiError){ldelim}
+        if($('#firstDOI').val() == $('#secondDOI').val()){ldelim}
+            $('#generalError').text("{translate key="plugins.generic.authorDOIScreening.doiDifferentRequirement"}");
+            $('#generalError').css('display', 'block');
+        {rdelim}
+        else {ldelim}
+            if($('#generalError').css('display') == 'block')
+                $('#generalError').css('display', 'none');
+
+            validaDOI(doiInput, doiError);
+        {rdelim}
     {rdelim}
 
     $(function(){ldelim}
         $('#doiForm').pkpHandler('$.pkp.controllers.form.AjaxFormHandler');
-        $('#firstDOI').focusout(
-            function(){ldelim}
-                if( $('#firstDOI').val() == "" || !validaDOI($('#firstDOI').val()) ){ldelim}
-                    $('#firstDOIError').text("{translate key="plugins.generic.authorDOIScreening.doiValidRequirement"}");
-                    $('#firstDOIError').css('display', 'block');
-                {rdelim}
-                else {ldelim}
-                    if($('#firstDOIError').css('display') == 'block')
-                        $('#firstDOIError').css('display', 'none');
-
-                {rdelim}
-            {rdelim}
-        );
-        $('#secondDOI').focusout(
-            function(){ldelim}
-                if($('#secondDOI').val() === ""){ldelim}
-                    $('#secondDOIError').text("{translate key="plugins.generic.authorDOIScreening.doiValidRequirement"}");
-                    $('#secondDOIError').css('display', 'block');
-                {rdelim}
-                else {ldelim}
-                    if($('#secondDOIError').css('display') === 'block')
-                        $('#secondDOIError').css('display', 'none');
-                {rdelim}
-            {rdelim}
-        );
+        $('#firstDOI').focusout(function () {ldelim} validaCampos($('#firstDOI'), $('#firstDOIError')) {rdelim});
+        $('#secondDOI').focusout(function() {ldelim} validaCampos($('#secondDOI'), $('#secondDOIError')) {rdelim});
     {rdelim});
 </script>
 

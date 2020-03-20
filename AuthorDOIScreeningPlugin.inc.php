@@ -113,7 +113,8 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 		$output =& $params[2];
 		$submission = $smarty->get_template_vars('submission');
 		$smarty->assign([
-			'submissionId' => $submission->getId(),
+            'submissionId' => $submission->getId(),
+            'authors' => $submission->getAuthors()
 		]);
 
 		$output .= sprintf(
