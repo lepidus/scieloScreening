@@ -60,7 +60,6 @@
         {rdelim}
         
         const anoDOI = items[0]['published-print']['date-parts'][0][0];
-        console.log(anoDOI);
         const anoAtual = (new Date()).getFullYear();
         if(anoDOI < anoAtual-3){ldelim}
             doiError.text("{translate key="plugins.generic.authorDOIScreening.doiFromLastThree"}");

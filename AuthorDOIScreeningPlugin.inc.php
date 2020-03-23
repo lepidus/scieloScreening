@@ -100,7 +100,15 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 	 */
 	function metadataFieldEdit($hookName, $params) {
 		$smarty =& $params[1];
-		$output =& $params[2];
+        $output =& $params[2];
+
+        $submissionId = $smarty->smarty->get_template_vars('submissionId');
+        $submission = DAORegistry::getDAO('SubmissionDAO')->getById($submissionId);
+
+        $smarty->assign([
+            'authors' => $submission->getAuthors()
+        ]);
+        
 		$output .= $smarty->fetch($this->getTemplateResource('editDOISubmission.tpl'));
 		return false;
 	}
