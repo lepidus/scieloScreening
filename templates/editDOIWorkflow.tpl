@@ -3,8 +3,27 @@
  *
  * Form for editing DOIs from a submission
  *}
+{capture assign=actionUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.authorDOIScreening.controllers.grid.DOIGridHandler" op="updateDOIs" escape=false}{/capture}
 
 <script>
+    var firstOK = false, secondOK = false;
+
+    async function makeSubmit(e){ldelim}
+        if(firstOK && secondOK){ldelim}
+            $.post("{$actionUrl}",
+            {ldelim}
+                submissionId: {$submissionId},
+                firstDOI: $('#firstDOI').val(),
+                secondDOI: $('#secondDOI').val()
+            {rdelim},
+            function(data, status){ldelim}
+                console.log(data);
+            {rdelim});
+            return true;
+        {rdelim}
+        return false;
+    {rdelim}
+
     function noPadrao(doi){ldelim}
         const regex = RegExp("^10[.]\\d{ldelim}4,9{rdelim}\/[-._;()\/:A-Za-z0-9]+$");
         return regex.test(doi);
@@ -17,7 +36,7 @@
         return johnson;
     {rdelim}
 
-    async function validaDOI(doiInput, doiError){ldelim}
+    async function validaDOI(doiInput, doiError, flag){ldelim}
         if( !noPadrao(doiInput.val()) ){ldelim}
             doiError.text("{translate key="plugins.generic.authorDOIScreening.doiValidRequirement"}");
             doiError.css('display', 'block');
@@ -61,7 +80,7 @@
         
         const anoDOI = items[0]['published-print']['date-parts'][0][0];
         const anoAtual = (new Date()).getFullYear();
-        if(anoDOI < anoAtual-3){ldelim}
+        if(anoDOI < anoAtual-2){ldelim}
             doiError.text("{translate key="plugins.generic.authorDOIScreening.doiFromLastThree"}");
             doiError.css('display', 'block');
             return;
@@ -71,9 +90,14 @@
         if(doiError.css('display') == 'block')
             doiError.css('display', 'none');
 
+
+        if(flag == 'first')
+            firstOK = true;
+        else
+            secondOK = true;
     {rdelim}
 
-    function validaCampos(doiInput, doiError){ldelim}
+    function validaCampos(doiInput, doiError, doiFlag){ldelim}
         if($('#firstDOI').val() == $('#secondDOI').val()){ldelim}
             $('#generalError').text("{translate key="plugins.generic.authorDOIScreening.doiDifferentRequirement"}");
             $('#generalError').css('display', 'block');
@@ -82,39 +106,34 @@
             if($('#generalError').css('display') == 'block')
                 $('#generalError').css('display', 'none');
 
-            validaDOI(doiInput, doiError);
+            validaDOI(doiInput, doiError, doiFlag);
         {rdelim}
     {rdelim}
 
     $(function(){ldelim}
         $('#doiForm').pkpHandler('$.pkp.controllers.form.AjaxFormHandler');
-        $('#firstDOI').focusout(function () {ldelim} validaCampos($('#firstDOI'), $('#firstDOIError')) {rdelim});
-        $('#secondDOI').focusout(function() {ldelim} validaCampos($('#secondDOI'), $('#secondDOIError')) {rdelim});
+        $('#firstDOI').focusout(function () {ldelim} validaCampos($('#firstDOI'), $('#firstDOIError'), 'first') {rdelim});
+        $('#secondDOI').focusout(function() {ldelim} validaCampos($('#secondDOI'), $('#secondDOIError'), 'second') {rdelim});
     {rdelim});
 </script>
 
 <link rel="stylesheet" type="text/css" href="/plugins/generic/authorDOIScreening/styles/submissionWorkflow.css">
 
-{capture assign=actionUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.authorDOIScreening.controllers.grid.DOIGridHandler" op="updateDOIs" submissionId=$submissionId escape=false}{/capture}
-<form class="pkpForm" id="doiForm" method="post" action="{$actionUrl}">
-    {fbvFormArea id="funderFormArea" class="pkpFormGroup"}
+<form class="pkp_form" id="doiForm" onsubmit="makeSubmit(event)">
+    {fbvFormArea id="doiFormArea" class="pkpFormGroup"}
         <h2>{translate key="plugins.generic.authorDOIScreening.nome"}</h2>
         <p>{translate key="plugins.generic.authorDOIScreening.submission.description"}</p>
-        <span id="generalError" class="error" style="display:none"></span>
+        <span id="generalError" class="myError" style="display:none"></span>
         <div class="pkpFormGroup__fields">
             <div class="pkpFormField">
-                <span id="firstDOIError" class="error" style="display:none"></span>
-                <div class="pkpFormField__heading">
-                    <label class="pkpFormFieldLabel">{translate key="plugins.generic.authorDOIScreening.submission.first"}</label>
-                </div>
-                <input id="firstDOI" type="text" name="firstDOI" class="pkpFormField__input" placeholder="Ex.: 10.1000/182">
+                <span id="firstDOIError" class="myError" style="display:none"></span>
+                <label class="pkpFormFieldLabel">{translate key="plugins.generic.authorDOIScreening.submission.first"}</label>
+                <input id="firstDOI" type="text" name="firstDOI" class="pkpFormField__input required" required="1" validation="required" placeholder="Ex.: 10.1000/182">
             </div>
             <div class="pkpFormField">
-                <span id="secondDOIError" class="error" style="display:none"></span>
-                <div class="pkpFormField__heading">
-                    <label class="pkpFormFieldLabel">{translate key="plugins.generic.authorDOIScreening.submission.second"}</label>
-                </div>
-                <input id="secondDOI" type="text" name="secondDOI" class="pkpFormField__input" placeholder="Ex.: 10.1000/182">
+                <span id="secondDOIError" class="myError" style="display:none"></span>
+                <label class="pkpFormFieldLabel">{translate key="plugins.generic.authorDOIScreening.submission.second"}</label>
+                <input id="secondDOI" type="text" name="secondDOI" class="pkpFormField__input required" required="1" validation="required" placeholder="Ex.: 10.1000/182">
             </div>
         </div>
     {/fbvFormArea}

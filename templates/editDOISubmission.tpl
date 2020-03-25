@@ -61,7 +61,7 @@
         
         const anoDOI = items[0]['published-print']['date-parts'][0][0];
         const anoAtual = (new Date()).getFullYear();
-        if(anoDOI < anoAtual-3){ldelim}
+        if(anoDOI < anoAtual-2){ldelim}
             doiError.text("{translate key="plugins.generic.authorDOIScreening.doiFromLastThree"}");
             doiError.css('display', 'block');
             return;
@@ -105,12 +105,12 @@
         <div class="pkpFormField">
             <span id="firstDOIError" class="error" style="display:none"></span>
             <label class="pkpFormFieldLabel">{translate key="plugins.generic.authorDOIScreening.submission.first"}</label>
-            <input id="firstDOI" type="text" name="firstDOI" class="pkpFormField__input" placeholder="Ex.: 10.1000/182">
+            <input id="firstDOI" type="text" name="firstDOI" class="pkpFormField__input required" required="1" validation="required" placeholder="Ex.: 10.1000/182">
         </div>
         <div class="pkpFormField">
             <span id="secondDOIError" class="error" style="display:none"></span>
             <label class="pkpFormFieldLabel">{translate key="plugins.generic.authorDOIScreening.submission.second"}</label>
-            <input id="secondDOI" type="text" name="secondDOI" class="pkpFormField__input" placeholder="Ex.: 10.1000/182">
+            <input id="secondDOI" type="text" name="secondDOI" class="pkpFormField__input required" required="1" validation="required" placeholder="Ex.: 10.1000/182">
         </div>
     </div>
 {/fbvFormSection}

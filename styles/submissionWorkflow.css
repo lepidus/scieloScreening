@@ -1,12 +1,24 @@
-.pkpFormField__input {
+#doiForm {
+    margin: 0 -32px 32px -32px;
+    border: 1px solid  #ddd;
+}
+
+#doiFormArea {
+    padding: 32px;
+}
+
+#firstDOI, #secondDOI {
     width: 100%;
+    height: 40px;
+    padding: 0px 14px;
 }
 
-.pkpFormField__heading {
-    margin-bottom: 5px;
+.pkpFormGroup p {
+    text-align: justify;
+    line-height: 24px;
 }
 
-.error {
+.myError {
     margin-top: 4px;
     margin-bottom: 4px;
     padding-left: 0.5em;

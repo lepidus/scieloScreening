@@ -7,10 +7,10 @@
 <locale name="en_US" full_name="U.S. English">
 	<message key="plugins.generic.authorDOIScreening.displayName">Plugin de verificación de DOIs del autor</message>
     <message key="plugins.generic.authorDOIScreening.nome">Verificación de DOIs</message>
-	<message key="plugins.generic.authorDOIScreening.description">Los autores solo pueden publicar si han tenido publicaciones previas en revistas en los ultimos 3 años</message>
-	<message key="plugins.generic.authorDOIScreening.required.publishedBefore">Debe tener al menos una publicación aceptada en una revista en los últimos 3 años</message>
+	<message key="plugins.generic.authorDOIScreening.description">Los autores solo pueden publicar si tienen artículos publicados en revistas en los ultimos 2 años</message>
+	<message key="plugins.generic.authorDOIScreening.required.publishedBefore">Debe tener al menos un artículo aceptado en una revista en los últimos 2 años</message>
 
-    <message key="plugins.generic.authorDOIScreening.submission.description">Inserte dos DOIs de sus publicaciones en revistas</message>
+    <message key="plugins.generic.authorDOIScreening.submission.description">Inserte dos DOIs de artículos anteriores publicados en revistas especializadas en los últimos 2 años</message>
     <message key="plugins.generic.authorDOIScreening.submission.first">Primero DOI</message>
     <message key="plugins.generic.authorDOIScreening.submission.second">Segundo DOI</message>
 

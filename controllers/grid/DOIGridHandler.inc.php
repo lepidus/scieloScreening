@@ -18,5 +18,6 @@ class DOIGridHandler extends GridHandler {
 
     function updateDOIs($args, $request){
         error_log(print_r($args, TRUE));
+        return true;
     }
 }
