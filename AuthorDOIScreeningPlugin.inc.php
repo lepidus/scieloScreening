@@ -262,4 +262,11 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 		return false;
 	}
 
+    /**
+	 * @copydoc Plugin::getInstallSchemaFile()
+	 */
+	function getInstallSchemaFile() {
+		return $this->getPluginPath() . DIRECTORY_SEPARATOR . 'schema.xml';
+	}
+
 }
