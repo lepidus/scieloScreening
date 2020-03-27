@@ -111,35 +111,34 @@
     {rdelim}
 
     $(function(){ldelim}
-        $('#doiForm').pkpHandler('$.pkp.controllers.form.AjaxFormHandler');
         $('#firstDOI').focusout(function () {ldelim} validaCampos($('#firstDOI'), $('#firstDOIError'), 'first') {rdelim});
         $('#secondDOI').focusout(function() {ldelim} validaCampos($('#secondDOI'), $('#secondDOIError'), 'second') {rdelim});
     {rdelim});
 </script>
 
-<link rel="stylesheet" type="text/css" href="/plugins/generic/authorDOIScreening/styles/submissionWorkflow.css">
+<link rel="stylesheet" type="text/css" href="/plugins/generic/authorDOIScreening/styles/submissionForm.css">
 
-<form class="pkp_form" id="doiForm" onsubmit="makeSubmit(event)">
-    {fbvFormArea id="doiFormArea" class="pkpFormGroup"}
+<div id="doiForm">
+    <div id="doiFormArea">
         <h2>{translate key="plugins.generic.authorDOIScreening.nome"}</h2>
         <p>{translate key="plugins.generic.authorDOIScreening.submission.description"}</p>
         <span id="generalError" class="myError" style="display:none"></span>
-        <div class="pkpFormGroup__fields">
-            <div class="pkpFormField">
+        <div id="formFields">
+            <div id="firstFormField">
                 <span id="firstDOIError" class="myError" style="display:none"></span>
-                <label class="pkpFormFieldLabel">{translate key="plugins.generic.authorDOIScreening.submission.first"}</label>
-                <input id="firstDOI" type="text" name="firstDOI" class="pkpFormField__input required" required="1" validation="required" placeholder="Ex.: 10.1000/182">
+                <label id="firstDOILabel" class="pkpFormFieldLabel">{translate key="plugins.generic.authorDOIScreening.submission.first"}</label>
+                <input id="firstDOI" type="text" name="firstDOI" placeholder="Ex.: 10.1000/182">
             </div>
-            <div class="pkpFormField">
+            <div id="secondFormField">
                 <span id="secondDOIError" class="myError" style="display:none"></span>
-                <label class="pkpFormFieldLabel">{translate key="plugins.generic.authorDOIScreening.submission.second"}</label>
-                <input id="secondDOI" type="text" name="secondDOI" class="pkpFormField__input required" required="1" validation="required" placeholder="Ex.: 10.1000/182">
+                <label id="secondDOILabel" class="pkpFormFieldLabel">{translate key="plugins.generic.authorDOIScreening.submission.second"}</label>
+                <input id="secondDOI" type="text" name="secondDOI" placeholder="Ex.: 10.1000/182">
             </div>
         </div>
-    {/fbvFormArea}
-    {fbvFormSection class="pkpFormPage__footer"}
-        <div class="pkpFormPage__buttons">
-            <input type="submit" class="pkpButton" value="{translate key="common.save"}">
+    </div>
+    <div id="doiFormFooter">
+        <div id="formButtons">
+            <button id="doiSubmit" type="button" class="pkpButton">{translate key="common.save"}</button>
         </div>
-    {/fbvFormSection}
-</form>
+    </div>
+</div>

@@ -1,7 +1,11 @@
-.pkpFormField {
-    margin-bottom: 15px;
+#openDOIModal:hover {
+    cursor: pointer;
 }
 
-.pkpFormFieldLabel {
-    font-weight: 400;
+#closeDOIModal:hover {
+    cursor: pointer;
+}
+
+#titleModal {
+    font-size: 16px;
 }

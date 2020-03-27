@@ -128,7 +128,7 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 		$output .= sprintf(
 			'<tab id="doiScreeningInWorkflow" label="%s">%s</tab>',
 			__('plugins.generic.authorDOIScreening.nome'),
-			$smarty->fetch($this->getTemplateResource('editDOIWorkflow.tpl'))
+			$smarty->fetch($this->getTemplateResource('editDOIForm.tpl'))
 		);
 		
 		return false;

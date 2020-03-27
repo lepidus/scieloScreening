@@ -1,0 +1,62 @@
+#doiScreeningInWorkflow #doiForm {
+    margin: 0 -32px 32px -32px;
+    border: 1px solid  #ddd;
+}
+
+#doiScreeningInWorkflow #doiForm #doiFormArea {
+    padding: 32px;
+    margin-bottom: 32px;
+}
+
+.content #doiForm #doiFormArea {
+    padding: 16px;
+    margin-bottom: 32px;
+}
+
+#doiFormArea h2 {
+    margin-top: 0px;
+    margin-bottom: 16px;
+}
+
+#doiFormArea p {
+    text-align: justify;
+    line-height: 24px;
+}
+
+.myError {
+    margin-top: 4px;
+    margin-bottom: 4px;
+    padding-left: 0.5em;
+    border-left: 8px solid #d00a6c;
+    font-size: 14px;
+    line-height: 24px;
+    color: #d00a6c;
+}
+
+#firstDOILabel, #secondDOILabel {
+    font-size: 16px;
+}
+
+#firstDOI, #secondDOI {
+    width: 100%;
+    height: 40px;
+    padding: 0px 14px;
+}
+
+#secondFormField {
+    margin-top: 24px;
+}
+
+#firstDOI, #secondDOI {
+    border: 1px solid #bbb;
+}
+
+#doiFormFooter {
+    padding: 16px;
+    border-top: 1px solid #ddd;
+    text-align: right;
+}
+
+#doiSubmit {
+    margin-right: 7px;
+}
