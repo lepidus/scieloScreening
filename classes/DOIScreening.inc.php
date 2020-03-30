@@ -4,7 +4,7 @@
  * @file plugins/generic/authorDOIScreening/classes/DOIScreening.inc.php
  *
  * @class DOIScreening
- * @ingroup plugins_generic_authordoiscreening
+ * @ingroup plugins_generic_authorDOIScreening
  *
  * Data object representing a DOI provided during the screening
  */

@@ -3,22 +3,32 @@
  *
  * Form for editing DOIs from a submission
  *}
-{capture assign=actionUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.authorDOIScreening.controllers.grid.DOIGridHandler" op="updateDOIs" escape=false}{/capture}
+
+{if isset($firstDOI) || isset($secondDOI)}
+    {capture assign=actionUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.authorDOIScreening.controllers.grid.DOIGridHandler" op="updateDOIs" escape=false}{/capture}
+{else}
+    {capture assign=actionUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.authorDOIScreening.controllers.grid.DOIGridHandler" op="addDOIs" escape=false}{/capture}
+{/if}
 
 <script>
     var firstOK = false, secondOK = false;
 
     async function makeSubmit(e){ldelim}
         if(firstOK && secondOK){ldelim}
-            $.post("{$actionUrl}",
-            {ldelim}
-                submissionId: {$submissionId},
-                firstDOI: $('#firstDOI').val(),
-                secondDOI: $('#secondDOI').val()
-            {rdelim},
-            function(data, status){ldelim}
-                console.log(data);
-            {rdelim});
+            $.post(
+                "{$actionUrl}",
+                {ldelim}
+                    submissionId: {$submissionId},
+                    firstDOI: $('#firstDOI').val(),
+                    secondDOI: $('#secondDOI').val()
+                {rdelim},
+                function(data, status){ldelim}
+                    $('#generalMessage').text("{translate key="plugins.generic.authorDOIScreening.successfulScreening"}");
+                    $("#generalMessage").removeClass("myError");
+                    $("#generalMessage").addClass("mySuccess");
+                    $('#generalMessage').css('display', 'block');
+                {rdelim}
+            );
             return true;
         {rdelim}
         return false;
@@ -40,6 +50,7 @@
         if( !noPadrao(doiInput.val()) ){ldelim}
             doiError.text("{translate key="plugins.generic.authorDOIScreening.doiValidRequirement"}");
             doiError.css('display', 'block');
+            (flag == 'first')?(firstOK = false):(secondOK = false);
             return;
         {rdelim}
         
@@ -49,6 +60,7 @@
         if(status !=  'ok' || items.length == 0){ldelim}
             doiError.text("{translate key="plugins.generic.authorDOIScreening.doiCrossrefRequirement"}");
             doiError.css('display', 'block');
+            (flag == 'first')?(firstOK = false):(secondOK = false);
             return;
         {rdelim}
 
@@ -68,6 +80,7 @@
         if(!found){ldelim}
             doiError.text("{translate key="plugins.generic.authorDOIScreening.doiFromAuthor"}");
             doiError.css('display', 'block');
+            (flag == 'first')?(firstOK = false):(secondOK = false);
             return;
         {rdelim}
         
@@ -75,6 +88,7 @@
         if(doiType != 'journal-article'){ldelim}
             doiError.text("{translate key="plugins.generic.authorDOIScreening.doiFromJournal"}");
             doiError.css('display', 'block');
+            (flag == 'first')?(firstOK = false):(secondOK = false);
             return;
         {rdelim}
         
@@ -83,6 +97,7 @@
         if(anoDOI < anoAtual-2){ldelim}
             doiError.text("{translate key="plugins.generic.authorDOIScreening.doiFromLastThree"}");
             doiError.css('display', 'block');
+            (flag == 'first')?(firstOK = false):(secondOK = false);
             return;
         {rdelim}
         
@@ -91,20 +106,17 @@
             doiError.css('display', 'none');
 
 
-        if(flag == 'first')
-            firstOK = true;
-        else
-            secondOK = true;
+        (flag == 'first')?(firstOK = true):(secondOK = true);
     {rdelim}
 
     function validaCampos(doiInput, doiError, doiFlag){ldelim}
         if($('#firstDOI').val() == $('#secondDOI').val()){ldelim}
-            $('#generalError').text("{translate key="plugins.generic.authorDOIScreening.doiDifferentRequirement"}");
-            $('#generalError').css('display', 'block');
+            $('#generalMessage').text("{translate key="plugins.generic.authorDOIScreening.doiDifferentRequirement"}");
+            $('#generalMessage').css('display', 'block');
         {rdelim}
         else {ldelim}
-            if($('#generalError').css('display') == 'block')
-                $('#generalError').css('display', 'none');
+            if($('#generalMessage').css('display') == 'block')
+                $('#generalMessage').css('display', 'none');
 
             validaDOI(doiInput, doiError, doiFlag);
         {rdelim}
@@ -113,6 +125,7 @@
     $(function(){ldelim}
         $('#firstDOI').focusout(function () {ldelim} validaCampos($('#firstDOI'), $('#firstDOIError'), 'first') {rdelim});
         $('#secondDOI').focusout(function() {ldelim} validaCampos($('#secondDOI'), $('#secondDOIError'), 'second') {rdelim});
+        $('#doiSubmit').click(makeSubmit);
     {rdelim});
 </script>
 
@@ -122,17 +135,25 @@
     <div id="doiFormArea">
         <h2>{translate key="plugins.generic.authorDOIScreening.nome"}</h2>
         <p>{translate key="plugins.generic.authorDOIScreening.submission.description"}</p>
-        <span id="generalError" class="myError" style="display:none"></span>
+        <span id="generalMessage" class="myError" style="display:none"></span>
         <div id="formFields">
             <div id="firstFormField">
                 <span id="firstDOIError" class="myError" style="display:none"></span>
                 <label id="firstDOILabel" class="pkpFormFieldLabel">{translate key="plugins.generic.authorDOIScreening.submission.first"}</label>
-                <input id="firstDOI" type="text" name="firstDOI" placeholder="Ex.: 10.1000/182">
+                {if isset($firstDOI)}
+                    <input id="firstDOI" type="text" name="firstDOI" placeholder="Ex.: 10.1000/182" value="{$firstDOI->getDOICode()}">
+                {else}
+                    <input id="firstDOI" type="text" name="firstDOI" placeholder="Ex.: 10.1000/182">
+                {/if}
             </div>
             <div id="secondFormField">
                 <span id="secondDOIError" class="myError" style="display:none"></span>
                 <label id="secondDOILabel" class="pkpFormFieldLabel">{translate key="plugins.generic.authorDOIScreening.submission.second"}</label>
-                <input id="secondDOI" type="text" name="secondDOI" placeholder="Ex.: 10.1000/182">
+                {if isset($secondDOI)}
+                    <input id="secondDOI" type="text" name="secondDOI" placeholder="Ex.: 10.1000/182" value="{$secondDOI->getDOICode()}">
+                {else}
+                    <input id="secondDOI" type="text" name="secondDOI" placeholder="Ex.: 10.1000/182">
+                {/if}
             </div>
         </div>
     </div>

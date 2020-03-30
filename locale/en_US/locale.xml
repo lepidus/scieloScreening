@@ -20,6 +20,7 @@
     <message key="plugins.generic.authorDOIScreening.doiFromAuthor">Please, enter a DOI of yours</message>
     <message key="plugins.generic.authorDOIScreening.doiFromJournal">Please, enter a DOI of a journal publication</message>
     <message key="plugins.generic.authorDOIScreening.doiFromLastThree">Please, enter a DOI from the last three years</message>
+    <message key="plugins.generic.authorDOIScreening.successfulScreening">Operation performed successfully!</message>
 
     <message key="plugins.generic.authorDOIScreening.modal">Make screening</message>
 </locale>

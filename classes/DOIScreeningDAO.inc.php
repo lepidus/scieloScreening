@@ -4,13 +4,13 @@
  * @file plugins/generic/authorDOIScreening/classes/DOIScreeningDAO.inc.php
  *
  * @class DOIScreeningDAO
- * @ingroup plugins_generic_authordoiscreening
+ * @ingroup plugins_generic_authorDOIScreening
  *
  * Operations for retrieving and modifying DOIScreening objects.
  */
 
 import('lib.pkp.classes.db.DAO');
-import('plugins.generic.funding.classes.DOIScreening');
+import('plugins.generic.authorDOIScreening.classes.DOIScreening');
 
 class DOIScreeningDAO extends DAO {
 
@@ -33,8 +33,9 @@ class DOIScreeningDAO extends DAO {
 			'SELECT * FROM doi_screening WHERE submission_id = ?',
 			[$submissionId]
 		);
-		
-		return new DAOResultFactory($result, $this, '_fromRow');
+        $returner = (new DAOResultFactory($result, $this, '_fromRow'))->toArray();
+
+        return $returner;
 	}
 
 	function insertObject($doiScreening) {

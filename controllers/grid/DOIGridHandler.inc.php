@@ -1,8 +1,8 @@
 <?php
 
 import('lib.pkp.classes.controllers.grid.GridHandler');
-import('plugins.generic.funding.controllers.grid.FunderGridRow');
-import('plugins.generic.funding.controllers.grid.FunderGridCellProvider');
+import('plugins.generic.authorDOIScreening.classes.DOIScreening');
+import('plugins.generic.authorDOIScreening.classes.DOIScreeningDAO');
 
 class DOIGridHandler extends GridHandler {
 
@@ -19,5 +19,21 @@ class DOIGridHandler extends GridHandler {
     function updateDOIs($args, $request){
         error_log(print_r($args, TRUE));
         return true;
+    }
+
+    function addDOIs($args, $request){
+        $doiScreeningDAO = new DOIScreeningDAO();
+        $firstDOI = new DOIScreening();
+        $secondDOI = new DOIScreening();
+
+        $firstDOI->setSubmissionId($args['submissionId']);
+        $firstDOI->setDOICode($args['firstDOI']);
+        $secondDOI->setSubmissionId($args['submissionId']);
+        $secondDOI->setDOICode($args['secondDOI']);
+
+        $doiScreeningDAO->insertObject($firstDOI);
+        $doiScreeningDAO->insertObject($secondDOI);
+
+        return http_response_code(200);
     }
 }

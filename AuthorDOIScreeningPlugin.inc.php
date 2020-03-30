@@ -17,7 +17,7 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 		$success = parent::register($category, $path, $mainContextId);
 		if (!Config::getVar('general', 'installed') || defined('RUNNING_UPGRADE')) return true;
 		if ($success && $this->getEnabled($mainContextId)) {
-            import('plugins.generic.funding.classes.DOIScreeningDAO');
+            import('plugins.generic.authorDOIScreening.classes.DOIScreeningDAO');
 			$doiScreeningDAO = new DOIScreeningDAO();
 			DAORegistry::registerDAO('DOIScreeningDAO', $doiScreeningDAO);
 
@@ -122,12 +122,22 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 	function addToPublicationForms($hookName, $params) {
 		$smarty =& $params[1];
 		$output =& $params[2];
-		$submission = $smarty->get_template_vars('submission');
-		$smarty->assign([
+        $submission = $smarty->get_template_vars('submission');
+        
+        $passData = [
             'submissionId' => $submission->getId(),
             'authors' => $submission->getAuthors()
-		]);
+        ];
+        
+        $doiScreeningDAO = new DOIScreeningDAO();
+        $dois = $doiScreeningDAO->getBySubmissionId($submission->getId());
 
+        if(count($dois) > 0){
+            $passData['firstDOI'] = $dois[0];
+            $passData['secondDOI'] = $dois[1];
+        }
+        
+		$smarty->assign($passData);
 		$output .= sprintf(
 			'<tab id="doiScreeningInWorkflow" label="%s">%s</tab>',
 			__('plugins.generic.authorDOIScreening.nome'),

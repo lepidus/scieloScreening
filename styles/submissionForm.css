@@ -33,6 +33,19 @@
     color: #d00a6c;
 }
 
+.mySuccess {
+    margin-top: 4px;
+    margin-bottom: 4px;
+    padding: 0.5em;
+    border: 2px solid #00b28d;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    line-height: 24px;
+    color: #00b28d;
+}
+
 #firstDOILabel, #secondDOILabel {
     font-size: 16px;
 }
