@@ -17,6 +17,9 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 		$success = parent::register($category, $path, $mainContextId);
 		if (!Config::getVar('general', 'installed') || defined('RUNNING_UPGRADE')) return true;
 		if ($success && $this->getEnabled($mainContextId)) {
+            import('plugins.generic.funding.classes.DOIScreeningDAO');
+			$doiScreeningDAO = new DOIScreeningDAO();
+			DAORegistry::registerDAO('DOIScreeningDAO', $doiScreeningDAO);
 
 			// By default OPS installation will not allow authors to publish. Override the default so that custom publishing rulesets can be used.
 			\HookRegistry::register('Publication::canAuthorPublish', [$this, 'setAuthorCanPublish']);
