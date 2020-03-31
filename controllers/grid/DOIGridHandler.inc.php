@@ -17,8 +17,19 @@ class DOIGridHandler extends GridHandler {
 	}
 
     function updateDOIs($args, $request){
-        error_log(print_r($args, TRUE));
-        return true;
+        $doiScreeningDAO = new DOIScreeningDAO();
+        $firstDOI = new DOIScreening();
+        $secondDOI = new DOIScreening();
+
+        $firstDOI->setDOIId($args['firstDOIId']);
+        $firstDOI->setDOICode($args['firstDOI']);
+        $secondDOI->setDOIId($args['secondDOIId']);
+        $secondDOI->setDOICode($args['secondDOI']);
+
+        $doiScreeningDAO->updateObject($firstDOI);
+        $doiScreeningDAO->updateObject($secondDOI);
+
+        return http_response_code(200);
     }
 
     function addDOIs($args, $request){

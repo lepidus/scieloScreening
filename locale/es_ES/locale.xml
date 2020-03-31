@@ -19,7 +19,7 @@
     <message key="plugins.generic.authorDOIScreening.doiCrossrefRequirement">Sólo se aceptan DOIs de la Crossref</message>
     <message key="plugins.generic.authorDOIScreening.doiFromAuthor">Por favor, ingrese un DOI que sea suyo</message>
     <message key="plugins.generic.authorDOIScreening.doiFromJournal">Por favor, ingrese un DOI de una publicación en una revista</message>
-    <message key="plugins.generic.authorDOIScreening.doiFromLastThree">Por favor, ingrese un DOI de los últimos tres años</message>
+    <message key="plugins.generic.authorDOIScreening.doiFromLastThree">Por favor, ingrese un DOI de los últimos dos años</message>
     <message key="plugins.generic.authorDOIScreening.successfulScreening">¡Operación realizada con éxito!</message>
 
     <message key="plugins.generic.authorDOIScreening.modal">Comprobar</message>

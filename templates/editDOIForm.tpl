@@ -1,11 +1,11 @@
 {**
  * plugins/generic/authorDOIScreening/templates/editDOIs.tpl
  *
- * Form for editing DOIs from a submission
+ * Form for add/edit DOIs from a submission
  *}
 
 {if isset($firstDOI) || isset($secondDOI)}
-    {capture assign=actionUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.authorDOIScreening.controllers.grid.DOIGridHandler" op="updateDOIs" escape=false}{/capture}
+    {capture assign=actionUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.authorDOIScreening.controllers.grid.DOIGridHandler" firstDOIId=$firstDOI->getDOIId() secondDOIId=$secondDOI->getDOIId() op="updateDOIs" escape=false}{/capture}
 {else}
     {capture assign=actionUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.authorDOIScreening.controllers.grid.DOIGridHandler" op="addDOIs" escape=false}{/capture}
 {/if}
