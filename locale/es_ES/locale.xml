@@ -4,7 +4,7 @@
   * plugins/generic/authorDOIScreening/locale/en_US/locale.xml
   *
   -->
-<locale name="en_US" full_name="U.S. English">
+<locale name="es_ES" full_name="Español">
 	<message key="plugins.generic.authorDOIScreening.displayName">Plugin de verificación de DOIs del autor</message>
     <message key="plugins.generic.authorDOIScreening.nome">Verificación de DOIs</message>
 	<message key="plugins.generic.authorDOIScreening.description">Los autores solo pueden publicar si tienen artículos publicados en revistas en los ultimos 2 años</message>
@@ -22,5 +22,8 @@
     <message key="plugins.generic.authorDOIScreening.doiFromLastThree">Por favor, ingrese un DOI de los últimos dos años</message>
     <message key="plugins.generic.authorDOIScreening.successfulScreening">¡Operación realizada con éxito!</message>
 
-    <message key="plugins.generic.authorDOIScreening.modal">Comprobar</message>
+    <message key="plugins.generic.authorDOIScreening.modal">Hacer verificación</message>
+    <message key="plugins.generic.authorDOIScreening.instructions">Para continuar con el envío automáticamente, se debe hacer una verificación de sus publicaciones anteriores. De lo contrario, su publicación deberá ser aprobada por un moderador</message>
+    <message key="plugins.generic.authorDOIScreening.caseCantScreening">Si no puede hacer la verificación, marque la casilla a continuación:</message>
+    <message key="plugins.generic.authorDOIScreening.declaration">No tengo los DOI solicitados para proporcionar</message>
 </locale>

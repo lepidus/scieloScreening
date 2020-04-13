@@ -21,12 +21,21 @@
 {fbvFormSection}
     <div class="pkp_controllers_grid">
         <div class="header">
-            <h4>{translate key="plugins.generic.authorDOIScreening.nome"}</h4>
-            <ul class="actions">
-                <li>
-                    <a id="openDOIModal" title="Add DOI" class="pkp_controllers_linkAction">{translate key="plugins.generic.authorDOIScreening.modal"}</a>
-                </li>
-            </ul>
+            <h4 id="doiTitle">{translate key="plugins.generic.authorDOIScreening.nome"}</h4>
+            <span id="asterix" class="req">*</span>
+            <div>
+                <div id="boxScreening">
+                    <p>{translate key="plugins.generic.authorDOIScreening.instructions"}</p>
+                    <a id="openDOIModal" title="Add DOI">{translate key="plugins.generic.authorDOIScreening.modal"}</a>
+                </div>
+                <div id="boxCantScreening">
+                    <h4>{translate key="plugins.generic.authorDOIScreening.caseCantScreening"}</h4>
+                    <div id="boxCheck">
+                        <input id="checkCantScreening" name="checkCantScreening" type="checkbox">
+                        <label id="labelCheck" for="checkCantScreening">{translate key="plugins.generic.authorDOIScreening.declaration"}</label>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
