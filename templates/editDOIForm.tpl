@@ -13,6 +13,46 @@
 <script>
     var firstOK = false, secondOK = false;
 
+    function editDistance(s1, s2) {ldelim}
+        s1 = s1.toLowerCase();
+        s2 = s2.toLowerCase();
+
+        var costs = new Array();
+        for (var i = 0; i <= s1.length; i++) {ldelim}
+            var lastValue = i;
+            for (var j = 0; j <= s2.length; j++) {ldelim}
+                if (i == 0)
+                    costs[j] = j;
+                else {ldelim}
+                    if (j > 0) {ldelim}
+                        var newValue = costs[j - 1];
+                        if (s1.charAt(i - 1) != s2.charAt(j - 1))
+                            newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
+                        costs[j - 1] = lastValue;
+                        lastValue = newValue;
+                    {rdelim}
+                {rdelim}
+            {rdelim}
+            if (i > 0)
+            costs[s2.length] = lastValue;
+        {rdelim}
+        return costs[s2.length];
+    {rdelim}
+
+    function similarity(s1, s2) {ldelim}
+        var longer = s1;
+        var shorter = s2;
+        if (s1.length < s2.length) {ldelim}
+            longer = s2;
+            shorter = s1;
+        {rdelim}
+        var longerLength = longer.length;
+        if (longerLength == 0) {ldelim}
+            return 1.0;
+        {rdelim}
+        return (longerLength - editDistance(longer, shorter)) / parseFloat(longerLength);
+    {rdelim}
+
     async function makeSubmit(e){ldelim}
         if(firstOK && secondOK){ldelim}
             $.post(
@@ -74,11 +114,10 @@
         const authors = items[0]['author'];
         var found = false;
         for(i=0;i<authors.length;i++){ldelim}
-            const given1 = authors[i].given, family1 = authors[i].family;
-            const given2 = '{$authors[0]->getGivenName('en_US')}',
-                family2 = '{$authors[0]->getFamilyName('en_US')}';
+            const nome1 = authors[i].given + authors[i].family;
+            const nome2 = '{$authors[0]->getGivenName('en_US')}{$authors[0]->getFamilyName('en_US')}';
 
-            if(given1==given2 && family1==family2){ldelim}
+            if(similarity(nome1,nome2) > 0.8){ldelim}
                 found = true;
                 break;
             {rdelim}
