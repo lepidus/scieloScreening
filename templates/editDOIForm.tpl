@@ -27,6 +27,13 @@
                     $("#generalMessage").removeClass("myError");
                     $("#generalMessage").addClass("mySuccess");
                     $('#generalMessage').css('display', 'block');
+
+                    try {ldelim}
+                        screeningChecked = true;
+                        $("#boxCantScreening").css("display", "none");
+                    {rdelim}
+                    catch(e){ldelim}
+                    {rdelim}
                 {rdelim}
             );
             return true;

@@ -9,6 +9,10 @@
     padding: 0;
 }
 
+#boxScreening {
+    margin-bottom: 14px;
+}
+
 #boxScreening p {
     margin-top: 4px;
 }

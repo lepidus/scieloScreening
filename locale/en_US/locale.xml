@@ -23,7 +23,8 @@
     <message key="plugins.generic.authorDOIScreening.successfulScreening">Operation performed successfully!</message>
 
     <message key="plugins.generic.authorDOIScreening.modal">Make screening</message>
-    <message key="plugins.generic.authorDOIScreening.instructions">To proceed automatically with the submission, you must do a screening of your previous publications. Otherwise, your submission will need to be approved by a moderator</message>
+    <message key="plugins.generic.authorDOIScreening.screeningRequirement">You need to perform this step!</message>
+    <message key="plugins.generic.authorDOIScreening.instructions">To proceed automatically with the submission, you must do a screening of your previous publications. Otherwise, your submission will need to be approved by a moderator.</message>
     <message key="plugins.generic.authorDOIScreening.caseCantScreening">If you can't do the screening, select the checkbox below:</message>
     <message key="plugins.generic.authorDOIScreening.declaration">I don't have the requested DOIs to provide</message>
 </locale>

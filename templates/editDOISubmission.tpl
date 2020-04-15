@@ -5,6 +5,8 @@
  *}
 
 <script>
+    var screeningChecked = false;
+
     $(function(){ldelim}
         $("#openDOIModal").click(function(){ldelim}
             $("#DOIModal").addClass("is_visible");
@@ -12,6 +14,27 @@
 
         $("#closeDOIModal").click(function(){ldelim}
             $("#DOIModal").removeClass("is_visible");
+        {rdelim});
+
+        $("#checkCantScreening").click(function(){ldelim}
+            if($(this).is(":checked")){ldelim}
+                $("#errorScreening").css("display", "none");
+                screeningChecked = true;
+            {rdelim}
+            else if($(this).is(":not(:checked)")){ldelim}
+                $("#errorScreening").css("display", "block");
+                screeningChecked = false;
+            {rdelim}
+        {rdelim});
+
+        $(".pkp_button.submitFormButton").removeAttr("type").attr("type", "button");
+        $(".pkp_button.submitFormButton").click(function(){ldelim}
+            if(screeningChecked){ldelim}
+                $("#submitStep3Form").submit();
+            {rdelim}
+            else{ldelim}
+                $("#errorScreening").css("display", "block");
+            {rdelim}
         {rdelim});
     {rdelim});
 </script>
@@ -24,6 +47,7 @@
             <h4 id="doiTitle">{translate key="plugins.generic.authorDOIScreening.nome"}</h4>
             <span id="asterix" class="req">*</span>
             <div>
+                <span id="errorScreening" class="myError" style="display:none">{translate key="plugins.generic.authorDOIScreening.screeningRequirement"}</span>
                 <div id="boxScreening">
                     <p>{translate key="plugins.generic.authorDOIScreening.instructions"}</p>
                     <a id="openDOIModal" title="Add DOI">{translate key="plugins.generic.authorDOIScreening.modal"}</a>
