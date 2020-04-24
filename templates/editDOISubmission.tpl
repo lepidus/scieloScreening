@@ -4,6 +4,9 @@
  * Form for editing DOIs during a submission
  *}
 
+ {* Caso o autor seja um moderador, este não precisa fazer a verificação dos DOIs *}
+{if $authorGroupId == 4}
+
 <script>
     var screeningChecked = false;
 
@@ -76,3 +79,5 @@
         </div>
     </div>
 {/fbvFormSection}
+
+{/if}

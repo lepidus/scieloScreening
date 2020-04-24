@@ -20,10 +20,10 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 			DAORegistry::registerDAO('DOIScreeningDAO', $doiScreeningDAO);
 
 			// By default OPS installation will not allow authors to publish. Override the default so that custom publishing rulesets can be used.
-			\HookRegistry::register('Publication::canAuthorPublish', [$this, 'setAuthorCanPublish']);
+			//\HookRegistry::register('Publication::canAuthorPublish', [$this, 'setAuthorCanPublish']);
 
 			// Add a new ruleset for publishing
-			\HookRegistry::register('Publication::validatePublish', [$this, 'validate']);
+			//\HookRegistry::register('Publication::validatePublish', [$this, 'validate']);
 
 			// Show plugin rules for editors in settings
 			\HookRegistry::register('Settings::Workflow::listScreeningPlugins', [$this, 'listRules']);
@@ -57,9 +57,9 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 		return __('plugins.generic.authorDOIScreening.description');
 	}
 
-	function setAuthorCanPublish($hookName, $args) {
+	/*function setAuthorCanPublish($hookName, $args) {
 		return true;
-	}
+	}*/
 
 	function metadataFieldEdit($hookName, $params) {
 		$smarty =& $params[1];
@@ -67,8 +67,10 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 
         $submissionId = $smarty->smarty->get_template_vars('submissionId');
         $submission = DAORegistry::getDAO('SubmissionDAO')->getById($submissionId);
+        $authors = $submission->getAuthors();
 
         $smarty->assign([
+            'authorGroupId' => $authors[0]->getUserGroupId(),
             'authors' => $submission->getAuthors()
         ]);
         
@@ -113,7 +115,7 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 		return $rules;
 	}
 
-	function validate($hookName, $args) {
+	/*function validate($hookName, $args) {
 		$errors =& $args[0];
 		$publication = $args[1];
         $submissionId = $publication->getData('submissionId');
@@ -129,7 +131,7 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
             return false;
 		}
         return true;
-	}
+	}*/
 
     /**
 	 * @copydoc Plugin::getInstallSchemaFile()
