@@ -46,21 +46,21 @@
     color: #00b28d;
 }
 
-#firstDOILabel, #secondDOILabel {
+#firstDOILabel, #secondDOILabel, #thirdDOILabel {
     font-size: 16px;
 }
 
-#firstDOI, #secondDOI {
+#firstDOI, #secondDOI, #thirdDOI {
     width: 100%;
     height: 40px;
     padding: 0px 14px;
 }
 
-#secondFormField {
+#secondFormField, #thirdFormField {
     margin-top: 24px;
 }
 
-#firstDOI, #secondDOI {
+#firstDOI, #secondDOI, #thirdDOI {
     border: 1px solid #bbb;
 }
 

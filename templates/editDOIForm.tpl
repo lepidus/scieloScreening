@@ -4,14 +4,11 @@
  * Form for add/edit DOIs from a submission
  *}
 
-{if isset($firstDOI) || isset($secondDOI)}
-    {capture assign=actionUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.authorDOIScreening.controllers.grid.DOIGridHandler" firstDOIId=$firstDOI->getDOIId() secondDOIId=$secondDOI->getDOIId() op="updateDOIs" escape=false}{/capture}
-{else}
-    {capture assign=actionUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.authorDOIScreening.controllers.grid.DOIGridHandler" op="addDOIs" escape=false}{/capture}
-{/if}
+{capture assign=actionUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.authorDOIScreening.controllers.grid.DOIGridHandler" op="addDOIs" escape=false}{/capture}
 
 <script>
-    var firstOK = false, secondOK = false;
+    var okay = [false, false, false];
+    var years = [0,0,0];
 
     function editDistance(s1, s2) {ldelim}
         s1 = s1.toLowerCase();
@@ -53,32 +50,60 @@
         return (longerLength - editDistance(longer, shorter)) / parseFloat(longerLength);
     {rdelim}
 
-    async function makeSubmit(e){ldelim}
-        if(firstOK && secondOK){ldelim}
-            $.post(
-                "{$actionUrl}",
-                {ldelim}
-                    submissionId: {$submissionId},
-                    firstDOI: $('#firstDOI').val(),
-                    secondDOI: $('#secondDOI').val()
-                {rdelim},
-                function(data, status){ldelim}
-                    $('#generalMessage').text("{translate key="plugins.generic.authorDOIScreening.successfulScreening"}");
-                    $("#generalMessage").removeClass("myError");
-                    $("#generalMessage").addClass("mySuccess");
-                    $('#generalMessage').css('display', 'block');
+    function sucesso(){ldelim}
+        $('#generalMessage').text("{translate key="plugins.generic.authorDOIScreening.successfulScreening"}");
+        $("#generalMessage").removeClass("myError");
+        $("#generalMessage").addClass("mySuccess");
+        $('#generalMessage').css('display', 'block');
 
-                    try {ldelim}
-                        screeningChecked = true;
-                        $("#boxCantScreening").css("display", "none");
-                    {rdelim}
-                    catch(e){ldelim}
-                    {rdelim}
-                {rdelim}
-            );
-            return true;
+        screeningChecked = true;
+        $("#boxCantScreening").css("display", "none");
+    {rdelim}
+
+    async function makeSubmit(e){ldelim}
+        if($('#firstDOI').val() == $('#secondDOI').val()
+            || $('#firstDOI').val() == $('#thirdDOI').val()
+            || $('#secondDOI').val() == $('#thirdDOI').val()
+        ){ldelim}
+            $('#generalMessage').text("{translate key="plugins.generic.authorDOIScreening.doiDifferentRequirement"}");
+            $('#generalMessage').css('display', 'block');
+            return;
         {rdelim}
-        return false;
+
+        var countOkay = 0;
+        for (var i=0;i<3;i++){ldelim}
+            if (okay[i] == true) countOkay += 1;
+        {rdelim}
+
+        if(countOkay < 2){ldelim}
+            $("#generalMessage").text("{translate key="plugins.generic.authorDOIScreening.attentionRules"}");
+            $('#generalMessage').css('display', 'block');
+            return;
+        {rdelim}
+        else if(countOkay == 2){ldelim}
+            var countAnos = 0;
+            const anoAtual = (new Date()).getFullYear();
+            for (var i=0;i<3;i++){ldelim}
+                if(years[i] >= anoAtual-2) countAnos += 1;
+            {rdelim}
+
+            if(countAnos < 2) {ldelim}
+                $("#generalMessage").text("{translate key="plugins.generic.authorDOIScreening.attentionRules"}");
+                $('#generalMessage').css('display', 'block');
+                return;
+            {rdelim}
+        {rdelim}
+
+        $.post(
+            "{$actionUrl}",
+            {ldelim}
+                submissionId: {$submissionId},
+                firstDOI: (okay[0]) ? ($('#firstDOI').val()) : (""),
+                secondDOI: (okay[1]) ? ($('#secondDOI').val()) : (""),
+                thirdDOI: (okay[2]) ? ($('#thirdDOI').val()) : ("")
+            {rdelim},
+            sucesso()
+        );
     {rdelim}
 
     function noPadrao(doi){ldelim}
@@ -97,7 +122,7 @@
         if( !noPadrao(doiInput.val()) ){ldelim}
             doiError.text("{translate key="plugins.generic.authorDOIScreening.doiValidRequirement"}");
             doiError.css('display', 'block');
-            (flag == 'first')?(firstOK = false):(secondOK = false);
+            okay[flag] = false;
             return;
         {rdelim}
         
@@ -107,7 +132,7 @@
         if(status !=  'ok' || items.length == 0){ldelim}
             doiError.text("{translate key="plugins.generic.authorDOIScreening.doiCrossrefRequirement"}");
             doiError.css('display', 'block');
-            (flag == 'first')?(firstOK = false):(secondOK = false);
+            okay[flag] = false;
             return;
         {rdelim}
 
@@ -126,7 +151,7 @@
         if(!found){ldelim}
             doiError.text("{translate key="plugins.generic.authorDOIScreening.doiFromAuthor"}");
             doiError.css('display', 'block');
-            (flag == 'first')?(firstOK = false):(secondOK = false);
+            okay[flag] = false;
             return;
         {rdelim}
         
@@ -134,43 +159,24 @@
         if(doiType != 'journal-article'){ldelim}
             doiError.text("{translate key="plugins.generic.authorDOIScreening.doiFromJournal"}");
             doiError.css('display', 'block');
-            (flag == 'first')?(firstOK = false):(secondOK = false);
+            okay[flag] = false;
             return;
         {rdelim}
         
         const anoDOI = items[0]['published-print']['date-parts'][0][0];
-        const anoAtual = (new Date()).getFullYear();
-        if(anoDOI < anoAtual-2){ldelim}
-            doiError.text("{translate key="plugins.generic.authorDOIScreening.doiFromLastThree"}");
-            doiError.css('display', 'block');
-            (flag == 'first')?(firstOK = false):(secondOK = false);
-            return;
-        {rdelim}
+        years[flag] = anoDOI;
         
         //Se chegou aqui, tudo esta ok
         if(doiError.css('display') == 'block')
             doiError.css('display', 'none');
 
-
-        (flag == 'first')?(firstOK = true):(secondOK = true);
-    {rdelim}
-
-    function validaCampos(doiInput, doiError, doiFlag){ldelim}
-        if($('#firstDOI').val() == $('#secondDOI').val()){ldelim}
-            $('#generalMessage').text("{translate key="plugins.generic.authorDOIScreening.doiDifferentRequirement"}");
-            $('#generalMessage').css('display', 'block');
-        {rdelim}
-        else {ldelim}
-            if($('#generalMessage').css('display') == 'block')
-                $('#generalMessage').css('display', 'none');
-
-            validaDOI(doiInput, doiError, doiFlag);
-        {rdelim}
+        okay[flag] = true;
     {rdelim}
 
     $(function(){ldelim}
-        $('#firstDOI').focusout(function () {ldelim} validaCampos($('#firstDOI'), $('#firstDOIError'), 'first') {rdelim});
-        $('#secondDOI').focusout(function() {ldelim} validaCampos($('#secondDOI'), $('#secondDOIError'), 'second') {rdelim});
+        $('#firstDOI').focusout(function () {ldelim} validaDOI($('#firstDOI'), $('#firstDOIError'), 0) {rdelim});
+        $('#secondDOI').focusout(function() {ldelim} validaDOI($('#secondDOI'), $('#secondDOIError'), 1) {rdelim});
+        $('#thirdDOI').focusout(function() {ldelim} validaDOI($('#thirdDOI'), $('#thirdDOIError'), 2) {rdelim});
         $('#doiSubmit').click(makeSubmit);
     {rdelim});
 </script>
@@ -199,6 +205,15 @@
                     <input id="secondDOI" type="text" name="secondDOI" placeholder="Ex.: 10.1000/182" value="{$secondDOI->getDOICode()}">
                 {else}
                     <input id="secondDOI" type="text" name="secondDOI" placeholder="Ex.: 10.1000/182">
+                {/if}
+            </div>
+            <div id="thirdFormField">
+                <span id="thirdDOIError" class="myError" style="display:none"></span>
+                <label id="thirdDOILabel" class="pkpFormFieldLabel">{translate key="plugins.generic.authorDOIScreening.submission.third"}</label>
+                {if isset($thirdDOI)}
+                    <input id="thirdDOI" type="text" name="thirdDOI" placeholder="Ex.: 10.1000/182" value="{$thirdDOI->getDOICode()}">
+                {else}
+                    <input id="thirdDOI" type="text" name="thirdDOI" placeholder="Ex.: 10.1000/182">
                 {/if}
             </div>
         </div>

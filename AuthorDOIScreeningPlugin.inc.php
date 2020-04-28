@@ -30,7 +30,7 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 
 			//Hora de fazer uns testes
 			HookRegistry::register('Templates::Submission::SubmissionMetadataForm::AdditionalMetadata', array($this, 'metadataFieldEdit'));
-			HookRegistry::register('Template::Workflow::Publication', array($this, 'addToPublicationForms'));
+			//HookRegistry::register('Template::Workflow::Publication', array($this, 'addToPublicationForms'));
 
 			HookRegistry::register('LoadComponentHandler', array($this, 'setupGridHandler'));
 
@@ -78,7 +78,7 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 		return false;
 	}
 
-	function addToPublicationForms($hookName, $params) {
+	/*function addToPublicationForms($hookName, $params) {
 		$smarty =& $params[1];
 		$output =& $params[2];
         $submission = $smarty->get_template_vars('submission');
@@ -94,6 +94,9 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
         if(count($dois) > 0){
             $passData['firstDOI'] = $dois[0];
             $passData['secondDOI'] = $dois[1];
+            
+            if(count($dois) == 3)
+                $passData['thirdDOI'] = $dois[2];
         }
         
 		$smarty->assign($passData);
@@ -104,7 +107,7 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 		);
 		
 		return false;
-	}
+	}*/
 
 	function listRules($hookName, $args) {
 		$rules =& $args[0];

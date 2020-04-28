@@ -10,16 +10,17 @@
 	<message key="plugins.generic.authorDOIScreening.description">Autores podem publicar apenas se possuírem artigos publicados em periódicos nos últimos 2 anos</message>
 	<message key="plugins.generic.authorDOIScreening.required.publishedBefore">Você precisa ter ao menos um artigo aceito em periódico nos últimos 2 anos</message>
 
-    <message key="plugins.generic.authorDOIScreening.submission.description">Por favor insira dois DOIs de artigos anteriores de sua autoria publicados em revistas especializadas nos últimos 2 anos</message>
+    <message key="plugins.generic.authorDOIScreening.submission.description">Por favor, insira DOIs de artigos de sua autoria publicados em revistas especializadas. Você deve inserir dois DOIs dos últimos 2 anos ou três DOIs de qualquer data</message>
     <message key="plugins.generic.authorDOIScreening.submission.first">Primeiro DOI</message>
     <message key="plugins.generic.authorDOIScreening.submission.second">Segundo DOI</message>
+    <message key="plugins.generic.authorDOIScreening.submission.third">Terceiro DOI</message>
 
     <message key="plugins.generic.authorDOIScreening.doiValidRequirement">Por favor, insira um DOI válido</message>
     <message key="plugins.generic.authorDOIScreening.doiDifferentRequirement">Os DOIs não podem ser iguais</message>
+    <message key="plugins.generic.authorDOIScreening.attentionRules">Por favor, cumpra as regras colocadas acima</message>
     <message key="plugins.generic.authorDOIScreening.doiCrossrefRequirement">Apenas DOIs da Crossref são aceitos</message>
     <message key="plugins.generic.authorDOIScreening.doiFromAuthor">Por favor, insira um DOI que seja seu</message>
     <message key="plugins.generic.authorDOIScreening.doiFromJournal">Por favor, insira um DOI de uma publicação em periódico</message>
-    <message key="plugins.generic.authorDOIScreening.doiFromLastThree">Por favor, insira um DOI dos últimos dois anos</message>
     <message key="plugins.generic.authorDOIScreening.successfulScreening">Operação realizada com sucesso!</message>
 
     <message key="plugins.generic.authorDOIScreening.modal">Fazer verificação</message>
