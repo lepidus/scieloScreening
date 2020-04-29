@@ -34,7 +34,7 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 
 			HookRegistry::register('LoadComponentHandler', array($this, 'setupGridHandler'));
 
-
+            HookRegistry::register('authorform::Constructor', array($this, 'changeAuthorForm'));
 		}
 		return $success;
 	}
@@ -47,7 +47,14 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 			return true;
 		}
 		return false;
-	}
+    }
+    
+    function changeAuthorForm($hookName, $params){
+        $path = "../../../plugins/generic/authorDOIScreening/templates/authorForm.tpl";
+        
+        $params[0]->setTemplate($path);
+        $params[1] = $path;
+    }
     
     public function getDisplayName() {
 		return __('plugins.generic.authorDOIScreening.displayName');
