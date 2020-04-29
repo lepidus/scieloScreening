@@ -8,7 +8,9 @@
 	<message key="plugins.generic.authorDOIScreening.displayName">Plugin de verificación de DOIs del autor</message>
     <message key="plugins.generic.authorDOIScreening.nome">Verificación de DOIs</message>
 	<message key="plugins.generic.authorDOIScreening.description">Los autores solo pueden publicar si tienen artículos publicados en revistas en los ultimos 2 años</message>
-	<message key="plugins.generic.authorDOIScreening.required.publishedBefore">Debe tener al menos un artículo aceptado en una revista en los últimos 2 años</message>
+	
+    <message key="plugins.generic.authorDOIScreening.required.publishedBefore">Debe tener al menos un artículo aceptado en una revista en los últimos 2 años</message>
+    <message key="plugins.generic.authorDOIScreening.required.affiliationForAll">Todos los contribuyentes de envío deben tener su afiliación lleno</message>
 
     <message key="plugins.generic.authorDOIScreening.submission.description">Inserte DOIs de sus proprios artículos publicados en revistas especializadas. Debe ingressar dos DOI de los últimos 2 años o tres DOI de cualquier fecha</message>
     <message key="plugins.generic.authorDOIScreening.submission.first">Primero DOI</message>

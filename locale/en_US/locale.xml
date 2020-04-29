@@ -8,7 +8,9 @@
     <message key="plugins.generic.authorDOIScreening.displayName">Author DOI Screening Plugin</message>
     <message key="plugins.generic.authorDOIScreening.nome">DOI Screening</message>
 	<message key="plugins.generic.authorDOIScreening.description">Authors can only publish if they have previous journal articles published in the last 2 years</message>
-	<message key="plugins.generic.authorDOIScreening.required.publishedBefore">You need to have at least one published journal article in the last 2 years</message>
+	
+    <message key="plugins.generic.authorDOIScreening.required.publishedBefore">You need to have at least one published journal article in the last 2 years</message>
+    <message key="plugins.generic.authorDOIScreening.required.affiliationForAll">All submission contributors must have their affiliation filled</message>
 
     <message key="plugins.generic.authorDOIScreening.submission.description">Please insert DOIs from previous articles of your own authorship published in peer reviewed journals. You must enter two DOIs from the past 2 years or three DOIs from any date</message>
     <message key="plugins.generic.authorDOIScreening.submission.first">First DOI</message>

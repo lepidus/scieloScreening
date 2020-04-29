@@ -23,7 +23,7 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 			//\HookRegistry::register('Publication::canAuthorPublish', [$this, 'setAuthorCanPublish']);
 
 			// Add a new ruleset for publishing
-			//\HookRegistry::register('Publication::validatePublish', [$this, 'validate']);
+			\HookRegistry::register('Publication::validatePublish', [$this, 'validate']);
 
 			// Show plugin rules for editors in settings
 			\HookRegistry::register('Settings::Workflow::listScreeningPlugins', [$this, 'listRules']);
@@ -118,23 +118,24 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 		return $rules;
 	}
 
-	/*function validate($hookName, $args) {
+	function validate($hookName, $args) {
 		$errors =& $args[0];
-		$publication = $args[1];
-        $submissionId = $publication->getData('submissionId');
+        $publication = $args[1];
+        $submission = $args[2];
         
-        $doiScreeningDAO = new DOIScreeningDAO();
-        $dois = $doiScreeningDAO->getBySubmissionId($submissionId);
+        $authors = $submission->getAuthors();
 
-        if(count($dois) == 0){
-			$errors = array_merge(
-				$errors,
-				array('hasPublishedBefore' => __('plugins.generic.authorDOIScreening.required.publishedBefore'))
-            );
-            return false;
-		}
+        foreach ($authors as $author) {   
+            if($author->getLocalizedAffiliation() == ""){
+                $errors = array_merge(
+                    $errors,
+                    array('affiliationForAll' => __('plugins.generic.authorDOIScreening.required.affiliationForAll'))
+                );
+                return false;
+            }
+        }
         return true;
-	}*/
+	}
 
     /**
 	 * @copydoc Plugin::getInstallSchemaFile()
