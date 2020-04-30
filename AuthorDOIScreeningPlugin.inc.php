@@ -30,7 +30,7 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 
 			// Adds the DOI Form to submission
 			HookRegistry::register('Templates::Submission::SubmissionMetadataForm::AdditionalMetadata', array($this, 'metadataFieldEdit'));
-			//HookRegistry::register('Template::Workflow::Publication', array($this, 'addToPublicationForms'));
+			HookRegistry::register('Template::Workflow::Publication', array($this, 'addToPublicationForms'));
 
 			HookRegistry::register('LoadComponentHandler', array($this, 'setupGridHandler'));
             HookRegistry::register('authorform::Constructor', array($this, 'changeAuthorForm'));
@@ -84,36 +84,55 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 		return false;
 	}
 
-	/*function addToPublicationForms($hookName, $params) {
+	function addToPublicationForms($hookName, $params) {
 		$smarty =& $params[1];
 		$output =& $params[2];
         $submission = $smarty->get_template_vars('submission');
-        
-        $passData = [
-            'submissionId' => $submission->getId(),
-            'authors' => $submission->getAuthors()
-        ];
-        
+        $passData = array();
+
+        /* DOI*/
         $doiScreeningDAO = new DOIScreeningDAO();
         $dois = $doiScreeningDAO->getBySubmissionId($submission->getId());
 
         if(count($dois) > 0){
-            $passData['firstDOI'] = $dois[0];
-            $passData['secondDOI'] = $dois[1];
-            
-            if(count($dois) == 3)
-                $passData['thirdDOI'] = $dois[2];
+            $passData['flagDOI'] = true;
+            $passData['msgDOI'] = __('plugins.generic.authorDOIScreening.info.doiOkay');
+            $passData['dois'] = $dois;
+        }
+        else {
+            $passData['flagDOI'] = false;
+            $passData['msgDOI'] = __('plugins.generic.authorDOIScreening.info.doiNotOkay');
+        }
+
+        /* Afiliação */
+        $authors = $submission->getAuthors();
+        $flagAf = true;
+        $listAuthors = array();
+
+        foreach ($authors as $author) {   
+            if($author->getLocalizedAffiliation() == ""){
+                $flagAf = false;
+                $listAuthors[] = $author->getLocalizedGivenName() . " " . $author->getLocalizedFamilyName();
+            }
+        }
+
+        if($flagAf){
+            $passData['flagAf'] = true;
+            $passData['msgAf'] = __('plugins.generic.authorDOIScreening.info.affiliationOkay');
+        }
+        else {
+            $passData['flagAf'] = false;
+            $passData['msgAf'] = __('plugins.generic.authorDOIScreening.info.affiliationNotOkay');
+            $passData['listAuthors'] = $listAuthors;
         }
         
 		$smarty->assign($passData);
 		$output .= sprintf(
-			'<tab id="doiScreeningInWorkflow" label="%s">%s</tab>',
-			__('plugins.generic.authorDOIScreening.nome'),
-			$smarty->fetch($this->getTemplateResource('editDOIForm.tpl'))
+			'<tab id="screeningInfo" label="%s">%s</tab>',
+			__('plugins.generic.authorDOIScreening.info.name'),
+			$smarty->fetch($this->getTemplateResource('screeningInfo.tpl'))
 		);
-		
-		return false;
-	}*/
+	}
 
 	function listRules($hookName, $args) {
 		$rules =& $args[0];

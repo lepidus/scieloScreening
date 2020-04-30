@@ -30,4 +30,12 @@
     <message key="plugins.generic.authorDOIScreening.instructions">To proceed automatically with the submission, you must do a screening of your previous publications. Otherwise, your submission will need to be approved by a moderator.</message>
     <message key="plugins.generic.authorDOIScreening.caseCantScreening">If you can't do the screening, select the checkbox below:</message>
     <message key="plugins.generic.authorDOIScreening.declaration">I don't have the requested DOIs to provide</message>
+
+    <message key="plugins.generic.authorDOIScreening.info.name">SciELO Screening Info</message>
+    <message key="plugins.generic.authorDOIScreening.info.description">See the status of each screening step below:</message>
+    <message key="plugins.generic.authorDOIScreening.info.doiOkay">The DOI screening was done correctly. See each DOI inserted below:</message>
+    <message key="plugins.generic.authorDOIScreening.info.doiNotOkay">The DOI screening was not done!</message>
+    <message key="plugins.generic.authorDOIScreening.info.affiliationOkay">All authors had their affiliation filled</message>
+    <message key="plugins.generic.authorDOIScreening.info.affiliationNotOkay">The authors below have not filled out their affiliations:</message>
+    
 </locale>

@@ -30,4 +30,11 @@
     <message key="plugins.generic.authorDOIScreening.instructions">Para continuar con el envío automáticamente, se debe hacer una verificación de sus publicaciones anteriores. De lo contrario, su publicación deberá ser aprobada por un moderador.</message>
     <message key="plugins.generic.authorDOIScreening.caseCantScreening">Si no puede hacer la verificación, marque la casilla a continuación:</message>
     <message key="plugins.generic.authorDOIScreening.declaration">No tengo los DOI solicitados para proporcionar</message>
+
+    <message key="plugins.generic.authorDOIScreening.info.name">Información de verificación de SciELO</message>
+    <message key="plugins.generic.authorDOIScreening.info.description">Vea el estado de cada una de las comprobaciones a continuación:</message>
+    <message key="plugins.generic.authorDOIScreening.info.doiOkay">La verificación de los DOI se realizó correctamente. Vea cada DOI ingresado a continuación:</message>
+    <message key="plugins.generic.authorDOIScreening.info.doiNotOkay">¡La verificación de los DOI no se ha llevado a cabo!</message>
+    <message key="plugins.generic.authorDOIScreening.info.affiliationOkay">Todos los autores completaron su afiliación</message>
+    <message key="plugins.generic.authorDOIScreening.info.affiliationNotOkay">Los siguientes autores no completaron sus afiliaciones:</message>
 </locale>

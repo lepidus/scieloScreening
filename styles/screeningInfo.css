@@ -1,0 +1,61 @@
+#screeningInfoHeader h2 {
+    margin-top: 18px;
+    margin-bottom: 0;
+}
+
+#screeningInfoHeader p {
+    font-size: 16px;
+    line-height: 24px;
+    margin-top: 0px;
+    margin-bottom: 18px;
+}
+
+#doiHeader, #affiliationHeader {
+    display: flex;
+    align-items: center;
+    background-color: #DCDCDC;
+    padding: 8px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.headerWithoutBody {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+#doiBody, #affiliationBody {
+    background-color: #f5f5f5;
+    padding: 8px;
+
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.statusOkay {
+    width: 24px;
+    height: 24px;
+    background-color: #00b28d;
+    border-radius: 12px;
+}
+
+.statusNotOkay {
+    width: 24px;
+    height: 24px;
+    background-color: #d00a6c;
+    border-radius: 12px;
+}
+        
+#doiMessage, #affiliationMessage {
+    line-height: 24px;
+    font-size: 16px;
+    margin-left: 0.5em;
+}
+
+#doiInfoField, #affiliationInfoField {
+    margin-bottom: 18px;
+}
+
+li {
+    font-size: 16px;
+}
