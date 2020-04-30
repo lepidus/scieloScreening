@@ -5,11 +5,11 @@
   *
   -->
 <locale name="pt_BR" full_name="Português brasileiro">
-	<message key="plugins.generic.authorDOIScreening.displayName">Plugin de verificação de DOIs do autor</message>
+	<message key="plugins.generic.authorDOIScreening.displayName">Plugin de verificação SciELO</message>
     <message key="plugins.generic.authorDOIScreening.nome">Verificação de DOIs</message>
-	<message key="plugins.generic.authorDOIScreening.description">Autores podem publicar apenas se possuírem artigos publicados em periódicos nos últimos 2 anos</message>
+	<message key="plugins.generic.authorDOIScreening.description">Adiciona novas regras de verificação durante a submissão de acordo com as políticas editoriais da SciELO Preprints</message>
 	
-    <message key="plugins.generic.authorDOIScreening.required.publishedBefore">Você precisa ter ao menos um artigo aceito em periódico nos últimos 2 anos</message>
+    <message key="plugins.generic.authorDOIScreening.required.publishedBefore">Você precisa inserir DOIs de artigos de sua autoria publicados em revistas especializadas</message>
     <message key="plugins.generic.authorDOIScreening.required.affiliationForAll">Todos os contribuidores da submissão devem ter sua afiliação preenchida</message>
 
     <message key="plugins.generic.authorDOIScreening.submission.description">Por favor, insira DOIs de artigos de sua autoria publicados em revistas especializadas. Você deve inserir dois DOIs dos últimos 2 anos ou três DOIs de qualquer data</message>

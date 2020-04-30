@@ -28,12 +28,11 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 			// Show plugin rules for editors in settings
 			\HookRegistry::register('Settings::Workflow::listScreeningPlugins', [$this, 'listRules']);
 
-			//Hora de fazer uns testes
+			// Adds the DOI Form to submission
 			HookRegistry::register('Templates::Submission::SubmissionMetadataForm::AdditionalMetadata', array($this, 'metadataFieldEdit'));
 			//HookRegistry::register('Template::Workflow::Publication', array($this, 'addToPublicationForms'));
 
 			HookRegistry::register('LoadComponentHandler', array($this, 'setupGridHandler'));
-
             HookRegistry::register('authorform::Constructor', array($this, 'changeAuthorForm'));
 		}
 		return $success;
@@ -120,7 +119,7 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 		$rules =& $args[0];
 		$pluginRules['hasPublishedBefore'] = 
 			"<p>" . $this->getDisplayName() . "<br />\n" . 
-			__('plugins.generic.authorDOIScreening.required.publishedBefore') . "</p>\n";
+			$this->getDescription() . "</p>\n";
 		$rules = array_merge($rules, $pluginRules);
 		return $rules;
 	}
