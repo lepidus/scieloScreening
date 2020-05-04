@@ -5,7 +5,7 @@
  *}
 
  {* Caso o autor seja um moderador, este não precisa fazer a verificação dos DOIs *}
-{if $authorGroupId == 4}
+{if $roleId == ROLE_ID_AUTHOR}
 
 <script>
     var screeningChecked = false;
