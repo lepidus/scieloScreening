@@ -9,6 +9,7 @@
     <message key="plugins.generic.authorDOIScreening.nome">Verificación SciELO</message>
 	<message key="plugins.generic.authorDOIScreening.description">Agrega nuevas reglas de verificación durante el envío de acuerdo con las políticas editoriales de SciELO Preprints</message>
 	
+    <message key="plugins.generic.authorDOIScreening.submission.warningAffiliation">Asegúrese de que todos los contribuyentes tengan sus afiliaciones completas. Esto es necesario para la aprobación de su envío.</message>
     <message key="plugins.generic.authorDOIScreening.required.publishedBefore">Debe insertar DOIs de sus proprios artículos publicados en revistas especializadas</message>
     <message key="plugins.generic.authorDOIScreening.required.affiliationForAll">Todos los contribuyentes de envío deben tener su afiliación lleno</message>
 

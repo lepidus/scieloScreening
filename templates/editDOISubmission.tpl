@@ -5,6 +5,18 @@
  *}
 
  {* Caso o autor seja um moderador, este não precisa fazer a verificação dos DOIs *}
+
+<script>
+    var formulario = document.getElementById("submitStep3Form");
+    var authors = document.getElementById("authorsGridContainer");
+
+    var msg = document.createElement("P");
+    msg.classList.add("description");
+    msg.innerText = "{translate key="plugins.generic.authorDOIScreening.submission.warningAffiliation"}";
+    
+    formulario.insertBefore(msg, authors);
+</script>
+
 {if $roleId == ROLE_ID_AUTHOR}
 
 <script>
