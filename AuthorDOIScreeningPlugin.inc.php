@@ -34,6 +34,8 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 
 			HookRegistry::register('LoadComponentHandler', array($this, 'setupGridHandler'));
             HookRegistry::register('authorform::Constructor', array($this, 'changeAuthorForm'));
+            HookRegistry::register('submissionsubmitstep4form::Constructor', array($this, 'templateStep4'));
+            HookRegistry::register('submissionsubmitstep4form::display', array($this, 'dataStep4'));
 		}
 		return $success;
 	}
@@ -55,6 +57,39 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
         $params[1] = $path;
     }
     
+    function templateStep4($hookName, $params){
+        $path = "../../../plugins/generic/authorDOIScreening/templates/step4.tpl";
+
+        $params[0]->setTemplate($path);
+        $params[1] = $path;
+    }
+
+    function dataStep4($hookName, $params){
+        $submission = $params[0]->submission;
+
+        /* DOI*/
+        $doiScreeningDAO = new DOIScreeningDAO();
+        $dois = $doiScreeningDAO->getBySubmissionId($submission->getId());
+
+        if(count($dois) == 0)
+            $params[0]->setData("doiNotDone", true);
+        else
+            $params[0]->setData("doiNotDone", false);
+
+        /* Afiliação */
+        $authors = $submission->getAuthors();
+        $authorWithoutAffiliation = false;
+
+        foreach ($authors as $author) {   
+            if($author->getLocalizedAffiliation() == ""){
+                $authorWithoutAffiliation = true;
+                break;
+            }
+        }
+        
+        $params[0]->setData("authorWithoutAffiliation", $authorWithoutAffiliation);
+    }
+
     public function getDisplayName() {
 		return __('plugins.generic.authorDOIScreening.displayName');
 	}
