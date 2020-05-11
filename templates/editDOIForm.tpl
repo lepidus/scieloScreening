@@ -142,7 +142,7 @@
             const nome1 = authors[i].given + authors[i].family;
             const nome2 = '{$authors[0]->getGivenName('en_US')}{$authors[0]->getFamilyName('en_US')}';
 
-            if(similarity(nome1,nome2) > 0.8){ldelim}
+            if(similarity(nome1,nome2) > 0.5){ldelim}
                 found = true;
                 break;
             {rdelim}
@@ -163,8 +163,12 @@
             return;
         {rdelim}
         
-        const anoDOI = items[0]['published-print']['date-parts'][0][0];
-        years[flag] = anoDOI;
+        try {ldelim}
+            years[flag] = items[0]['published-print']['date-parts'][0][0];
+        {rdelim}
+        catch (e){
+            years[flag] = items[0]['published-online']['date-parts'][0][0];
+        }
         
         //Se chegou aqui, tudo esta ok
         if(doiError.css('display') == 'block')
