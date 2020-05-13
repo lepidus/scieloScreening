@@ -43,5 +43,7 @@
     <message key="plugins.generic.authorDOIScreening.info.doiNotOkay">The DOI screening was not done!</message>
     <message key="plugins.generic.authorDOIScreening.info.affiliationOkay">All authors had their affiliation filled</message>
     <message key="plugins.generic.authorDOIScreening.info.affiliationNotOkay">The authors below have not filled out their affiliations:</message>
+    <message key="plugins.generic.authorDOIScreening.info.orcidOkay">ORCID status is confirmed</message>
+    <message key="plugins.generic.authorDOIScreening.info.orcidNotOkay">No author had confirmed their ORCID</message>
     
 </locale>

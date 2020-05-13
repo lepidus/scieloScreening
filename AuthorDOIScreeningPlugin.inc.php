@@ -139,15 +139,20 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
             $passData['msgDOI'] = __('plugins.generic.authorDOIScreening.info.doiNotOkay');
         }
 
-        /* Afiliação */
+        /* Afiliação e ORCID */
         $authors = $submission->getAuthors();
         $flagAf = true;
+        $flagOrcid = false;
         $listAuthors = array();
 
         foreach ($authors as $author) {   
             if($author->getLocalizedAffiliation() == ""){
                 $flagAf = false;
                 $listAuthors[] = $author->getLocalizedGivenName() . " " . $author->getLocalizedFamilyName();
+            }
+
+            if($author->getOrcid() != ''){
+                $flagOrcid = true;
             }
         }
 
@@ -159,6 +164,15 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
             $passData['flagAf'] = false;
             $passData['msgAf'] = __('plugins.generic.authorDOIScreening.info.affiliationNotOkay');
             $passData['listAuthors'] = $listAuthors;
+        }
+        
+        if($flagOrcid){
+            $passData['flagOrcid'] = true;
+            $passData['msgOrcid'] = __('plugins.generic.authorDOIScreening.info.orcidOkay');
+        }
+        else{
+            $passData['flagOrcid'] = false;
+            $passData['msgOrcid'] = __('plugins.generic.authorDOIScreening.info.orcidNotOkay');
         }
         
 		$smarty->assign($passData);

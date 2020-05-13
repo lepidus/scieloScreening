@@ -10,7 +10,7 @@
     margin-bottom: 18px;
 }
 
-#doiHeader, #affiliationHeader {
+#doiHeader, #affiliationHeader, #orcidHeader {
     display: flex;
     align-items: center;
     background-color: #DCDCDC;
@@ -46,13 +46,13 @@
     border-radius: 12px;
 }
         
-#doiMessage, #affiliationMessage {
+#doiMessage, #affiliationMessage, #orcidMessage {
     line-height: 24px;
     font-size: 16px;
     margin-left: 0.5em;
 }
 
-#doiInfoField, #affiliationInfoField {
+#doiInfoField, #affiliationInfoField, #orcidInfoField {
     margin-bottom: 18px;
 }
 

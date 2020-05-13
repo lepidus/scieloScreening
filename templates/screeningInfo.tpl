@@ -56,5 +56,18 @@
                 </div>
             {/if}
         </div>
+        <div id="orcidInfoField">
+            {if $flagOrcid == true}
+                <div id="orcidHeader" class="headerWithoutBody">
+                    <div class="statusOkay"></div>
+                    <span id="orcidMessage">{$msgOrcid}</span>
+                </div>
+            {else}
+                <div id="orcidHeader" class="headerWithoutBody">
+                    <div class="statusNotOkay"></div>
+                    <span id="orcidMessage">{$msgOrcid}</span>
+                </div>
+            {/if}
+        </div>
     </div>
 </div>
