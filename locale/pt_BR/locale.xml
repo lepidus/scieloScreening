@@ -5,18 +5,19 @@
   *
   -->
 <locale name="pt_BR" full_name="Português brasileiro">
-	<message key="plugins.generic.authorDOIScreening.displayName">Plugin de verificação SciELO</message>
+	  <message key="plugins.generic.authorDOIScreening.displayName">Plugin de verificação SciELO</message>
     <message key="plugins.generic.authorDOIScreening.nome">Verificação de DOIs</message>
-	<message key="plugins.generic.authorDOIScreening.description">Adiciona novas regras de verificação durante a submissão de acordo com as políticas editoriais da SciELO Preprints</message>
+	  <message key="plugins.generic.authorDOIScreening.description">Adiciona novas regras de verificação durante a submissão de acordo com as políticas editoriais da SciELO Preprints</message>
 	
-    <message key="plugins.generic.authorDOIScreening.submission.warningAffiliation">Por favor, verifique se todos os contribuidores estão com suas afiliações preenchidas. Isso é necessário para a aprovação da sua submissão.</message>
     <message key="plugins.generic.authorDOIScreening.required.publishedBefore">Você precisa inserir DOIs de artigos de sua autoria publicados em revistas especializadas</message>
     <message key="plugins.generic.authorDOIScreening.required.affiliationForAll">Todos os contribuidores da submissão devem ter sua afiliação preenchida</message>
+    <message key="plugins.generic.authorDOIScreening.required.orcidLeastOne">Ao menos um contribuidor precisa estar com seu ORCID confirmado</message>
 
     <message key="plugins.generic.authorDOIScreening.step4.warning">As seguintes etapas de verificação não foram realizadas. Você tem a opção de voltar e fazê-las.</message>
     <message key="plugins.generic.authorDOIScreening.step4.affiliation">Você não preencheu a afiliação de todos os contribuidores.</message>
     <message key="plugins.generic.authorDOIScreening.step4.dois">Você não realizou a verificação das suas publicações prévias.</message>
 
+    <message key="plugins.generic.authorDOIScreening.submission.warningAffiliation">Por favor, verifique se todos os contribuidores estão com suas afiliações preenchidas. Isso é necessário para a aprovação da sua submissão.</message>
     <message key="plugins.generic.authorDOIScreening.submission.description">Por favor, insira DOIs de artigos de sua autoria publicados em revistas especializadas. Você deve inserir dois DOIs dos últimos 2 anos ou três DOIs de qualquer data</message>
     <message key="plugins.generic.authorDOIScreening.submission.first">Primeiro DOI</message>
     <message key="plugins.generic.authorDOIScreening.submission.second">Segundo DOI</message>

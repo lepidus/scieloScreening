@@ -7,10 +7,11 @@
 <locale name="en_US" full_name="U.S. English">
     <message key="plugins.generic.authorDOIScreening.displayName">SciELO Screening Plugin</message>
     <message key="plugins.generic.authorDOIScreening.nome">SciELO Screening</message>
-	<message key="plugins.generic.authorDOIScreening.description">Adds new screening rules during submission according to SciELO Preprints' editorial policies</message>
+    <message key="plugins.generic.authorDOIScreening.description">Adds new screening rules during submission according to SciELO Preprints' editorial policies</message>
 	
     <message key="plugins.generic.authorDOIScreening.required.publishedBefore">You need to insert DOIs from previous articles of your own authorship published in peer reviewed journals</message>
     <message key="plugins.generic.authorDOIScreening.required.affiliationForAll">All submission contributors must have their affiliation filled</message>
+    <message key="plugins.generic.authorDOIScreening.required.orcidLeastOne">At least one contributor must have their ORCID confirmed</message>
 
     <message key="plugins.generic.authorDOIScreening.step4.warning">The following verification steps have not been performed. You have the option to go back and do them.</message>
     <message key="plugins.generic.authorDOIScreening.step4.affiliation">You have not filled in the affiliation for all contributors.</message>

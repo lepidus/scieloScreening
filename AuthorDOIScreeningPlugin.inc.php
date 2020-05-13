@@ -182,7 +182,9 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 		$errors =& $args[0];
         $publication = $args[1];
         $submission = $args[2];
-        
+        $affAll = true;
+        $orcidOne = false;
+
         $authors = $submission->getAuthors();
 
         foreach ($authors as $author) {   
@@ -191,10 +193,22 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
                     $errors,
                     array('affiliationForAll' => __('plugins.generic.authorDOIScreening.required.affiliationForAll'))
                 );
-                return false;
+                $affAll = false;
+            }
+
+            if($author->getOrcid() != ''){
+                $orcidOne = true;
             }
         }
-        return true;
+
+        if(!$orcidOne){
+            $errors = array_merge(
+                $errors,
+                array('orcidLeastOne' => __('plugins.generic.authorDOIScreening.required.orcidLeastOne'))
+            );
+        }
+
+        return $affAll && $orcidOne;
 	}
 
     /**
