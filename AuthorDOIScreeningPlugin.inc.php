@@ -198,7 +198,6 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
         $submission = $args[2];
         $affAll = true;
         $orcidOne = false;
-
         $authors = $submission->getAuthors();
 
         foreach ($authors as $author) {   
@@ -209,20 +208,27 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
                 );
                 $affAll = false;
             }
+        }
 
-            if($author->getOrcid() != ''){
-                $orcidOne = true;
+        if($this->userIsAuthor($submission)){
+            foreach ($authors as $author){
+                if($author->getOrcid() != ''){
+                    $orcidOne = true;
+                }
             }
+            
+            if(!$orcidOne){
+                $errors = array_merge(
+                    $errors,
+                    array('orcidLeastOne' => __('plugins.generic.authorDOIScreening.required.orcidLeastOne'))
+                );
+            }
+            
+            return $affAll && $orcidOne;
         }
-
-        if(!$orcidOne){
-            $errors = array_merge(
-                $errors,
-                array('orcidLeastOne' => __('plugins.generic.authorDOIScreening.required.orcidLeastOne'))
-            );
+        else {
+            return $affAll;
         }
-
-        return $affAll && $orcidOne;
 	}
 
     /**
@@ -232,4 +238,19 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 		return $this->getPluginPath() . DIRECTORY_SEPARATOR . 'schema.xml';
 	}
 
+    function userIsAuthor($submission){
+        $currentUser = \Application::get()->getRequest()->getUser();
+        $currentUserAssignedRoles = array();
+        if ($currentUser) {
+            $stageAssignmentDao = DAORegistry::getDAO('StageAssignmentDAO'); /* @var $stageAssignmentDao StageAssignmentDAO */
+            $stageAssignmentsResult = $stageAssignmentDao->getBySubmissionAndUserIdAndStageId($submission->getId(), $currentUser->getId(), $stageId);
+            $userGroupDao = DAORegistry::getDAO('UserGroupDAO'); /* @var $userGroupDao UserGroupDAO */
+            while ($stageAssignment = $stageAssignmentsResult->next()) {
+                $userGroup = $userGroupDao->getById($stageAssignment->getUserGroupId(), $contextId);
+                $currentUserAssignedRoles[] = (int) $userGroup->getRoleId();
+            }
+        }
+
+        return $currentUserAssignedRoles[0] == ROLE_ID_AUTHOR;
+    }
 }
