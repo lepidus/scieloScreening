@@ -18,7 +18,7 @@
     <message key="plugins.generic.authorDOIScreening.step4.dois">Você não realizou a verificação das suas publicações prévias.</message>
 
     <message key="plugins.generic.authorDOIScreening.submission.warningAffiliation">Por favor, verifique se todos os contribuidores estão com suas afiliações preenchidas. Isso é necessário para a aprovação da sua submissão.</message>
-    <message key="plugins.generic.authorDOIScreening.submission.description">Por favor, insira DOIs de artigos de sua autoria publicados em revistas especializadas. Você deve inserir dois DOIs dos últimos 2 anos ou três DOIs de qualquer data</message>
+    <message key="plugins.generic.authorDOIScreening.submission.description">Por favor, insira DOIs de artigos de sua autoria publicados em revistas especializadas. Você deve inserir dois DOIs dos últimos 2 anos OU três DOIs de qualquer data</message>
     <message key="plugins.generic.authorDOIScreening.submission.first">Primeiro DOI</message>
     <message key="plugins.generic.authorDOIScreening.submission.second">Segundo DOI</message>
     <message key="plugins.generic.authorDOIScreening.submission.third">Terceiro DOI</message>

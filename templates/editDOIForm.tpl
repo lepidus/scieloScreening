@@ -106,11 +106,6 @@
         );
     {rdelim}
 
-    function noPadrao(doi){ldelim}
-        const regex = RegExp("^10[.]\\d{ldelim}4,9{rdelim}\/[-._;()\/:A-Za-z0-9]+$");
-        return regex.test(doi);
-    {rdelim}
-
     async function getFromCrossref(doi){ldelim}
         const response = await fetch('https://api.crossref.org/works?filter=doi:' + doi);
         const johnson = response.json();
@@ -119,13 +114,6 @@
     {rdelim}
 
     async function validaDOI(doiInput, doiError, flag){ldelim}
-        if( !noPadrao(doiInput.val()) ){ldelim}
-            doiError.text("{translate key="plugins.generic.authorDOIScreening.doiValidRequirement"}");
-            doiError.css('display', 'block');
-            okay[flag] = false;
-            return;
-        {rdelim}
-        
         const result = await getFromCrossref(doiInput.val());
         const status = result.status, items = result.message.items;
 
@@ -142,7 +130,7 @@
             const nome1 = authors[i].given + authors[i].family;
             const nome2 = '{$authors[0]->getGivenName('en_US')}{$authors[0]->getFamilyName('en_US')}';
 
-            if(similarity(nome1,nome2) > 0.5){ldelim}
+            if(similarity(nome1,nome2) > 0.35){ldelim}
                 found = true;
                 break;
             {rdelim}
