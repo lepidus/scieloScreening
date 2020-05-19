@@ -108,11 +108,14 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 
         $submissionId = $smarty->smarty->get_template_vars('submissionId');
         $submission = DAORegistry::getDAO('SubmissionDAO')->getById($submissionId);
+        
+        $dois = DAORegistry::getDAO('DOIScreeningDAO')->getBySubmissionId($submissionId);
         $authors = $submission->getAuthors();
 
         $smarty->assign([
             'roleId' => $authors[0]->getUserGroup()->getRoleId(),
-            'authors' => $submission->getAuthors()
+            'authors' => $submission->getAuthors(),
+            'dois' => $dois
         ]);
         
 		$output .= $smarty->fetch($this->getTemplateResource('editDOISubmission.tpl'));

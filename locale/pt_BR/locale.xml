@@ -36,6 +36,7 @@
     <message key="plugins.generic.authorDOIScreening.instructions">Para prosseguir automaticamente com a submissão, você deve fazer uma verificação de suas publicações prévias. Caso contrário, sua submissão precisará ser aprovada por um moderador.</message>
     <message key="plugins.generic.authorDOIScreening.caseCantScreening">Se você não pode fazer a verificação, selecione a caixa abaixo:</message>
     <message key="plugins.generic.authorDOIScreening.declaration">Eu não possuo os DOIs solicitados para fornecer</message>
+    <message key="plugins.generic.authorDOIScreening.doiScreeningDone">Você já realizou esta etapa</message>
 
     <message key="plugins.generic.authorDOIScreening.info.name">Informação da verificação SciELO</message>
     <message key="plugins.generic.authorDOIScreening.info.description">Veja abaixo o status de cada uma das verificações:</message>

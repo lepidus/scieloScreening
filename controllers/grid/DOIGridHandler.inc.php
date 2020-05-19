@@ -18,26 +18,30 @@ class DOIGridHandler extends GridHandler {
 
     function addDOIs($args, $request){
         $doiScreeningDAO = new DOIScreeningDAO();
-        
-        if($args[firstDOI] != ""){
-            $firstDOI = new DOIScreening();
-            $firstDOI->setSubmissionId($args['submissionId']);
-            $firstDOI->setDOICode($args['firstDOI']);
-            $doiScreeningDAO->insertObject($firstDOI);
-        }
-        
-        if($args[secondDOI] != ""){
-            $secondDOI = new DOIScreening();
-            $secondDOI->setSubmissionId($args['submissionId']);
-            $secondDOI->setDOICode($args['secondDOI']);
-            $doiScreeningDAO->insertObject($secondDOI);
-        }
 
-        if($args[thirdDOI] != ""){
-            $thirdDOI = new DOIScreening();
-            $thirdDOI->setSubmissionId($args['submissionId']);
-            $thirdDOI->setDOICode($args['thirdDOI']);
-            $doiScreeningDAO->insertObject($thirdDOI);
+        $dois = $doiScreeningDAO->getBySubmissionId($args['submissionId']);
+
+        if(count($dois) == 0){
+            if($args[firstDOI] != ""){
+                $firstDOI = new DOIScreening();
+                $firstDOI->setSubmissionId($args['submissionId']);
+                $firstDOI->setDOICode($args['firstDOI']);
+                $doiScreeningDAO->insertObject($firstDOI);
+            }
+            
+            if($args[secondDOI] != ""){
+                $secondDOI = new DOIScreening();
+                $secondDOI->setSubmissionId($args['submissionId']);
+                $secondDOI->setDOICode($args['secondDOI']);
+                $doiScreeningDAO->insertObject($secondDOI);
+            }
+    
+            if($args[thirdDOI] != ""){
+                $thirdDOI = new DOIScreening();
+                $thirdDOI->setSubmissionId($args['submissionId']);
+                $thirdDOI->setDOICode($args['thirdDOI']);
+                $doiScreeningDAO->insertObject($thirdDOI);
+            }
         }
         
         return http_response_code(200);

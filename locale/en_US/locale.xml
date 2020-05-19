@@ -36,6 +36,7 @@
     <message key="plugins.generic.authorDOIScreening.instructions">To proceed automatically with the submission, you must do a screening of your previous publications. Otherwise, your submission will need to be approved by a moderator.</message>
     <message key="plugins.generic.authorDOIScreening.caseCantScreening">If you can't do the screening, select the checkbox below:</message>
     <message key="plugins.generic.authorDOIScreening.declaration">I don't have the requested DOIs to provide</message>
+    <message key="plugins.generic.authorDOIScreening.doiScreeningDone">You have already completed this step</message>
 
     <message key="plugins.generic.authorDOIScreening.info.name">SciELO Screening Info</message>
     <message key="plugins.generic.authorDOIScreening.info.description">See the status of each screening step below:</message>
@@ -45,5 +46,4 @@
     <message key="plugins.generic.authorDOIScreening.info.affiliationNotOkay">The authors below have not filled out their affiliations:</message>
     <message key="plugins.generic.authorDOIScreening.info.orcidOkay">ORCID status is confirmed</message>
     <message key="plugins.generic.authorDOIScreening.info.orcidNotOkay">No author had confirmed their ORCID</message>
-    
 </locale>

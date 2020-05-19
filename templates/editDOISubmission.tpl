@@ -19,6 +19,7 @@
 
 {if $roleId == ROLE_ID_AUTHOR}
 
+{if count($dois) == 0}
 <script>
     var screeningChecked = false;
 
@@ -53,6 +54,7 @@
         {rdelim});
     {rdelim});
 </script>
+{/if}
 
 <link rel="stylesheet" type="text/css" href="/plugins/generic/authorDOIScreening/styles/submissionEdit.css">
 
@@ -61,6 +63,11 @@
         <div class="header">
             <h4 id="doiTitle">{translate key="plugins.generic.authorDOIScreening.nome"}</h4>
             <span id="asterix" class="req">*</span>
+            {if count($dois) > 0}
+            <div id="boxScreening">
+                <p>{translate key="plugins.generic.authorDOIScreening.doiScreeningDone"}</p>
+            </div>
+            {else}
             <div>
                 <span id="errorScreening" class="myError" style="display:none">{translate key="plugins.generic.authorDOIScreening.screeningRequirement"}</span>
                 <div id="boxScreening">
@@ -75,10 +82,11 @@
                     </div>
                 </div>
             </div>
+            {/if}
         </div>
     </div>
 
-    {* Nao esquece da classe is_visible*}
+    {if count($dois) == 0}
     <div id="DOIModal" class="pkp_modal pkpModalWrapper" tabIndex="-1">
         <div class="pkp_modal_panel" role="dialog" aria-label="Add Contributor">
             <div id="titleModal" class="header">{translate key="plugins.generic.authorDOIScreening.modal"}</div>
@@ -90,6 +98,7 @@
             </div>
         </div>
     </div>
+    {/if}
 {/fbvFormSection}
 
 {/if}
