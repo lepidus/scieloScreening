@@ -18,10 +18,12 @@
 </script>
 
 {if $roleId == ROLE_ID_AUTHOR}
+{capture assign=checkOrcidUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.authorDOIScreening.controllers.grid.DOIGridHandler" op="checkOrcid" escape=false}{/capture}
 
 {if count($dois) == 0}
 <script>
     var screeningChecked = false;
+    var statusOrcid = false;
 
     $(function(){ldelim}
         $("#openDOIModal").click(function(){ldelim}
@@ -44,7 +46,23 @@
         {rdelim});
 
         $(".pkp_button.submitFormButton").removeAttr("type").attr("type", "button");
-        $(".pkp_button.submitFormButton").click(function(){ldelim}
+        $(".pkp_button.submitFormButton").click(async function(){ldelim}
+            await $.post(
+                "{$checkOrcidUrl}",
+                {ldelim}
+                    submissionId: {$submissionId}
+                {rdelim},
+                function (resultado){ldelim}
+                    resultado = JSON.parse(resultado);
+                    (resultado['status'] == "sucesso") ? (statusOrcid = true) : (statusOrcid = false);
+                {rdelim}
+            );
+            
+            if(!statusOrcid){ldelim}
+                alert("{translate key="plugins.generic.authorDOIScreening.required.orcidLeastOne"}");
+                return;
+            {rdelim}
+            
             if(screeningChecked){ldelim}
                 $("#submitStep3Form").submit();
             {rdelim}

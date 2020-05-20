@@ -46,4 +46,23 @@ class DOIGridHandler extends GridHandler {
         
         return http_response_code(200);
     }
+
+    function checkOrcid($args, $request){
+        $submission = DAORegistry::getDAO('SubmissionDAO')->getById($args['submissionId']);
+        $orcidOne = false;
+        $authors = $submission->getAuthors();
+
+        foreach ($authors as $author){
+            if($author->getOrcid() != ''){
+                $orcidOne = true;
+            }
+        }
+        
+        if($orcidOne){
+            return json_encode(array('status' => 'sucesso'));
+        }
+        else {
+            return json_encode(array('status' => 'fracasso'));
+        }
+    }
 }
