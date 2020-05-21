@@ -12,11 +12,14 @@
     <message key="plugins.generic.authorDOIScreening.required.publishedBefore">Você precisa inserir DOIs de artigos de sua autoria publicados em revistas especializadas</message>
     <message key="plugins.generic.authorDOIScreening.required.affiliationForAll">Todos os contribuidores da submissão devem ter sua afiliação preenchida</message>
     <message key="plugins.generic.authorDOIScreening.required.orcidLeastOne">Ao menos um contribuidor precisa estar com seu ORCID confirmado. Por favor, verifique o seu e-mail.</message>
+    <message key="plugins.generic.authorDOIScreening.required.numberAuthors">O número de autores inseridos não é igual ao informado</message>
 
     <message key="plugins.generic.authorDOIScreening.step4.warning">As seguintes etapas de verificação não foram realizadas. Você tem a opção de voltar e fazê-las.</message>
     <message key="plugins.generic.authorDOIScreening.step4.affiliation">Você não preencheu a afiliação de todos os contribuidores.</message>
     <message key="plugins.generic.authorDOIScreening.step4.dois">Você não realizou a verificação das suas publicações prévias.</message>
 
+    <message key="plugins.generic.authorDOIScreening.submission.contributors">Coautores</message>
+    <message key="plugins.generic.authorDOIScreening.submission.numberAuthors">Por favor, insira o número total de autores dessa publicação:</message>
     <message key="plugins.generic.authorDOIScreening.submission.warningAffiliation">Por favor, verifique se todos os contribuidores estão com suas afiliações preenchidas. Isso é necessário para a aprovação da sua submissão.</message>
     <message key="plugins.generic.authorDOIScreening.submission.description">Por favor, insira DOIs de artigos de sua autoria publicados em revistas especializadas. Você deve inserir dois DOIs dos últimos 2 anos OU três DOIs de qualquer data</message>
     <message key="plugins.generic.authorDOIScreening.submission.first">Primeiro DOI</message>

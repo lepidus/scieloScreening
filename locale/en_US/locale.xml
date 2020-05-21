@@ -12,11 +12,14 @@
     <message key="plugins.generic.authorDOIScreening.required.publishedBefore">You need to insert DOIs from previous articles of your own authorship published in peer reviewed journals</message>
     <message key="plugins.generic.authorDOIScreening.required.affiliationForAll">All submission contributors must have their affiliation filled</message>
     <message key="plugins.generic.authorDOIScreening.required.orcidLeastOne">At least one contributor must have their ORCID confirmed. Please, check your e-mail</message>
+    <message key="plugins.generic.authorDOIScreening.required.numberAuthors">The number of inserted authors is not the same as that informed</message>
 
     <message key="plugins.generic.authorDOIScreening.step4.warning">The following verification steps have not been performed. You have the option to go back and do them.</message>
     <message key="plugins.generic.authorDOIScreening.step4.affiliation">You have not filled in the affiliation for all contributors.</message>
     <message key="plugins.generic.authorDOIScreening.step4.dois">You did not perform the screening of your previous publications.</message>
 
+    <message key="plugins.generic.authorDOIScreening.submission.contributors">Contributors</message>
+    <message key="plugins.generic.authorDOIScreening.submission.numberAuthors">Please, enter the total number of authors of this publication:</message>
     <message key="plugins.generic.authorDOIScreening.submission.warningAffiliation">Please make sure that all contributors have their affiliations filled. This is necessary for the approval of your submission.</message>
     <message key="plugins.generic.authorDOIScreening.submission.description">Please insert DOIs from previous articles of your own authorship published in peer reviewed journals. You must enter two DOIs from the past 2 years OR three DOIs from any date</message>
     <message key="plugins.generic.authorDOIScreening.submission.first">First DOI</message>

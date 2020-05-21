@@ -65,4 +65,17 @@ class DOIGridHandler extends GridHandler {
             return json_encode(array('status' => 'fracasso'));
         }
     }
+
+    function checkNumberAuthors($args, $request){
+        $submission = DAORegistry::getDAO('SubmissionDAO')->getById($args['submissionId']);
+        $numberAuthors = $args['numberAuthors'];
+        $authors = $submission->getAuthors();
+
+        if($numberAuthors == count($authors)){
+            return json_encode(array('status' => 'sucesso'));
+        }
+        else{
+            return json_encode(array('status' => 'fracasso'));
+        }
+    }
 }
