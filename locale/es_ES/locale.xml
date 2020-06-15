@@ -26,11 +26,10 @@
     <message key="plugins.generic.authorDOIScreening.submission.second">Segundo DOI</message>
     <message key="plugins.generic.authorDOIScreening.submission.third">Tercero DOI</message>
 
-    <message key="plugins.generic.authorDOIScreening.doiValidRequirement">Por favor, ingrese un DOI válido</message>
     <message key="plugins.generic.authorDOIScreening.doiDifferentRequirement">Los DOI no pueden ser lo mismo</message>
     <message key="plugins.generic.authorDOIScreening.attentionRules">Por favor, respete las reglas establecidas anteriormente</message>
     <message key="plugins.generic.authorDOIScreening.doiCrossrefRequirement">Sólo se aceptan DOIs de la Crossref</message>
-    <message key="plugins.generic.authorDOIScreening.doiFromAuthor">Por favor, ingrese un DOI que sea suyo</message>
+    <message key="plugins.generic.authorDOIScreening.doiFromAuthor">Por favor, ingrese un DOI que sea suyo. También asegúrese de que su nombre en el sistema sea similar a su nombre en el artículo</message>
     <message key="plugins.generic.authorDOIScreening.doiFromJournal">Por favor, ingrese un DOI de una publicación en una revista</message>
     <message key="plugins.generic.authorDOIScreening.successfulScreening">¡Operación realizada con éxito!</message>
 
