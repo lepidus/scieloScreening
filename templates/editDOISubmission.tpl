@@ -19,8 +19,7 @@
 </script>
 
 {if $roleId == ROLE_ID_AUTHOR}
-{capture assign=checkOrcidUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.authorDOIScreening.controllers.grid.DOIGridHandler" op="checkOrcid" escape=false}{/capture}
-{capture assign=checkNumberAuthorsUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.authorDOIScreening.controllers.grid.DOIGridHandler" op="checkNumberAuthors" escape=false}{/capture}
+{capture assign=checkAuthorsUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.authorDOIScreening.controllers.grid.DOIGridHandler" op="checkAuthors" escape=false}{/capture}
 
 <script>
     var formulario = document.getElementById("submitStep3Form");
@@ -53,8 +52,7 @@
 {if count($dois) == 0}
 <script>
     var screeningChecked = false;
-    var statusOrcid = false;
-    var statusNumberAuthors = false;
+    var postResponse;
 
     $(function(){ldelim}
         $("#openDOIModal").click(function(){ldelim}
@@ -79,35 +77,27 @@
         $(".pkp_button.submitFormButton").removeAttr("type").attr("type", "button");
         $(".pkp_button.submitFormButton").click(async function(){ldelim}
             await $.post(
-                "{$checkNumberAuthorsUrl}",
+                "{$checkAuthorsUrl}",
                 {ldelim}
                     submissionId: {$submissionId},
                     numberAuthors: $('#inputNumberAuthors').val()
                 {rdelim},
                 function (resultado){ldelim}
                     resultado = JSON.parse(resultado);
-                    (resultado['status'] == "sucesso") ? (statusNumberAuthors = true) : (statusNumberAuthors = false);
+                    postResponse = resultado;
                 {rdelim}
             );
 
-            if(!statusNumberAuthors){ldelim}
+            if(postResponse['statusNumberAuthors'] == 'error'){ldelim}
                 alert("{translate key="plugins.generic.authorDOIScreening.required.numberAuthors"}");
                 return;
             {rdelim}
 
-            
-            await $.post(
-                "{$checkOrcidUrl}",
-                {ldelim}
-                    submissionId: {$submissionId}
-                {rdelim},
-                function (resultado){ldelim}
-                    resultado = JSON.parse(resultado);
-                    (resultado['status'] == "sucesso") ? (statusOrcid = true) : (statusOrcid = false);
-                {rdelim}
-            );
+            if(postResponse['statusUppercase'] == 'error'){ldelim}
+                alert("{translate key="plugins.generic.authorDOIScreening.required.nameUppercase"}");
+            {rdelim}
 
-            if(!statusOrcid){ldelim}
+            if(postResponse['statusOrcid'] == 'error'){ldelim}
                 alert("{translate key="plugins.generic.authorDOIScreening.required.orcidLeastOne"}");
                 return;
             {rdelim}

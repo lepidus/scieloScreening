@@ -46,36 +46,34 @@ class DOIGridHandler extends GridHandler {
         
         return http_response_code(200);
     }
-
-    function checkOrcid($args, $request){
+    
+    function checkAuthors($args, $request){
         $submission = DAORegistry::getDAO('SubmissionDAO')->getById($args['submissionId']);
-        $orcidOne = false;
         $authors = $submission->getAuthors();
+        $numberAuthors = $args['numberAuthors'];
+        $response = array();
+        
+        $response['statusNumberAuthors'] = ($numberAuthors != count($authors)) ? ("error") : ("success");
+        
+        $uppercaseOne = false;
+        foreach($authors as $author){
+            $authorName = $author->getLocalizedGivenName() . $author->getLocalizedFamilyName();
+            if(ctype_upper($authorName)){
+                $uppercaseOne = true;
+            }
+        }
 
+        $response['statusUppercase'] = ($uppercaseOne) ? ("error") : ("success");
+
+        $orcidOne = false;
         foreach ($authors as $author){
             if($author->getOrcid() != ''){
                 $orcidOne = true;
             }
         }
         
-        if($orcidOne){
-            return json_encode(array('status' => 'sucesso'));
-        }
-        else {
-            return json_encode(array('status' => 'fracasso'));
-        }
-    }
+        $response['statusOrcid'] = ($orcidOne) ? ('success') : ("error");
 
-    function checkNumberAuthors($args, $request){
-        $submission = DAORegistry::getDAO('SubmissionDAO')->getById($args['submissionId']);
-        $numberAuthors = $args['numberAuthors'];
-        $authors = $submission->getAuthors();
-
-        if($numberAuthors == count($authors)){
-            return json_encode(array('status' => 'sucesso'));
-        }
-        else{
-            return json_encode(array('status' => 'fracasso'));
-        }
+        return json_encode($response);
     }
 }

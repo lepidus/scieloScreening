@@ -13,6 +13,7 @@
     <message key="plugins.generic.authorDOIScreening.required.affiliationForAll">Todos los contribuyentes de envío deben tener su afiliación lleno</message>
     <message key="plugins.generic.authorDOIScreening.required.orcidLeastOne">Al menos un contribuyente debe tener su ORCID confirmado. Por favor, revise su correo electrónico</message>
     <message key="plugins.generic.authorDOIScreening.required.numberAuthors">El número de autores insertados no es el mismo que el informado.</message>
+    <message key="plugins.generic.authorDOIScreening.required.nameUppercase">Algunos autores tienen su nombre en mayúsculas. Le pedimos que los corrija.</message>
 
     <message key="plugins.generic.authorDOIScreening.step4.warning">No se han realizado los siguientes pasos de verificación. Tienes la opción de volver y hacerlos.</message>
     <message key="plugins.generic.authorDOIScreening.step4.affiliation">No ha completado la afiliación para todos los contribuyentes.</message>
