@@ -47,6 +47,14 @@ class DOIGridHandler extends GridHandler {
         return http_response_code(200);
     }
     
+    function isUppercase($string){
+        foreach($string as $letter){
+            if(!preg_match('~^\p{Lu}~u', $letter))
+                return false;
+        }
+        return true;
+    }
+
     function checkAuthors($args, $request){
         $submission = DAORegistry::getDAO('SubmissionDAO')->getById($args['submissionId']);
         $authors = $submission->getAuthors();
@@ -58,7 +66,7 @@ class DOIGridHandler extends GridHandler {
         $uppercaseOne = false;
         foreach($authors as $author){
             $authorName = $author->getLocalizedGivenName() . $author->getLocalizedFamilyName();
-            if(ctype_upper($authorName)){
+            if($this->isUppercase($authorName)){
                 $uppercaseOne = true;
             }
         }
