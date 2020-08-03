@@ -34,8 +34,7 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 
 			HookRegistry::register('LoadComponentHandler', array($this, 'setupGridHandler'));
             HookRegistry::register('authorform::Constructor', array($this, 'changeAuthorForm'));
-            HookRegistry::register('submissionsubmitstep4form::Constructor', array($this, 'templateStep4'));
-            HookRegistry::register('submissionsubmitstep4form::display', array($this, 'dataStep4'));
+            HookRegistry::register('submissionsubmitstep4form::display', array($this, 'addToStep4'));
 		}
 		return $success;
 	}
@@ -56,27 +55,33 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
         $params[0]->setTemplate($path);
         $params[1] = $path;
     }
-    
-    function templateStep4($hookName, $params){
-        $path = "../../../plugins/generic/authorDOIScreening/templates/step4.tpl";
 
-        $params[0]->setTemplate($path);
-        $params[1] = $path;
+    function addToStep4($hookName, $params){
+        $output =& $params[1];
+        $submission = $params[0]->submission;
+        $templateMgr = TemplateManager::getManager(null);
+        $outputWasEmpty = false;
+
+        if($output == "") {
+            $outputWasEmpty = true;
+            $output = $templateMgr->fetch($params[0]->getTemplate());
+        }
+
+        $dataScreening = $this->getScreeningDataSubmission($submission);
+        $templateMgr->assign($dataScreening);
+        $statusScreening = $templateMgr->fetch($this->getTemplateResource('statusScreeningStep4.tpl'));
+
+        $this->insertTemplateIntoStep4($statusScreening, $output);
+        if(!$outputWasEmpty) return true;
     }
 
-    function dataStep4($hookName, $params){
-        $submission = $params[0]->submission;
-
-        /* DOI*/
+    private function getScreeningDataSubmission($submission){
+        $dataScreening = array();
+        
         $doiScreeningDAO = new DOIScreeningDAO();
         $dois = $doiScreeningDAO->getBySubmissionId($submission->getId());
+        $dataScreening['doiNotDone'] = (count($dois) == 0);
 
-        if(count($dois) == 0)
-            $params[0]->setData("doiNotDone", true);
-        else
-            $params[0]->setData("doiNotDone", false);
-
-        /* Afiliação */
         $authors = $submission->getAuthors();
         $authorWithoutAffiliation = false;
 
@@ -87,7 +92,16 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
             }
         }
         
-        $params[0]->setData("authorWithoutAffiliation", $authorWithoutAffiliation);
+        $dataScreening['authorWithoutAffiliation'] = $authorWithoutAffiliation;
+
+        return $dataScreening;
+    }
+
+    private function insertTemplateIntoStep4($template, &$step4) {
+        $posInsert = strpos($step4, "<p>");
+        $newStep4 = substr_replace($step4, $template, $posInsert, 0);
+
+        $step4 = $newStep4;
     }
 
     public function getDisplayName() {
