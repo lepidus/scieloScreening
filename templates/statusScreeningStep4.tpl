@@ -1,4 +1,4 @@
-{if $doiNotDone || $authorWithoutAffiliation}
+{if $errorsScreening}
     <div id="statusScreeningStep4">
         <div>
             <strong>{translate key="common.warning"}:</strong> {translate key="plugins.generic.authorDOIScreening.step4.warning"}
@@ -9,6 +9,9 @@
             {/if}
             {if $authorWithoutAffiliation}
                 <li>{translate key="plugins.generic.authorDOIScreening.step4.affiliation"}</li>
+            {/if}
+            {if $metadataNotEnglish}
+                <li>{translate key="plugins.generic.authorDOIScreening.step4.metadataNotEnglish"} {$textMetadata}</li>
             {/if}
         </ul>
     </div>

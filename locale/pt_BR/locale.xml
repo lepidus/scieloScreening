@@ -18,6 +18,7 @@
     <message key="plugins.generic.authorDOIScreening.step4.warning">As seguintes etapas de verificação não foram realizadas. Você tem a opção de voltar e fazê-las.</message>
     <message key="plugins.generic.authorDOIScreening.step4.affiliation">Você não preencheu a afiliação de todos os contribuidores.</message>
     <message key="plugins.generic.authorDOIScreening.step4.dois">Você não realizou a verificação das suas publicações prévias.</message>
+    <message key="plugins.generic.authorDOIScreening.step4.metadataNotEnglish">Os seguintes metadados precisam ser preenchidos em Inglês:</message>
 
     <message key="plugins.generic.authorDOIScreening.submission.contributors">Coautores</message>
     <message key="plugins.generic.authorDOIScreening.submission.numberAuthors">Por favor, insira o número total de autores dessa publicação:</message>

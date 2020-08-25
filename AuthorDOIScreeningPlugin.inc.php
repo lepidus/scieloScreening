@@ -77,22 +77,36 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 
     private function getScreeningDataSubmission($submission){
         $dataScreening = array();
+        $publication = $submission->getCurrentPublication();
         
         $doiScreeningDAO = new DOIScreeningDAO();
         $dois = $doiScreeningDAO->getBySubmissionId($submission->getId());
-        $dataScreening['doiNotDone'] = (count($dois) == 0);
+        if(count($dois) == 0) {
+            $dataScreening['doiNotDone'] = true;
+            $dataScreening['errorsScreening'] = true;
+        }
 
         $authors = $submission->getAuthors();
-        $authorWithoutAffiliation = false;
-
         foreach ($authors as $author) {   
             if($author->getLocalizedAffiliation() == ""){
-                $authorWithoutAffiliation = true;
+                $dataScreening['authorWithoutAffiliation'] = true;
+                $dataScreening['errorsScreening'] = true;
                 break;
             }
         }
-        
-        $dataScreening['authorWithoutAffiliation'] = $authorWithoutAffiliation;
+
+        $metadataList = array('title', 'abstract', 'keywords');
+        $textMetadata = "";
+        foreach ($metadataList as $metadata) {
+            if($publication->getData($metadata, 'en_US') == "") {
+                $dataScreening['metadataNotEnglish'] = true;
+                $dataScreening['errorsScreening'] = true;
+
+                if($textMetadata != "") $textMetadata .= ", ";
+                $textMetadata .= __("common." . $metadata);
+            }
+        }
+        $dataScreening['textMetadata'] = $textMetadata;
 
         return $dataScreening;
     }

@@ -18,6 +18,7 @@
     <message key="plugins.generic.authorDOIScreening.step4.warning">No se han realizado los siguientes pasos de verificación. Tienes la opción de volver y hacerlos.</message>
     <message key="plugins.generic.authorDOIScreening.step4.affiliation">No ha completado la afiliación para todos los contribuyentes.</message>
     <message key="plugins.generic.authorDOIScreening.step4.dois">No ha realizado la verificación de sus publicaciones anteriores.</message>
+    <message key="plugins.generic.authorDOIScreening.step4.metadataNotEnglish">Los seguintes metadatos deben completarse en inglés:</message>
 
     <message key="plugins.generic.authorDOIScreening.submission.contributors">Colaboradores/as</message>
     <message key="plugins.generic.authorDOIScreening.submission.numberAuthors">Ingrese el número total de autores para esa publicación:</message>

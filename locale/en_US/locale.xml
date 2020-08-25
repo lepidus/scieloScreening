@@ -18,6 +18,7 @@
     <message key="plugins.generic.authorDOIScreening.step4.warning">The following verification steps have not been performed. You have the option to go back and do them.</message>
     <message key="plugins.generic.authorDOIScreening.step4.affiliation">You have not filled in the affiliation for all contributors.</message>
     <message key="plugins.generic.authorDOIScreening.step4.dois">You did not perform the screening of your previous publications.</message>
+    <message key="plugins.generic.authorDOIScreening.step4.metadataNotEnglish">The following metadata must be filled in English:</message>
 
     <message key="plugins.generic.authorDOIScreening.submission.contributors">Contributors</message>
     <message key="plugins.generic.authorDOIScreening.submission.numberAuthors">Please, enter the total number of authors of this publication:</message>
