@@ -107,6 +107,23 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
             }
         }
         $dataScreening['textMetadata'] = $textMetadata;
+        
+        $hasPDFs = false;
+        if(count($submission->getGalleys()) == 0) {
+            $hasPDFs = false;
+        }
+        else {
+            foreach ($submission->getGalleys() as $galley) {
+                if(strtolower($galley->getLabel()) == 'pdf'){
+                    $hasPDFs = true;
+                    break;
+                }
+            }
+        }
+        if(!$hasPDFs) {
+            $dataScreening['noPDFs'] = true;
+            $dataScreening['errorsScreening'] = true;
+        }
 
         return $dataScreening;
     }

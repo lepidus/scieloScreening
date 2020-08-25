@@ -13,6 +13,9 @@
             {if $metadataNotEnglish}
                 <li>{translate key="plugins.generic.authorDOIScreening.step4.metadataNotEnglish"} {$textMetadata}</li>
             {/if}
+            {if $noPDFs}
+                <li>{translate key="plugins.generic.authorDOIScreening.step4.noPDFs"}</li>
+            {/if}
         </ul>
     </div>
 {/if}
