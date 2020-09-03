@@ -47,6 +47,8 @@
     <message key="plugins.generic.authorDOIScreening.info.description">Vea el estado de cada una de las comprobaciones a continuación:</message>
     <message key="plugins.generic.authorDOIScreening.info.doiOkay">La verificación de los DOI se realizó correctamente. Vea cada DOI ingresado a continuación:</message>
     <message key="plugins.generic.authorDOIScreening.info.doiNotOkay">¡La verificación de los DOI no se ha llevado a cabo!</message>
+    <message key="plugins.generic.authorDOIScreening.info.metadataEnglishOkay">Todos los metadatos se completaron en inglés</message>
+    <message key="plugins.generic.authorDOIScreening.info.metadataEnglishNotOkay">Los seguintes metadatos no se completaron en inglés:</message>
     <message key="plugins.generic.authorDOIScreening.info.affiliationOkay">Todos los autores completaron su afiliación</message>
     <message key="plugins.generic.authorDOIScreening.info.affiliationNotOkay">Los siguientes autores no completaron sus afiliaciones:</message>
     <message key="plugins.generic.authorDOIScreening.info.orcidOkay">Se confirma el estado ORCID</message>

@@ -171,21 +171,15 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 		$smarty =& $params[1];
 		$output =& $params[2];
         $submission = $smarty->get_template_vars('submission');
+        $publication = $submission->getCurrentPublication();
         $passData = array();
 
         /* DOI*/
         $doiScreeningDAO = new DOIScreeningDAO();
         $dois = $doiScreeningDAO->getBySubmissionId($submission->getId());
 
-        if(count($dois) > 0){
-            $passData['flagDOI'] = true;
-            $passData['msgDOI'] = __('plugins.generic.authorDOIScreening.info.doiOkay');
-            $passData['dois'] = $dois;
-        }
-        else {
-            $passData['flagDOI'] = false;
-            $passData['msgDOI'] = __('plugins.generic.authorDOIScreening.info.doiNotOkay');
-        }
+        $passData['flagDOI'] = (count($dois) > 0);
+        $passData['dois'] = $dois;
 
         /* Afiliação e ORCID */
         $authors = $submission->getAuthors();
@@ -204,25 +198,25 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
             }
         }
 
-        if($flagAf){
-            $passData['flagAf'] = true;
-            $passData['msgAf'] = __('plugins.generic.authorDOIScreening.info.affiliationOkay');
-        }
-        else {
-            $passData['flagAf'] = false;
-            $passData['msgAf'] = __('plugins.generic.authorDOIScreening.info.affiliationNotOkay');
-            $passData['listAuthors'] = $listAuthors;
-        }
+        $passData['flagAf'] = $flagAf;
+        $passData['listAuthors'] = $listAuthors;
+        $passData['flagOrcid'] = $flagOrcid;
         
-        if($flagOrcid){
-            $passData['flagOrcid'] = true;
-            $passData['msgOrcid'] = __('plugins.generic.authorDOIScreening.info.orcidOkay');
+        /* Metadados em inglês */
+        $metadataList = array('title', 'abstract', 'keywords');
+        $flagMetadataEnglish = true;
+        $textMetadata = "";
+        foreach ($metadataList as $metadata) {
+            if($publication->getData($metadata, 'en_US') == "") {
+                $flagMetadataEnglish = false;
+
+                if($textMetadata != "") $textMetadata .= ", ";
+                $textMetadata .= __("common." . $metadata);
+            }
         }
-        else{
-            $passData['flagOrcid'] = false;
-            $passData['msgOrcid'] = __('plugins.generic.authorDOIScreening.info.orcidNotOkay');
-        }
-        
+        $passData['flagMetadataEnglish'] = $flagMetadataEnglish;
+        $passData['textMetadata'] = $textMetadata;
+
 		$smarty->assign($passData);
 		$output .= sprintf(
 			'<tab id="screeningInfo" label="%s">%s</tab>',

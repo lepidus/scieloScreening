@@ -16,7 +16,7 @@
             {if $flagDOI == true}
                 <div id="doiHeader">
                     <div class="statusOkay"></div>
-                    <span id="doiMessage">{$msgDOI}</span>
+                    <span id="doiMessage">{translate key="plugins.generic.authorDOIScreening.info.doiOkay"}</span>
                 </div>
                 <div id="doiBody">
                     <ul>
@@ -30,7 +30,20 @@
             {else}
                 <div id="doiHeader" class="headerWithoutBody">
                     <div class="statusNotOkay"></div>
-                    <span id="doiMessage">{$msgDOI}</span>
+                    <span id="doiMessage">{translate key="plugins.generic.authorDOIScreening.info.doiNotOkay"}</span>
+                </div>
+            {/if}
+        </div>
+        <div id="metadataEnglishInfoField">
+            {if $flagMetadataEnglish == true}
+                <div id="metadataEnglishHeader" class="headerWithoutBody">
+                    <div class="statusOkay"></div>
+                    <span id="metadataEnglishMessage">{translate key="plugins.generic.authorDOIScreening.info.metadataEnglishOkay"}</span>
+                </div>
+            {else}
+                <div id="metadataEnglishHeader" class="headerWithoutBody">
+                    <div class="statusNotOkay"></div>
+                    <span id="metadataEnglishMessage">{translate key="plugins.generic.authorDOIScreening.info.metadataEnglishNotOkay"} {$textMetadata}</span>
                 </div>
             {/if}
         </div>
@@ -38,12 +51,12 @@
             {if $flagAf == true}
                 <div id="affiliationHeader" class="headerWithoutBody">
                     <div class="statusOkay"></div>
-                    <span id="affiliationMessage">{$msgAf}</span>
+                    <span id="affiliationMessage">{translate key="plugins.generic.authorDOIScreening.info.affiliationOkay"}</span>
                 </div>
             {else}
                 <div id="affiliationHeader">
                     <div class="statusNotOkay"></div>
-                    <span id="affiliationMessage">{$msgAf}</span>
+                    <span id="affiliationMessage">{translate key="plugins.generic.authorDOIScreening.info.affiliationNotOkay"}</span>
                 </div>
                 <div id="affiliationBody">
                     <ul>
@@ -60,12 +73,12 @@
             {if $flagOrcid == true}
                 <div id="orcidHeader" class="headerWithoutBody">
                     <div class="statusOkay"></div>
-                    <span id="orcidMessage">{$msgOrcid}</span>
+                    <span id="orcidMessage">{translate key="plugins.generic.authorDOIScreening.info.orcidOkay"}</span>
                 </div>
             {else}
                 <div id="orcidHeader" class="headerWithoutBody">
                     <div class="statusNotOkay"></div>
-                    <span id="orcidMessage">{$msgOrcid}</span>
+                    <span id="orcidMessage">{translate key="plugins.generic.authorDOIScreening.info.orcidNotOkay"}</span>
                 </div>
             {/if}
         </div>

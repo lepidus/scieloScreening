@@ -18,7 +18,7 @@
     <message key="plugins.generic.authorDOIScreening.step4.warning">The following verification steps have not been performed. You have the option to go back and do them.</message>
     <message key="plugins.generic.authorDOIScreening.step4.affiliation">You have not filled in the affiliation for all contributors.</message>
     <message key="plugins.generic.authorDOIScreening.step4.dois">You did not perform the screening of your previous publications.</message>
-    <message key="plugins.generic.authorDOIScreening.step4.metadataNotEnglish">The following metadata must be filled in English:</message>
+    <message key="plugins.generic.authorDOIScreening.step4.metadataNotEnglish">The following metadata must be filled in english:</message>
     <message key="plugins.generic.authorDOIScreening.step4.noPDFs">You have not added any PDF document to this submission</message>
 
     <message key="plugins.generic.authorDOIScreening.submission.contributors">Contributors</message>
@@ -47,6 +47,8 @@
     <message key="plugins.generic.authorDOIScreening.info.description">See the status of each screening step below:</message>
     <message key="plugins.generic.authorDOIScreening.info.doiOkay">The DOI screening was done correctly. See each DOI inserted below:</message>
     <message key="plugins.generic.authorDOIScreening.info.doiNotOkay">The DOI screening was not done!</message>
+    <message key="plugins.generic.authorDOIScreening.info.metadataEnglishOkay">All metadata was filled in english</message>
+    <message key="plugins.generic.authorDOIScreening.info.metadataEnglishNotOkay">The following metadata was not filled in english:</message>
     <message key="plugins.generic.authorDOIScreening.info.affiliationOkay">All authors had their affiliation filled</message>
     <message key="plugins.generic.authorDOIScreening.info.affiliationNotOkay">The authors below have not filled out their affiliations:</message>
     <message key="plugins.generic.authorDOIScreening.info.orcidOkay">ORCID status is confirmed</message>
