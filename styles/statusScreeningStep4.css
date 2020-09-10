@@ -1,0 +1,32 @@
+#screeningStep4Header {
+    margin-top: 0px;
+    margin-bottom: 18px;
+}
+
+#screeningStep4Header h3 {
+    font-size: 16px;
+    line-height: 24px;
+    margin: 0px 0px;
+}
+
+.warningField {
+    display: flex;
+    align-items: center;
+    background-color: #DCDCDC;
+    padding: 8px;
+    border-radius: 10px;
+    margin-bottom: 18px;
+}
+
+.statusNotOkay {
+    width: 24px;
+    height: 24px;
+    background-color: #d00a6c;
+    border-radius: 12px;
+}
+
+.warningField span {
+    line-height: 24px;
+    font-size: 16px;
+    margin-left: 0.5em;
+}

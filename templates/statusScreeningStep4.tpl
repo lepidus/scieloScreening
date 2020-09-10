@@ -1,21 +1,35 @@
 {if $errorsScreening}
+    <link rel="stylesheet" type="text/css" href="/plugins/generic/authorDOIScreening/styles/statusScreeningStep4.css">
+
     <div id="statusScreeningStep4">
-        <div>
-            <strong>{translate key="common.warning"}:</strong> {translate key="plugins.generic.authorDOIScreening.step4.warning"}
+        <div id="screeningStep4Header">
+            <h3>{translate key="plugins.generic.authorDOIScreening.step4.warning"}</h3>
         </div>
-        <ul>
+        <div class="screeningStep4Body">
             {if $doiNotDone}
-                <li>{translate key="plugins.generic.authorDOIScreening.step4.dois"}</li>
+                <div class="warningField">
+                    <div class="statusNotOkay"></div>
+                    <span>{translate key="plugins.generic.authorDOIScreening.step4.dois"}</span>
+                </div>
             {/if}
             {if $authorWithoutAffiliation}
-                <li>{translate key="plugins.generic.authorDOIScreening.step4.affiliation"}</li>
+                <div class="warningField">
+                    <div class="statusNotOkay"></div>
+                    <span>{translate key="plugins.generic.authorDOIScreening.step4.affiliation"}</span>
+                </div>
             {/if}
             {if $metadataNotEnglish}
-                <li>{translate key="plugins.generic.authorDOIScreening.step4.metadataNotEnglish"} {$textMetadata}</li>
+                <div class="warningField">
+                    <div class="statusNotOkay"></div>
+                    <span>{translate key="plugins.generic.authorDOIScreening.step4.metadataNotEnglish"} {$textMetadata}</span>
+                </div>
             {/if}
             {if $noPDFs}
-                <li>{translate key="plugins.generic.authorDOIScreening.step4.noPDFs"}</li>
+                <div class="warningField">
+                    <div class="statusNotOkay"></div>
+                    <span>{translate key="plugins.generic.authorDOIScreening.step4.noPDFs"}</span>
+                </div>
             {/if}
-        </ul>
+        </div>
     </div>
 {/if}
