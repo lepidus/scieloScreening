@@ -54,7 +54,6 @@ class DOIGridHandler extends GridHandler {
 
     function checkAuthors($args, $request){
         $submission = DAORegistry::getDAO('SubmissionDAO')->getById($args['submissionId']);
-        error_log(print_r($submission, true));
         $authors = $submission->getAuthors();
         $numberAuthors = $args['numberAuthors'];
         $response = array();
