@@ -30,3 +30,17 @@
     font-size: 16px;
     margin-left: 0.5em;
 }
+
+#manyPDFHeader {
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    margin-bottom: 0px;
+}
+
+#manyPDFBody {
+    background-color: #f5f5f5;
+    padding: 8px;
+
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}

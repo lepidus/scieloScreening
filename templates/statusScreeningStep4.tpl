@@ -24,10 +24,22 @@
                     <span>{translate key="plugins.generic.authorDOIScreening.step4.metadataNotEnglish"} {$textMetadata}</span>
                 </div>
             {/if}
-            {if $noPDFs}
+            {if $numPDFs == 0}
                 <div class="warningField">
                     <div class="statusNotOkay"></div>
                     <span>{translate key="plugins.generic.authorDOIScreening.step4.noPDFs"}</span>
+                </div>
+            {elseif $numPDFs > 1}
+                <div id="manyPDFHeader" class="warningField">
+                    <div class="statusNotOkay"></div>
+                    <span>{translate key="plugins.generic.authorDOIScreening.step4.manyPDFs.header"}</span>
+                </div>
+                <div id="manyPDFBody">
+                    <ul>
+                        <li>{translate key="plugins.generic.authorDOIScreening.step4.manyPDFs.one"}</li>
+                        <li>{translate key="plugins.generic.authorDOIScreening.step4.manyPDFs.two"}</li>
+                        <li>{translate key="plugins.generic.authorDOIScreening.step4.manyPDFs.three"}</li>
+                    </ul>
                 </div>
             {/if}
         </div>
