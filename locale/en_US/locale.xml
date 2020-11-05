@@ -20,6 +20,10 @@
     <message key="plugins.generic.authorDOIScreening.step4.dois">You did not perform the screening of your previous publications.</message>
     <message key="plugins.generic.authorDOIScreening.step4.metadataNotEnglish">The following metadata must be filled in english:</message>
     <message key="plugins.generic.authorDOIScreening.step4.noPDFs">You have not added any PDF document to this submission</message>
+    <message key="plugins.generic.authorDOIScreening.step4.manyPDFs.header">Please send a single PDF file</message>
+    <message key="plugins.generic.authorDOIScreening.step4.manyPDFs.one">If you are sending files associated with the manuscript, please include them in the same PDF as the manuscript</message>
+    <message key="plugins.generic.authorDOIScreening.step4.manyPDFs.two">If you are sending a new version of the manuscript, make sure to delete the current PDF file before uploading a new one</message>
+    <message key="plugins.generic.authorDOIScreening.step4.manyPDFs.three">If this is a translated version of the manuscript, a new submission will be necessary, with a different ID</message>
 
     <message key="plugins.generic.authorDOIScreening.submission.contributors">Contributors</message>
     <message key="plugins.generic.authorDOIScreening.submission.numberAuthors">Please, enter the total number of authors of this publication:</message>

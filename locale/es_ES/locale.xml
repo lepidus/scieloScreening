@@ -20,6 +20,10 @@
     <message key="plugins.generic.authorDOIScreening.step4.dois">No ha realizado la verificación de sus publicaciones anteriores.</message>
     <message key="plugins.generic.authorDOIScreening.step4.metadataNotEnglish">Los seguintes metadatos deben completarse en inglés:</message>
     <message key="plugins.generic.authorDOIScreening.step4.noPDFs">No ha agregado ningún documento PDF a este envío</message>
+    <message key="plugins.generic.authorDOIScreening.step4.manyPDFs.header">Por favor, envíe un único archivo PDF</message>
+    <message key="plugins.generic.authorDOIScreening.step4.manyPDFs.one">Si envía archivos adyacentes al manuscrito, por favor inclúyalos en lo mismo archivo PDF con el manuscrito principal</message>
+    <message key="plugins.generic.authorDOIScreening.step4.manyPDFs.two">Si está enviando una versión corregida del manuscrito, asegúrese de borrar el archivo PDF actual antes de enviar uno nuevo</message>
+    <message key="plugins.generic.authorDOIScreening.step4.manyPDFs.three">Si se trata de la versión traducida del manuscrito, se requerirá un nuevo envío, con un ID diferente</message>
 
     <message key="plugins.generic.authorDOIScreening.submission.contributors">Colaboradores/as</message>
     <message key="plugins.generic.authorDOIScreening.submission.numberAuthors">Ingrese el número total de autores para esa publicación:</message>
