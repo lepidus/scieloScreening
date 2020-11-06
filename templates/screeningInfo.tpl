@@ -13,7 +13,7 @@
     </div>
     <div id="screeningInfoFields">
         <div id="doiInfoField">
-            {if $flagDOI == true}
+            {if $statusDOI == true}
                 <div id="doiHeader">
                     <div class="statusOkay"></div>
                     <span id="doiMessage">{translate key="plugins.generic.authorDOIScreening.info.doiOkay"}</span>
@@ -35,7 +35,7 @@
             {/if}
         </div>
         <div id="metadataEnglishInfoField">
-            {if $flagMetadataEnglish == true}
+            {if $statusMetadataEnglish == true}
                 <div id="metadataEnglishHeader" class="headerWithoutBody">
                     <div class="statusOkay"></div>
                     <span id="metadataEnglishMessage">{translate key="plugins.generic.authorDOIScreening.info.metadataEnglishOkay"}</span>
@@ -48,7 +48,7 @@
             {/if}
         </div>
         <div id="affiliationInfoField">
-            {if $flagAf == true}
+            {if $statusAffiliation == true}
                 <div id="affiliationHeader" class="headerWithoutBody">
                     <div class="statusOkay"></div>
                     <span id="affiliationMessage">{translate key="plugins.generic.authorDOIScreening.info.affiliationOkay"}</span>
@@ -70,7 +70,7 @@
             {/if}
         </div>
         <div id="orcidInfoField">
-            {if $flagOrcid == true}
+            {if $statusOrcid == true}
                 <div id="orcidHeader" class="headerWithoutBody">
                     <div class="statusOkay"></div>
                     <span id="orcidMessage">{translate key="plugins.generic.authorDOIScreening.info.orcidOkay"}</span>

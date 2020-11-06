@@ -67,7 +67,7 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
             $output = $templateMgr->fetch($params[0]->getTemplate());
         }
 
-        $dataScreening = $this->getScreeningDataSubmission($submission);
+        $dataScreening = $this->getScreeningData($submission);
         $templateMgr->assign($dataScreening);
         $statusScreening = $templateMgr->fetch($this->getTemplateResource('statusScreeningStep4.tpl'));
 
@@ -75,37 +75,44 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
         if(!$outputWasEmpty) return true;
     }
 
-    private function getScreeningDataSubmission($submission){
+    private function getScreeningData($submission){
         $dataScreening = array();
         $publication = $submission->getCurrentPublication();
         
         $doiScreeningDAO = new DOIScreeningDAO();
         $dois = $doiScreeningDAO->getBySubmissionId($submission->getId());
-        if(count($dois) == 0) {
-            $dataScreening['doiNotDone'] = true;
-            $dataScreening['errorsScreening'] = true;
-        }
+        $dataScreening['statusDOI'] = (count($dois) > 0);
+        $dataScreening['dois'] = $dois;
 
         $authors = $submission->getAuthors();
+        $statusAf = true;
+        $statusOrcid = false;
+        $listAuthors = array();
         foreach ($authors as $author) {   
             if($author->getLocalizedAffiliation() == ""){
-                $dataScreening['authorWithoutAffiliation'] = true;
-                $dataScreening['errorsScreening'] = true;
-                break;
+                $statusAf = false;
+                $listAuthors[] = $author->getLocalizedGivenName() . " " . $author->getLocalizedFamilyName();
+            }
+            if($author->getOrcid() != ''){
+                $statusOrcid = true;
             }
         }
+        $dataScreening['statusAffiliation'] = $statusAf;
+        $dataScreening['statusOrcid'] = $statusOrcid;
+        $dataScreening['listAuthors'] = $listAuthors;
 
         $metadataList = array('title', 'abstract', 'keywords');
+        $statusMetadataEnglish = true;
         $textMetadata = "";
         foreach ($metadataList as $metadata) {
             if($publication->getData($metadata, 'en_US') == "") {
-                $dataScreening['metadataNotEnglish'] = true;
-                $dataScreening['errorsScreening'] = true;
+                $statusMetadataEnglish = false;
 
                 if($textMetadata != "") $textMetadata .= ", ";
                 $textMetadata .= __("common." . $metadata);
             }
         }
+        $dataScreening['statusMetadataEnglish'] = $statusMetadataEnglish;
         $dataScreening['textMetadata'] = $textMetadata;
         
         $numPDFs = 0;
@@ -118,7 +125,7 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
         }
 
         $dataScreening['numPDFs'] = $numPDFs;
-        if($numPDFs == 0 || $numPDFs > 1) {
+        if((count($dois) == 0) || !$statusAf || !$statusOrcid || !$statusMetadataEnglish || $numPDFs == 0 || $numPDFs > 1) {
             $dataScreening['errorsScreening'] = true;
         }
 
@@ -168,53 +175,9 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 		$smarty =& $params[1];
 		$output =& $params[2];
         $submission = $smarty->get_template_vars('submission');
-        $publication = $submission->getCurrentPublication();
-        $passData = array();
+        $dataScreening = $this->getScreeningData($submission);
 
-        /* DOI*/
-        $doiScreeningDAO = new DOIScreeningDAO();
-        $dois = $doiScreeningDAO->getBySubmissionId($submission->getId());
-
-        $passData['flagDOI'] = (count($dois) > 0);
-        $passData['dois'] = $dois;
-
-        /* Afiliação e ORCID */
-        $authors = $submission->getAuthors();
-        $flagAf = true;
-        $flagOrcid = false;
-        $listAuthors = array();
-
-        foreach ($authors as $author) {   
-            if($author->getLocalizedAffiliation() == ""){
-                $flagAf = false;
-                $listAuthors[] = $author->getLocalizedGivenName() . " " . $author->getLocalizedFamilyName();
-            }
-
-            if($author->getOrcid() != ''){
-                $flagOrcid = true;
-            }
-        }
-
-        $passData['flagAf'] = $flagAf;
-        $passData['listAuthors'] = $listAuthors;
-        $passData['flagOrcid'] = $flagOrcid;
-        
-        /* Metadados em inglês */
-        $metadataList = array('title', 'abstract', 'keywords');
-        $flagMetadataEnglish = true;
-        $textMetadata = "";
-        foreach ($metadataList as $metadata) {
-            if($publication->getData($metadata, 'en_US') == "") {
-                $flagMetadataEnglish = false;
-
-                if($textMetadata != "") $textMetadata .= ", ";
-                $textMetadata .= __("common." . $metadata);
-            }
-        }
-        $passData['flagMetadataEnglish'] = $flagMetadataEnglish;
-        $passData['textMetadata'] = $textMetadata;
-
-		$smarty->assign($passData);
+		$smarty->assign($dataScreening);
 		$output .= sprintf(
 			'<tab id="screeningInfo" label="%s">%s</tab>',
 			__('plugins.generic.authorDOIScreening.info.name'),

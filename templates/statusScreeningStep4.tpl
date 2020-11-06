@@ -6,19 +6,19 @@
             <h3>{translate key="plugins.generic.authorDOIScreening.step4.warning"}</h3>
         </div>
         <div class="screeningStep4Body">
-            {if $doiNotDone}
+            {if $statusDOI == false}
                 <div class="warningField">
                     <div class="statusNotOkay"></div>
                     <span>{translate key="plugins.generic.authorDOIScreening.step4.dois"}</span>
                 </div>
             {/if}
-            {if $authorWithoutAffiliation}
+            {if $statusAffiliation == false}
                 <div class="warningField">
                     <div class="statusNotOkay"></div>
                     <span>{translate key="plugins.generic.authorDOIScreening.step4.affiliation"}</span>
                 </div>
             {/if}
-            {if $metadataNotEnglish}
+            {if $statusMetadataEnglish == false}
                 <div class="warningField">
                     <div class="statusNotOkay"></div>
                     <span>{translate key="plugins.generic.authorDOIScreening.step4.metadataNotEnglish"} {$textMetadata}</span>
