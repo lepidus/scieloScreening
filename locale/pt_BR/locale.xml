@@ -57,4 +57,5 @@
     <message key="plugins.generic.authorDOIScreening.info.affiliationNotOkay">Os autores abaixo não tiveram as suas afiliações preenchidas:</message>
     <message key="plugins.generic.authorDOIScreening.info.orcidOkay">A condição dos ORCID está confirmada</message>
     <message key="plugins.generic.authorDOIScreening.info.orcidNotOkay">Nenhum autor confirmou o seu ORCID</message>
+    <message key="plugins.generic.authorDOIScreening.info.pdfsOkay">Apenas um documento PDF foi submetido</message>
 </locale>

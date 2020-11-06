@@ -82,5 +82,30 @@
                 </div>
             {/if}
         </div>
+        <div id="numPDFInfoField">
+            {if $numPDFs == 0}
+                <div id="pdfsHeader" class="headerWithoutBody">
+                    <div class="statusNotOkay"></div>
+                    <span id="pdfsMessage">{translate key="plugins.generic.authorDOIScreening.step4.noPDFs"}</span>
+                </div>
+            {elseif $numPDFs > 1}
+                <div id="pdfsHeader">
+                    <div class="statusNotOkay"></div>
+                    <span id="pdfsMessage">{translate key="plugins.generic.authorDOIScreening.step4.manyPDFs.header"}</span>
+                </div>
+                <div id="pdfsBody">
+                    <ul>
+                        <li>{translate key="plugins.generic.authorDOIScreening.step4.manyPDFs.one"}</li>
+                        <li>{translate key="plugins.generic.authorDOIScreening.step4.manyPDFs.two"}</li>
+                        <li>{translate key="plugins.generic.authorDOIScreening.step4.manyPDFs.three"}</li>
+                    </ul>
+                </div>
+            {else}
+                <div id="pdfsHeader" class="headerWithoutBody">
+                    <div class="statusOkay"></div>
+                    <span id="pdfsMessage">{translate key="plugins.generic.authorDOIScreening.info.pdfsOkay"}</span>
+                </div>
+            {/if}
+        </div>
     </div>
 </div>
