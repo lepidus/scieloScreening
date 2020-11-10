@@ -30,7 +30,8 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 
 			// Adds the DOI Form to submission
 			HookRegistry::register('Templates::Submission::SubmissionMetadataForm::AdditionalMetadata', array($this, 'metadataFieldEdit'));
-			HookRegistry::register('Template::Workflow::Publication', array($this, 'addToPublicationForms'));
+            HookRegistry::register('Template::Workflow::Publication', array($this, 'addToPublicationForms'));
+            HookRegistry::register('Template::Workflow::Publication', array($this, 'addGalleysWarning'));
 
 			HookRegistry::register('LoadComponentHandler', array($this, 'setupGridHandler'));
             HookRegistry::register('authorform::Constructor', array($this, 'changeAuthorForm'));
@@ -183,7 +184,14 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 			__('plugins.generic.authorDOIScreening.info.name'),
 			$smarty->fetch($this->getTemplateResource('screeningInfo.tpl'))
 		);
-	}
+    }
+    
+    function addGalleysWarning($hookName, $params) {
+        $smarty =& $params[1];
+		$output =& $params[2];
+        
+        $output .= sprintf('%s', $smarty->fetch($this->getTemplateResource('addGalleysWarning.tpl')));
+    }
 
 	function listRules($hookName, $args) {
 		$rules =& $args[0];

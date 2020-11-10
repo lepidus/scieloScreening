@@ -1,0 +1,21 @@
+#warningGalleysHeader {
+    background-color: #DCDCDC;
+    padding: 4px 8px;
+    margin-bottom: 0px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+#warningGalleysHeader span {
+    line-height: 24px;
+    font-size: 18px;
+    margin-left: 0.5em;
+}
+
+#warningGalleysBody {
+    background-color: #f5f5f5;
+    padding: 8px;
+
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
