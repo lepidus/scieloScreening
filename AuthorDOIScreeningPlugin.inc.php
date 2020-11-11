@@ -36,6 +36,7 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 			HookRegistry::register('LoadComponentHandler', array($this, 'setupGridHandler'));
             HookRegistry::register('authorform::Constructor', array($this, 'changeAuthorForm'));
             HookRegistry::register('submissionsubmitstep4form::display', array($this, 'addToStep4'));
+            HookRegistry::register('submissionsubmitstep2form::display', array($this, 'addToStep2'));
 		}
 		return $success;
 	}
@@ -55,6 +56,27 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
         
         $params[0]->setTemplate($path);
         $params[1] = $path;
+    }
+
+    function addToStep2($hookName, $params) {
+        $output =& $params[1];
+        $templateMgr = TemplateManager::getManager(null);
+
+        if($output == "") {
+            $output = $templateMgr->fetch($params[0]->getTemplate());
+        }
+
+        $checkNumberPDFs = $templateMgr->fetch($this->getTemplateResource('checkPDFStep2.tpl'));
+
+        $this->insertTemplateIntoStep2($checkNumberPDFs, $output);
+        return true;
+    }
+
+    function insertTemplateIntoStep2($template, &$step2) {
+        $posInsert = strpos($step4, "<div id=\"formatsGridContainer");
+        $newStep2 = substr_replace($step2, $template, $posInsert, 0);
+
+        $step2 = $newStep2;
     }
 
     function addToStep4($hookName, $params){

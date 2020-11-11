@@ -81,4 +81,27 @@ class DOIGridHandler extends GridHandler {
 
         return json_encode($response);
     }
+
+    function checkNumberPdfs($args, $request){
+        $submission = DAORegistry::getDAO('SubmissionDAO')->getById($args['submissionId']);
+        $response = array();
+
+        $numPDFs = 0;
+        if(count($submission->getGalleys()) > 0) {
+            foreach ($submission->getGalleys() as $galley) {
+                if(strtolower($galley->getLabel()) == 'pdf'){
+                    $numPDFs++;
+                }
+            }
+        }
+
+        if($numPDFs == 0 || $numPDFs > 1) {
+            $response['statusNumberPdfs'] = 'error';
+        }
+        else {
+            $response['statusNumberPdfs'] = 'success';
+        }
+
+        return json_encode($response);
+    }
 }

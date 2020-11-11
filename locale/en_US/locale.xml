@@ -9,6 +9,7 @@
     <message key="plugins.generic.authorDOIScreening.nome">SciELO Screening</message>
     <message key="plugins.generic.authorDOIScreening.description">Adds new screening rules during submission according to SciELO Preprints' editorial policies</message>
 	
+    <message key="plugins.generic.authorDOIScreening.required.numberPDFs">You must send at least one and no more than one PDF document</message>
     <message key="plugins.generic.authorDOIScreening.required.publishedBefore">You need to insert DOIs from previous articles of your own authorship published in peer reviewed journals</message>
     <message key="plugins.generic.authorDOIScreening.required.affiliationForAll">All submission contributors must have their affiliation filled</message>
     <message key="plugins.generic.authorDOIScreening.required.orcidLeastOne">At least one contributor must have their ORCID confirmed. Please, check your e-mail</message>
