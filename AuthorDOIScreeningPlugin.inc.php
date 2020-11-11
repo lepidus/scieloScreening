@@ -98,19 +98,22 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
         if(!$outputWasEmpty) return true;
     }
 
-    private function getScreeningData($submission){
-        $dataScreening = array();
-        $publication = $submission->getCurrentPublication();
-        
+    private function getStatusDOI($submission) {
         $doiScreeningDAO = new DOIScreeningDAO();
         $dois = $doiScreeningDAO->getBySubmissionId($submission->getId());
-        $dataScreening['statusDOI'] = (count($dois) > 0);
-        $dataScreening['dois'] = $dois;
 
+        return [
+            'statusDOI' => (count($dois) > 0),
+            'dois' => $dois
+        ];
+    }
+
+    private function getStatusAuthors($submission) {
         $authors = $submission->getAuthors();
         $statusAf = true;
         $statusOrcid = false;
         $listAuthors = array();
+        
         foreach ($authors as $author) {   
             if($author->getLocalizedAffiliation() == ""){
                 $statusAf = false;
@@ -120,13 +123,20 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
                 $statusOrcid = true;
             }
         }
-        $dataScreening['statusAffiliation'] = $statusAf;
-        $dataScreening['statusOrcid'] = $statusOrcid;
-        $dataScreening['listAuthors'] = $listAuthors;
 
+        return [
+            'statusAffiliation' => $statusAf,
+            'statusOrcid' => $statusOrcid,
+            'listAuthors' => $listAuthors
+        ];
+    }
+
+    private function getStatusMetadataEnglish($submission) {
+        $publication = $submission->getCurrentPublication();
         $metadataList = array('title', 'abstract', 'keywords');
         $statusMetadataEnglish = true;
         $textMetadata = "";
+        
         foreach ($metadataList as $metadata) {
             if($publication->getData($metadata, 'en_US') == "") {
                 $statusMetadataEnglish = false;
@@ -135,9 +145,14 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
                 $textMetadata .= __("common." . $metadata);
             }
         }
-        $dataScreening['statusMetadataEnglish'] = $statusMetadataEnglish;
-        $dataScreening['textMetadata'] = $textMetadata;
         
+        return [
+            'statusMetadataEnglish' => $statusMetadataEnglish,
+            'textMetadata' => $textMetadata
+        ];
+    }
+
+    private function getStatusPDFs($submission) {
         $numPDFs = 0;
         if(count($submission->getGalleys()) > 0) {
             foreach ($submission->getGalleys() as $galley) {
@@ -146,9 +161,23 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
                 }
             }
         }
+        $statusPDFs = ($numPDFs != 1);
 
-        $dataScreening['numPDFs'] = $numPDFs;
-        if((count($dois) == 0) || !$statusAf || !$statusOrcid || !$statusMetadataEnglish || $numPDFs == 0 || $numPDFs > 1) {
+        return [
+            'statusPDFs' => $statusPDFs,
+            'numPDFs' => $numPDFs
+        ];
+    }
+
+    private function getScreeningData($submission){
+        $dataScreening = array_merge(
+            $this->getStatusDOI($submission),
+            $this->getStatusAuthors($submission),
+            $this->getStatusMetadataEnglish($submission),
+            $this->getStatusPDFs($submission)
+        );
+        
+        if(in_array(false, $dataScreening, true)) {
             $dataScreening['errorsScreening'] = true;
         }
 
@@ -226,41 +255,27 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 
 	function validate($hookName, $args) {
 		$errors =& $args[0];
-        $publication = $args[1];
         $submission = $args[2];
-        $affAll = true;
-        $orcidOne = false;
-        $authors = $submission->getAuthors();
-
-        foreach ($authors as $author) {   
-            if($author->getLocalizedAffiliation() == ""){
-                $errors = array_merge(
-                    $errors,
-                    array('affiliationForAll' => __('plugins.generic.authorDOIScreening.required.affiliationForAll'))
-                );
-                $affAll = false;
-            }
+        $statusAuthors = $this->getStatusAuthors($submission);
+        $okayForPublishing = true;
+        
+        if(!$statusAuthors['statusAffiliation']) {
+            $errors = array_merge(
+                $errors,
+                array('affiliationForAll' => __('plugins.generic.authorDOIScreening.required.affiliationForAll'))
+            );
+            $okayForPublishing = false;
         }
 
-        if($this->userIsAuthor($submission)){
-            foreach ($authors as $author){
-                if($author->getOrcid() != ''){
-                    $orcidOne = true;
-                }
-            }
-            
-            if(!$orcidOne){
-                $errors = array_merge(
-                    $errors,
-                    array('orcidLeastOne' => __('plugins.generic.authorDOIScreening.required.orcidLeastOne'))
-                );
-            }
-            
-            return $affAll && $orcidOne;
+        if($this->userIsAuthor($submission) && !$statusAuthors['statusOrcid']){
+            $errors = array_merge(
+                $errors,
+                array('orcidLeastOne' => __('plugins.generic.authorDOIScreening.required.orcidLeastOne'))
+            );
+            $okayForPublishing = false;
         }
-        else {
-            return $affAll;
-        }
+        
+        return $okayForPublishing;
 	}
 
     /**
