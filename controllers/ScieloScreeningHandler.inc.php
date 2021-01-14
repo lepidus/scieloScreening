@@ -1,20 +1,10 @@
 <?php
 
-import('lib.pkp.classes.controllers.grid.GridHandler');
+import('classes.handler.Handler');
 import('plugins.generic.authorDOIScreening.classes.DOIScreening');
 import('plugins.generic.authorDOIScreening.classes.DOIScreeningDAO');
 
-class DOIGridHandler extends GridHandler {
-
-    static $plugin;
-
-    /**
-	 * Set the DOI plugin.
-	 * @param $plugin AuthorDOIScreeningPlugin
-	 */
-	static function setPlugin($plugin) {
-		self::$plugin = $plugin;
-	}
+class ScieloScreeningHandler extends Handler {
 
     function addDOIs($args, $request){
         $doiScreeningDAO = new DOIScreeningDAO();

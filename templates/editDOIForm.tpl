@@ -4,7 +4,7 @@
  * Form for add/edit DOIs from a submission
  *}
 
-{capture assign=actionUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.authorDOIScreening.controllers.grid.DOIGridHandler" op="addDOIs" escape=false}{/capture}
+{capture assign=actionUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.authorDOIScreening.controllers.ScieloScreeningHandler" op="addDOIs" escape=false}{/capture}
 
 <script>
     var okay = [false, false, false];

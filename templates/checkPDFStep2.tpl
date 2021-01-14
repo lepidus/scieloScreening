@@ -4,7 +4,7 @@
  * Template that adds a verification for the number of PDFs sent at the step 2 of submission
  *}
 
-{capture assign=checkNumberPdfsUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.authorDOIScreening.controllers.grid.DOIGridHandler" op="checkNumberPdfs" escape=false}{/capture}
+{capture assign=checkNumberPdfsUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.authorDOIScreening.controllers.ScieloScreeningHandler" op="checkNumberPdfs" escape=false}{/capture}
 
  <script>
     var postResponse;

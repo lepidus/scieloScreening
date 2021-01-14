@@ -33,7 +33,7 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
             HookRegistry::register('Template::Workflow::Publication', array($this, 'addToPublicationForms'));
             HookRegistry::register('Template::Workflow::Publication', array($this, 'addGalleysWarning'));
 
-			HookRegistry::register('LoadComponentHandler', array($this, 'setupGridHandler'));
+			HookRegistry::register('LoadComponentHandler', array($this, 'setupScieloScreeningHandler'));
             HookRegistry::register('authorform::Constructor', array($this, 'changeAuthorForm'));
             HookRegistry::register('submissionsubmitstep4form::display', array($this, 'addToStep4'));
             HookRegistry::register('submissionsubmitstep2form::display', array($this, 'addToStep2'));
@@ -41,11 +41,9 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 		return $success;
 	}
 
-	function setupGridHandler($hookName, $params) {
+	function setupScieloScreeningHandler($hookName, $params) {
 		$component =& $params[0];
-		if ($component == 'plugins.generic.authorDOIScreening.controllers.grid.DOIGridHandler') {
-			import($component);
-			DOIGridHandler::setPlugin($this);
+		if ($component == 'plugins.generic.authorDOIScreening.controllers.ScieloScreeningHandler') {
 			return true;
 		}
 		return false;

@@ -19,7 +19,7 @@
 </script>
 
 {if $roleId == ROLE_ID_AUTHOR}
-{capture assign=checkAuthorsUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.authorDOIScreening.controllers.grid.DOIGridHandler" op="checkAuthors" escape=false}{/capture}
+{capture assign=checkAuthorsUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.authorDOIScreening.controllers.ScieloScreeningHandler" op="checkAuthors" escape=false}{/capture}
 
 <script>
     var formulario = document.getElementById("submitStep3Form");
