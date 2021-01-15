@@ -94,4 +94,90 @@ class ScieloScreeningHandler extends Handler {
 
         return json_encode($response);
     }
+
+    private function getStatusDOI($submission) {
+        $doiScreeningDAO = new DOIScreeningDAO();
+        $dois = $doiScreeningDAO->getBySubmissionId($submission->getId());
+
+        return [
+            'statusDOI' => (count($dois) > 0),
+            'dois' => $dois
+        ];
+    }
+
+    private function getStatusAuthors($submission) {
+        $authors = $submission->getAuthors();
+        $statusAf = true;
+        $statusOrcid = false;
+        $listAuthors = array();
+        
+        foreach ($authors as $author) {   
+            if($author->getLocalizedAffiliation() == ""){
+                $statusAf = false;
+                $listAuthors[] = $author->getLocalizedGivenName() . " " . $author->getLocalizedFamilyName();
+            }
+            if($author->getOrcid() != ''){
+                $statusOrcid = true;
+            }
+        }
+
+        return [
+            'statusAffiliation' => $statusAf,
+            'statusOrcid' => $statusOrcid,
+            'listAuthors' => $listAuthors
+        ];
+    }
+
+    private function getStatusMetadataEnglish($submission) {
+        $publication = $submission->getCurrentPublication();
+        $metadataList = array('title', 'abstract', 'keywords');
+        $statusMetadataEnglish = true;
+        $textMetadata = "";
+        
+        foreach ($metadataList as $metadata) {
+            if($publication->getData($metadata, 'en_US') == "") {
+                $statusMetadataEnglish = false;
+
+                if($textMetadata != "") $textMetadata .= ", ";
+                $textMetadata .= __("common." . $metadata);
+            }
+        }
+        
+        return [
+            'statusMetadataEnglish' => $statusMetadataEnglish,
+            'textMetadata' => $textMetadata
+        ];
+    }
+
+    private function getStatusPDFs($submission) {
+        $numPDFs = 0;
+        if(count($submission->getGalleys()) > 0) {
+            foreach ($submission->getGalleys() as $galley) {
+                if(strtolower($galley->getLabel()) == 'pdf'){
+                    $numPDFs++;
+                }
+            }
+        }
+        $statusPDFs = ($numPDFs != 1);
+
+        return [
+            'statusPDFs' => $statusPDFs,
+            'numPDFs' => $numPDFs
+        ];
+    }
+
+    public function getScreeningData($submission){
+        $dataScreening = array_merge(
+            $this->getStatusDOI($submission),
+            $this->getStatusAuthors($submission),
+            $this->getStatusMetadataEnglish($submission),
+            $this->getStatusPDFs($submission)
+        );
+        
+        if(in_array(false, $dataScreening, true)) {
+            $dataScreening['errorsScreening'] = true;
+        }
+
+        return $dataScreening;
+    }
 }
