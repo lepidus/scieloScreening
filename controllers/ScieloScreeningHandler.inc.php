@@ -12,34 +12,29 @@ class ScieloScreeningHandler extends Handler {
         $dois = $doiScreeningDAO->getBySubmissionId($args['submissionId']);
 
         if(count($dois) == 0){
-            if($args[firstDOI] != ""){
-                $firstDOI = new DOIScreening();
-                $firstDOI->setSubmissionId($args['submissionId']);
-                $firstDOI->setDOICode($args['firstDOI']);
-                $doiScreeningDAO->insertObject($firstDOI);
-            }
-            
-            if($args[secondDOI] != ""){
-                $secondDOI = new DOIScreening();
-                $secondDOI->setSubmissionId($args['submissionId']);
-                $secondDOI->setDOICode($args['secondDOI']);
-                $doiScreeningDAO->insertObject($secondDOI);
-            }
-    
-            if($args[thirdDOI] != ""){
-                $thirdDOI = new DOIScreening();
-                $thirdDOI->setSubmissionId($args['submissionId']);
-                $thirdDOI->setDOICode($args['thirdDOI']);
-                $doiScreeningDAO->insertObject($thirdDOI);
+            foreach($args['doisToSave'] as $doi){
+                if($doi){
+                    $doiObj = new DOIScreening();
+                    $doiObj->setSubmissionId($args['submissionId']);
+                    $doiObj->setDOICode($doi);
+                    $doiScreeningDAO->insertObject($doiObj);
+                }
             }
         }
         
         return http_response_code(200);
     }
     
-    function isUppercase($string){
+    private function isUppercase($string){
         $stringTratada = str_replace(' ', '', $string);
         return ctype_upper($stringTratada);
+    }
+
+    private function getFromCrossref($doiString){
+        $response = file_get_contents('https://api.crossref.org/works?filter=doi:' . $doiString);
+        $johnson = json_decode($response, true);
+
+        return $johnson;
     }
 
     function checkAuthors($args, $request){
@@ -93,6 +88,101 @@ class ScieloScreeningHandler extends Handler {
         }
 
         return json_encode($response);
+    }
+
+    public function validateDOI($args, $request){
+        $responseCrossref = $this->getFromCrossref($args['doiString']);
+        $status = $responseCrossref['status'];
+        $items = $responseCrossref['message']['items'];
+
+        if($status != 'ok' || empty($items)) {
+            $response = [
+                'statusValidate' => 0,
+                'messageError' => __("plugins.generic.authorDOIScreening.doiCrossrefRequirement")
+            ];
+            return json_encode($response);
+        }
+
+        $submission = Services::get('submission')->get((int)$args['submissionId']);
+        $authorSubmission = $submission->getAuthors()[0];
+        $authorsCrossref = $items[0]['author'];
+        $foundAuthor = false;
+        for($i = 0; $i < count($authorsCrossref); $i++){
+            $name1 = $authorsCrossref[$i]['given'] . $authorsCrossref[$i]['family'];
+            $name2 = $authorSubmission->getGivenName('en_US') . $authorSubmission->getFamilyName('en_US');
+            similar_text($name1, $name2, $similarity);
+
+            if($similarity > 35){
+                $foundAuthor = true;
+                break;
+            }
+        }
+
+        if(!$foundAuthor){
+            $response = [
+                'statusValidate' => 0,
+                'messageError' => __("plugins.generic.authorDOIScreening.doiFromAuthor")
+            ];
+            return json_encode($response);
+        }
+
+        $doiType = $items[0]['type'];
+        if($doiType != 'journal-article') {
+            $response = [
+                'statusValidate' => 0,
+                'messageError' => __("plugins.generic.authorDOIScreening.doiFromJournal")
+            ];
+            return json_encode($response);
+        }
+
+        $yearArticle = 0;
+        if(isset($items[0]['published-print']))
+            $yearArticle = $items[0]['published-print']['date-parts'][0][0];
+        else
+            $yearArticle = $items[0]['published-online']['date-parts'][0][0];
+
+        return json_encode([
+            'statusValidate' => 1,
+            'yearArticle' => $yearArticle
+        ]);
+    }
+
+    public function validateDoisFromScreening($args, $request){
+        $dois = $args['dois'];
+        
+        if($dois[0] == $dois[1] || $dois[0] == $dois[2] || $dois[1] == $dois[2]){
+            $response = [
+                'statusValidateDois' => 0,
+                'messageError' => __("plugins.generic.authorDOIScreening.doiDifferentRequirement")
+            ];
+            return json_encode($response);
+        }
+
+        $countOkay = array_count_values($args['doisOkay'])['true'];
+        if($countOkay < 2) {
+            $response = [
+                'statusValidateDois' => 0,
+                'messageError' => __("plugins.generic.authorDOIScreening.attentionRules")
+            ];
+            return json_encode($response);
+        }
+        else if($countOkay == 2){
+            $countAnos = 0;
+            $anoAtual = date('Y');
+            foreach($args['doisYears'] as $doiYear){
+                if((int)$doiYear >= (int)$anoAtual - 2) $countAnos++;
+            }
+
+            if($countAnos < 2){
+                $response = [
+                    'statusValidateDois' => 0,
+                    'messageError' => __("plugins.generic.authorDOIScreening.attentionRules")
+                ];
+                return json_encode($response);
+            }
+        }
+
+        return json_encode(['statusValidateDois' => 1]);
     }
 
     private function getStatusDOI($submission) {

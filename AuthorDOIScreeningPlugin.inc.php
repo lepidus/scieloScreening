@@ -129,7 +129,6 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 
         $smarty->assign([
             'roleId' => $authors[0]->getUserGroup()->getRoleId(),
-            'authors' => $submission->getAuthors(),
             'dois' => $dois
         ]);
         

@@ -4,53 +4,16 @@
  * Form for add/edit DOIs from a submission
  *}
 
-{capture assign=actionUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.authorDOIScreening.controllers.ScieloScreeningHandler" op="addDOIs" escape=false}{/capture}
+{capture assign=addDoiUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.authorDOIScreening.controllers.ScieloScreeningHandler" op="addDOIs" escape=false}{/capture}
+{capture assign=validateDoiUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.authorDOIScreening.controllers.ScieloScreeningHandler" op="validateDOI" escape=false}{/capture}
+{capture assign=validateDoisFromScreeningUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.authorDOIScreening.controllers.ScieloScreeningHandler" op="validateDoisFromScreening" escape=false}{/capture}
+
 
 <script>
-    var okay = [false, false, false];
-    var years = [0,0,0];
+    var doisOkay = [false, false, false];
+    var doisYears = [0,0,0];
 
-    function editDistance(s1, s2) {ldelim}
-        s1 = s1.toLowerCase();
-        s2 = s2.toLowerCase();
-
-        var costs = new Array();
-        for (var i = 0; i <= s1.length; i++) {ldelim}
-            var lastValue = i;
-            for (var j = 0; j <= s2.length; j++) {ldelim}
-                if (i == 0)
-                    costs[j] = j;
-                else {ldelim}
-                    if (j > 0) {ldelim}
-                        var newValue = costs[j - 1];
-                        if (s1.charAt(i - 1) != s2.charAt(j - 1))
-                            newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
-                        costs[j - 1] = lastValue;
-                        lastValue = newValue;
-                    {rdelim}
-                {rdelim}
-            {rdelim}
-            if (i > 0)
-            costs[s2.length] = lastValue;
-        {rdelim}
-        return costs[s2.length];
-    {rdelim}
-
-    function similarity(s1, s2) {ldelim}
-        var longer = s1;
-        var shorter = s2;
-        if (s1.length < s2.length) {ldelim}
-            longer = s2;
-            shorter = s1;
-        {rdelim}
-        var longerLength = longer.length;
-        if (longerLength == 0) {ldelim}
-            return 1.0;
-        {rdelim}
-        return (longerLength - editDistance(longer, shorter)) / parseFloat(longerLength);
-    {rdelim}
-
-    function sucesso(){ldelim}
+    function sucessoScreening(){ldelim}
         $('#generalMessage').text("{translate key="plugins.generic.authorDOIScreening.successfulScreening"}");
         $("#generalMessage").removeClass("myError");
         $("#generalMessage").addClass("mySuccess");
@@ -61,108 +24,71 @@
     {rdelim}
 
     async function makeSubmit(e){ldelim}
-        if($('#firstDOI').val() == $('#secondDOI').val()
-            || $('#firstDOI').val() == $('#thirdDOI').val()
-            || $('#secondDOI').val() == $('#thirdDOI').val()
-        ){ldelim}
-            $('#generalMessage').text("{translate key="plugins.generic.authorDOIScreening.doiDifferentRequirement"}");
+        var postValidateDoisResponse;
+
+        await $.post(
+            "{$validateDoisFromScreeningUrl}",
+            {ldelim}
+                doisOkay: doisOkay,
+                doisYears: doisYears,
+                dois: [$('#firstDOI').val(), $('#secondDOI').val(), $('#thirdDOI').val()]
+            {rdelim},
+            function (resultado){ldelim}
+                resultado = JSON.parse(resultado);
+                postValidateDoisResponse = resultado;
+            {rdelim}
+        );
+
+        if(postValidateDoisResponse['statusValidateDois'] == 0){ldelim}
+            $("#generalMessage").text(postValidateDoisResponse['messageError']);
             $('#generalMessage').css('display', 'block');
             return;
         {rdelim}
 
-        var countOkay = 0;
-        for (var i=0;i<3;i++){ldelim}
-            if (okay[i] == true) countOkay += 1;
-        {rdelim}
-
-        if(countOkay < 2){ldelim}
-            $("#generalMessage").text("{translate key="plugins.generic.authorDOIScreening.attentionRules"}");
-            $('#generalMessage').css('display', 'block');
-            return;
-        {rdelim}
-        else if(countOkay == 2){ldelim}
-            var countAnos = 0;
-            const anoAtual = (new Date()).getFullYear();
-            for (var i=0;i<3;i++){ldelim}
-                if(years[i] >= anoAtual-2) countAnos += 1;
-            {rdelim}
-
-            if(countAnos < 2) {ldelim}
-                $("#generalMessage").text("{translate key="plugins.generic.authorDOIScreening.attentionRules"}");
-                $('#generalMessage').css('display', 'block');
-                return;
-            {rdelim}
-        {rdelim}
+        var doisToSave = [
+            (doisOkay[0]) ? ($('#firstDOI').val()) : (""),
+            (doisOkay[1]) ? ($('#secondDOI').val()) : (""),
+            (doisOkay[2]) ? ($('#thirdDOI').val()) : ("")
+        ];
 
         $.post(
-            "{$actionUrl}",
+            "{$addDoiUrl}",
             {ldelim}
                 submissionId: {$submissionId},
-                firstDOI: (okay[0]) ? ($('#firstDOI').val()) : (""),
-                secondDOI: (okay[1]) ? ($('#secondDOI').val()) : (""),
-                thirdDOI: (okay[2]) ? ($('#thirdDOI').val()) : ("")
+                doisToSave: doisToSave
             {rdelim},
-            sucesso()
+            sucessoScreening()
         );
     {rdelim}
 
-    async function getFromCrossref(doi){ldelim}
-        const response = await fetch('https://api.crossref.org/works?filter=doi:' + doi);
-        const johnson = response.json();
-
-        return johnson;
-    {rdelim}
-
     async function validaDOI(doiInput, doiError, flag){ldelim}
-        const result = await getFromCrossref(doiInput.val());
-        const status = result.status, items = result.message.items;
-
-        if(status !=  'ok' || items.length == 0){ldelim}
-            doiError.text("{translate key="plugins.generic.authorDOIScreening.doiCrossrefRequirement"}");
-            doiError.css('display', 'block');
-            okay[flag] = false;
-            return;
-        {rdelim}
-
-        const authors = items[0]['author'];
-        var found = false;
-        for(i=0;i<authors.length;i++){ldelim}
-            const nome1 = authors[i].given + authors[i].family;
-            const nome2 = '{$authors[0]->getGivenName('en_US')}{$authors[0]->getFamilyName('en_US')}';
-
-            if(similarity(nome1,nome2) > 0.35){ldelim}
-                found = true;
-                break;
+        var postValidateResponse;
+        
+        await $.post(
+            "{$validateDoiUrl}",
+            {ldelim}
+                doiString: doiInput.val(),
+                submissionId: {$submissionId}
+            {rdelim},
+            function (resultado){ldelim}
+                resultado = JSON.parse(resultado);
+                postValidateResponse = resultado;
             {rdelim}
+        );
+        
+        if(postValidateResponse['statusValidate'] == 0){ldelim}
+            doiError.text(postValidateResponse['messageError']);
+            doiError.css('display', 'block');
+            doisOkay[flag] = false;
+            return;
         {rdelim}
 
-        if(!found){ldelim}
-            doiError.text("{translate key="plugins.generic.authorDOIScreening.doiFromAuthor"}");
-            doiError.css('display', 'block');
-            okay[flag] = false;
-            return;
-        {rdelim}
-        
-        const doiType = items[0]['type'];
-        if(doiType != 'journal-article'){ldelim}
-            doiError.text("{translate key="plugins.generic.authorDOIScreening.doiFromJournal"}");
-            doiError.css('display', 'block');
-            okay[flag] = false;
-            return;
-        {rdelim}
-        
-        try {ldelim}
-            years[flag] = items[0]['published-print']['date-parts'][0][0];
-        {rdelim}
-        catch (e){
-            years[flag] = items[0]['published-online']['date-parts'][0][0];
-        }
-        
         //Se chegou aqui, tudo esta ok
         if(doiError.css('display') == 'block')
             doiError.css('display', 'none');
 
-        okay[flag] = true;
+        doisOkay[flag] = true;
+        doisYears[flag] = postValidateResponse['yearArticle'];
     {rdelim}
 
     $(function(){ldelim}
