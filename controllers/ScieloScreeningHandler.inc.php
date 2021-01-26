@@ -24,20 +24,9 @@ class ScieloScreeningHandler extends Handler {
         
         return http_response_code(200);
     }
-    
-    private function isUppercase($string){
-        $stringTratada = str_replace(' ', '', $string);
-        return ctype_upper($stringTratada);
-    }
-
-    private function getFromCrossref($doiString){
-        $response = file_get_contents('https://api.crossref.org/works?filter=doi:' . $doiString);
-        $johnson = json_decode($response, true);
-
-        return $johnson;
-    }
 
     function checkAuthors($args, $request){
+        $checker = new ScreeningChecker();
         $submission = DAORegistry::getDAO('SubmissionDAO')->getById($args['submissionId']);
         $authors = $submission->getAuthors();
         $numberAuthors = $args['numberAuthors'];
@@ -45,57 +34,43 @@ class ScieloScreeningHandler extends Handler {
         
         $response['statusNumberAuthors'] = ($numberAuthors != count($authors)) ? ("error") : ("success");
         
-        $uppercaseOne = false;
-        foreach($authors as $author){
-            $authorName = $author->getLocalizedGivenName() . $author->getLocalizedFamilyName();
-            if($this->isUppercase($authorName)){
-                $uppercaseOne = true;
-            }
-        }
+        $nameAuthors = array_map(function($author){
+            return $author->getLocalizedGivenName() . $author->getLocalizedFamilyName();
+        }, $authors);
+        $response['statusUppercase'] = ($checker->checkHasUppercaseAuthors($nameAuthors)) ? ("error") : ("success");
 
-        $response['statusUppercase'] = ($uppercaseOne) ? ("error") : ("success");
-
-        $orcidOne = false;
-        foreach ($authors as $author){
-            if($author->getOrcid() != ''){
-                $orcidOne = true;
-            }
-        }
+        $orcidAuthors = array_map(function($author){
+            return $author->getOrcid();
+        }, $authors);
         
-        $response['statusOrcid'] = ($orcidOne) ? ('success') : ("error");
+        $response['statusOrcid'] = ($checker->checkOrcidAuthors($orcidAuthors)) ? ('success') : ("error");
 
         return json_encode($response);
     }
 
     function checkNumberPdfs($args, $request){
+        $checker = new ScreeningChecker();
         $submission = DAORegistry::getDAO('SubmissionDAO')->getById($args['submissionId']);
+        $galleys = $submission->getGalleys();
         $response = array();
 
-        $numPDFs = 0;
-        if(count($submission->getGalleys()) > 0) {
-            foreach ($submission->getGalleys() as $galley) {
-                if(strtolower($galley->getLabel()) == 'pdf'){
-                    $numPDFs++;
-                }
-            }
-        }
+        $labelGalleys = array_map(function($galley){
+            return strtolower($galley->getLabel());
+        }, $galleys);
 
-        if($numPDFs == 0 || $numPDFs > 1) {
+        if(!$checker->checkNumberPdfs($labelGalleys)[0])
             $response['statusNumberPdfs'] = 'error';
-        }
-        else {
+        else
             $response['statusNumberPdfs'] = 'success';
-        }
 
         return json_encode($response);
     }
 
     public function validateDOI($args, $request){
-        $responseCrossref = $this->getFromCrossref($args['doiString']);
-        $status = $responseCrossref['status'];
-        $items = $responseCrossref['message']['items'];
+        $checker = new ScreeningChecker();
+        $responseCrossref = $checker->getFromCrossref($args['doiString']);
 
-        if($status != 'ok' || empty($items)) {
+        if(!$checker->checkDoiCrossref($responseCrossref)) {
             $response = [
                 'statusValidate' => 0,
                 'messageError' => __("plugins.generic.authorDOIScreening.doiCrossrefRequirement")
@@ -103,22 +78,13 @@ class ScieloScreeningHandler extends Handler {
             return json_encode($response);
         }
 
+        $itemCrossref = $responseCrossref['message']['items'][0];
         $submission = Services::get('submission')->get((int)$args['submissionId']);
         $authorSubmission = $submission->getAuthors()[0];
-        $authorsCrossref = $items[0]['author'];
-        $foundAuthor = false;
-        for($i = 0; $i < count($authorsCrossref); $i++){
-            $name1 = $authorsCrossref[$i]['given'] . $authorsCrossref[$i]['family'];
-            $name2 = $authorSubmission->getGivenName('en_US') . $authorSubmission->getFamilyName('en_US');
-            similar_text($name1, $name2, $similarity);
+        $authorSubmission = $authorSubmission->getGivenName('en_US') . $authorSubmission->getFamilyName('en_US');
+        $authorsCrossref = $itemCrossref['author'];
 
-            if($similarity > 35){
-                $foundAuthor = true;
-                break;
-            }
-        }
-
-        if(!$foundAuthor){
+        if(!$checker->checkDoiFromAuthor($authorSubmission, $authorsCrossref)){
             $response = [
                 'statusValidate' => 0,
                 'messageError' => __("plugins.generic.authorDOIScreening.doiFromAuthor")
@@ -126,8 +92,7 @@ class ScieloScreeningHandler extends Handler {
             return json_encode($response);
         }
 
-        $doiType = $items[0]['type'];
-        if($doiType != 'journal-article') {
+        if(!$checker->checkDoiArticle($itemCrossref)) {
             $response = [
                 'statusValidate' => 0,
                 'messageError' => __("plugins.generic.authorDOIScreening.doiFromJournal")
@@ -136,10 +101,10 @@ class ScieloScreeningHandler extends Handler {
         }
 
         $yearArticle = 0;
-        if(isset($items[0]['published-print']))
-            $yearArticle = $items[0]['published-print']['date-parts'][0][0];
+        if(isset($itemCrossref['published-print']))
+            $yearArticle = $itemCrossref['published-print']['date-parts'][0][0];
         else
-            $yearArticle = $items[0]['published-online']['date-parts'][0][0];
+            $yearArticle = $itemCrossref['published-online']['date-parts'][0][0];
 
         return json_encode([
             'statusValidate' => 1,

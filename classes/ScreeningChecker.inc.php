@@ -1,0 +1,83 @@
+<?php
+
+/**
+ * @file plugins/generic/authorDOIScreening/classes/ScreeningChecker.inc.php
+ *
+ * @class ScreeningChecker
+ * @ingroup plugins_generic_authorDOIScreening
+ *
+ * Object to execute a series of verifications that are used by the plugin
+ */
+
+class ScreeningChecker {
+    public function isUppercase($string){
+        $stringTratada = str_replace(' ', '', $string);
+        return ctype_upper($stringTratada);
+    }
+
+    public function checkHasUppercaseAuthors($nameAuthors){
+        $uppercaseOne = false;
+        foreach($nameAuthors as $authorName) {
+            if($this->isUppercase($authorName)){
+                $uppercaseOne = true;
+            }
+        }
+        return $uppercaseOne;
+    }
+
+    public function checkOrcidAuthors($authorsOrcid){
+        $orcidOne = false;
+        foreach ($authorsOrcid as $orcid){
+            if($orcid != ''){
+                $orcidOne = true;
+            }
+        }
+        return $orcidOne;
+    }
+
+    public function checkNumberPdfs($labelGalleys){
+        $numPDFs = 0;
+        if(count($labelGalleys) > 0) {
+            foreach ($labelGalleys as $galley) {
+                if($galley == 'pdf')
+                    $numPDFs++;
+            }
+        }
+
+        return [$numPDFs == 1, $numPDFs];
+    }
+
+    public function getFromCrossref($doiString){
+        $response = file_get_contents('https://api.crossref.org/works?filter=doi:' . $doiString);
+        $johnson = json_decode($response, true);
+
+        return $johnson;
+    }
+
+    public function checkDoiCrossref($responseCrossref) {
+        $status = $responseCrossref['status'];
+        $items = $responseCrossref['message']['items'];
+
+        return $status == 'ok' || !empty($items);
+    }
+
+    public function checkDoiFromAuthor($authorSubmission, $authorsCrossref) {
+        $foundAuthor = false;
+        for($i = 0; $i < count($authorsCrossref); $i++){
+            $nameCrossref = $authorsCrossref[$i]['given'] . $authorsCrossref[$i]['family'];
+            similar_text($nameCrossref, $authorSubmission, $similarity);
+
+            if($similarity > 35){
+                $foundAuthor = true;
+                break;
+            }
+        }
+
+        return $foundAuthor;
+    }
+
+    public function checkDoiArticle($itemCrossref) {
+        return $itemCrossref['type'] == 'journal-article';
+    }
+
+}
