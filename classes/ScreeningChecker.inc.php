@@ -80,4 +80,31 @@ class ScreeningChecker {
         return $itemCrossref['type'] == 'journal-article';
     }
 
+    public function checkDoiRepeated($dois) {
+        return $dois[0] == $dois[1] || $dois[0] == $dois[2] || $dois[1] == $dois[2];
+    }
+
+    public function checkDoisLastTwoYears($doisYears) {
+        $countDoisOkay = 0;
+        $currentYear = date('Y');
+        foreach($doisYears as $doiYear){
+            if((int)$doiYear >= (int)$currentYear - 2) $countDoisOkay++;
+        }
+        
+        return $countDoisOkay == 2;
+    }
+
+    public function checkAffiliationAuthors($affiliationAuthors, $nameAuthors) {
+        $statusAf = true;
+        $authorsNoAffiliation = array();
+        for($i = 0; $i < count($nameAuthors); $i++) {
+            if($affiliationAuthors[$i] == ""){
+                $statusAf = false;
+                $authorsNoAffiliation[] = $nameAuthors[$i];
+            }
+        }
+
+        return [$statusAf, $authorsNoAffiliation];
+    }
+
 }

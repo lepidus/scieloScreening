@@ -3,6 +3,7 @@
 import('classes.handler.Handler');
 import('plugins.generic.authorDOIScreening.classes.DOIScreening');
 import('plugins.generic.authorDOIScreening.classes.DOIScreeningDAO');
+import('plugins.generic.authorDOIScreening.classes.ScreeningChecker');
 
 class ScieloScreeningHandler extends Handler {
 
@@ -113,9 +114,9 @@ class ScieloScreeningHandler extends Handler {
     }
 
     public function validateDoisFromScreening($args, $request){
-        $dois = $args['dois'];
+        $checker = new ScreeningChecker();
         
-        if($dois[0] == $dois[1] || $dois[0] == $dois[2] || $dois[1] == $dois[2]){
+        if($checker->checkDoiRepeated($args['dois'])){
             $response = [
                 'statusValidateDois' => 0,
                 'messageError' => __("plugins.generic.authorDOIScreening.doiDifferentRequirement")
@@ -132,13 +133,7 @@ class ScieloScreeningHandler extends Handler {
             return json_encode($response);
         }
         else if($countOkay == 2){
-            $countAnos = 0;
-            $anoAtual = date('Y');
-            foreach($args['doisYears'] as $doiYear){
-                if((int)$doiYear >= (int)$anoAtual - 2) $countAnos++;
-            }
-
-            if($countAnos < 2){
+            if($checker->checkDoisLastTwoYears($args['doisYears'])){
                 $response = [
                     'statusValidateDois' => 0,
                     'messageError' => __("plugins.generic.authorDOIScreening.attentionRules")
@@ -161,24 +156,23 @@ class ScieloScreeningHandler extends Handler {
     }
 
     private function getStatusAuthors($submission) {
+        $checker = new ScreeningChecker();
         $authors = $submission->getAuthors();
-        $statusAf = true;
-        $statusOrcid = false;
-        $listAuthors = array();
         
-        foreach ($authors as $author) {   
-            if($author->getLocalizedAffiliation() == ""){
-                $statusAf = false;
-                $listAuthors[] = $author->getLocalizedGivenName() . " " . $author->getLocalizedFamilyName();
-            }
-            if($author->getOrcid() != ''){
-                $statusOrcid = true;
-            }
-        }
+        $affiliationAuthors = array_map(function($author){
+            return $author->getLocalizedAffiliation();
+        }, $authors);
+        $nameAuthors = array_map(function($author){
+            return $author->getLocalizedGivenName() . " " . $author->getLocalizedFamilyName();
+        }, $authors);
+        $orcidAuthors = array_map(function($author){
+            return $author->getOrcid();
+        }, $authors);
 
+        list($statusAf, $listAuthors) = $checker->checkAffiliationAuthors($affiliationAuthors, $nameAuthors);
         return [
             'statusAffiliation' => $statusAf,
-            'statusOrcid' => $statusOrcid,
+            'statusOrcid' => $checker->checkOrcidAuthors($orcidAuthors),
             'listAuthors' => $listAuthors
         ];
     }
@@ -205,15 +199,13 @@ class ScieloScreeningHandler extends Handler {
     }
 
     private function getStatusPDFs($submission) {
-        $numPDFs = 0;
-        if(count($submission->getGalleys()) > 0) {
-            foreach ($submission->getGalleys() as $galley) {
-                if(strtolower($galley->getLabel()) == 'pdf'){
-                    $numPDFs++;
-                }
-            }
-        }
-        $statusPDFs = ($numPDFs != 1);
+        $checker = new ScreeningChecker();
+        $galleys = $submission->getGalleys();
+        $labelGalleys = array_map(function($galley){
+            return strtolower($galley->getLabel());
+        }, $galleys);
+        
+        list($statusPDFs, $numPDFs) = $checker->checkNumberPdfs($labelGalleys);
 
         return [
             'statusPDFs' => $statusPDFs,
