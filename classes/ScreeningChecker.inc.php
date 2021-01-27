@@ -58,7 +58,7 @@ class ScreeningChecker {
         $status = $responseCrossref['status'];
         $items = $responseCrossref['message']['items'];
 
-        return $status == 'ok' || !empty($items);
+        return $status == 'ok' && !empty($items);
     }
 
     public function checkDoiFromAuthor($authorSubmission, $authorsCrossref) {
