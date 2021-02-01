@@ -83,7 +83,6 @@
             return;
         {rdelim}
 
-        //Se chegou aqui, tudo esta ok
         if(doiError.css('display') == 'block')
             doiError.css('display', 'none');
 

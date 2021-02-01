@@ -49,9 +49,9 @@ class ScreeningChecker {
 
     public function getFromCrossref($doiString){
         $response = file_get_contents('https://api.crossref.org/works?filter=doi:' . $doiString);
-        $johnson = json_decode($response, true);
+        $jsonResponse = json_decode($response, true);
 
-        return $johnson;
+        return $jsonResponse;
     }
 
     public function checkDoiCrossref($responseCrossref) {
