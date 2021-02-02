@@ -1,10 +1,10 @@
 <?php
 
 /**
- * @file plugins/generic/authorDOIScreening/classes/DOIScreening.inc.php
+ * @file plugins/generic/scieloScreening/classes/DOIScreening.inc.php
  *
  * @class DOIScreening
- * @ingroup plugins_generic_authorDOIScreening
+ * @ingroup plugins_generic_scieloScreening
  *
  * Data object representing a DOI provided during the screening
  */
