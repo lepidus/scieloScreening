@@ -11,8 +11,8 @@
 
 class ScreeningChecker {
     public function isUppercase($string){
-        $stringTratada = str_replace(' ', '', $string);
-        return ctype_upper($stringTratada);
+        $formattedString = str_replace(' ', '', $string);
+        return ctype_upper($formattedString);
     }
 
     public function checkHasUppercaseAuthors($nameAuthors){

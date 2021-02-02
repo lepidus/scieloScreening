@@ -20,9 +20,6 @@ class ScieloScreeningPlugin extends GenericPlugin {
 			$doiScreeningDAO = new DOIScreeningDAO();
 			DAORegistry::registerDAO('DOIScreeningDAO', $doiScreeningDAO);
 
-			// By default OPS installation will not allow authors to publish. Override the default so that custom publishing rulesets can be used.
-			//\HookRegistry::register('Publication::canAuthorPublish', [$this, 'setAuthorCanPublish']);
-
 			// Add a new ruleset for publishing
 			\HookRegistry::register('Publication::validatePublish', [$this, 'validate']);
 
@@ -112,10 +109,6 @@ class ScieloScreeningPlugin extends GenericPlugin {
 	public function getDescription() {
 		return __('plugins.generic.scieloScreening.description');
 	}
-
-	/*function setAuthorCanPublish($hookName, $args) {
-		return true;
-	}*/
 
 	function metadataFieldEdit($hookName, $params) {
 		$smarty =& $params[1];
