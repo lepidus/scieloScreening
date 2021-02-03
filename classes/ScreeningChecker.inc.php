@@ -1,18 +1,18 @@
 <?php
 
 /**
- * @file plugins/generic/authorDOIScreening/classes/ScreeningChecker.inc.php
+ * @file plugins/generic/scieloScreening/classes/ScreeningChecker.inc.php
  *
  * @class ScreeningChecker
- * @ingroup plugins_generic_authorDOIScreening
+ * @ingroup plugins_generic_scieloScreening
  *
  * Object to execute a series of verifications that are used by the plugin
  */
 
 class ScreeningChecker {
     public function isUppercase($string){
-        $stringTratada = str_replace(' ', '', $string);
-        return ctype_upper($stringTratada);
+        $formattedString = str_replace(' ', '', $string);
+        return ctype_upper($formattedString);
     }
 
     public function checkHasUppercaseAuthors($nameAuthors){

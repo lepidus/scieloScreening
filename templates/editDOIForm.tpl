@@ -1,12 +1,12 @@
 {**
- * plugins/generic/authorDOIScreening/templates/editDOIs.tpl
+ * plugins/generic/scieloScreening/templates/editDOIs.tpl
  *
  * Form for add/edit DOIs from a submission
  *}
 
-{capture assign=addDoiUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.authorDOIScreening.controllers.ScieloScreeningHandler" op="addDOIs" escape=false}{/capture}
-{capture assign=validateDoiUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.authorDOIScreening.controllers.ScieloScreeningHandler" op="validateDOI" escape=false}{/capture}
-{capture assign=validateDoisFromScreeningUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.authorDOIScreening.controllers.ScieloScreeningHandler" op="validateDoisFromScreening" escape=false}{/capture}
+{capture assign=addDoiUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.scieloScreening.controllers.ScieloScreeningHandler" op="addDOIs" escape=false}{/capture}
+{capture assign=validateDoiUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.scieloScreening.controllers.ScieloScreeningHandler" op="validateDOI" escape=false}{/capture}
+{capture assign=validateDoisFromScreeningUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.scieloScreening.controllers.ScieloScreeningHandler" op="validateDoisFromScreening" escape=false}{/capture}
 
 
 <script>
@@ -14,7 +14,7 @@
     var doisYears = [0,0,0];
 
     function sucessoScreening(){ldelim}
-        $('#generalMessage').text("{translate key="plugins.generic.authorDOIScreening.successfulScreening"}");
+        $('#generalMessage').text("{translate key="plugins.generic.scieloScreening.successfulScreening"}");
         $("#generalMessage").removeClass("myError");
         $("#generalMessage").addClass("mySuccess");
         $('#generalMessage').css('display', 'block');
@@ -33,9 +33,9 @@
                 doisYears: doisYears,
                 dois: [$('#firstDOI').val(), $('#secondDOI').val(), $('#thirdDOI').val()]
             {rdelim},
-            function (resultado){ldelim}
-                resultado = JSON.parse(resultado);
-                postValidateDoisResponse = resultado;
+            function (result){ldelim}
+                result = JSON.parse(result);
+                postValidateDoisResponse = result;
             {rdelim}
         );
 
@@ -70,9 +70,9 @@
                 doiString: doiInput.val(),
                 submissionId: {$submissionId}
             {rdelim},
-            function (resultado){ldelim}
-                resultado = JSON.parse(resultado);
-                postValidateResponse = resultado;
+            function (result){ldelim}
+                result = JSON.parse(result);
+                postValidateResponse = result;
             {rdelim}
         );
         
@@ -98,17 +98,17 @@
     {rdelim});
 </script>
 
-<link rel="stylesheet" type="text/css" href="/plugins/generic/authorDOIScreening/styles/submissionForm.css">
+<link rel="stylesheet" type="text/css" href="/plugins/generic/scieloScreening/styles/submissionForm.css">
 
 <div id="doiForm">
     <div id="doiFormArea">
-        <h2>{translate key="plugins.generic.authorDOIScreening.nome"}</h2>
-        <p>{translate key="plugins.generic.authorDOIScreening.submission.description"}</p>
+        <h2>{translate key="plugins.generic.scieloScreening.nome"}</h2>
+        <p>{translate key="plugins.generic.scieloScreening.submission.description"}</p>
         <span id="generalMessage" class="myError" style="display:none"></span>
         <div id="formFields">
             <div id="firstFormField">
                 <span id="firstDOIError" class="myError" style="display:none"></span>
-                <label id="firstDOILabel" class="pkpFormFieldLabel">{translate key="plugins.generic.authorDOIScreening.submission.first"}</label>
+                <label id="firstDOILabel" class="pkpFormFieldLabel">{translate key="plugins.generic.scieloScreening.submission.first"}</label>
                 {if isset($firstDOI)}
                     <input id="firstDOI" type="text" name="firstDOI" placeholder="Ex.: 10.1000/182" value="{$firstDOI->getDOICode()}">
                 {else}
@@ -117,7 +117,7 @@
             </div>
             <div id="secondFormField">
                 <span id="secondDOIError" class="myError" style="display:none"></span>
-                <label id="secondDOILabel" class="pkpFormFieldLabel">{translate key="plugins.generic.authorDOIScreening.submission.second"}</label>
+                <label id="secondDOILabel" class="pkpFormFieldLabel">{translate key="plugins.generic.scieloScreening.submission.second"}</label>
                 {if isset($secondDOI)}
                     <input id="secondDOI" type="text" name="secondDOI" placeholder="Ex.: 10.1000/182" value="{$secondDOI->getDOICode()}">
                 {else}
@@ -126,7 +126,7 @@
             </div>
             <div id="thirdFormField">
                 <span id="thirdDOIError" class="myError" style="display:none"></span>
-                <label id="thirdDOILabel" class="pkpFormFieldLabel">{translate key="plugins.generic.authorDOIScreening.submission.third"}</label>
+                <label id="thirdDOILabel" class="pkpFormFieldLabel">{translate key="plugins.generic.scieloScreening.submission.third"}</label>
                 {if isset($thirdDOI)}
                     <input id="thirdDOI" type="text" name="thirdDOI" placeholder="Ex.: 10.1000/182" value="{$thirdDOI->getDOICode()}">
                 {else}

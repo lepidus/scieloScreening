@@ -2,9 +2,9 @@
 <!DOCTYPE schema SYSTEM "../../../lib/pkp/dtd/xmlSchema.dtd">
 
 <!--
-  * plugins/generic/authorDOIScreening/schema.xml
+  * plugins/generic/scieloScreening/schema.xml
   *
-  * AuthorDOIScreeningPlugin database XML schema.
+  * ScieloScreeningPlugin database XML schema.
   *
   -->
 

@@ -1,62 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
 <!--
-  * plugins/generic/authorDOIScreening/locale/en_US/locale.xml
+  * plugins/generic/scieloScreening/locale/en_US/locale.xml
   *
   -->
 <locale name="es_ES" full_name="Español">
-	  <message key="plugins.generic.authorDOIScreening.displayName">Plugin de verificación SciELO</message>
-    <message key="plugins.generic.authorDOIScreening.nome">Verificación SciELO</message>
-	  <message key="plugins.generic.authorDOIScreening.description">Agrega nuevas reglas de verificación durante el envío de acuerdo con las políticas editoriales de SciELO Preprints</message>
+	  <message key="plugins.generic.scieloScreening.displayName">Moderación de SciELO</message>
+    <message key="plugins.generic.scieloScreening.nome">Verificación SciELO</message>
+	  <message key="plugins.generic.scieloScreening.description">Agrega nuevas reglas de verificación durante el envío de acuerdo con las políticas editoriales de SciELO Preprints</message>
 	
-    <message key="plugins.generic.authorDOIScreening.required.numberPDFs">Debe enviar al menos uno y no más de un documento PDF</message>
-    <message key="plugins.generic.authorDOIScreening.required.publishedBefore">Debe insertar DOIs de sus proprios artículos publicados en revistas especializadas</message>
-    <message key="plugins.generic.authorDOIScreening.required.affiliationForAll">Todos los contribuyentes de envío deben tener su afiliación lleno</message>
-    <message key="plugins.generic.authorDOIScreening.required.orcidLeastOne">Al menos un contribuyente debe tener su ORCID confirmado. Por favor, revise su correo electrónico</message>
-    <message key="plugins.generic.authorDOIScreening.required.numberAuthors">El número de autores insertados no es el mismo que el informado.</message>
-    <message key="plugins.generic.authorDOIScreening.required.nameUppercase">Algunos autores tienen su nombre en mayúsculas. Le pedimos que los corrija.</message>
+    <message key="plugins.generic.scieloScreening.required.numberPDFs">Debe enviar al menos uno y no más de un documento PDF</message>
+    <message key="plugins.generic.scieloScreening.required.publishedBefore">Debe insertar DOIs de sus proprios artículos publicados en revistas especializadas</message>
+    <message key="plugins.generic.scieloScreening.required.affiliationForAll">Todos los contribuyentes de envío deben tener su afiliación lleno</message>
+    <message key="plugins.generic.scieloScreening.required.orcidLeastOne">Al menos un contribuyente debe tener su ORCID confirmado. Por favor, revise su correo electrónico</message>
+    <message key="plugins.generic.scieloScreening.required.numberAuthors">El número de autores insertados no es el mismo que el informado.</message>
+    <message key="plugins.generic.scieloScreening.required.nameUppercase">Algunos autores tienen su nombre en mayúsculas. Le pedimos que los corrija.</message>
 
-    <message key="plugins.generic.authorDOIScreening.step4.warning">No se han realizado los siguientes pasos de verificación. Tienes la opción de volver y hacerlos.</message>
-    <message key="plugins.generic.authorDOIScreening.step4.affiliation">No ha completado la afiliación para todos los contribuyentes.</message>
-    <message key="plugins.generic.authorDOIScreening.step4.dois">No ha realizado la verificación de sus publicaciones anteriores.</message>
-    <message key="plugins.generic.authorDOIScreening.step4.metadataNotEnglish">Los seguintes metadatos deben completarse en inglés:</message>
-    <message key="plugins.generic.authorDOIScreening.step4.noPDFs">No ha agregado ningún documento PDF a este envío</message>
-    <message key="plugins.generic.authorDOIScreening.step4.manyPDFs.header">Por favor, envíe un único archivo PDF</message>
-    <message key="plugins.generic.authorDOIScreening.step4.manyPDFs.one">Si envía archivos adyacentes al manuscrito, por favor inclúyalos en lo mismo archivo PDF con el manuscrito principal</message>
-    <message key="plugins.generic.authorDOIScreening.step4.manyPDFs.two">Si está enviando una versión corregida del manuscrito, asegúrese de borrar el archivo PDF actual antes de enviar uno nuevo</message>
-    <message key="plugins.generic.authorDOIScreening.step4.manyPDFs.three">Si se trata de la versión traducida del manuscrito, se requerirá un nuevo envío, con un ID diferente</message>
+    <message key="plugins.generic.scieloScreening.step4.warning">No se han realizado los siguientes pasos de verificación. Tienes la opción de volver y hacerlos.</message>
+    <message key="plugins.generic.scieloScreening.step4.affiliation">No ha completado la afiliación para todos los contribuyentes.</message>
+    <message key="plugins.generic.scieloScreening.step4.dois">No ha realizado la verificación de sus publicaciones anteriores.</message>
+    <message key="plugins.generic.scieloScreening.step4.metadataNotEnglish">Los seguintes metadatos deben completarse en inglés:</message>
+    <message key="plugins.generic.scieloScreening.step4.noPDFs">No ha agregado ningún documento PDF a este envío</message>
+    <message key="plugins.generic.scieloScreening.step4.manyPDFs.header">Por favor, envíe un único archivo PDF</message>
+    <message key="plugins.generic.scieloScreening.step4.manyPDFs.one">Si envía archivos adyacentes al manuscrito, por favor inclúyalos en lo mismo archivo PDF con el manuscrito principal</message>
+    <message key="plugins.generic.scieloScreening.step4.manyPDFs.two">Si está enviando una versión corregida del manuscrito, asegúrese de borrar el archivo PDF actual antes de enviar uno nuevo</message>
+    <message key="plugins.generic.scieloScreening.step4.manyPDFs.three">Si se trata de la versión traducida del manuscrito, se requerirá un nuevo envío, con un ID diferente</message>
 
-    <message key="plugins.generic.authorDOIScreening.submission.contributors">Colaboradores/as</message>
-    <message key="plugins.generic.authorDOIScreening.submission.numberAuthors">Ingrese el número total de autores para esa publicación:</message>
-    <message key="plugins.generic.authorDOIScreening.submission.warningAffiliation">Asegúrese de que todos los contribuyentes tengan sus afiliaciones completas. Esto es necesario para la aprobación de su envío.</message>
-    <message key="plugins.generic.authorDOIScreening.submission.description">Inserte DOIs de sus proprios artículos publicados en revistas especializadas. Debe ingressar dos DOI de los últimos 2 años O tres DOI de cualquier fecha</message>
-    <message key="plugins.generic.authorDOIScreening.submission.first">Primero DOI</message>
-    <message key="plugins.generic.authorDOIScreening.submission.second">Segundo DOI</message>
-    <message key="plugins.generic.authorDOIScreening.submission.third">Tercero DOI</message>
+    <message key="plugins.generic.scieloScreening.submission.contributors">Colaboradores/as</message>
+    <message key="plugins.generic.scieloScreening.submission.numberAuthors">Ingrese el número total de autores para esa publicación:</message>
+    <message key="plugins.generic.scieloScreening.submission.warningAffiliation">Asegúrese de que todos los contribuyentes tengan sus afiliaciones completas. Esto es necesario para la aprobación de su envío.</message>
+    <message key="plugins.generic.scieloScreening.submission.description">Inserte DOIs de sus proprios artículos publicados en revistas especializadas. Debe ingressar dos DOI de los últimos 2 años O tres DOI de cualquier fecha</message>
+    <message key="plugins.generic.scieloScreening.submission.first">Primero DOI</message>
+    <message key="plugins.generic.scieloScreening.submission.second">Segundo DOI</message>
+    <message key="plugins.generic.scieloScreening.submission.third">Tercero DOI</message>
 
-    <message key="plugins.generic.authorDOIScreening.doiDifferentRequirement">Los DOI no pueden ser lo mismo</message>
-    <message key="plugins.generic.authorDOIScreening.attentionRules">Por favor, respete las reglas establecidas anteriormente</message>
-    <message key="plugins.generic.authorDOIScreening.doiCrossrefRequirement">Sólo se aceptan DOIs de la Crossref</message>
-    <message key="plugins.generic.authorDOIScreening.doiFromAuthor">Por favor, ingrese un DOI que sea suyo. También asegúrese de que su nombre en el sistema sea similar a su nombre en el artículo</message>
-    <message key="plugins.generic.authorDOIScreening.doiFromJournal">Por favor, ingrese un DOI de una publicación en una revista</message>
-    <message key="plugins.generic.authorDOIScreening.successfulScreening">¡Operación realizada con éxito!</message>
+    <message key="plugins.generic.scieloScreening.doiDifferentRequirement">Los DOI no pueden ser lo mismo</message>
+    <message key="plugins.generic.scieloScreening.attentionRules">Por favor, respete las reglas establecidas anteriormente</message>
+    <message key="plugins.generic.scieloScreening.doiCrossrefRequirement">Sólo se aceptan DOIs de la Crossref</message>
+    <message key="plugins.generic.scieloScreening.doiFromAuthor">Por favor, ingrese un DOI que sea suyo. También asegúrese de que su nombre en el sistema sea similar a su nombre en el artículo</message>
+    <message key="plugins.generic.scieloScreening.doiFromJournal">Por favor, ingrese un DOI de una publicación en una revista</message>
+    <message key="plugins.generic.scieloScreening.successfulScreening">¡Operación realizada con éxito!</message>
 
-    <message key="plugins.generic.authorDOIScreening.modal">Hacer verificación</message>
-    <message key="plugins.generic.authorDOIScreening.screeningRequirement">¡Necesitas realizar este paso!</message>
-    <message key="plugins.generic.authorDOIScreening.instructions">Para continuar con el envío automáticamente, se debe hacer una verificación de sus publicaciones anteriores. De lo contrario, su publicación deberá ser aprobada por un moderador.</message>
-    <message key="plugins.generic.authorDOIScreening.caseCantScreening">Si no puede hacer la verificación, marque la casilla a continuación:</message>
-    <message key="plugins.generic.authorDOIScreening.declaration">No tengo los DOI solicitados para proporcionar</message>
-    <message key="plugins.generic.authorDOIScreening.doiScreeningDone">Ya has completado este paso</message>
+    <message key="plugins.generic.scieloScreening.modal">Hacer verificación</message>
+    <message key="plugins.generic.scieloScreening.screeningRequirement">¡Necesitas realizar este paso!</message>
+    <message key="plugins.generic.scieloScreening.instructions">Para continuar con el envío automáticamente, se debe hacer una verificación de sus publicaciones anteriores. De lo contrario, su publicación deberá ser aprobada por un moderador.</message>
+    <message key="plugins.generic.scieloScreening.caseCantScreening">Si no puede hacer la verificación, marque la casilla a continuación:</message>
+    <message key="plugins.generic.scieloScreening.declaration">No tengo los DOI solicitados para proporcionar</message>
+    <message key="plugins.generic.scieloScreening.doiScreeningDone">Ya has completado este paso</message>
 
-    <message key="plugins.generic.authorDOIScreening.info.name">Información de verificación de SciELO</message>
-    <message key="plugins.generic.authorDOIScreening.info.description">Vea el estado de cada una de las comprobaciones a continuación:</message>
-    <message key="plugins.generic.authorDOIScreening.info.doiOkay">La verificación de los DOI se realizó correctamente. Vea cada DOI ingresado a continuación:</message>
-    <message key="plugins.generic.authorDOIScreening.info.doiNotOkay">¡La verificación de los DOI no se ha llevado a cabo!</message>
-    <message key="plugins.generic.authorDOIScreening.info.metadataEnglishOkay">Todos los metadatos se completaron en inglés</message>
-    <message key="plugins.generic.authorDOIScreening.info.metadataEnglishNotOkay">Los seguintes metadatos no se completaron en inglés:</message>
-    <message key="plugins.generic.authorDOIScreening.info.affiliationOkay">Todos los autores completaron su afiliación</message>
-    <message key="plugins.generic.authorDOIScreening.info.affiliationNotOkay">Los siguientes autores no completaron sus afiliaciones:</message>
-    <message key="plugins.generic.authorDOIScreening.info.orcidOkay">Se confirma el estado ORCID</message>
-    <message key="plugins.generic.authorDOIScreening.info.orcidNotOkay">Ningún autor ha confirmado su ORCID</message>
-    <message key="plugins.generic.authorDOIScreening.info.pdfsOkay">Solo se envió un documento PDF</message>
+    <message key="plugins.generic.scieloScreening.info.name">Información de Moderación de SciELO</message>
+    <message key="plugins.generic.scieloScreening.info.description">Vea el estado de cada una de las comprobaciones a continuación:</message>
+    <message key="plugins.generic.scieloScreening.info.doiOkay">La verificación de los DOI se realizó correctamente. Vea cada DOI ingresado a continuación:</message>
+    <message key="plugins.generic.scieloScreening.info.doiNotOkay">¡La verificación de los DOI no se ha llevado a cabo!</message>
+    <message key="plugins.generic.scieloScreening.info.metadataEnglishOkay">Todos los metadatos se completaron en inglés</message>
+    <message key="plugins.generic.scieloScreening.info.metadataEnglishNotOkay">Los seguintes metadatos no se completaron en inglés:</message>
+    <message key="plugins.generic.scieloScreening.info.affiliationOkay">Todos los autores completaron su afiliación</message>
+    <message key="plugins.generic.scieloScreening.info.affiliationNotOkay">Los siguientes autores no completaron sus afiliaciones:</message>
+    <message key="plugins.generic.scieloScreening.info.orcidOkay">Se confirma el estado ORCID</message>
+    <message key="plugins.generic.scieloScreening.info.orcidNotOkay">Ningún autor ha confirmado su ORCID</message>
+    <message key="plugins.generic.scieloScreening.info.pdfsOkay">Solo se envió un documento PDF</message>
 </locale>

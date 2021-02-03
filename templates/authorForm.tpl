@@ -22,7 +22,7 @@
 	{include file="controllers/notification/inPlaceNotification.tpl" notificationId="authorFormNotification"}
 
 	{include
-		file="../../../plugins/generic/authorDOIScreening/templates/userDetails.tpl"
+		file="../../../plugins/generic/scieloScreening/templates/userDetails.tpl"
 		disableUserNameSection=true
 		disableAuthSourceSection=true
 		disablePasswordSection=true

@@ -1,16 +1,16 @@
 <?php
 
 /**
- * @file plugins/generic/authorDOIScreening/classes/DOIScreeningDAO.inc.php
+ * @file plugins/generic/scieloScreening/classes/DOIScreeningDAO.inc.php
  *
  * @class DOIScreeningDAO
- * @ingroup plugins_generic_authorDOIScreening
+ * @ingroup plugins_generic_scieloScreening
  *
  * Operations for retrieving and modifying DOIScreening objects.
  */
 
 import('lib.pkp.classes.db.DAO');
-import('plugins.generic.authorDOIScreening.classes.DOIScreening');
+import('plugins.generic.scieloScreening.classes.DOIScreening');
 
 class DOIScreeningDAO extends DAO {
 

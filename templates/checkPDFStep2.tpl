@@ -1,10 +1,10 @@
 {**
- * plugins/generic/authorDOIScreening/templates/checkPDFStep2.tpl
+ * plugins/generic/scieloScreening/templates/checkPDFStep2.tpl
  *
  * Template that adds a verification for the number of PDFs sent at the step 2 of submission
  *}
 
-{capture assign=checkNumberPdfsUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.authorDOIScreening.controllers.ScieloScreeningHandler" op="checkNumberPdfs" escape=false}{/capture}
+{capture assign=checkNumberPdfsUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.scieloScreening.controllers.ScieloScreeningHandler" op="checkNumberPdfs" escape=false}{/capture}
 
  <script>
     var postResponse;
@@ -17,14 +17,14 @@
                 {ldelim}
                     submissionId: {$submissionId},
                 {rdelim},
-                function (resultado){ldelim}
-                    resultado = JSON.parse(resultado);
-                    postResponse = resultado;
+                function (result){ldelim}
+                    result = JSON.parse(result);
+                    postResponse = result;
                 {rdelim}
             );
 
             if(postResponse['statusNumberPdfs'] == 'error') {ldelim}
-                alert("{translate key="plugins.generic.authorDOIScreening.required.numberPDFs"}");
+                alert("{translate key="plugins.generic.scieloScreening.required.numberPDFs"}");
                 return;
             {rdelim}
 

@@ -1,17 +1,17 @@
 <?php
 /**
- * @file plugins/generic/authorDOIScreening/AuthorDOIScreeningPlugin.inc.php
+ * @file plugins/generic/scieloScreening/ScieloScreeningPlugin.inc.php
  *
- * @class AuthorDOIScreeningPlugin
- * @ingroup plugins_generic_authorDOIScreening
+ * @class ScieloScreeningPlugin
+ * @ingroup plugins_generic_scieloScreening
  *
  * @brief Plugin class for the DefaultScreening plugin.
  */
 import('lib.pkp.classes.plugins.GenericPlugin');
-import('plugins.generic.authorDOIScreening.classes.DOIScreeningDAO');
-import('plugins.generic.authorDOIScreening.controllers.ScieloScreeningHandler');
+import('plugins.generic.scieloScreening.classes.DOIScreeningDAO');
+import('plugins.generic.scieloScreening.controllers.ScieloScreeningHandler');
 
-class AuthorDOIScreeningPlugin extends GenericPlugin {
+class ScieloScreeningPlugin extends GenericPlugin {
 
 	public function register($category, $path, $mainContextId = NULL) {
 		$success = parent::register($category, $path, $mainContextId);
@@ -19,9 +19,6 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 		if ($success && $this->getEnabled($mainContextId)) {
 			$doiScreeningDAO = new DOIScreeningDAO();
 			DAORegistry::registerDAO('DOIScreeningDAO', $doiScreeningDAO);
-
-			// By default OPS installation will not allow authors to publish. Override the default so that custom publishing rulesets can be used.
-			//\HookRegistry::register('Publication::canAuthorPublish', [$this, 'setAuthorCanPublish']);
 
 			// Add a new ruleset for publishing
 			\HookRegistry::register('Publication::validatePublish', [$this, 'validate']);
@@ -44,14 +41,14 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 
 	function setupScieloScreeningHandler($hookName, $params) {
 		$component =& $params[0];
-		if ($component == 'plugins.generic.authorDOIScreening.controllers.ScieloScreeningHandler') {
+		if ($component == 'plugins.generic.scieloScreening.controllers.ScieloScreeningHandler') {
 			return true;
 		}
 		return false;
     }
     
     function changeAuthorForm($hookName, $params){
-        $path = "../../../plugins/generic/authorDOIScreening/templates/authorForm.tpl";
+        $path = "../../../plugins/generic/scieloScreening/templates/authorForm.tpl";
         
         $params[0]->setTemplate($path);
         $params[1] = $path;
@@ -106,16 +103,12 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
     }
 
     public function getDisplayName() {
-		return __('plugins.generic.authorDOIScreening.displayName');
+		return __('plugins.generic.scieloScreening.displayName');
 	}
 
 	public function getDescription() {
-		return __('plugins.generic.authorDOIScreening.description');
+		return __('plugins.generic.scieloScreening.description');
 	}
-
-	/*function setAuthorCanPublish($hookName, $args) {
-		return true;
-	}*/
 
 	function metadataFieldEdit($hookName, $params) {
 		$smarty =& $params[1];
@@ -146,7 +139,7 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
 		$smarty->assign($dataScreening);
 		$output .= sprintf(
 			'<tab id="screeningInfo" label="%s">%s</tab>',
-			__('plugins.generic.authorDOIScreening.info.name'),
+			__('plugins.generic.scieloScreening.info.name'),
 			$smarty->fetch($this->getTemplateResource('screeningInfo.tpl'))
 		);
     }
@@ -176,7 +169,7 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
         if(!$statusAuthors['statusAffiliation']) {
             $errors = array_merge(
                 $errors,
-                array('affiliationForAll' => __('plugins.generic.authorDOIScreening.required.affiliationForAll'))
+                array('affiliationForAll' => __('plugins.generic.scieloScreening.required.affiliationForAll'))
             );
             $okayForPublishing = false;
         }
@@ -184,7 +177,7 @@ class AuthorDOIScreeningPlugin extends GenericPlugin {
         if($this->userIsAuthor($submission) && !$statusAuthors['statusOrcid']){
             $errors = array_merge(
                 $errors,
-                array('orcidLeastOne' => __('plugins.generic.authorDOIScreening.required.orcidLeastOne'))
+                array('orcidLeastOne' => __('plugins.generic.scieloScreening.required.orcidLeastOne'))
             );
             $okayForPublishing = false;
         }

@@ -1,9 +1,9 @@
 <?php
 
 import('classes.handler.Handler');
-import('plugins.generic.authorDOIScreening.classes.DOIScreening');
-import('plugins.generic.authorDOIScreening.classes.DOIScreeningDAO');
-import('plugins.generic.authorDOIScreening.classes.ScreeningChecker');
+import('plugins.generic.scieloScreening.classes.DOIScreening');
+import('plugins.generic.scieloScreening.classes.DOIScreeningDAO');
+import('plugins.generic.scieloScreening.classes.ScreeningChecker');
 
 class ScieloScreeningHandler extends Handler {
 
@@ -74,7 +74,7 @@ class ScieloScreeningHandler extends Handler {
         if(!$checker->checkDoiCrossref($responseCrossref)) {
             $response = [
                 'statusValidate' => 0,
-                'messageError' => __("plugins.generic.authorDOIScreening.doiCrossrefRequirement")
+                'messageError' => __("plugins.generic.scieloScreening.doiCrossrefRequirement")
             ];
             return json_encode($response);
         }
@@ -88,7 +88,7 @@ class ScieloScreeningHandler extends Handler {
         if(!$checker->checkDoiFromAuthor($authorSubmission, $authorsCrossref)){
             $response = [
                 'statusValidate' => 0,
-                'messageError' => __("plugins.generic.authorDOIScreening.doiFromAuthor")
+                'messageError' => __("plugins.generic.scieloScreening.doiFromAuthor")
             ];
             return json_encode($response);
         }
@@ -96,7 +96,7 @@ class ScieloScreeningHandler extends Handler {
         if(!$checker->checkDoiArticle($itemCrossref)) {
             $response = [
                 'statusValidate' => 0,
-                'messageError' => __("plugins.generic.authorDOIScreening.doiFromJournal")
+                'messageError' => __("plugins.generic.scieloScreening.doiFromJournal")
             ];
             return json_encode($response);
         }
@@ -119,7 +119,7 @@ class ScieloScreeningHandler extends Handler {
         if($checker->checkDoiRepeated($args['dois'])){
             $response = [
                 'statusValidateDois' => 0,
-                'messageError' => __("plugins.generic.authorDOIScreening.doiDifferentRequirement")
+                'messageError' => __("plugins.generic.scieloScreening.doiDifferentRequirement")
             ];
             return json_encode($response);
         }
@@ -128,7 +128,7 @@ class ScieloScreeningHandler extends Handler {
         if($countOkay < 2) {
             $response = [
                 'statusValidateDois' => 0,
-                'messageError' => __("plugins.generic.authorDOIScreening.attentionRules")
+                'messageError' => __("plugins.generic.scieloScreening.attentionRules")
             ];
             return json_encode($response);
         }
@@ -136,7 +136,7 @@ class ScieloScreeningHandler extends Handler {
             if($checker->checkDoisLastTwoYears($args['doisYears'])){
                 $response = [
                     'statusValidateDois' => 0,
-                    'messageError' => __("plugins.generic.authorDOIScreening.attentionRules")
+                    'messageError' => __("plugins.generic.scieloScreening.attentionRules")
                 ];
                 return json_encode($response);
             }
