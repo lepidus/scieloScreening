@@ -5,7 +5,7 @@
   *
   -->
 <locale name="pt_BR" full_name="Português brasileiro">
-	  <message key="plugins.generic.scieloScreening.displayName">Plugin de Moderação SciELO</message>
+	  <message key="plugins.generic.scieloScreening.displayName">Moderação SciELO</message>
     <message key="plugins.generic.scieloScreening.nome">Verificação de DOIs</message>
 	  <message key="plugins.generic.scieloScreening.description">Adiciona novas regras de verificação durante a submissão de acordo com as políticas editoriais da SciELO Preprints</message>
 	

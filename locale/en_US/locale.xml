@@ -5,7 +5,7 @@
   *
   -->
 <locale name="en_US" full_name="U.S. English">
-    <message key="plugins.generic.scieloScreening.displayName">SciELO Screening Plugin</message>
+    <message key="plugins.generic.scieloScreening.displayName">SciELO Screening</message>
     <message key="plugins.generic.scieloScreening.nome">SciELO Screening</message>
     <message key="plugins.generic.scieloScreening.description">Adds new screening rules during submission according to SciELO Preprints' editorial policies</message>
 	
