@@ -163,7 +163,8 @@ class ScieloScreeningPlugin extends GenericPlugin {
 	function validate($hookName, $args) {
 		$errors =& $args[0];
         $submission = $args[2];
-        $statusAuthors = $this->getStatusAuthors($submission);
+        $scieloScreeningHandler = new ScieloScreeningHandler();
+        $statusAuthors = $scieloScreeningHandler->getStatusAuthors($submission);
         $okayForPublishing = true;
         
         if(!$statusAuthors['statusAffiliation']) {

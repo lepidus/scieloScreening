@@ -155,7 +155,7 @@ class ScieloScreeningHandler extends Handler {
         ];
     }
 
-    private function getStatusAuthors($submission) {
+    public function getStatusAuthors($submission) {
         $checker = new ScreeningChecker();
         $authors = $submission->getAuthors();
         
