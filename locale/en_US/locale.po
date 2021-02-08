@@ -1,0 +1,162 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2021-02-08T19:28:03+00:00\n"
+"PO-Revision-Date: 2021-02-08T19:28:03+00:00\n"
+"Language: \n"
+
+msgid "plugins.generic.scieloScreening.displayName"
+msgstr "SciELO Screening"
+
+msgid "plugins.generic.scieloScreening.nome"
+msgstr "SciELO Screening"
+
+msgid "plugins.generic.scieloScreening.description"
+msgstr "Adds new screening rules during submission according to SciELO Preprints' editorial policies"
+
+
+msgid "plugins.generic.scieloScreening.required.numberPDFs"
+msgstr "You must send at least one and no more than one PDF document"
+
+msgid "plugins.generic.scieloScreening.required.publishedBefore"
+msgstr "You need to insert DOIs from previous articles of your own authorship published in peer reviewed journals"
+
+msgid "plugins.generic.scieloScreening.required.affiliationForAll"
+msgstr "All submission contributors must have their affiliation filled"
+
+msgid "plugins.generic.scieloScreening.required.orcidLeastOne"
+msgstr "At least one contributor must have their ORCID confirmed. Please, check your e-mail"
+
+msgid "plugins.generic.scieloScreening.required.numberAuthors"
+msgstr "The number of inserted authors is not the same as that informed"
+
+msgid "plugins.generic.scieloScreening.required.nameUppercase"
+msgstr "Some authors have their name in capital letters. We ask that you correct them."
+
+
+msgid "plugins.generic.scieloScreening.step4.warning"
+msgstr "The following verification steps have not been performed. You have the option to go back and do them."
+
+msgid "plugins.generic.scieloScreening.step4.affiliation"
+msgstr "You have not filled in the affiliation for all contributors."
+
+msgid "plugins.generic.scieloScreening.step4.dois"
+msgstr "You did not perform the screening of your previous publications."
+
+msgid "plugins.generic.scieloScreening.step4.metadataNotEnglish"
+msgstr "The following metadata must be filled in english:"
+
+msgid "plugins.generic.scieloScreening.step4.noPDFs"
+msgstr "You have not added any PDF document to this submission"
+
+msgid "plugins.generic.scieloScreening.step4.manyPDFs.header"
+msgstr "Please send a single PDF file"
+
+msgid "plugins.generic.scieloScreening.step4.manyPDFs.one"
+msgstr "If you are sending files associated with the manuscript, please include them in the same PDF as the manuscript"
+
+msgid "plugins.generic.scieloScreening.step4.manyPDFs.two"
+msgstr "If you are sending a new version of the manuscript, make sure to delete the current PDF file before uploading a new one"
+
+msgid "plugins.generic.scieloScreening.step4.manyPDFs.three"
+msgstr "If this is a translated version of the manuscript, a new submission will be necessary, with a different ID"
+
+
+msgid "plugins.generic.scieloScreening.submission.contributors"
+msgstr "Contributors"
+
+msgid "plugins.generic.scieloScreening.submission.numberAuthors"
+msgstr "Please, enter the total number of authors of this publication:"
+
+msgid "plugins.generic.scieloScreening.submission.warningAffiliation"
+msgstr "Please make sure that all contributors have their affiliations filled. This is necessary for the approval of your submission."
+
+msgid "plugins.generic.scieloScreening.submission.description"
+msgstr "Please insert DOIs from previous articles of your own authorship published in peer reviewed journals. You must enter two DOIs from the past 2 years OR three DOIs from any date"
+
+msgid "plugins.generic.scieloScreening.submission.first"
+msgstr "First DOI"
+
+msgid "plugins.generic.scieloScreening.submission.second"
+msgstr "Second DOI"
+
+msgid "plugins.generic.scieloScreening.submission.third"
+msgstr "Third DOI"
+
+
+msgid "plugins.generic.scieloScreening.doiDifferentRequirement"
+msgstr "DOI cannot be the same"
+
+msgid "plugins.generic.scieloScreening.attentionRules"
+msgstr "Please, abide by the rules set out above"
+
+msgid "plugins.generic.scieloScreening.doiCrossrefRequirement"
+msgstr "Only DOIs from Crossref are allowed"
+
+msgid "plugins.generic.scieloScreening.doiFromAuthor"
+msgstr "Please, enter a DOI of yours. Also make sure your name in the system is similar to your name in the article"
+
+msgid "plugins.generic.scieloScreening.doiFromJournal"
+msgstr "Please, enter a DOI of a journal publication"
+
+msgid "plugins.generic.scieloScreening.successfulScreening"
+msgstr "Operation performed successfully!"
+
+
+msgid "plugins.generic.scieloScreening.modal"
+msgstr "Do screening"
+
+msgid "plugins.generic.scieloScreening.screeningRequirement"
+msgstr "You need to perform this step!"
+
+msgid "plugins.generic.scieloScreening.instructions"
+msgstr "To proceed automatically with the submission, you must do a screening of your previous publications. Otherwise, your submission will need to be approved by a moderator."
+
+msgid "plugins.generic.scieloScreening.caseCantScreening"
+msgstr "If you can't do the screening, select the checkbox below:"
+
+msgid "plugins.generic.scieloScreening.declaration"
+msgstr "I don't have the requested DOIs to provide"
+
+msgid "plugins.generic.scieloScreening.doiScreeningDone"
+msgstr "You have already completed this step"
+
+
+msgid "plugins.generic.scieloScreening.info.name"
+msgstr "SciELO Screening Info"
+
+msgid "plugins.generic.scieloScreening.info.description"
+msgstr "See the status of each screening step below:"
+
+msgid "plugins.generic.scieloScreening.info.doiOkay"
+msgstr "The DOI screening was done correctly. See each DOI inserted below:"
+
+msgid "plugins.generic.scieloScreening.info.doiNotOkay"
+msgstr "The DOI screening was not done!"
+
+msgid "plugins.generic.scieloScreening.info.metadataEnglishOkay"
+msgstr "All metadata was filled in english"
+
+msgid "plugins.generic.scieloScreening.info.metadataEnglishNotOkay"
+msgstr "The following metadata was not filled in english:"
+
+msgid "plugins.generic.scieloScreening.info.affiliationOkay"
+msgstr "All authors had their affiliation filled"
+
+msgid "plugins.generic.scieloScreening.info.affiliationNotOkay"
+msgstr "The authors below have not filled out their affiliations:"
+
+msgid "plugins.generic.scieloScreening.info.orcidOkay"
+msgstr "ORCID status is confirmed"
+
+msgid "plugins.generic.scieloScreening.info.orcidNotOkay"
+msgstr "No author had confirmed their ORCID"
+
+msgid "plugins.generic.scieloScreening.info.pdfsOkay"
+msgstr "Only one PDF document was submitted"

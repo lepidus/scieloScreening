@@ -25,10 +25,5 @@ class DOIScreeningMigration extends Migration {
 			$table->bigInteger('submission_id');
 			$table->string('doi_code', 255);
 		});
-
     }
-    
-    public function down() {
-		Capsule::schema()->drop('doi_screening');
-	}
 }

@@ -186,12 +186,10 @@ class ScieloScreeningPlugin extends GenericPlugin {
         return $okayForPublishing;
 	}
 
-    /**
-	 * @copydoc Plugin::getInstallSchemaFile()
-	 */
-	function getInstallSchemaFile() {
-		return $this->getPluginPath() . DIRECTORY_SEPARATOR . 'schema.xml';
-	}
+    function getInstallMigration() {
+        $this->import('classes.migration.DOIScreeningMigration');
+        return new DOIScreeningMigration();
+    }
 
     function userIsAuthor($submission){
         $currentUser = \Application::get()->getRequest()->getUser();
