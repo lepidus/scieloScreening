@@ -24,7 +24,7 @@ class DOIScreeningDAO extends DAO {
 		
 		$returner = array();
 		foreach($result->toArray() as $row) {
-			$returner[] = $this->_fromRow($row);
+			$returner[] = $this->_fromRow(get_object_vars($row));
 		}
 
         return $returner;
