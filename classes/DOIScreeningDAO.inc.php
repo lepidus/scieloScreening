@@ -12,59 +12,38 @@
 import('lib.pkp.classes.db.DAO');
 import('plugins.generic.scieloScreening.classes.DOIScreening');
 
+use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Support\Collection;
+
 class DOIScreeningDAO extends DAO {
 
-	function getByDOIId($doiId) {
-		$result = $this->retrieve(
-			'SELECT * FROM doi_screening WHERE doi_id = ?',
-			[$doiId]
-		);
-
-		$returner = null;
-		if ($result->RecordCount() != 0) {
-			$returner = $this->_fromRow($result->GetRowAssoc(false));
-		}
-		$result->Close();
-		return $returner;
-	}
-
     function getBySubmissionId($submissionId) {
-		$result = $this->retrieve(
-			'SELECT * FROM doi_screening WHERE submission_id = ?',
-			[$submissionId]
-		);
-        $returner = (new DAOResultFactory($result, $this, '_fromRow'))->toArray();
+		$result = Capsule::table('doi_screening')
+		->where('submission_id', $submissionId)
+		->get();
+		
+		$returner = array();
+		foreach($result->toArray() as $row) {
+			$returner[] = $this->_fromRow($row);
+		}
 
         return $returner;
 	}
 
 	function insertObject($doiScreening) {
-		$this->update(
-			'INSERT INTO doi_screening (submission_id, doi_code) VALUES (?, ?)',
-			array(
-				(int) $doiScreening->getSubmissionId(),
-				$doiScreening->getDOICode()
-			)
-		);
-		$doiScreening->setId($this->getLastInsertId());
-        
-        return $doiScreening->getDOIId();
+		$inserted = Capsule::table('doi_screening')
+		->insert([
+			'submission_id' => (int) $doiScreening->getSubmissionId(),
+			'doi_code' => $doiScreening->getDOICode()
+		]);	
 	}
 
     function updateObject($doiScreening) {
-		$this->update(
-			'UPDATE	doi_screening
-			SET	doi_code = ?
-			WHERE doi_id = ?',
-			array(
-                $doiScreening->getDOICode(),
-                (int) $doiScreening->getDOIId()
-			)
-		);
-	}
-
-    function getLastInsertId() {
-		return $this->_getInsertId('doi_screening', 'doi_id');
+		Capsule::table('doi_screening')
+		->where('doi_id', (int) $doiScreening->getDOIId())
+		->update([
+			'doi_code' => $doiScreening->getDOICode()
+		]);
 	}
     
     function _fromRow($row) {
