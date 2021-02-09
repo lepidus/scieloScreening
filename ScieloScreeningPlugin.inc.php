@@ -69,7 +69,7 @@ class ScieloScreeningPlugin extends GenericPlugin {
     }
 
     function insertTemplateIntoStep2($template, &$step2) {
-        $posInsert = strpos($step4, "<div id=\"formatsGridContainer");
+        $posInsert = strpos($step2, "<div id=\"formatsGridContainer");
         $newStep2 = substr_replace($step2, $template, $posInsert, 0);
 
         $step2 = $newStep2;

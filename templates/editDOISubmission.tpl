@@ -65,8 +65,7 @@
                 {rdelim}
             {rdelim});
 
-            $(".pkp_button.submitFormButton").removeAttr("type").attr("type", "button");
-            $(".pkp_button.submitFormButton").click(async function(){ldelim}
+            $(".pkp_button.submitFormButton").mouseover(async function(){ldelim}
                 await $.post(
                     "{$checkAuthorsUrl}",
                     {ldelim}
@@ -86,6 +85,7 @@
 
                 if(postResponse['statusUppercase'] == 'error'){ldelim}
                     alert("{translate key="plugins.generic.scieloScreening.required.nameUppercase"}");
+                    return;
                 {rdelim}
 
                 if(postResponse['statusOrcid'] == 'error'){ldelim}
@@ -93,10 +93,7 @@
                     return;
                 {rdelim}
                 
-                if(screeningChecked){ldelim}
-                    $("#submitStep3Form").submit();
-                {rdelim}
-                else{ldelim}
+                if(!screeningChecked){ldelim}
                     $("#errorScreening").css("display", "block");
                 {rdelim}
             {rdelim});
@@ -136,9 +133,10 @@
 
         {if count($dois) == 0}
         <div id="DOIModal" class="pkp_modal pkpModalWrapper" tabIndex="-1">
-            <div class="pkp_modal_panel" role="dialog" aria-label="Add Contributor">
+            <div class="pkp_modal_panel" role="dialog" aria-label="DOI Screening">
                 <div id="titleModal" class="header">{translate key="plugins.generic.scieloScreening.modal"}</div>
                 <a id="closeDOIModal" class="close pkpModalCloseButton">
+                    <span :aria-hidden="true">×</span>
                     <span class="pkp_screen_reader">{translate key="common.closePanel"}</span>
                 </a>
                 <div class="content">

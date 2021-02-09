@@ -10,8 +10,7 @@
     var postResponse;
 
     $(function(){ldelim}
-        $(".pkp_button.submitFormButton").removeAttr("type").attr("type", "button");
-        $(".pkp_button.submitFormButton").click(async function(){ldelim}
+        $(".pkp_button.submitFormButton").mouseover(async function(){ldelim}
             await $.post(
                 "{$checkNumberPdfsUrl}",
                 {ldelim}
@@ -25,10 +24,7 @@
 
             if(postResponse['statusNumberPdfs'] == 'error') {ldelim}
                 alert("{translate key="plugins.generic.scieloScreening.required.numberPDFs"}");
-                return;
             {rdelim}
-
-            $('#submitStep2Form').submit();
         {rdelim});
     {rdelim});
  </script>
