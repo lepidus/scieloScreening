@@ -196,10 +196,10 @@ class ScieloScreeningPlugin extends GenericPlugin {
         $currentUserAssignedRoles = array();
         if ($currentUser) {
             $stageAssignmentDao = DAORegistry::getDAO('StageAssignmentDAO'); /* @var $stageAssignmentDao StageAssignmentDAO */
-            $stageAssignmentsResult = $stageAssignmentDao->getBySubmissionAndUserIdAndStageId($submission->getId(), $currentUser->getId(), $stageId);
+            $stageAssignmentsResult = $stageAssignmentDao->getBySubmissionAndUserIdAndStageId($submission->getId(), $currentUser->getId(), $submission->getData('stageId'));
             $userGroupDao = DAORegistry::getDAO('UserGroupDAO'); /* @var $userGroupDao UserGroupDAO */
             while ($stageAssignment = $stageAssignmentsResult->next()) {
-                $userGroup = $userGroupDao->getById($stageAssignment->getUserGroupId(), $contextId);
+                $userGroup = $userGroupDao->getById($stageAssignment->getUserGroupId(), $submission->getData('contextId'));
                 $currentUserAssignedRoles[] = (int) $userGroup->getRoleId();
             }
         }
