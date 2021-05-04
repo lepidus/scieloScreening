@@ -55,11 +55,11 @@ class ScieloScreeningHandler extends Handler {
         $galleys = $submission->getGalleys();
         $response = array();
 
-        $labelGalleys = array_map(function($galley){
-            return strtolower($galley->getLabel());
+        $fileTypeGalleys = array_map(function($galley){
+            return ($galley->getFileType());
         }, $galleys);
 
-        if(!$checker->checkNumberPdfs($labelGalleys)[0])
+        if(!$checker->checkNumberPdfs($fileTypeGalleys)[0])
             $response['statusNumberPdfs'] = 'error';
         else
             $response['statusNumberPdfs'] = 'success';
@@ -201,11 +201,12 @@ class ScieloScreeningHandler extends Handler {
     private function getStatusPDFs($submission) {
         $checker = new ScreeningChecker();
         $galleys = $submission->getGalleys();
-        $labelGalleys = array_map(function($galley){
-            return strtolower($galley->getLabel());
-        }, $galleys);
         
-        list($statusPDFs, $numPDFs) = $checker->checkNumberPdfs($labelGalleys);
+        $fileTypeGalleys = array_map(function($galley){
+            return ($galley->getFileType());
+        }, $galleys);
+
+        list($statusPDFs, $numPDFs) = $checker->checkNumberPdfs($fileTypeGalleys);
 
         return [
             'statusPDFs' => $statusPDFs,

@@ -35,11 +35,11 @@ class ScreeningChecker {
         return $orcidOne;
     }
 
-    public function checkNumberPdfs($labelGalleys){
+    public function checkNumberPdfs($fileTypeGalleys){
         $numPDFs = 0;
-        if(count($labelGalleys) > 0) {
-            foreach ($labelGalleys as $galley) {
-                if($galley == 'pdf')
+        if(count($fileTypeGalleys) > 0) {
+            foreach ($fileTypeGalleys as $galleyType) {
+                if($galleyType == 'application/pdf')
                     $numPDFs++;
             }
         }
