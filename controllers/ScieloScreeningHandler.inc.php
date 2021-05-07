@@ -72,10 +72,19 @@ class ScieloScreeningHandler extends Handler {
         $responseCrossref = $checker->getFromCrossref($args['doiString']);
 
         if(!$checker->checkDoiCrossref($responseCrossref)) {
-            $response = [
-                'statusValidate' => 0,
-                'messageError' => __("plugins.generic.scieloScreening.doiCrossrefRequirement")
-            ];
+            $variavel = get_headers("https://doi.org/" . $args['doiString']);
+            if(str_contains($variavel[0], "302")){
+                $response = [
+                    'statusValidate' => 0,
+                    'messageError' => __("plugins.generic.scieloScreening.doiCrossrefRequirement")
+                ];    
+            }
+            else{
+                $response = [
+                    'statusValidate' => 0,
+                    'messageError' => __("plugins.generic.scieloScreening.doiNotRegistered")
+                ]; 
+            }
             return json_encode($response);
         }
 

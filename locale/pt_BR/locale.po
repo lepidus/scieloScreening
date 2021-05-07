@@ -99,6 +99,9 @@ msgstr "Por favor, cumpra as regras colocadas acima"
 msgid "plugins.generic.scieloScreening.doiCrossrefRequirement"
 msgstr "Apenas DOIs da Crossref são aceitos"
 
+msgid "plugins.generic.scieloScreening.doiNotRegistered"
+msgstr "O DOI inserido não está registrado. Confirme se o mesmo está correto e, em caso de dúvida, verifique com a publicação de origem."
+
 msgid "plugins.generic.scieloScreening.doiFromAuthor"
 msgstr "Por favor, insira um DOI que seja seu. Verifique também se seu nome no sistema é semelhante ao seu nome no artigo"
 
