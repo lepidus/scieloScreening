@@ -63,14 +63,44 @@ class ScreeningChecker {
 
     public function checkDoiFromAuthor($authorSubmission, $authorsCrossref) {
         $foundAuthor = false;
-        for($i = 0; $i < count($authorsCrossref); $i++){
-            $nameCrossref = $authorsCrossref[$i]['given'] . $authorsCrossref[$i]['family'];
-            similar_text($nameCrossref, $authorSubmission, $similarity);
 
-            if($similarity > 35){
-                $foundAuthor = true;
-                break;
+
+        for($i = 0; $i < count($authorsCrossref); $i++){
+            $nameCrossref = $authorsCrossref[$i]['given'] . " " . $authorsCrossref[$i]['family'];
+
+            $firstNameAuthorSubmission = strtok($authorSubmission, " ");
+            $firstNameCrossref = strtok($nameCrossref, " ");
+
+            $tokensAuthorSubmission = explode(" ", $authorSubmission);
+            $tokensNameCrossref = explode(" ", $nameCrossref);
+    
+
+            if((strcmp($firstNameAuthorSubmission, $tokensNameCrossref[0]) == 0)){
+
+                if (sizeof($tokensAuthorSubmission) == sizeof($tokensNameCrossref)){
+                    $countNamesEquals = 0;
+                    for ($i=0; $i < sizeof($tokensAuthorSubmission); $i++) { 
+                        $abbreviation = $tokensAuthorSubmission[$i][0] . '.';
+                        if((strcmp($tokensAuthorSubmission[$i], $tokensNameCrossref[$i]) == 0) ||  (strcmp($abbreviation, $tokensNameCrossref[$i]) == 0)){
+                            $countNamesEquals+=1;
+                        }
+                    }
+
+                    if ($countNamesEquals == sizeof($tokensAuthorSubmission)){
+                        $foundAuthor = true;
+                    }
+
+                } 
+                else if (sizeof($tokensNameCrossref) == 2){
+                        for ($i=1; $i < sizeof($tokensAuthorSubmission); $i++) { 
+                            $abbreviation = $tokensAuthorSubmission[$i][0] . '.';
+                            if((strcmp($tokensAuthorSubmission[$i], $tokensNameCrossref[1]) == 0) ||  (strcmp($abbreviation, $tokensNameCrossref[1]) == 0)){
+                                $foundAuthor = true;
+                            }
+                        }
+                } 
             }
+
         }
 
         return $foundAuthor;
