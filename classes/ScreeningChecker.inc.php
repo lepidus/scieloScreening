@@ -63,25 +63,25 @@ class ScreeningChecker {
 
     public function checkDoiFromAuthor($authorSubmission, $authorsCrossref) {
         $foundAuthor = false;
-
+        $wordCount = 2;
 
         for($i = 0; $i < count($authorsCrossref); $i++){
-            $nameCrossref = $authorsCrossref[$i]['given'] . " " . $authorsCrossref[$i]['family'];
+            $nameAuthorCrossref = $authorsCrossref[$i]['given'] . " " . $authorsCrossref[$i]['family'];
 
             $firstNameAuthorSubmission = strtok($authorSubmission, " ");
-            $firstNameCrossref = strtok($nameCrossref, " ");
+            $firstNameAuthorCrossref = strtok($nameAuthorCrossref, " ");
 
             $tokensAuthorSubmission = explode(" ", $authorSubmission);
-            $tokensNameCrossref = explode(" ", $nameCrossref);
+            $tokensAuthorCrossref = explode(" ", $nameAuthorCrossref);
     
 
-            if((strcmp($firstNameAuthorSubmission, $tokensNameCrossref[0]) == 0)){
+            if((strcmp($firstNameAuthorSubmission, $firstNameAuthorCrossref) == 0)){
 
-                if (sizeof($tokensAuthorSubmission) == sizeof($tokensNameCrossref)){
+                if (sizeof($tokensAuthorSubmission) == sizeof($tokensAuthorCrossref)){
                     $countNamesEquals = 0;
                     for ($i=0; $i < sizeof($tokensAuthorSubmission); $i++) { 
                         $abbreviation = $tokensAuthorSubmission[$i][0] . '.';
-                        if((strcmp($tokensAuthorSubmission[$i], $tokensNameCrossref[$i]) == 0) ||  (strcmp($abbreviation, $tokensNameCrossref[$i]) == 0)){
+                        if((strcmp($tokensAuthorSubmission[$i], $tokensAuthorCrossref[$i]) == 0) ||  (strcmp($abbreviation, $tokensAuthorCrossref[$i]) == 0)){
                             $countNamesEquals+=1;
                         }
                     }
@@ -91,10 +91,10 @@ class ScreeningChecker {
                     }
 
                 } 
-                else if (sizeof($tokensNameCrossref) == 2){
+                else if (sizeof($tokensAuthorCrossref) == $wordCount){
                         for ($i=1; $i < sizeof($tokensAuthorSubmission); $i++) { 
                             $abbreviation = $tokensAuthorSubmission[$i][0] . '.';
-                            if((strcmp($tokensAuthorSubmission[$i], $tokensNameCrossref[1]) == 0) ||  (strcmp($abbreviation, $tokensNameCrossref[1]) == 0)){
+                            if((strcmp($tokensAuthorSubmission[$i], $tokensAuthorCrossref[1]) == 0) ||  (strcmp($abbreviation, $tokensAuthorCrossref[1]) == 0)){
                                 $foundAuthor = true;
                             }
                         }

@@ -84,12 +84,30 @@ final class ScreeningCheckerTest extends TestCase
         $authorsCrossref = $responseCrossref['message']['items'][0]['author'];
         $authorSubmission = "Jhonathan de Seixas Miranda";
 
-        $authorsCrossref1 = $responseCrossref1['message']['items'][0]['author'];
-        // $authorsCrossref1 =  array(array('given' => "Síntique", 'family' => "das Dores Lopes")); 
+        $authorsCrossrefTrue1 =  array(array('given' => "Síntique", 'family' => "Priscila Alves Lopes")); 
+        $authorsCrossrefTrue2 =  array(array('given' => "Síntique", 'family' => "Priscila A. Lopes")); 
+        $authorsCrossrefTrue3 =  array(array('given' => "Síntique", 'family' => "P. Alves Lopes")); 
+        $authorsCrossrefTrue4 =  array(array('given' => "Síntique", 'family' => "P. A. Lopes")); 
+        $authorsCrossrefTrue5 = $responseCrossref1['message']['items'][0]['author']; //Síntique Lopes
+
+        $authorsCrossrefFalse1 =  array(array('given' => "Síntique", 'family' => "das Dores Lopes")); 
+        $authorsCrossrefFalse2 =  array(array('given' => "Síntique", 'family' => "X. Z. Lopes")); 
+        $authorsCrossrefFalse3 =  array(array('given' => "Maria", 'family' => "Síntique Lopes")); 
+
+
         $authorSubmission1 = "Síntique Priscila Alves Lopes";
 
         $this->assertFalse($checker->checkDoiFromAuthor($authorSubmission, $authorsCrossref));
-        $this->assertTrue($checker->checkDoiFromAuthor($authorSubmission1, $authorsCrossref1));
+        $this->assertFalse($checker->checkDoiFromAuthor($authorSubmission1, $authorsCrossrefFalse1));
+        $this->assertFalse($checker->checkDoiFromAuthor($authorSubmission1, $authorsCrossrefFalse2));
+        $this->assertFalse($checker->checkDoiFromAuthor($authorSubmission1, $authorsCrossrefFalse3));
+
+
+        $this->assertTrue($checker->checkDoiFromAuthor($authorSubmission1, $authorsCrossrefTrue1));
+        $this->assertTrue($checker->checkDoiFromAuthor($authorSubmission1, $authorsCrossrefTrue2));
+        $this->assertTrue($checker->checkDoiFromAuthor($authorSubmission1, $authorsCrossrefTrue3));
+        $this->assertTrue($checker->checkDoiFromAuthor($authorSubmission1, $authorsCrossrefTrue4));
+        $this->assertTrue($checker->checkDoiFromAuthor($authorSubmission1, $authorsCrossrefTrue5));
     }
 
     public function testCheckDoiArticle(): void
