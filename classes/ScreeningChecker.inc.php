@@ -68,42 +68,54 @@ class ScreeningChecker {
         for($i = 0; $i < count($authorsCrossref); $i++){
             $nameAuthorCrossref = $authorsCrossref[$i]['given'] . " " . $authorsCrossref[$i]['family'];
 
-            $firstNameAuthorSubmission = strtok($authorSubmission, " ");
-            $firstNameAuthorCrossref = strtok($nameAuthorCrossref, " ");
-
             $tokensAuthorSubmission = explode(" ", $authorSubmission);
             $tokensAuthorCrossref = explode(" ", $nameAuthorCrossref);
-    
+            
+            $firstNameAuthorSubmission = $tokensAuthorSubmission[0];
+            $firstNameAuthorCrossref = $tokensAuthorCrossref[0];
 
             if((strcmp($firstNameAuthorSubmission, $firstNameAuthorCrossref) == 0)){
-
                 if (sizeof($tokensAuthorSubmission) == sizeof($tokensAuthorCrossref)){
-                    $countNamesEquals = 0;
-                    for ($i=0; $i < sizeof($tokensAuthorSubmission); $i++) { 
-                        $abbreviation = $tokensAuthorSubmission[$i][0] . '.';
-                        if((strcmp($tokensAuthorSubmission[$i], $tokensAuthorCrossref[$i]) == 0) ||  (strcmp($abbreviation, $tokensAuthorCrossref[$i]) == 0)){
-                            $countNamesEquals+=1;
-                        }
+                    $foundAuthor = $this->checkAuthorNameTokens($tokensAuthorSubmission,$tokensAuthorCrossref);
+                }
+                else{ 
+                    if (sizeof($tokensAuthorCrossref) == $wordCount){
+                        $foundAuthor = $this->checkAuthorNameTokensWithOneToken($tokensAuthorSubmission,$tokensAuthorCrossref);
                     }
-
-                    if ($countNamesEquals == sizeof($tokensAuthorSubmission)){
-                        $foundAuthor = true;
-                    }
-
-                } 
-                else if (sizeof($tokensAuthorCrossref) == $wordCount){
-                        for ($i=1; $i < sizeof($tokensAuthorSubmission); $i++) { 
-                            $abbreviation = $tokensAuthorSubmission[$i][0] . '.';
-                            if((strcmp($tokensAuthorSubmission[$i], $tokensAuthorCrossref[1]) == 0) ||  (strcmp($abbreviation, $tokensAuthorCrossref[1]) == 0)){
-                                $foundAuthor = true;
-                            }
-                        }
                 } 
             }
-
         }
 
         return $foundAuthor;
+    }
+    
+    public function checkAuthorNameTokens($tokensAuthorSubmission,$tokensAuthorCrossref){
+        $equalsName = false;
+        $countNamesEquals = 0;
+
+        for ($i=0; $i < sizeof($tokensAuthorSubmission); $i++) { 
+            $abbreviation = $tokensAuthorSubmission[$i][0] . '.';
+            if((strcmp($tokensAuthorSubmission[$i], $tokensAuthorCrossref[$i]) == 0) ||  (strcmp($abbreviation, $tokensAuthorCrossref[$i]) == 0)){
+                $countNamesEquals+=1;
+            }
+        }
+
+        if ($countNamesEquals == sizeof($tokensAuthorSubmission)){
+            $equalsName = true;
+        }
+
+        return $equalsName;
+    }
+
+    public function checkAuthorNameTokensWithOneToken($tokensAuthorSubmission,$tokensAuthorCrossref){
+        $equalsName = false;
+        for ($i=1; $i < sizeof($tokensAuthorSubmission); $i++) { 
+            $abbreviation = $tokensAuthorSubmission[$i][0] . '.';
+            if((strcmp($tokensAuthorSubmission[$i], $tokensAuthorCrossref[1]) == 0) ||  (strcmp($abbreviation, $tokensAuthorCrossref[1]) == 0)){
+                $equalsName = true;
+            }
+        }
+        return $equalsName;
     }
 
     public function checkDoiArticle($itemCrossref) {
