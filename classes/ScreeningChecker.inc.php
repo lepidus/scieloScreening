@@ -74,7 +74,7 @@ class ScreeningChecker {
             $firstNameAuthorSubmission = $tokensAuthorSubmission[0];
             $firstNameAuthorCrossref = $tokensAuthorCrossref[0];
 
-            if((strcmp($firstNameAuthorSubmission, $firstNameAuthorCrossref) == 0)){
+            if((strcasecmp($firstNameAuthorSubmission, $firstNameAuthorCrossref) == 0)){
                 if (sizeof($tokensAuthorSubmission) == sizeof($tokensAuthorCrossref)){
                     $foundAuthor = $this->checkAuthorNameTokens($tokensAuthorSubmission,$tokensAuthorCrossref);
                 }
@@ -95,7 +95,7 @@ class ScreeningChecker {
 
         for ($i=0; $i < sizeof($tokensAuthorSubmission); $i++) { 
             $abbreviation = $tokensAuthorSubmission[$i][0] . '.';
-            if((strcmp($tokensAuthorSubmission[$i], $tokensAuthorCrossref[$i]) == 0) ||  (strcmp($abbreviation, $tokensAuthorCrossref[$i]) == 0)){
+            if((strcasecmp($tokensAuthorSubmission[$i], $tokensAuthorCrossref[$i]) == 0) ||  (strcasecmp($abbreviation, $tokensAuthorCrossref[$i]) == 0)){
                 $countNamesEquals+=1;
             }
         }
@@ -111,7 +111,7 @@ class ScreeningChecker {
         $equalsName = false;
         for ($i=1; $i < sizeof($tokensAuthorSubmission); $i++) { 
             $abbreviation = $tokensAuthorSubmission[$i][0] . '.';
-            if((strcmp($tokensAuthorSubmission[$i], $tokensAuthorCrossref[1]) == 0) ||  (strcmp($abbreviation, $tokensAuthorCrossref[1]) == 0)){
+            if((strcasecmp($tokensAuthorSubmission[$i], $tokensAuthorCrossref[1]) == 0) ||  (strcasecmp($abbreviation, $tokensAuthorCrossref[1]) == 0)){
                 $equalsName = true;
             }
         }
