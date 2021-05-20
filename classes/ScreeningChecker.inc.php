@@ -68,8 +68,11 @@ class ScreeningChecker {
         for($i = 0; $i < count($authorsCrossref); $i++){
             $nameAuthorCrossref = $authorsCrossref[$i]['given'] . " " . $authorsCrossref[$i]['family'];
 
-            $tokensAuthorSubmission = explode(" ", $authorSubmission);
-            $tokensAuthorCrossref = explode(" ", $nameAuthorCrossref);
+            $authorSubmissionNameWithoutAccentuation = $this->removeAccentuation($authorSubmission);
+            $authorCrossrefNameWithoutAccentuation = $this->removeAccentuation($nameAuthorCrossref);
+
+            $tokensAuthorSubmission = explode(" ", $authorSubmissionNameWithoutAccentuation);
+            $tokensAuthorCrossref = explode(" ", $authorCrossrefNameWithoutAccentuation);
             
             $firstNameAuthorSubmission = $tokensAuthorSubmission[0];
             $firstNameAuthorCrossref = $tokensAuthorCrossref[0];
@@ -116,6 +119,11 @@ class ScreeningChecker {
             }
         }
         return $equalsName;
+    }
+
+    public function removeAccentuation($authorName){
+        $nameWithoutAccentuation = iconv('UTF-8', 'ASCII//TRANSLIT', $authorName);
+        return $nameWithoutAccentuation;
     }
 
     public function checkDoiArticle($itemCrossref) {

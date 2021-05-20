@@ -129,6 +129,27 @@ final class ScreeningCheckerTest extends TestCase
         $this->assertFalse($checker->checkDoiFromAuthor($authorSubmission, $authorsCrossref));
     }
 
+    public function testRemoveAccentuation(): void
+    {
+        $checker = new ScreeningChecker();
+        $nameResulted = $checker->removeAccentuation("Síntique Priscila Alves Lopes");
+
+        $nameExpected = "Sintique Priscila Alves Lopes";
+
+        $this->assertEquals($nameResulted,$nameExpected);
+    }
+
+    public function testDoiAuthorsNameWithoutAccentuationEqualsSubmissionAuthorNameWithAccentuation(): void
+    {
+        $checker = new ScreeningChecker();
+
+        $authorsCrossref =  array(array('given' => "Sintique", 'family' => "Lopes")); 
+
+        $authorSubmission = "Síntique Priscila Alves Lopes";
+
+        $this->assertTrue($checker->checkDoiFromAuthor($authorSubmission, $authorsCrossref));
+    }
+
     public function testCheckDoiArticle(): void
     {
         $checker = new ScreeningChecker();
