@@ -72,8 +72,8 @@ class ScieloScreeningHandler extends Handler {
         $responseCrossref = $checker->getFromCrossref($args['doiString']);
 
         if(!$checker->checkDoiCrossref($responseCrossref)) {
-            $variavel = get_headers("https://doi.org/" . $args['doiString']);
-            if(str_contains($variavel[0], "302")){
+            $responseCodeFromDOI = get_headers("https://doi.org/" . $args['doiString'])[0];
+            if(str_contains($responseCodeFromDOI, "302")){
                 $response = [
                     'statusValidate' => 0,
                     'messageError' => __("plugins.generic.scieloScreening.doiCrossrefRequirement")

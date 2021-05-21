@@ -100,7 +100,7 @@ msgid "plugins.generic.scieloScreening.doiCrossrefRequirement"
 msgstr "Sólo se aceptan DOIs de la Crossref"
 
 msgid "plugins.generic.scieloScreening.doiNotRegistered"
-msgstr "O DOI ingresada no está registrada. Confirme que sea correcto y, en caso de duda, consulte con la publicación fuente."
+msgstr "El DOI ingresado no está registrado. Confirme que sea correcto y, en caso de duda, consulte con la publicación fuente."
 
 msgid "plugins.generic.scieloScreening.doiFromAuthor"
 msgstr "Por favor, ingrese un DOI que sea suyo. También asegúrese de que su nombre en el sistema sea similar a su nombre en el artículo"
