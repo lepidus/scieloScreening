@@ -80,11 +80,14 @@ final class ScreeningCheckerTest extends TestCase
 
         $authorsCrossrefCase1 =  array(array('given' => "Síntique", 'family' => "Priscila Alves Lopes")); 
         $authorsCrossrefCase2 =  array(array('given' => "Maria", 'family' => "Síntique Lopes")); 
+        $authorsCrossrefCase3 =  array(array('given' => "Yves", 'family' => "Schafer Weiss"));
 
-        $authorSubmission = "Síntique Priscila Alves Lopes";
+        $authorSubmissionCase1 = "Síntique Priscila Alves Lopes";
+        $authorSubmissionCase2 = "Yves Schäfer Weiß";
 
-        $this->assertTrue($checker->checkDoiFromAuthor($authorSubmission, $authorsCrossrefCase1));
-        $this->assertFalse($checker->checkDoiFromAuthor($authorSubmission, $authorsCrossrefCase2));
+        $this->assertTrue($checker->checkDoiFromAuthor($authorSubmissionCase1, $authorsCrossrefCase1));
+        $this->assertFalse($checker->checkDoiFromAuthor($authorSubmissionCase1, $authorsCrossrefCase2));
+        $this->assertTrue($checker->checkDoiFromAuthor($authorSubmissionCase2, $authorsCrossrefCase3));
 
     }
 
@@ -132,14 +135,17 @@ final class ScreeningCheckerTest extends TestCase
     public function testRemoveAccentuation(): void
     {
         $checker = new ScreeningChecker();
-        $nameResulted = $checker->removeAccentuation("Síntique Priscila Alves Lopes");
+        $nameResultedCase1 = $checker->removeAccentuation("Síntique Priscila Alves Lopes");
+        $nameResultedCase2 = $checker->removeAccentuation("Yves Müller Schröder");
 
-        $nameExpected = "Sintique Priscila Alves Lopes";
+        $nameExpectedCase1 = "Sintique Priscila Alves Lopes";
+        $nameExpectedCase2 = "Yves Muller Schroder";
 
-        $this->assertEquals($nameResulted,$nameExpected);
+        $this->assertEquals($nameResultedCase1,$nameExpectedCase1);
+        $this->assertEquals($nameResultedCase2,$nameExpectedCase2);
     }
 
-    public function testDoiAuthorsNameWithoutAccentuationEqualsSubmissionAuthorNameWithAccentuation(): void
+    public function testDoiAuthorNameWithoutAccentuationEqualsSubmissionAuthorNameWithAccentuation(): void
     {
         $checker = new ScreeningChecker();
 
