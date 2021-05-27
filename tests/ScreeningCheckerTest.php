@@ -70,8 +70,10 @@ final class ScreeningCheckerTest extends TestCase
     {
         $checker = new ScreeningChecker();
         $responseCrossref = $checker->getFromCrossref("10.6666/abcde");
+        $case400 = $checker->getFromCrossref("10.6666/yobayoba");
 
         $this->assertFalse($checker->checkDoiCrossref($responseCrossref));
+        $this->assertFalse($checker->checkDoiCrossref($case400));
     }
 
     public function testNameDoiAuthorIsEqualsNameAuthorSubmission(): void

@@ -85,6 +85,7 @@ class ScieloScreeningHandler extends Handler {
                     'messageError' => __("plugins.generic.scieloScreening.doiNotRegistered")
                 ]; 
             }
+            
             return json_encode($response);
         }
 
