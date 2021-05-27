@@ -66,7 +66,7 @@ class ScreeningChecker {
         $foundAuthor = false;
         $wordCount = 2;
 
-        for($i = 0; $i < count($authorsCrossref); $i++)
+        for($i = 0; $i < count($authorsCrossref); $i++) {
             $nameAuthorCrossref = $authorsCrossref[$i]['given'] . " " . $authorsCrossref[$i]['family'];
 
             $tokensAuthorSubmission = explode(" ", $authorSubmission);
