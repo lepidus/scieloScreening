@@ -123,6 +123,12 @@ class ScreeningChecker {
 
     public function removeAccentuation($authorName){
         $nameWithoutAccentuation = iconv('UTF-8', 'ASCII//TRANSLIT', $authorName);
+
+        if (!$nameWithoutAccentuation) {
+            error_log("Fails to remove accentuation!");
+            return $authorName;
+        }
+        
         return $nameWithoutAccentuation;
     }
 
