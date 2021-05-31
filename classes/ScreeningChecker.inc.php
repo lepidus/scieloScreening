@@ -77,11 +77,11 @@ class ScreeningChecker {
 
             if((strcasecmp($firstNameAuthorSubmission, $firstNameAuthorCrossref) == 0)){
                 if (sizeof($tokensAuthorSubmission) == sizeof($tokensAuthorCrossref)){
-                    $foundAuthor = $this->checkAuthorNameTokens($tokensAuthorSubmission,$tokensAuthorCrossref);
+                    $foundAuthor = $this->checkAuthorSurnameWhenManyNames($tokensAuthorSubmission,$tokensAuthorCrossref);
                 }
                 else{ 
                     if (sizeof($tokensAuthorCrossref) == $wordCount){
-                        $foundAuthor = $this->checkAuthorNameTokensWithOneToken($tokensAuthorSubmission,$tokensAuthorCrossref);
+                        $foundAuthor = $this->checkAuthorSurnameWhenSingleName($tokensAuthorSubmission,$tokensAuthorCrossref);
                     }
                 } 
             }
@@ -90,7 +90,7 @@ class ScreeningChecker {
         return $foundAuthor;
     }
     
-    public function checkAuthorNameTokens($tokensAuthorSubmission,$tokensAuthorCrossref){
+    public function checkAuthorSurnameWhenManyNames($tokensAuthorSubmission,$tokensAuthorCrossref){
         $equalsName = false;
         $countNamesEquals = 0;
 
@@ -108,7 +108,7 @@ class ScreeningChecker {
         return $equalsName;
     }
 
-    public function checkAuthorNameTokensWithOneToken($tokensAuthorSubmission,$tokensAuthorCrossref){
+    public function checkAuthorSurnameWhenSingleName($tokensAuthorSubmission,$tokensAuthorCrossref){
         $equalsName = false;
         for ($i=1; $i < sizeof($tokensAuthorSubmission); $i++) { 
             $abbreviation = $tokensAuthorSubmission[$i][0] . '.';

@@ -76,7 +76,7 @@ final class ScreeningCheckerTest extends TestCase
         $this->assertFalse($checker->checkDoiCrossref($case400));
     }
 
-    public function testNameDoiAuthorIsEqualsNameAuthorSubmission(): void
+    public function testDoiAuthorNameEqualsSubmissionAuthorName(): void
     {
         $checker = new ScreeningChecker();
 
@@ -90,7 +90,7 @@ final class ScreeningCheckerTest extends TestCase
 
     }
 
-    public function testNameDoiAuthorWithAbreviationIsEqualsNameAuthorSubmission(): void
+    public function testDoiAuthorNameWithAbreviationEqualsSubmissionAuthorName(): void
     {
         $checker = new ScreeningChecker();
 
@@ -108,7 +108,7 @@ final class ScreeningCheckerTest extends TestCase
 
     }
 
-    public function testNameDoiAuthorOnlyFirstAndLastNameIsEqualsNameAuthorSubmission(): void
+    public function testDoiAuthorNameOnlyFirstAndLastNameEqualsSubmissionAuthorName(): void
     {
         $checker = new ScreeningChecker();
         $responseCrossref = $checker->getFromCrossref("10.14295/jmphc.v12.993");
@@ -120,7 +120,7 @@ final class ScreeningCheckerTest extends TestCase
         $this->assertTrue($checker->checkDoiFromAuthor($authorSubmission, $authorsCrossref));
     }
 
-    public function testNameDoiAuthorWithMiddleNameDifferentNameAuthorSubmission(): void
+    public function testDoiAuthorNameWithMiddleNameDifferentSubmissionAuthorName(): void
     {
         $checker = new ScreeningChecker();
 
