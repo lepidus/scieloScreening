@@ -125,7 +125,7 @@ class ScreeningChecker {
         $nameWithoutAccentuation = iconv('UTF-8', 'ASCII//TRANSLIT', $authorName);
 
         if (!$nameWithoutAccentuation) {
-            error_log("Fails to remove accentuation!");
+            error_log("Failure at accent removing from author's name during DOI Screening");
             return $authorName;
         }
         
