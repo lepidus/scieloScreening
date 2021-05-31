@@ -1,9 +1,10 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
+import('lib.pkp.tests.PKPTestCase');
 require "DOISystemClientForTests.inc.php";
+import('plugins.generic.scieloScreening.classes.CrossrefNonExistentDOI');
 
-final class CrossrefNonExistentDOITest extends TestCase
+class CrossrefNonExistentDOITest extends PKPTestCase
 {
     private $crossrefNonExistentDOI;
 
@@ -17,9 +18,9 @@ final class CrossrefNonExistentDOITest extends TestCase
 
         $expectedValidationResult =  [
             'statusValidate' => CrossrefNonExistentDOI::VALIDATION_ERROR_STATUS,
-            'messageError' => "Apenas DOIs da Crossref são aceitos"
+            'messageError' => __(CrossrefNonExistentDOI::HTTPS_STATUS_DOI_FOUND_MESSAGE_LOCALE_KEY)
         ];
-        
+
         $validationResult = $this->crossrefNonExistentDOI->getErrorMessage();
         $this->assertEquals($expectedValidationResult, $validationResult);
     }
@@ -31,7 +32,7 @@ final class CrossrefNonExistentDOITest extends TestCase
 
         $expectedValidationResult =  [
             'statusValidate' => CrossrefNonExistentDOI::VALIDATION_ERROR_STATUS,
-            'messageError' => "Erro no servidor DOI.org"
+            'messageError' => __(CrossrefNonExistentDOI::HTTPS_STATUS_INTERNAL_SERVER_ERROR_MESSAGE_LOCALE_KEY)
         ];
         
         $validationResult = $this->crossrefNonExistentDOI->getErrorMessage();
@@ -44,7 +45,7 @@ final class CrossrefNonExistentDOITest extends TestCase
 
         $expectedValidationResult =  [
             'statusValidate' => CrossrefNonExistentDOI::VALIDATION_ERROR_STATUS,
-            'messageError' => "O DOI inserido não está registrado. Confirme se o mesmo está correto e, em caso de dúvida, verifique com a publicação de origem."
+            'messageError' => __(CrossrefNonExistentDOI::HTTPS_STATUS_DOI_NOT_FOUND_MESSAGE_LOCALE_KEY)
         ];
         
         $validationResult = $this->crossrefNonExistentDOI->getErrorMessage();
@@ -58,7 +59,7 @@ final class CrossrefNonExistentDOITest extends TestCase
 
         $expectedValidationResult =  [
             'statusValidate' => CrossrefNonExistentDOI::VALIDATION_ERROR_STATUS,
-            'messageError' => "Código de retorno" . $httpStatus . "desconhecido de DOI.org. Tente novamente em alguns instantes e, caso o problema persista, por favor avise"
+            'messageError' => __(CrossrefNonExistentDOI::HTTPS_UNKNOWN_ERROR_CODE_MESSAGE_LOCALE_KEY)
         ];
         
         $validationResult = $this->crossrefNonExistentDOI->getErrorMessage();
@@ -72,11 +73,10 @@ final class CrossrefNonExistentDOITest extends TestCase
 
         $expectedValidationResult =  [
             'statusValidate' => CrossrefNonExistentDOI::VALIDATION_ERROR_STATUS,
-            'messageError' => "Falha na comunicação com DOI.org. Tente novamente em alguns instantes e, caso o problema persista, por favor avise"
+            'messageError' => __(CrossrefNonExistentDOI::COMMUNICATION_FAILURE_MESSAGE_LOCALE_KEY)
         ];
         
         $validationResult = $this->crossrefNonExistentDOI->getErrorMessage();
         $this->assertEquals($expectedValidationResult, $validationResult);
     }
-
 }

@@ -163,3 +163,15 @@ msgstr "Nenhum autor confirmou o seu ORCID"
 
 msgid "plugins.generic.scieloScreening.info.pdfsOkay"
 msgstr "Apenas um documento PDF foi submetido"
+
+msgid "plugins.generic.scieloScreening.httpDOINotFoundErrorCode"
+msgstr "O DOI inserido não está registrado. Confirme se o mesmo está correto e, em caso de dúvida, verifique com a publicação de origem."
+
+msgid "plugins.generic.scieloScreening.httpServerErrorCode"
+msgstr "Erro no servidor DOI.org"
+
+msgid "plugins.generic.scieloScreening.unknownHttpErrorCode"
+msgstr "Código de retorno desconhecido de DOI.org. Tente novamente em alguns instantes e, caso o problema persista, entre em contato com o administrador."
+
+msgid "plugins.generic.scieloScreening.communicationFailure"
+msgstr "Falha na comunicação com DOI.org. Tente novamente em alguns instantes e, caso o problema persista, entre em contato com o administrador."

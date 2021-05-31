@@ -6,8 +6,18 @@ class CrossrefNonExistentDOI {
     private $doi;
 
     const HTTPS_STATUS_DOI_FOUND = 302;
+    const HTTPS_STATUS_DOI_FOUND_MESSAGE_LOCALE_KEY = 'plugins.generic.scieloScreening.doiCrossrefRequirement';
+
     const HTTPS_STATUS_DOI_NOT_FOUND = 404;
+    const HTTPS_STATUS_DOI_NOT_FOUND_MESSAGE_LOCALE_KEY = 'plugins.generic.scieloScreening.httpDOINotFoundErrorCode';
+
     const HTTPS_STATUS_INTERNAL_SERVER_ERROR = 500;
+    const HTTPS_STATUS_INTERNAL_SERVER_ERROR_MESSAGE_LOCALE_KEY = 'plugins.generic.scieloScreening.httpServerErrorCode';
+
+    const HTTPS_UNKNOWN_ERROR_CODE_MESSAGE_LOCALE_KEY = 'plugins.generic.scieloScreening.unknownHttpErrorCode';
+
+    const COMMUNICATION_FAILURE_MESSAGE_LOCALE_KEY = 'plugins.generic.scieloScreening.communicationFailure';
+
     const VALIDATION_ERROR_STATUS = 0;
 
     function __construct($doi) {
@@ -23,23 +33,23 @@ class CrossrefNonExistentDOI {
             $httpStatusFromDOI = $this->doiClient->getDOIStatus($this->doi);
     
             $errorMapping = [
-                self::HTTPS_STATUS_DOI_FOUND => "Apenas DOIs da Crossref são aceitos",
-                self::HTTPS_STATUS_DOI_NOT_FOUND => "O DOI inserido não está registrado. Confirme se o mesmo está correto e, em caso de dúvida, verifique com a publicação de origem.",
-                self::HTTPS_STATUS_INTERNAL_SERVER_ERROR => "Erro no servidor DOI.org",
+                self::HTTPS_STATUS_DOI_FOUND => __(self::HTTPS_STATUS_DOI_FOUND_MESSAGE_LOCALE_KEY),
+                self::HTTPS_STATUS_DOI_NOT_FOUND => __(self::HTTPS_STATUS_DOI_NOT_FOUND_MESSAGE_LOCALE_KEY),
+                self::HTTPS_STATUS_INTERNAL_SERVER_ERROR => __(self::HTTPS_STATUS_INTERNAL_SERVER_ERROR_MESSAGE_LOCALE_KEY),
             ];
     
             if (array_key_exists($httpStatusFromDOI, $errorMapping)) {
                 return $this->getResponse($errorMapping[$httpStatusFromDOI]);
             }
-            return $this->getResponse("Código de retorno" . $httpStatusFromDOI . "desconhecido de DOI.org. Tente novamente em alguns instantes e, caso o problema persista, por favor avise");
+            return $this->getResponse(__(self::HTTPS_UNKNOWN_ERROR_CODE_MESSAGE_LOCALE_KEY));
         }
         catch (Exception $exception) {
-            return $this->getResponse("Falha na comunicação com DOI.org. Tente novamente em alguns instantes e, caso o problema persista, por favor avise");
+            return $this->getResponse(__(self::COMMUNICATION_FAILURE_MESSAGE_LOCALE_KEY));
         }
     }
 
     private function getResponse($errorMessage) {
-        return   [
+        return [
             'statusValidate' => self::VALIDATION_ERROR_STATUS,
             'messageError' => $errorMessage
         ];
