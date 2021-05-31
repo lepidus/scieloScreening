@@ -69,8 +69,11 @@ class ScreeningChecker {
         for($i = 0; $i < count($authorsCrossref); $i++) {
             $nameAuthorCrossref = $authorsCrossref[$i]['given'] . " " . $authorsCrossref[$i]['family'];
 
-            $tokensAuthorSubmission = explode(" ", $authorSubmission);
-            $tokensAuthorCrossref = explode(" ", $nameAuthorCrossref);
+            $authorSubmissionNameWithoutAccentuation = $this->removeAccentuation($authorSubmission);
+            $authorCrossrefNameWithoutAccentuation = $this->removeAccentuation($nameAuthorCrossref);
+
+            $tokensAuthorSubmission = explode(" ", $authorSubmissionNameWithoutAccentuation);
+            $tokensAuthorCrossref = explode(" ", $authorCrossrefNameWithoutAccentuation);
             
             $firstNameAuthorSubmission = $tokensAuthorSubmission[0];
             $firstNameAuthorCrossref = $tokensAuthorCrossref[0];
@@ -117,6 +120,17 @@ class ScreeningChecker {
             }
         }
         return $equalsName;
+    }
+
+    public function removeAccentuation($authorName){
+        $nameWithoutAccentuation = iconv('UTF-8', 'ASCII//TRANSLIT', $authorName);
+
+        if ($nameWithoutAccentuation == false) {
+            error_log("Failure at accent removing from author's name during DOI Screening");
+            return $authorName;
+        }
+        
+        return $nameWithoutAccentuation;
     }
 
     public function checkDoiArticle($itemCrossref) {
