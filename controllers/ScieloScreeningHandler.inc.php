@@ -5,7 +5,6 @@ import('plugins.generic.scieloScreening.classes.DOIScreening');
 import('plugins.generic.scieloScreening.classes.DOIScreeningDAO');
 import('plugins.generic.scieloScreening.classes.ScreeningChecker');
 import('plugins.generic.scieloScreening.classes.CrossrefNonExistentDOI');
-import('plugins.generic.scieloScreening.classes.DOISystemClientForHandler');
 
 class ScieloScreeningHandler extends Handler {
 

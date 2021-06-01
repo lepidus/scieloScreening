@@ -5,13 +5,13 @@ class CrossrefNonExistentDOI {
     private $doiClient;
     private $doi;
 
-    const HTTPS_STATUS_DOI_FOUND = "302";
+    const HTTPS_STATUS_DOI_FOUND = 302;
     const HTTPS_STATUS_DOI_FOUND_MESSAGE_LOCALE_KEY = 'plugins.generic.scieloScreening.doiCrossrefRequirement';
 
-    const HTTPS_STATUS_DOI_NOT_FOUND = "404";
+    const HTTPS_STATUS_DOI_NOT_FOUND = 404;
     const HTTPS_STATUS_DOI_NOT_FOUND_MESSAGE_LOCALE_KEY = 'plugins.generic.scieloScreening.httpDOINotFoundErrorCode';
 
-    const HTTPS_STATUS_INTERNAL_SERVER_ERROR = "500";
+    const HTTPS_STATUS_INTERNAL_SERVER_ERROR = 500;
     const HTTPS_STATUS_INTERNAL_SERVER_ERROR_MESSAGE_LOCALE_KEY = 'plugins.generic.scieloScreening.httpServerErrorCode';
 
     const HTTPS_UNKNOWN_ERROR_CODE_MESSAGE_LOCALE_KEY = 'plugins.generic.scieloScreening.unknownHttpErrorCode';
