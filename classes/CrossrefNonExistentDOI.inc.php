@@ -20,11 +20,8 @@ class CrossrefNonExistentDOI {
 
     const VALIDATION_ERROR_STATUS = 0;
 
-    function __construct($doi) {
+    function __construct($doi, $doiClient = null) {
         $this->doi = $doi;
-    }
-
-    function setClient($doiClient) {
         $this->doiClient = $doiClient;
     }
 
@@ -43,7 +40,13 @@ class CrossrefNonExistentDOI {
 
     function getErrorMessage() {
         try {
-            $httpStatusFromDOI = $this->doiClient->getDOIStatus($this->doi);
+            if ($this->doiClient) {
+                $httpStatusFromDOI = $this->doiClient->getDOIStatus($this->doi);
+            }
+            else {
+                $httpStatusFromDOI = get_headers("https://doi.org/" . $this->doi)[0];
+            }
+            
             $httpErrorCode = $this->getHTTPErrorCodeByStatus($httpStatusFromDOI);
     
             $errorMapping = [

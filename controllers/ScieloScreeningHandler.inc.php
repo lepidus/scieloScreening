@@ -74,9 +74,7 @@ class ScieloScreeningHandler extends Handler {
         $responseCrossref = $checker->getFromCrossref($args['doiString']);
 
         if(!$checker->checkDoiCrossref($responseCrossref)) {
-            $responseCodeFromDOI = get_headers("https://doi.org/" . $args['doiString'])[0];
-            $crossrefNonExistentDOI = new CrossrefNonExistentDOI($responseCodeFromDOI);
-            $crossrefNonExistentDOI->setClient(new DOISystemClientForHandler($responseCodeFromDOI));
+            $crossrefNonExistentDOI = new CrossrefNonExistentDOI($args['doiString']);
             $response = $crossrefNonExistentDOI->getErrorMessage();
             return json_encode($response);
         }
