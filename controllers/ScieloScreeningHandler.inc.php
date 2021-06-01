@@ -4,6 +4,8 @@ import('classes.handler.Handler');
 import('plugins.generic.scieloScreening.classes.DOIScreening');
 import('plugins.generic.scieloScreening.classes.DOIScreeningDAO');
 import('plugins.generic.scieloScreening.classes.ScreeningChecker');
+import('plugins.generic.scieloScreening.classes.CrossrefNonExistentDOI');
+import('plugins.generic.scieloScreening.classes.DOISystemClientForHandler');
 
 class ScieloScreeningHandler extends Handler {
 
@@ -73,19 +75,9 @@ class ScieloScreeningHandler extends Handler {
 
         if(!$checker->checkDoiCrossref($responseCrossref)) {
             $responseCodeFromDOI = get_headers("https://doi.org/" . $args['doiString'])[0];
-            if (str_contains($responseCodeFromDOI, "302")){
-                $response = [
-                    'statusValidate' => 0,
-                    'messageError' => __("plugins.generic.scieloScreening.doiCrossrefRequirement")
-                ];    
-            }
-            else {
-                $response = [
-                    'statusValidate' => 0,
-                    'messageError' => __("plugins.generic.scieloScreening.doiNotRegistered")
-                ]; 
-            }
-            
+            $crossrefNonExistentDOI = new CrossrefNonExistentDOI($responseCodeFromDOI);
+            $crossrefNonExistentDOI->setClient(new DOISystemClientForHandler($responseCodeFromDOI));
+            $response = $crossrefNonExistentDOI->getErrorMessage();
             return json_encode($response);
         }
 
