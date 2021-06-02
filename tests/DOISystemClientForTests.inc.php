@@ -1,8 +1,6 @@
 
 <?php
 
-import('plugins.generic.scieloScreening.classes.DOISystemClient');
-
 class DOISystemClientForTests extends DOISystemClient {
     
     private $expectedStatus;

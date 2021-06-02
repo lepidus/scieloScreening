@@ -1,10 +1,9 @@
 <?php
 
-import('lib.pkp.tests.PKPTestCase');
+use PHPUnit\Framework\TestCase;
 require "DOISystemClientForTests.inc.php";
-import('plugins.generic.scieloScreening.classes.CrossrefNonExistentDOI');
 
-class CrossrefNonExistentDOITest extends PKPTestCase
+final class CrossrefNonExistentDOITest extends TestCase
 {
 
     public function testIsInvalidWhenResultsOnAHTTP302FromDOIOrg(): void

@@ -28,13 +28,13 @@ class CrossrefNonExistentDOI {
     }
 
     function getHTTPErrorCodeByStatus ($httpStatusFromDOI) {
-        if (str_contains($httpStatusFromDOI, self::HTTPS_STATUS_DOI_FOUND)) {
+        if (strstr($httpStatusFromDOI, strval(self::HTTPS_STATUS_DOI_FOUND))) {
            return self::HTTPS_STATUS_DOI_FOUND;    
         }
-        elseif (str_contains($httpStatusFromDOI, self::HTTPS_STATUS_DOI_NOT_FOUND)) {
+        elseif (strstr($httpStatusFromDOI, strval(self::HTTPS_STATUS_DOI_NOT_FOUND))) {
             return self::HTTPS_STATUS_DOI_NOT_FOUND;
         }
-        elseif (str_contains($httpStatusFromDOI, self::HTTPS_STATUS_INTERNAL_SERVER_ERROR)) {
+        elseif (strstr($httpStatusFromDOI, strval(self::HTTPS_STATUS_INTERNAL_SERVER_ERROR))) {
             return self::HTTPS_STATUS_INTERNAL_SERVER_ERROR;
         }
         return self::HTTPS_UNKNOWN_ERROR_CODE_MESSAGE_LOCALE_KEY;
