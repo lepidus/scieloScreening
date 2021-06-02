@@ -168,7 +168,7 @@ msgid "plugins.generic.scieloScreening.httpDOINotFoundErrorCode"
 msgstr "El DOI ingresado no está registrado. Confirme que sea correcto y, en caso de duda, consulte con la publicación fuente."
 
 msgid "plugins.generic.scieloScreening.httpServerErrorCode"
-msgstr "Error del servidor DOI.org"
+msgstr "Error del servidor DOI.org, intente nuevamente en unos momentos y si el problema persiste, comuníquese con su administrador."
 
 msgid "plugins.generic.scieloScreening.unknownHttpErrorCode"
 msgstr "Código de retorno desconocido de DOI.org. Vuelva a intentarlo en unos momentos y, si el problema persiste, póngase en contacto con su administrador."
