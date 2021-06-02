@@ -18,6 +18,8 @@ class CrossrefNonExistentDOI {
 
     const COMMUNICATION_FAILURE_MESSAGE_LOCALE_KEY = 'plugins.generic.scieloScreening.communicationFailure';
 
+    const DOI_ORG_BASE_URL = "https://doi.org/";
+
     const VALIDATION_ERROR_STATUS = 0;
 
     function __construct($doi, $doiClient = null) {
@@ -44,7 +46,7 @@ class CrossrefNonExistentDOI {
                 $httpStatusFromDOI = $this->doiClient->getDOIStatus($this->doi);
             }
             else {
-                $httpStatusFromDOI = get_headers("https://doi.org/" . $this->doi)[0];
+                $httpStatusFromDOI = get_headers(self::DOI_ORG_BASE_URL . $this->doi)[0];
             }
             
             $httpErrorCode = $this->getHTTPErrorCodeByStatus($httpStatusFromDOI);
