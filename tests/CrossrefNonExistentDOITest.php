@@ -11,10 +11,7 @@ class CrossrefNonExistentDOITest extends PKPTestCase
     {
         $crossrefNonExistentDOI = new CrossrefNonExistentDOI("10.1145/1998076.1998132", new DOISystemClientForTests(302));
 
-        $expectedValidationResult =  [
-            'statusValidate' => CrossrefNonExistentDOI::VALIDATION_ERROR_STATUS,
-            'messageError' => __(CrossrefNonExistentDOI::HTTPS_STATUS_DOI_FOUND_MESSAGE_LOCALE_KEY)
-        ];
+        $expectedValidationResult = CrossrefNonExistentDOI::HTTPS_STATUS_DOI_FOUND_MESSAGE_LOCALE_KEY;
 
         $validationResult = $crossrefNonExistentDOI->getErrorMessage();
         $this->assertEquals($expectedValidationResult, $validationResult);
@@ -25,10 +22,7 @@ class CrossrefNonExistentDOITest extends PKPTestCase
     {
         $crossrefNonExistentDOI = new CrossrefNonExistentDOI("10.1145/1998076.1998132", new DOISystemClientForTests(500));
 
-        $expectedValidationResult =  [
-            'statusValidate' => CrossrefNonExistentDOI::VALIDATION_ERROR_STATUS,
-            'messageError' => __(CrossrefNonExistentDOI::HTTPS_STATUS_INTERNAL_SERVER_ERROR_MESSAGE_LOCALE_KEY)
-        ];
+        $expectedValidationResult = CrossrefNonExistentDOI::HTTPS_STATUS_INTERNAL_SERVER_ERROR_MESSAGE_LOCALE_KEY;
         
         $validationResult = $crossrefNonExistentDOI->getErrorMessage();
         $this->assertEquals($expectedValidationResult, $validationResult);
@@ -38,10 +32,7 @@ class CrossrefNonExistentDOITest extends PKPTestCase
     {
         $crossrefNonExistentDOI = new CrossrefNonExistentDOI("10.1145/1998076.1998132", new DOISystemClientForTests(404));
 
-        $expectedValidationResult =  [
-            'statusValidate' => CrossrefNonExistentDOI::VALIDATION_ERROR_STATUS,
-            'messageError' => __(CrossrefNonExistentDOI::HTTPS_STATUS_DOI_NOT_FOUND_MESSAGE_LOCALE_KEY)
-        ];
+        $expectedValidationResult = CrossrefNonExistentDOI::HTTPS_STATUS_DOI_NOT_FOUND_MESSAGE_LOCALE_KEY;
         
         $validationResult = $crossrefNonExistentDOI->getErrorMessage();
         $this->assertEquals($expectedValidationResult, $validationResult);
@@ -51,10 +42,7 @@ class CrossrefNonExistentDOITest extends PKPTestCase
     {
         $crossrefNonExistentDOI = new CrossrefNonExistentDOI("10.1145/1998076.1998132", new DOISystemClientForTests(408));
 
-        $expectedValidationResult =  [
-            'statusValidate' => CrossrefNonExistentDOI::VALIDATION_ERROR_STATUS,
-            'messageError' => __(CrossrefNonExistentDOI::HTTPS_UNKNOWN_ERROR_CODE_MESSAGE_LOCALE_KEY)
-        ];
+        $expectedValidationResult = CrossrefNonExistentDOI::HTTPS_UNKNOWN_ERROR_CODE_MESSAGE_LOCALE_KEY;
         
         $validationResult = $crossrefNonExistentDOI->getErrorMessage();
         $this->assertEquals($expectedValidationResult, $validationResult);
@@ -65,10 +53,7 @@ class CrossrefNonExistentDOITest extends PKPTestCase
         $exceptionWithCommunication = true;
         $crossrefNonExistentDOI = new CrossrefNonExistentDOI("10.1145/1998076.1998132", new DOISystemClientForTests(null, $exceptionWithCommunication));
 
-        $expectedValidationResult =  [
-            'statusValidate' => CrossrefNonExistentDOI::VALIDATION_ERROR_STATUS,
-            'messageError' => __(CrossrefNonExistentDOI::COMMUNICATION_FAILURE_MESSAGE_LOCALE_KEY)
-        ];
+        $expectedValidationResult =  CrossrefNonExistentDOI::COMMUNICATION_FAILURE_MESSAGE_LOCALE_KEY;
         
         $validationResult = $crossrefNonExistentDOI->getErrorMessage();
         $this->assertEquals($expectedValidationResult, $validationResult);

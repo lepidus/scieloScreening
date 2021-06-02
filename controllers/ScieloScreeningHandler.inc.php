@@ -74,7 +74,9 @@ class ScieloScreeningHandler extends Handler {
 
         if(!$checker->checkDoiCrossref($responseCrossref)) {
             $crossrefNonExistentDOI = new CrossrefNonExistentDOI($args['doiString']);
-            $response = $crossrefNonExistentDOI->getErrorMessage();
+            $errorMessageKey = $crossrefNonExistentDOI->getErrorMessage();
+            $response = $this->getErrorCrossrefNonExistentDOIResponse($errorMessageKey);
+
             return json_encode($response);
         }
 
@@ -110,6 +112,13 @@ class ScieloScreeningHandler extends Handler {
             'statusValidate' => 1,
             'yearArticle' => $yearArticle
         ]);
+    }
+
+    private function getErrorCrossrefNonExistentDOIResponse($errorMessageKey) {
+        return [
+            'statusValidate' => CrossrefNonExistentDOI::VALIDATION_ERROR_STATUS,
+            'messageError' => __($errorMessageKey)
+        ];
     }
 
     public function validateDoisFromScreening($args, $request){

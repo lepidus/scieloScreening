@@ -52,25 +52,18 @@ class CrossrefNonExistentDOI {
             $httpErrorCode = $this->getHTTPErrorCodeByStatus($httpStatusFromDOI);
     
             $errorMapping = [
-                self::HTTPS_STATUS_DOI_FOUND => __(self::HTTPS_STATUS_DOI_FOUND_MESSAGE_LOCALE_KEY),
-                self::HTTPS_STATUS_DOI_NOT_FOUND => __(self::HTTPS_STATUS_DOI_NOT_FOUND_MESSAGE_LOCALE_KEY),
-                self::HTTPS_STATUS_INTERNAL_SERVER_ERROR => __(self::HTTPS_STATUS_INTERNAL_SERVER_ERROR_MESSAGE_LOCALE_KEY),
+                self::HTTPS_STATUS_DOI_FOUND => self::HTTPS_STATUS_DOI_FOUND_MESSAGE_LOCALE_KEY,
+                self::HTTPS_STATUS_DOI_NOT_FOUND => self::HTTPS_STATUS_DOI_NOT_FOUND_MESSAGE_LOCALE_KEY,
+                self::HTTPS_STATUS_INTERNAL_SERVER_ERROR => self::HTTPS_STATUS_INTERNAL_SERVER_ERROR_MESSAGE_LOCALE_KEY,
             ];
     
             if (array_key_exists($httpErrorCode, $errorMapping)) {
-                return $this->getResponse($errorMapping[$httpErrorCode]);
+                return $errorMapping[$httpErrorCode];
             }
-            return $this->getResponse(__(self::HTTPS_UNKNOWN_ERROR_CODE_MESSAGE_LOCALE_KEY));
+            return self::HTTPS_UNKNOWN_ERROR_CODE_MESSAGE_LOCALE_KEY;
         }
         catch (Exception $exception) {
-            return $this->getResponse(__(self::COMMUNICATION_FAILURE_MESSAGE_LOCALE_KEY));
+            return self::COMMUNICATION_FAILURE_MESSAGE_LOCALE_KEY;
         }
-    }
-
-    private function getResponse($errorMessage) {
-        return [
-            'statusValidate' => self::VALIDATION_ERROR_STATUS,
-            'messageError' => $errorMessage
-        ];
     }
 }
