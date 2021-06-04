@@ -8,6 +8,9 @@ class CrossrefNonExistentDOI {
     const HTTPS_STATUS_DOI_FOUND = 302;
     const HTTPS_STATUS_DOI_FOUND_MESSAGE_LOCALE_KEY = 'plugins.generic.scieloScreening.doiCrossrefRequirement';
 
+    const HTTPS_STATUS_DOI_NULL = 301;
+    const HTTPS_STATUS_DOI_NULL_ERROR_CODE_MESSAGE_LOCALE_KEY = 'plugins.generic.scieloScreening.httpDoiNullErrorCode';
+
     const HTTPS_STATUS_DOI_NOT_FOUND = 404;
     const HTTPS_STATUS_DOI_NOT_FOUND_MESSAGE_LOCALE_KEY = 'plugins.generic.scieloScreening.httpDOINotFoundErrorCode';
 
@@ -27,17 +30,27 @@ class CrossrefNonExistentDOI {
         $this->doiClient = $doiClient;
     }
 
+    public function getDoi() {
+        return $this->doi;
+    }
+
+    public function getDoiClient() {
+        return $this->doiClient;
+    }
+
     function getHTTPErrorCodeByStatus ($httpStatusFromDOI) {
-        if (strstr($httpStatusFromDOI, strval(self::HTTPS_STATUS_DOI_FOUND))) {
-           return self::HTTPS_STATUS_DOI_FOUND;    
+        $errorCodeArrayKeyByPartitionedResponse = 1;
+        $httpErrorCodeLength = 3;
+
+        $httpPartitionedResponse = explode(" ", $httpStatusFromDOI);
+        $httpErrorCodePartition = $httpPartitionedResponse[$errorCodeArrayKeyByPartitionedResponse];
+
+        if (strlen($httpErrorCodePartition) === $httpErrorCodeLength) {
+            $httpIntegerErrorCodeByResponse = intval($httpErrorCodePartition);
+            return $httpIntegerErrorCodeByResponse;
         }
-        elseif (strstr($httpStatusFromDOI, strval(self::HTTPS_STATUS_DOI_NOT_FOUND))) {
-            return self::HTTPS_STATUS_DOI_NOT_FOUND;
-        }
-        elseif (strstr($httpStatusFromDOI, strval(self::HTTPS_STATUS_INTERNAL_SERVER_ERROR))) {
-            return self::HTTPS_STATUS_INTERNAL_SERVER_ERROR;
-        }
-        return self::HTTPS_UNKNOWN_ERROR_CODE_MESSAGE_LOCALE_KEY;
+
+        return self::VALIDATION_ERROR_STATUS;
     }
 
     function getErrorMessage() {
@@ -53,6 +66,7 @@ class CrossrefNonExistentDOI {
     
             $errorMapping = [
                 self::HTTPS_STATUS_DOI_FOUND => self::HTTPS_STATUS_DOI_FOUND_MESSAGE_LOCALE_KEY,
+                self::HTTPS_STATUS_DOI_NULL => self::HTTPS_STATUS_DOI_NULL_ERROR_CODE_MESSAGE_LOCALE_KEY,
                 self::HTTPS_STATUS_DOI_NOT_FOUND => self::HTTPS_STATUS_DOI_NOT_FOUND_MESSAGE_LOCALE_KEY,
                 self::HTTPS_STATUS_INTERNAL_SERVER_ERROR => self::HTTPS_STATUS_INTERNAL_SERVER_ERROR_MESSAGE_LOCALE_KEY,
             ];
