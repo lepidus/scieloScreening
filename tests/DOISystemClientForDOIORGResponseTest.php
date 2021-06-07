@@ -4,50 +4,46 @@ use PHPUnit\Framework\TestCase;
 
 final class DOISystemClientForDOIORGResponseTest extends TestCase
 {
-    public function testIsInvalidWhenResultsOnAHTTP302FromDOIOrg(): void
+    public function test302ResponseWhenHTTPStatusIsDOIFoundFromDoiOrg(): void
     {
-        $crossrefNonExistentDOI = new CrossrefNonExistentDOI("10.1145/1998076.1998132", new DOISystemClientForDOIORGResponse());
-        $doi = $crossrefNonExistentDOI->getDoi();
-        $doiClient = $crossrefNonExistentDOI->getDoiClient();
+        $doiSystemClientForDoiOrgResponse = new DOISystemClientForDOIORGResponse();
+        $httpResponseCode = "HTTP/1.1 302";
         
         $expectedValidationResult =  302;
-        $validationResult =  $doiClient->getDoiStatus($doi);
+        $validationResult =  $doiSystemClientForDoiOrgResponse->getHTTPErrorCodeByHTTPStatus($httpResponseCode);
 
         $this->assertEquals($expectedValidationResult, $validationResult);
     }
 
-    public function testIsInvalidWhenResultsOnAHTTP404FromDOIOrg(): void
+    public function test404ResponseWhenHTTPStatusIsNotFoundFromDoiOrg(): void
     {
-        $crossrefNonExistentDOI = new CrossrefNonExistentDOI("1110290", new DOISystemClientForDOIORGResponse());
-        $doi = $crossrefNonExistentDOI->getDoi();
-        $doiClient = $crossrefNonExistentDOI->getDoiClient();
+        $doiSystemClientForDoiOrgResponse = new DOISystemClientForDOIORGResponse();
+        $httpResponseCode = "HTTP/1.1 404";
         
         $expectedValidationResult =  404;
-        $validationResult =  $doiClient->getDoiStatus($doi);
+        $validationResult =  $doiSystemClientForDoiOrgResponse->getHTTPErrorCodeByHTTPStatus($httpResponseCode);
 
         $this->assertEquals($expectedValidationResult, $validationResult);
     }
 
-    public function testIsInvalidWhenResultsOnAHTTP301FromDOIOrg(): void
+    public function test500ResponseWhenHTTPStatusIsInternalServerProblemFromDoiOrg(): void
     {
-        $crossrefNonExistentDOI = new CrossrefNonExistentDOI("", new DOISystemClientForDOIORGResponse());
-        $doi = $crossrefNonExistentDOI->getDoi();
-        $doiClient = $crossrefNonExistentDOI->getDoiClient();
+        $doiSystemClientForDoiOrgResponse = new DOISystemClientForDOIORGResponse();
+        $httpResponseCode = "HTTP/1.1 500";
+        
+        $expectedValidationResult =  500;
+        $validationResult =  $doiSystemClientForDoiOrgResponse->getHTTPErrorCodeByHTTPStatus($httpResponseCode);
+
+        $this->assertEquals($expectedValidationResult, $validationResult);
+    }
+
+    public function test301ResponseWhenHTTPStatusIsDOINullFromDoiOrg(): void
+    {
+        $doiSystemClientForDoiOrgResponse = new DOISystemClientForDOIORGResponse();
+        $httpResponseCode = "HTTP/1.1 301";
         
         $expectedValidationResult =  301;
-        $validationResult =  $doiClient->getDoiStatus($doi);
-
-        $this->assertEquals($expectedValidationResult, $validationResult);
-    }
-
-    public function testIsInvalidWhenResultsOnAHTTP400FromDOIOrg(): void
-    {
-        $crossrefNonExistentDOI = new CrossrefNonExistentDOI("%%%%%%@@@##$$%%", new DOISystemClientForDOIORGResponse());
-        $doi = $crossrefNonExistentDOI->getDoi();
-        $doiClient = $crossrefNonExistentDOI->getDoiClient();
-        
-        $expectedValidationResult =  400;
-        $validationResult =  $doiClient->getDoiStatus($doi);
+        $validationResult =  $doiSystemClientForDoiOrgResponse->getHTTPErrorCodeByHTTPStatus($httpResponseCode);
 
         $this->assertEquals($expectedValidationResult, $validationResult);
     }
