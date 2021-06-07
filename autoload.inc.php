@@ -10,6 +10,7 @@ spl_autoload_register(
                 'screeningchecker' => '/classes/ScreeningChecker.inc.php',
                 'crossrefnonexistentdoi' => '/classes/CrossrefNonExistentDOI.inc.php',
                 'doisystemclient' => '/classes/DOISystemClient.inc.php',
+                'doisystemclientfordoiorgresponse' => '/classes/DOISystemClientForDOIORGResponse.inc.php',
             );
         }
         $cn = strtolower($class);

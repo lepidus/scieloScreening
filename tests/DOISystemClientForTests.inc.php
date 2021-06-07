@@ -1,7 +1,7 @@
 
 <?php
 
-class DOISystemClientForTests extends DOISystemClient {
+class DOISystemClientForTests implements DOISystemClient {
     
     private $expectedStatus;
     private $shouldGenerateExceptions;
@@ -17,20 +17,5 @@ class DOISystemClientForTests extends DOISystemClient {
         }
 
         return $this->expectedStatus;
-    }
-
-    public function getHTTPErrorCodeByHTTPStatus ($httpStatusFromDOI) {
-        $errorCodeArrayKeyByPartitionedResponse = 1;
-        $httpErrorCodeLength = 3;
-
-        $httpPartitionedResponse = explode(" ", $httpStatusFromDOI);
-        $httpErrorCodePartition = $httpPartitionedResponse[$errorCodeArrayKeyByPartitionedResponse];
-
-        if (strlen($httpErrorCodePartition) === $httpErrorCodeLength) {
-            $httpIntegerErrorCodeByResponse = intval($httpErrorCodePartition);
-            return $httpIntegerErrorCodeByResponse;
-        }
-
-        return CrossrefNonExistentDOI::VALIDATION_ERROR_STATUS;
     }
 }

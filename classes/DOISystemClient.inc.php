@@ -1,8 +1,6 @@
 <?php
 
-class DOISystemClient {
+interface DOISystemClient {
 
-    function getDoiStatus($doi) {
-        return "";
-    }
+    function getDoiStatus($doi);
 }

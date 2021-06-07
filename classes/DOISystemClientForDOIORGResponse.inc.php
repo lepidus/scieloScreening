@@ -2,13 +2,14 @@
 
 require ("DOISystemClient.inc.php");
 
-class DOISystemClientForDOIORGResponse extends DOISystemClient 
+class DOISystemClientForDOIORGResponse implements DOISystemClient 
 {
     private $doiHttpStatus;
 
     public function getDoiStatus($doi) {
         $doiStatus = get_headers(CrossrefNonExistentDOI::DOI_ORG_BASE_URL . $doi)[0];
-        return $doiStatus;
+        $doiStatusErrorCode = $this->getHTTPErrorCodeByHTTPStatus($doiStatus);
+        return $doiStatusErrorCode;
     }
 
     public function getHTTPErrorCodeByHTTPStatus($doiStatus) {

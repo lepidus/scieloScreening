@@ -1,7 +1,6 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-import('plugins.generic.scieloScreening.classes.ScreeningChecker');
 
 final class ScreeningCheckerTest extends TestCase
 {

@@ -41,8 +41,7 @@ class CrossrefNonExistentDOI {
     function getErrorMessage() {
         try {       
             $doiClient = $this->getDoiClient();
-            $doiStatus = $doiClient->getDoiStatus($this->getDoi());   
-            $httpErrorCode = $doiClient->getHTTPErrorCodeByHTTPStatus($doiStatus);
+            $httpErrorCode = $doiClient->getDoiStatus($this->getDoi());   
     
             $errorMapping = [
                 self::HTTPS_STATUS_DOI_FOUND => self::HTTPS_STATUS_DOI_FOUND_MESSAGE_LOCALE_KEY,
