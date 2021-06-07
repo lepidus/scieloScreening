@@ -76,7 +76,7 @@ final class CrossrefNonExistentDOITest extends TestCase
         $httpStatusResponseByDoiClient = $doiClient->getDoiStatus($doi);
 
         $expectedValidationResult =  404;
-        $validationResult = $crossrefNonExistentDOI->getHTTPErrorCodeByStatus($httpStatusResponseByDoiClient);
+        $validationResult = $crossrefNonExistentDOI->getDoiClient()->getHTTPErrorCodeByHTTPStatus($httpStatusResponseByDoiClient);
 
         $this->assertEquals($expectedValidationResult, $validationResult);
     }

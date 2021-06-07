@@ -2,7 +2,7 @@
 
 class DOISystemClient {
 
-    function getDOIStatus($doi) {
+    function getDoiStatus($doi) {
         return "";
     }
 }

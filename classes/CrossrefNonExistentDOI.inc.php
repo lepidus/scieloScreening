@@ -38,31 +38,11 @@ class CrossrefNonExistentDOI {
         return $this->doiClient;
     }
 
-    function getHTTPErrorCodeByStatus ($httpStatusFromDOI) {
-        $errorCodeArrayKeyByPartitionedResponse = 1;
-        $httpErrorCodeLength = 3;
-
-        $httpPartitionedResponse = explode(" ", $httpStatusFromDOI);
-        $httpErrorCodePartition = $httpPartitionedResponse[$errorCodeArrayKeyByPartitionedResponse];
-
-        if (strlen($httpErrorCodePartition) === $httpErrorCodeLength) {
-            $httpIntegerErrorCodeByResponse = intval($httpErrorCodePartition);
-            return $httpIntegerErrorCodeByResponse;
-        }
-
-        return self::VALIDATION_ERROR_STATUS;
-    }
-
     function getErrorMessage() {
-        try {
-            if ($this->doiClient) {
-                $httpStatusFromDOI = $this->doiClient->getDOIStatus($this->doi);
-            }
-            else {
-                $httpStatusFromDOI = get_headers(self::DOI_ORG_BASE_URL . $this->doi)[0];
-            }
-            
-            $httpErrorCode = $this->getHTTPErrorCodeByStatus($httpStatusFromDOI);
+        try {       
+            $doiClient = $this->getDoiClient();
+            $doiStatus = $doiClient->getDoiStatus($this->getDoi());   
+            $httpErrorCode = $doiClient->getHTTPErrorCodeByHTTPStatus($doiStatus);
     
             $errorMapping = [
                 self::HTTPS_STATUS_DOI_FOUND => self::HTTPS_STATUS_DOI_FOUND_MESSAGE_LOCALE_KEY,

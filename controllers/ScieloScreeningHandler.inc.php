@@ -5,6 +5,7 @@ import('plugins.generic.scieloScreening.classes.DOIScreening');
 import('plugins.generic.scieloScreening.classes.DOIScreeningDAO');
 import('plugins.generic.scieloScreening.classes.ScreeningChecker');
 import('plugins.generic.scieloScreening.classes.CrossrefNonExistentDOI');
+import('plugins.generic.scieloScreening.classes.DOISystemClientForDOIORGResponse');
 
 class ScieloScreeningHandler extends Handler {
 
@@ -73,7 +74,7 @@ class ScieloScreeningHandler extends Handler {
         $responseCrossref = $checker->getFromCrossref($args['doiString']);
 
         if(!$checker->checkDoiCrossref($responseCrossref)) {
-            $crossrefNonExistentDOI = new CrossrefNonExistentDOI($args['doiString']);
+            $crossrefNonExistentDOI = new CrossrefNonExistentDOI($args['doiString'], new DOISystemClientForDOIORGResponse());
             $errorMessageKey = $crossrefNonExistentDOI->getErrorMessage();
             $response = $this->getErrorCrossrefNonExistentDOIResponse($errorMessageKey);
 
