@@ -4,6 +4,8 @@ import('classes.handler.Handler');
 import('plugins.generic.scieloScreening.classes.DOIScreening');
 import('plugins.generic.scieloScreening.classes.DOIScreeningDAO');
 import('plugins.generic.scieloScreening.classes.ScreeningChecker');
+import('plugins.generic.scieloScreening.classes.CrossrefNonExistentDOI');
+import('plugins.generic.scieloScreening.classes.DOISystemClientForDOIORGResponse');
 
 class ScieloScreeningHandler extends Handler {
 
@@ -72,20 +74,10 @@ class ScieloScreeningHandler extends Handler {
         $responseCrossref = $checker->getFromCrossref($args['doiString']);
 
         if(!$checker->checkDoiCrossref($responseCrossref)) {
-            $responseCodeFromDOI = get_headers("https://doi.org/" . $args['doiString'])[0];
-            if (str_contains($responseCodeFromDOI, "302")){
-                $response = [
-                    'statusValidate' => 0,
-                    'messageError' => __("plugins.generic.scieloScreening.doiCrossrefRequirement")
-                ];    
-            }
-            else {
-                $response = [
-                    'statusValidate' => 0,
-                    'messageError' => __("plugins.generic.scieloScreening.doiNotRegistered")
-                ]; 
-            }
-            
+            $crossrefNonExistentDOI = new CrossrefNonExistentDOI($args['doiString'], new DOISystemClientForDOIORGResponse());
+            $errorMessageKey = $crossrefNonExistentDOI->getErrorMessage();
+            $response = $this->getErrorCrossrefNonExistentDOIResponse($errorMessageKey);
+
             return json_encode($response);
         }
 
@@ -121,6 +113,13 @@ class ScieloScreeningHandler extends Handler {
             'statusValidate' => 1,
             'yearArticle' => $yearArticle
         ]);
+    }
+
+    private function getErrorCrossrefNonExistentDOIResponse($errorMessageKey) {
+        return [
+            'statusValidate' => CrossrefNonExistentDOI::VALIDATION_ERROR_STATUS,
+            'messageError' => __($errorMessageKey)
+        ];
     }
 
     public function validateDoisFromScreening($args, $request){
