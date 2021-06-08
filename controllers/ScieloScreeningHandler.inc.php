@@ -73,7 +73,7 @@ class ScieloScreeningHandler extends Handler {
         $checker = new ScreeningChecker();
         $responseCrossref = $checker->getFromCrossref($args['doiString']);
 
-        if(!$checker->checkDoiCrossref($responseCrossref)) {
+        if(!$checker->checkDOICrossref($responseCrossref)) {
             $crossrefNonExistentDOI = new CrossrefNonExistentDOI($args['doiString'], new DOISystemClientForDOIORGResponse());
             $errorMessageKey = $crossrefNonExistentDOI->getErrorMessage();
             $response = $this->getErrorCrossrefNonExistentDOIResponse($errorMessageKey);
@@ -87,7 +87,7 @@ class ScieloScreeningHandler extends Handler {
         $authorSubmission = $authorSubmission->getGivenName('en_US') . ' ' .  $authorSubmission->getFamilyName('en_US');
         $authorsCrossref = $itemCrossref['author'];
 
-        if(!$checker->checkDoiFromAuthor($authorSubmission, $authorsCrossref)){
+        if(!$checker->checkDOIFromAuthor($authorSubmission, $authorsCrossref)){
             $response = [
                 'statusValidate' => 0,
                 'messageError' => __("plugins.generic.scieloScreening.doiFromAuthor")
@@ -95,7 +95,7 @@ class ScieloScreeningHandler extends Handler {
             return json_encode($response);
         }
 
-        if(!$checker->checkDoiArticle($itemCrossref)) {
+        if(!$checker->checkDOIArticle($itemCrossref)) {
             $response = [
                 'statusValidate' => 0,
                 'messageError' => __("plugins.generic.scieloScreening.doiFromJournal")
@@ -122,12 +122,12 @@ class ScieloScreeningHandler extends Handler {
         ];
     }
 
-    public function validateDoisFromScreening($args, $request){
+    public function validateDOIsFromScreening($args, $request){
         $checker = new ScreeningChecker();
         
-        if($checker->checkDoiRepeated($args['dois'])){
+        if($checker->checkDOIRepeated($args['dois'])){
             $response = [
-                'statusValidateDois' => 0,
+                'statusValidateDOIs' => 0,
                 'messageError' => __("plugins.generic.scieloScreening.doiDifferentRequirement")
             ];
             return json_encode($response);
@@ -136,22 +136,22 @@ class ScieloScreeningHandler extends Handler {
         $countOkay = array_count_values($args['doisOkay'])['true'];
         if($countOkay < 2) {
             $response = [
-                'statusValidateDois' => 0,
+                'statusValidateDOIs' => 0,
                 'messageError' => __("plugins.generic.scieloScreening.attentionRules")
             ];
             return json_encode($response);
         }
         else if($countOkay == 2){
-            if($checker->checkDoisLastTwoYears($args['doisYears'])){
+            if($checker->checkDOIsLastTwoYears($args['doisYears'])){
                 $response = [
-                    'statusValidateDois' => 0,
+                    'statusValidateDOIs' => 0,
                     'messageError' => __("plugins.generic.scieloScreening.attentionRules")
                 ];
                 return json_encode($response);
             }
         }
 
-        return json_encode(['statusValidateDois' => 1]);
+        return json_encode(['statusValidateDOIs' => 1]);
     }
 
     private function getStatusDOI($submission) {

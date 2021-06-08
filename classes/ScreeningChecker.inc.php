@@ -55,14 +55,14 @@ class ScreeningChecker {
         return $jsonResponse;
     }
 
-    public function checkDoiCrossref($responseCrossref) {
+    public function checkDOICrossref($responseCrossref) {
         $status = $responseCrossref['status'];
         $items = $responseCrossref['message']['items'];
 
         return $status == 'ok' && !empty($items);
     }
 
-    public function checkDoiFromAuthor($authorSubmission, $authorsCrossref) {
+    public function checkDOIFromAuthor($authorSubmission, $authorsCrossref) {
         $foundAuthor = false;
         $wordCount = 2;
 
@@ -133,22 +133,22 @@ class ScreeningChecker {
         return $nameWithoutAccentuation;
     }
 
-    public function checkDoiArticle($itemCrossref) {
+    public function checkDOIArticle($itemCrossref) {
         return $itemCrossref['type'] == 'journal-article';
     }
 
-    public function checkDoiRepeated($dois) {
+    public function checkDOIRepeated($dois) {
         return $dois[0] == $dois[1] || $dois[0] == $dois[2] || $dois[1] == $dois[2];
     }
 
-    public function checkDoisLastTwoYears($doisYears) {
-        $countDoisOkay = 0;
+    public function checkDOIsLastTwoYears($doisYears) {
+        $countDOIsOkay = 0;
         $currentYear = date('Y');
         foreach($doisYears as $doiYear){
-            if((int)$doiYear >= (int)$currentYear - 2) $countDoisOkay++;
+            if((int)$doiYear >= (int)$currentYear - 2) $countDOIsOkay++;
         }
         
-        return $countDoisOkay == 2;
+        return $countDOIsOkay == 2;
     }
 
     public function checkAffiliationAuthors($affiliationAuthors, $nameAuthors) {

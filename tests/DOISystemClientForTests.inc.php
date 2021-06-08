@@ -11,7 +11,7 @@ class DOISystemClientForTests implements DOISystemClient {
         $this->shouldGenerateExceptions = $shouldGenerateExceptions;
     }
 
-    function getDoiStatus($doi) {
+    function getDOIStatus($doi) {
         if ($this->shouldGenerateExceptions) {
             throw new Exception("Failure to communicate with the DOI.org Server");
         }
