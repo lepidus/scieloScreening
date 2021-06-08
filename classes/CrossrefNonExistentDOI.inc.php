@@ -9,7 +9,7 @@ class CrossrefNonExistentDOI {
     const HTTPS_STATUS_DOI_FOUND_MESSAGE_LOCALE_KEY = 'plugins.generic.scieloScreening.doiCrossrefRequirement';
 
     const HTTPS_STATUS_DOI_NULL = 301;
-    const HTTPS_STATUS_DOI_NULL_ERROR_CODE_MESSAGE_LOCALE_KEY = 'plugins.generic.scieloScreening.httpDoiNullErrorCode';
+    const HTTPS_STATUS_DOI_NULL_ERROR_CODE_MESSAGE_LOCALE_KEY = 'plugins.generic.scieloScreening.httpDOINullErrorCode';
 
     const HTTPS_STATUS_DOI_NOT_FOUND = 404;
     const HTTPS_STATUS_DOI_NOT_FOUND_MESSAGE_LOCALE_KEY = 'plugins.generic.scieloScreening.httpDOINotFoundErrorCode';
@@ -30,18 +30,18 @@ class CrossrefNonExistentDOI {
         $this->doiClient = $doiClient;
     }
 
-    public function getDoi() {
+    public function getDOI() {
         return $this->doi;
     }
 
-    public function getDoiClient() {
+    public function getDOIClient() {
         return $this->doiClient;
     }
 
     function getErrorMessage() {
         try {       
-            $doiClient = $this->getDoiClient();
-            $httpErrorCode = $doiClient->getDoiStatus($this->getDoi());   
+            $doiClient = $this->getDOIClient();
+            $httpErrorCode = $doiClient->getDOIStatus($this->getDOI());   
     
             $errorMapping = [
                 self::HTTPS_STATUS_DOI_FOUND => self::HTTPS_STATUS_DOI_FOUND_MESSAGE_LOCALE_KEY,

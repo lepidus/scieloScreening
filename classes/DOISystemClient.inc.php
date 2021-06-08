@@ -2,5 +2,5 @@
 
 interface DOISystemClient {
 
-    function getDoiStatus($doi);
+    function getDOIStatus($doi);
 }

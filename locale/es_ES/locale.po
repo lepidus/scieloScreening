@@ -176,5 +176,5 @@ msgstr "Código de retorno desconocido de DOI.org. Vuelva a intentarlo en unos m
 msgid "plugins.generic.scieloScreening.communicationFailure"
 msgstr "Falló la comunicación con DOI.org. Vuelva a intentarlo en unos momentos y, si el problema persiste, póngase en contacto con su administrador."
 
-msgid "plugins.generic.scieloScreening.httpDoiNullErrorCode"
+msgid "plugins.generic.scieloScreening.httpDOINullErrorCode"
 msgstr "Verifique que el DOI se haya ingresado correctamente."

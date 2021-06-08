@@ -4,9 +4,9 @@
  * Form for add/edit DOIs from a submission
  *}
 
-{capture assign=addDoiUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.scieloScreening.controllers.ScieloScreeningHandler" op="addDOIs" escape=false}{/capture}
-{capture assign=validateDoiUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.scieloScreening.controllers.ScieloScreeningHandler" op="validateDOI" escape=false}{/capture}
-{capture assign=validateDoisFromScreeningUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.scieloScreening.controllers.ScieloScreeningHandler" op="validateDoisFromScreening" escape=false}{/capture}
+{capture assign=addDOIUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.scieloScreening.controllers.ScieloScreeningHandler" op="addDOIs" escape=false}{/capture}
+{capture assign=validateDOIUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.scieloScreening.controllers.ScieloScreeningHandler" op="validateDOI" escape=false}{/capture}
+{capture assign=validateDOIsFromScreeningUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.scieloScreening.controllers.ScieloScreeningHandler" op="validateDOIsFromScreening" escape=false}{/capture}
 
 
 <script>
@@ -24,10 +24,10 @@
     {rdelim}
 
     async function makeSubmit(e){ldelim}
-        var postValidateDoisResponse;
+        var postValidateDOIsResponse;
 
         await $.post(
-            "{$validateDoisFromScreeningUrl}",
+            "{$validateDOIsFromScreeningUrl}",
             {ldelim}
                 doisOkay: doisOkay,
                 doisYears: doisYears,
@@ -35,12 +35,12 @@
             {rdelim},
             function (result){ldelim}
                 result = JSON.parse(result);
-                postValidateDoisResponse = result;
+                postValidateDOIsResponse = result;
             {rdelim}
         );
 
-        if(postValidateDoisResponse['statusValidateDois'] == 0){ldelim}
-            $("#generalMessage").text(postValidateDoisResponse['messageError']);
+        if(postValidateDOIsResponse['statusValidateDOIs'] == 0){ldelim}
+            $("#generalMessage").text(postValidateDOIsResponse['messageError']);
             $('#generalMessage').css('display', 'block');
             return;
         {rdelim}
@@ -52,7 +52,7 @@
         ];
 
         $.post(
-            "{$addDoiUrl}",
+            "{$addDOIUrl}",
             {ldelim}
                 submissionId: {$submissionId},
                 doisToSave: doisToSave
@@ -65,7 +65,7 @@
         var postValidateResponse;
         
         await $.post(
-            "{$validateDoiUrl}",
+            "{$validateDOIUrl}",
             {ldelim}
                 doiString: doiInput.val(),
                 submissionId: {$submissionId}
