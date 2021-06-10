@@ -11,6 +11,7 @@ spl_autoload_register(
                 'crossrefnonexistentdoi' => '/classes/CrossrefNonExistentDOI.inc.php',
                 'doisystemclient' => '/classes/DOISystemClient.inc.php',
                 'doisystemclientfordoiorgresponse' => '/classes/DOISystemClientForDOIORGResponse.inc.php',
+                'doisystemclientforcrossref' => '/classes/DOISystemClientForCrossref.inc.php',
             );
         }
         $cn = strtolower($class);
