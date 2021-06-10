@@ -1,7 +1,7 @@
 
 <?php
 
-class DOISystemClientForTests implements DOISystemClient {
+class DOISystemClientForTests extends DOISystemClient {
     
     private $expectedStatus;
     private $shouldGenerateExceptions;
@@ -11,7 +11,7 @@ class DOISystemClientForTests implements DOISystemClient {
         $this->shouldGenerateExceptions = $shouldGenerateExceptions;
     }
 
-    function getDOIStatus($doi) {
+    function getDOIStatus($serverUrl, $doi) {
         if ($this->shouldGenerateExceptions) {
             throw new Exception("Failure to communicate with the DOI.org Server");
         }
