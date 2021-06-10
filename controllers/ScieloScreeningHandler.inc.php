@@ -74,9 +74,9 @@ class ScieloScreeningHandler extends Handler {
         $responseCrossref = $checker->getFromCrossref($args['doiString']);
 
         if(!$checker->checkDOICrossref($responseCrossref)) {
-            $crossrefNonExistentDOI = new CrossrefNonExistentDOI($args['doiString'], new DOISystemClient());
-            $errorMessageKey = $crossrefNonExistentDOI->getErrorMessage();
-            $response = $this->getErrorCrossrefNonExistentDOIResponse($errorMessageKey);
+            $crossrefNonExistentDOI = new CrossrefNonExistentDOI($args['doiString'], new DOISystemClient(), 'DOI.org');
+            $errorMessage = $crossrefNonExistentDOI->getErrorMessage($server);
+            $response = $this->getErrorCrossrefNonExistentDOIResponse($errorMessage);
 
             return json_encode($response);
         }
@@ -115,10 +115,10 @@ class ScieloScreeningHandler extends Handler {
         ]);
     }
 
-    private function getErrorCrossrefNonExistentDOIResponse($errorMessageKey) {
+    private function getErrorCrossrefNonExistentDOIResponse($errorMessage) {
         return [
             'statusValidate' => CrossrefNonExistentDOI::VALIDATION_ERROR_STATUS,
-            'messageError' => __($errorMessageKey)
+            'messageError' => __($errorMessage['key'], $errorMessage['params'])
         ];
     }
 

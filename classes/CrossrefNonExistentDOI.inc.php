@@ -4,6 +4,7 @@ class CrossrefNonExistentDOI {
 
     private $doiClient;
     private $doi;
+    private $server;
 
     const HTTPS_STATUS_DOI_FOUND = 302;
     const HTTPS_STATUS_DOI_FOUND_MESSAGE_LOCALE_KEY = 'plugins.generic.scieloScreening.doiCrossrefRequirement';
@@ -25,9 +26,10 @@ class CrossrefNonExistentDOI {
 
     const VALIDATION_ERROR_STATUS = 0;
 
-    function __construct($doi, $doiClient = null) {
+    function __construct($doi, $doiClient, $server) {
         $this->doi = $doi;
         $this->doiClient = $doiClient;
+        $this->server = $server;
     }
 
     public function getDOI() {
@@ -37,11 +39,19 @@ class CrossrefNonExistentDOI {
     public function getDOIClient() {
         return $this->doiClient;
     }
+    
+    public function getServer() {
+        return $this->server;
+    }
 
     function getErrorMessage() {
-        try {       
+        $params = array(
+            'server' => $this->getServer(),
+        );
+
+        try {
             $doiClient = $this->getDOIClient();
-            $httpErrorCode = $doiClient->getDOIStatus(self::DOI_ORG_BASE_URL, $this->getDOI());   
+            $httpErrorCode = $doiClient->getDOIStatus(self::DOI_ORG_BASE_URL, $this->getDOI());
     
             $errorMapping = [
                 self::HTTPS_STATUS_DOI_FOUND => self::HTTPS_STATUS_DOI_FOUND_MESSAGE_LOCALE_KEY,
@@ -51,12 +61,22 @@ class CrossrefNonExistentDOI {
             ];
     
             if (array_key_exists($httpErrorCode, $errorMapping)) {
-                return $errorMapping[$httpErrorCode];
+                if ($httpErrorCode == self::HTTPS_STATUS_INTERNAL_SERVER_ERROR) {
+                    return $this->getMessage($errorMapping[$httpErrorCode], $params);
+                }
+                return $this->getMessage($errorMapping[$httpErrorCode]);
             }
-            return self::HTTPS_UNKNOWN_ERROR_CODE_MESSAGE_LOCALE_KEY;
+            return $this->getMessage(self::HTTPS_UNKNOWN_ERROR_CODE_MESSAGE_LOCALE_KEY, $params);
         }
         catch (Exception $exception) {
-            return self::COMMUNICATION_FAILURE_MESSAGE_LOCALE_KEY;
+            return $this->getMessage(self::COMMUNICATION_FAILURE_MESSAGE_LOCALE_KEY, $params);
         }
+    }
+
+    function getMessage($key, $params = array()) {
+        return array(
+            'key' => $key,
+            'params' => $params,
+        );
     }
 }

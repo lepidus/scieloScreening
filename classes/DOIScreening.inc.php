@@ -14,6 +14,7 @@ class DOIScreening extends DataObject {
     function getDOIId(){
         return $this->getData('doiId');
     }
+
     function setDOIId($doiId){
         return $this->setData('doiId', $doiId);
     }
@@ -21,6 +22,7 @@ class DOIScreening extends DataObject {
 	function getSubmissionId(){
 		return $this->getData('submissionId');
 	}
+    
 	function setSubmissionId($submissionId){
 		return $this->setData('submissionId', $submissionId);
     }
