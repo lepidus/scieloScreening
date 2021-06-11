@@ -8,9 +8,10 @@ spl_autoload_register(
         if ($classes === null) {
             $classes = array(
                 'screeningchecker' => '/classes/ScreeningChecker.inc.php',
-                'crossrefnonexistentdoi' => '/classes/CrossrefNonExistentDOI.inc.php',
+                'doiservice' => '/classes/DOIService.inc.php',
+                'doiorgservice' => '/classes/DOIOrgService.inc.php',
+                'doicrossrefservice' => '/classes/DOICrossrefService.inc.php',
                 'doisystemclient' => '/classes/DOISystemClient.inc.php',
-                'doicrossrefstatus' => '/classes/DOICrossrefStatus.inc.php'
             );
         }
         $cn = strtolower($class);

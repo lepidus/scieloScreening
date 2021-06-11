@@ -4,9 +4,12 @@ use PHPUnit\Framework\TestCase;
 
 final class DOISystemClientTest extends TestCase
 {
+    private $server = 'DOI.Org';
+    private $serverUrl = 'https://doi.org/';
+
     public function test302ResponseWhenHTTPStatusIsDOIFoundFromDOIOrg(): void
     {
-        $doiSystemClient = new DOISystemClient();
+        $doiSystemClient = new DOISystemClient($this->server, $this->serverUrl);
         $httpResponseCode = "HTTP/1.1 302";
         
         $expectedValidationResult =  302;
@@ -17,7 +20,7 @@ final class DOISystemClientTest extends TestCase
 
     public function test404ResponseWhenHTTPStatusIsNotFoundFromDOIOrg(): void
     {
-        $doiSystemClient = new DOISystemClient();
+        $doiSystemClient = new DOISystemClient($this->server, $this->serverUrl);
         $httpResponseCode = "HTTP/1.1 404";
         
         $expectedValidationResult =  404;
@@ -28,7 +31,7 @@ final class DOISystemClientTest extends TestCase
 
     public function test500ResponseWhenHTTPStatusIsInternalServerProblemFromDOIOrg(): void
     {
-        $doiSystemClient = new DOISystemClient();
+        $doiSystemClient = new DOISystemClient($this->server, $this->serverUrl);
         $httpResponseCode = "HTTP/1.1 500";
         
         $expectedValidationResult =  500;
@@ -39,7 +42,7 @@ final class DOISystemClientTest extends TestCase
 
     public function test301ResponseWhenHTTPStatusIsDOINullFromDOIOrg(): void
     {
-        $doiSystemClient = new DOISystemClient();
+        $doiSystemClient = new DOISystemClient($this->server, $this->serverUrl);
         $httpResponseCode = "HTTP/1.1 301";
         
         $expectedValidationResult =  301;
@@ -50,7 +53,7 @@ final class DOISystemClientTest extends TestCase
 
     public function testCode200WhenResponseFromCrossrefIsSuccess(): void
     {
-        $crossrefClient = new DOISystemClient();
+        $crossrefClient = new DOISystemClient($this->server, $this->serverUrl);
         $httpResponseCode = "HTTP/1.1 200 Ok";
 
         $expectedValidationResult = 200;
@@ -61,7 +64,7 @@ final class DOISystemClientTest extends TestCase
 
     public function testCode400WhenResponseFromCrossrefIsInvalid(): void
     {
-        $crossrefClient = new DOISystemClient();
+        $crossrefClient = new DOISystemClient($this->server, $this->serverUrl);
         $httpResponseCode = "HTTP/1.1 400 Bad Request";
 
         $expectedValidationResult = 400;
@@ -72,7 +75,7 @@ final class DOISystemClientTest extends TestCase
 
     public function testCode500WhenResponseFromCrossrefIsInternalServerProblem(): void
     {
-        $crossrefClient = new DOISystemClient();
+        $crossrefClient = new DOISystemClient($this->server, $this->serverUrl);
         $httpResponseCode = "HTTP/1.1 500 Internal Server Error";
 
         $expectedValidationResult = 500;

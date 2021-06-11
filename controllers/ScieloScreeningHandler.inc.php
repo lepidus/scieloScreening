@@ -4,7 +4,8 @@ import('classes.handler.Handler');
 import('plugins.generic.scieloScreening.classes.DOIScreening');
 import('plugins.generic.scieloScreening.classes.DOIScreeningDAO');
 import('plugins.generic.scieloScreening.classes.ScreeningChecker');
-import('plugins.generic.scieloScreening.classes.CrossrefNonExistentDOI');
+import('plugins.generic.scieloScreening.classes.DOIService');
+import('plugins.generic.scieloScreening.classes.DOIOrgService');
 import('plugins.generic.scieloScreening.classes.DOISystemClient');
 
 class ScieloScreeningHandler extends Handler {
@@ -74,10 +75,9 @@ class ScieloScreeningHandler extends Handler {
         $responseCrossref = $checker->getFromCrossref($args['doiString']);
 
         if(!$checker->checkDOICrossref($responseCrossref)) {
-            $crossrefNonExistentDOI = new CrossrefNonExistentDOI($args['doiString'], new DOISystemClient(), 'DOI.org');
-            $errorMessage = $crossrefNonExistentDOI->getErrorMessage($server);
-            $response = $this->getErrorCrossrefNonExistentDOIResponse($errorMessage);
-
+            $DOIOrgService = new DOIOrgService($args['doiString'], new DOISystemClient('DOI.Org', 'https://doi.org/'));
+            $statusMessage = $DOIOrgService->getStatusResponseMessage();
+            $response = $this->getDOIStatusResponseMessage($statusMessage);
             return json_encode($response);
         }
 
@@ -115,10 +115,10 @@ class ScieloScreeningHandler extends Handler {
         ]);
     }
 
-    private function getErrorCrossrefNonExistentDOIResponse($errorMessage) {
+    private function getDOIStatusResponseMessage($statusMessage) {
         return [
-            'statusValidate' => CrossrefNonExistentDOI::VALIDATION_ERROR_STATUS,
-            'messageError' => __($errorMessage['key'], $errorMessage['params'])
+            'statusValidate' => DOIService::VALIDATION_ERROR_STATUS,
+            'messageError' => __($statusMessage['key'], $statusMessage['params'])
         ];
     }
 

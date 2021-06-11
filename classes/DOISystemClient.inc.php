@@ -2,8 +2,24 @@
 
 class DOISystemClient {
 
-    public function getDOIStatus($serverUrl, $doi) {
-        $doiStatus = get_headers($serverUrl . $doi)[0];
+    private $server;
+    private $serverUrl;
+
+    function __construct($server, $serverUrl) {
+        $this->server = $server;
+        $this->serverUrl = $serverUrl;
+    }
+
+    public function getServer() {
+        return $this->server;
+    }
+
+    public function getServerUrl() {
+        return $this->serverUrl;
+    }
+
+    public function getDOIStatus($doi) {
+        $doiStatus = get_headers($this->getServerUrl() . $doi)[0];
         $doiStatusErrorCode = $this->getHTTPErrorCodeByHTTPStatus($doiStatus);
         return $doiStatusErrorCode;
     }
