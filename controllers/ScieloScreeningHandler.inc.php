@@ -87,7 +87,7 @@ class ScieloScreeningHandler extends Handler {
             $crossrefResponse = $doiCrossrefClient->getDOIResponse($args['doiString']);
         }
         
-        if(!$checker->checkDOICrossref($crossrefResponse)) {
+        if(!$checker->checkDOICrossrefResponse($crossrefResponse)) {
             $doiOrgClient = new DOISystemClient('DOI.org', 'https://doi.org/');
             $doiOrgService = new DOIOrgService($args['doiString'], $doiOrgClient);
             $statusMessage = $doiOrgService->getStatusResponseMessage();
