@@ -48,9 +48,9 @@ class ScreeningChecker {
         return [$numPDFs == 1, $numPDFs];
     }
 
-    public function checkDOICrossrefResponse($crossrefResponse) {
-        $status = $crossrefResponse['status'];
-        $items = $crossrefResponse['message']['items'];
+    public function checkDOICrossrefResponse($responseCrossref) {
+        $status = $responseCrossref['status'];
+        $items = $responseCrossref['message']['items'];
 
         return $status == 'ok' && !empty($items);
     }

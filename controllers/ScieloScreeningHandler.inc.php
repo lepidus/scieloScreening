@@ -73,7 +73,7 @@ class ScieloScreeningHandler extends Handler {
 
     public function validateDOI($args, $request){
         $checker = new ScreeningChecker();
-        $crossrefResponse = array();
+        $responseCrossref = array();
 
         $doiCrossrefClient = new DOISystemClient('Crossref.org', 'https://api.crossref.org/works?filter=doi:');
         $doiCrossrefService = new DOICrossrefService($args['doiString'], $doiCrossrefClient);
@@ -84,10 +84,10 @@ class ScieloScreeningHandler extends Handler {
             $response = $this->getDOIStatusResponseMessage($statusMessage);
             return json_encode($response);
         } else {
-            $crossrefResponse = $doiCrossrefClient->getDOIResponse($args['doiString']);
+            $responseCrossref = $doiCrossrefClient->getDOIResponse($args['doiString']);
         }
         
-        if(!$checker->checkDOICrossrefResponse($crossrefResponse)) {
+        if(!$checker->checkDOICrossrefResponse($responseCrossref)) {
             $doiOrgClient = new DOISystemClient('DOI.org', 'https://doi.org/');
             $doiOrgService = new DOIOrgService($args['doiString'], $doiOrgClient);
             $statusMessage = $doiOrgService->getStatusResponseMessage();
@@ -95,7 +95,7 @@ class ScieloScreeningHandler extends Handler {
             return json_encode($response);
         }
 
-        $itemCrossref = $crossrefResponse['message']['items'][0];
+        $itemCrossref = $responseCrossref['message']['items'][0];
         $submission = Services::get('submission')->get((int)$args['submissionId']);
         $authorSubmission = $submission->getAuthors()[0];
         $authorSubmission = $authorSubmission->getGivenName('en_US') . ' ' .  $authorSubmission->getFamilyName('en_US');
