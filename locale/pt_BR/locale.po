@@ -178,3 +178,6 @@ msgstr "Falha na comunicação com {$server}. Tente novamente em alguns instante
 
 msgid "plugins.generic.scieloScreening.httpDOINullErrorCode"
 msgstr "Verifique se o DOI foi inserido corretamente."
+
+msgid "plugins.generic.scieloScreening.doiCrossrefInvalidErrorCode"
+msgstr "O valor inserido não é um DOI."

@@ -24,6 +24,13 @@ class DOISystemClient {
         return $doiStatusErrorCode;
     }
 
+    public function getDOIResponse($doi) {
+        $response = file_get_contents($this->getServerUrl() . $doi);
+        $jsonResponse = json_decode($response, true);
+
+        return $jsonResponse;
+    }
+
     public function getHTTPErrorCodeByHTTPStatus($doiStatus) {
         $errorCodeArrayKeyByPartitionedResponse = 1;
         $httpErrorCodeLength = 3;

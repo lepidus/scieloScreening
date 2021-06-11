@@ -48,16 +48,9 @@ class ScreeningChecker {
         return [$numPDFs == 1, $numPDFs];
     }
 
-    public function getFromCrossref($doiString){
-        $response = file_get_contents('https://api.crossref.org/works?filter=doi:' . $doiString);
-        $jsonResponse = json_decode($response, true);
-
-        return $jsonResponse;
-    }
-
-    public function checkDOICrossref($responseCrossref) {
-        $status = $responseCrossref['status'];
-        $items = $responseCrossref['message']['items'];
+    public function checkDOICrossrefResponse($crossrefResponse) {
+        $status = $crossrefResponse['status'];
+        $items = $crossrefResponse['message']['items'];
 
         return $status == 'ok' && !empty($items);
     }

@@ -6,6 +6,7 @@ import('plugins.generic.scieloScreening.classes.DOIScreeningDAO');
 import('plugins.generic.scieloScreening.classes.ScreeningChecker');
 import('plugins.generic.scieloScreening.classes.DOIService');
 import('plugins.generic.scieloScreening.classes.DOIOrgService');
+import('plugins.generic.scieloScreening.classes.DOICrossrefService');
 import('plugins.generic.scieloScreening.classes.DOISystemClient');
 
 class ScieloScreeningHandler extends Handler {
@@ -72,16 +73,29 @@ class ScieloScreeningHandler extends Handler {
 
     public function validateDOI($args, $request){
         $checker = new ScreeningChecker();
-        $responseCrossref = $checker->getFromCrossref($args['doiString']);
+        $crossrefResponse = array();
 
-        if(!$checker->checkDOICrossref($responseCrossref)) {
-            $DOIOrgService = new DOIOrgService($args['doiString'], new DOISystemClient('DOI.Org', 'https://doi.org/'));
-            $statusMessage = $DOIOrgService->getStatusResponseMessage();
+        $doiCrossrefClient = new DOISystemClient('Crossref.org', 'https://api.crossref.org/works?filter=doi:');
+        $doiCrossrefService = new DOICrossrefService($args['doiString'], $doiCrossrefClient);
+        $doiStatusCode = $doiCrossrefService->getDOICrossrefStatusCode();
+
+        if ($doiStatusCode != DOICrossrefService::CROSSREF_STATUS_SUCCESS_CODE) {
+            $statusMessage = $doiCrossrefService->getStatusResponseMessage();
+            $response = $this->getDOIStatusResponseMessage($statusMessage);
+            return json_encode($response);
+        } else {
+            $crossrefResponse = $doiCrossrefClient->getDOIResponse($args['doiString']);
+        }
+        
+        if(!$checker->checkDOICrossref($crossrefResponse)) {
+            $doiOrgClient = new DOISystemClient('DOI.org', 'https://doi.org/');
+            $doiOrgService = new DOIOrgService($args['doiString'], $doiOrgClient);
+            $statusMessage = $doiOrgService->getStatusResponseMessage();
             $response = $this->getDOIStatusResponseMessage($statusMessage);
             return json_encode($response);
         }
 
-        $itemCrossref = $responseCrossref['message']['items'][0];
+        $itemCrossref = $crossrefResponse['message']['items'][0];
         $submission = Services::get('submission')->get((int)$args['submissionId']);
         $authorSubmission = $submission->getAuthors()[0];
         $authorSubmission = $authorSubmission->getGivenName('en_US') . ' ' .  $authorSubmission->getFamilyName('en_US');
