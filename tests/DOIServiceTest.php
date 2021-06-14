@@ -37,4 +37,12 @@ final class DOIServiceTest extends TestCase
         $validationResult = $DOIService->getStatusResponseMessage()['key'];
         $this->assertEquals($expectedValidationResult, $validationResult);
     }
+
+    public function testIfDOIExistsInCrossref(): void
+    {
+        $DOIService = new DOIService("10.1145/1998076.1998132", new DOISystemClientForTests($this->server, $this->serverUrl, 200), 'DOI.org');
+        
+        $validationResult = $DOIService->DOIExists();
+        $this->assertTrue($validationResult);
+    }
 }
