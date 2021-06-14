@@ -17,17 +17,4 @@ class DOICrossrefService extends DOIService {
 
         $this->responseStatusMapping += $crossrefResponseStatus;
     }
-
-    public function getDOICrossrefStatusCode() {
-        $doiClient = $this->doiClient;
-        $doiCrossrefStatusCode = $doiClient->getDOIStatus($this->doi);
-        return $doiCrossrefStatusCode;
-    }
-
-    public function getResponseContentFromCrossref() {
-        $doiClient = $this->getDOIClient();
-        $response = $doiClient->getDOIResponse($this->doi);
-
-        return $response;
-    }
 }

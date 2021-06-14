@@ -55,4 +55,14 @@ class DOIService {
             return $this->getMessage(self::COMMUNICATION_FAILURE_MESSAGE_LOCALE_KEY, $this->getParams());
         }
     }
+
+    public function getResponseStatusCode() {
+        $responseStatusCode = $this->doiClient->getDOIStatus($this->doi);
+        return $responseStatusCode;
+    }
+
+    public function getResponseContent() {
+        $responseContent = $this->doiClient->getDOIResponse($this->doi);
+        return $responseContent;
+    }
 }
