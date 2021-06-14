@@ -23,6 +23,6 @@ class DOIOrgService extends DOIService {
             self::DOI_ORG_STATUS_DOI_NULL_MESSAGE_LOCALE_KEY,
         ];
 
-        $this->addResponseStatus($doiOrgResponseStatus);
+        $this->responseStatusMapping += $doiOrgResponseStatus;
     }
 }

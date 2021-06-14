@@ -15,18 +15,18 @@ class DOICrossrefService extends DOIService {
             self::CROSSREF_STATUS_DOI_INVALID_MESSAGE_LOCALE_KEY,
         ];
 
-        $this->addResponseStatus($crossrefResponseStatus);
+        $this->responseStatusMapping += $crossrefResponseStatus;
     }
 
     public function getDOICrossrefStatusCode() {
-        $doiClient = $this->getDOIClient();
-        $doiCrossrefStatusCode = $doiClient->getDOIStatus($this->getDOI());
+        $doiClient = $this->doiClient;
+        $doiCrossrefStatusCode = $doiClient->getDOIStatus($this->doi);
         return $doiCrossrefStatusCode;
     }
 
     public function getResponseContentFromCrossref() {
         $doiClient = $this->getDOIClient();
-        $response = $doiClient->getDOIResponse($this->getDOI());
+        $response = $doiClient->getDOIResponse($this->doi);
 
         return $response;
     }

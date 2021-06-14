@@ -2,9 +2,9 @@
 
 class DOIService {
 
-    private $doiClient;
-    private $doi;
-    private $responseStatusMapping = [];
+    protected $doiClient;
+    protected $doi;
+    protected $responseStatusMapping = [];
     
     const HTTPS_STATUS_INTERNAL_SERVER_ERROR_CODE = 500;
     const HTTPS_STATUS_INTERNAL_SERVER_ERROR_MESSAGE_LOCALE_KEY = 'plugins.generic.scieloScreening.httpServerErrorCode';
@@ -22,24 +22,12 @@ class DOIService {
             self::HTTPS_STATUS_INTERNAL_SERVER_ERROR_CODE => self::HTTPS_STATUS_INTERNAL_SERVER_ERROR_MESSAGE_LOCALE_KEY,
         ];
 
-        $this->responseStatusMapping = $internalServerResponseStatus;
-    }
-
-    public function getDOI() {
-        return $this->doi;
-    }
-
-    public function getDOIClient() {
-        return $this->doiClient;
-    }
-    
-    public function addResponseStatus($responseStatus) {
-        $this->responseStatusMapping += $responseStatus;
+        $this->responseStatusMapping += $internalServerResponseStatus;
     }
 
     public function getParams() {
         $params = array(
-            'server' => $this->getDOIClient()->getServer(),
+            'server' => $this->doiClient->getServer(),
         );
         return $params;
     }
@@ -53,8 +41,7 @@ class DOIService {
 
     function getStatusResponseMessage() {
         try {
-            $doiClient = $this->getDOIClient();
-            $httpErrorCode = $doiClient->getDOIStatus($this->getDOI());
+            $httpErrorCode = $this->doiClient->getDOIStatus($this->doi);
     
             if (array_key_exists($httpErrorCode, $this->responseStatusMapping)) {
                 if ($httpErrorCode == self::HTTPS_STATUS_INTERNAL_SERVER_ERROR_CODE) {
