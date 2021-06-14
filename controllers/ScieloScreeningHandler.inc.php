@@ -83,7 +83,7 @@ class ScieloScreeningHandler extends Handler {
             $response = $this->getDOIStatusResponseMessage($statusMessage);
             return json_encode($response);
         } else {
-            $responseCrossref = $crossrefClient->getDOIResponse($args['doiString']);
+            $responseCrossref = $doiCrossrefService->getResponseContent();
         }
         
         if(!$checker->checkCrossrefResponse($responseCrossref)) {
