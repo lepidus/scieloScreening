@@ -104,9 +104,9 @@ final class ScreeningCheckerTest extends TestCase
     public function testDOIAuthorNameOnlyFirstAndLastNameEqualsSubmissionAuthorName(): void
     {
         $checker = new ScreeningChecker();
-        $doiCrossrefClient = new DOISystemClient('Crossref.org', 'https://api.crossref.org/works?filter=doi:');
+        $crossrefClient = new DOISystemClient('Crossref.org', 'https://api.crossref.org/works?filter=doi:');
 
-        $responseCrossref = $doiCrossrefClient->getDOIResponse("10.14295/jmphc.v12.993");
+        $responseCrossref = $crossrefClient->getDOIResponse("10.14295/jmphc.v12.993");
 
         $authorsCrossref = $responseCrossref['message']['items'][0]['author']; //Síntique Lopes
 
@@ -153,9 +153,9 @@ final class ScreeningCheckerTest extends TestCase
     public function testCheckDOIArticle(): void
     {
         $checker = new ScreeningChecker();
-        $doiCrossrefClient = new DOISystemClient('Crossref.org', 'https://api.crossref.org/works?filter=doi:');
+        $crossrefClient = new DOISystemClient('Crossref.org', 'https://api.crossref.org/works?filter=doi:');
         
-        $responseCrossref = $doiCrossrefClient->getDOIResponse("10.1145/1998076.1998132");
+        $responseCrossref = $crossrefClient->getDOIResponse("10.1145/1998076.1998132");
 
         $itemCrossref = $responseCrossref['message']['items'][0];
 
@@ -173,11 +173,11 @@ final class ScreeningCheckerTest extends TestCase
     public function testCheckDOIsLastTwoYears(): void
     {
         $checker = new ScreeningChecker();
-        $doiCrossrefClient = new DOISystemClient('Crossref.org', 'https://api.crossref.org/works?filter=doi:');
+        $crossrefClient = new DOISystemClient('Crossref.org', 'https://api.crossref.org/works?filter=doi:');
         
-        $responseCrossref = $doiCrossrefClient->getDOIResponse("10.1145/1998076.1998132");
+        $responseCrossref = $crossrefClient->getDOIResponse("10.1145/1998076.1998132");
         $firstYear = $responseCrossref['message']['items'][0]['published-print']['date-parts'][0][0];
-        $responseCrossref = $doiCrossrefClient->getDOIResponse("10.1016/j.datak.2003.10.003");
+        $responseCrossref = $crossrefClient->getDOIResponse("10.1016/j.datak.2003.10.003");
         $secondYear = $responseCrossref['message']['items'][0]['published-print']['date-parts'][0][0];
 
         $this->assertFalse($checker->checkDOIsLastTwoYears([$firstYear, $secondYear]));
@@ -190,13 +190,13 @@ final class ScreeningCheckerTest extends TestCase
         $dois = ["10.1016/j.datak.2003.10.003", "10.1016/S0169-023X(01)00047-7"];
         $nameAuthor = "Altigran S. da Silva";
 
-        $doiCrossrefClient = new DOISystemClient('Crossref.org', 'https://api.crossref.org/works?filter=doi:');
+        $crossrefClient = new DOISystemClient('Crossref.org', 'https://api.crossref.org/works?filter=doi:');
 
-        $firstResponse = $doiCrossrefClient->getDOIResponse($dois[0]);
-        $this->assertTrue($checker->checkDOICrossrefResponse($firstResponse));
+        $firstResponse = $crossrefClient->getDOIResponse($dois[0]);
+        $this->assertTrue($checker->checkCrossrefResponse($firstResponse));
 
-        $secondResponse = $doiCrossrefClient->getDOIResponse($dois[1]);
-        $this->assertTrue($checker->checkDOICrossrefResponse($secondResponse));
+        $secondResponse = $crossrefClient->getDOIResponse($dois[1]);
+        $this->assertTrue($checker->checkCrossrefResponse($secondResponse));
 
         $firstItem = $firstResponse['message']['items'][0];
         $secondItem = $secondResponse['message']['items'][0];

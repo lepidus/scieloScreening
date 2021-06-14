@@ -6,7 +6,7 @@ import('plugins.generic.scieloScreening.classes.DOIScreeningDAO');
 import('plugins.generic.scieloScreening.classes.ScreeningChecker');
 import('plugins.generic.scieloScreening.classes.DOIService');
 import('plugins.generic.scieloScreening.classes.DOIOrgService');
-import('plugins.generic.scieloScreening.classes.DOICrossrefService');
+import('plugins.generic.scieloScreening.classes.CrossrefService');
 import('plugins.generic.scieloScreening.classes.DOISystemClient');
 
 class ScieloScreeningHandler extends Handler {
@@ -75,18 +75,18 @@ class ScieloScreeningHandler extends Handler {
         $checker = new ScreeningChecker();
         $responseCrossref = array();
 
-        $doiCrossrefClient = new DOISystemClient('Crossref.org', 'https://api.crossref.org/works?filter=doi:');
-        $doiCrossrefService = new DOICrossrefService($args['doiString'], $doiCrossrefClient);
+        $crossrefClient = new DOISystemClient('Crossref.org', 'https://api.crossref.org/works?filter=doi:');
+        $doiCrossrefService = new CrossrefService($args['doiString'], $crossrefClient);
 
         if (!$doiCrossrefService->DOIExists()) {
             $statusMessage = $doiCrossrefService->getStatusResponseMessage();
             $response = $this->getDOIStatusResponseMessage($statusMessage);
             return json_encode($response);
         } else {
-            $responseCrossref = $doiCrossrefClient->getDOIResponse($args['doiString']);
+            $responseCrossref = $crossrefClient->getDOIResponse($args['doiString']);
         }
         
-        if(!$checker->checkDOICrossrefResponse($responseCrossref)) {
+        if(!$checker->checkCrossrefResponse($responseCrossref)) {
             $doiOrgClient = new DOISystemClient('DOI.org', 'https://doi.org/');
             $doiOrgService = new DOIOrgService($args['doiString'], $doiOrgClient);
             $statusMessage = $doiOrgService->getStatusResponseMessage();

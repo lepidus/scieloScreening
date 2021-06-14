@@ -1,6 +1,6 @@
 <?php
 
-class DOICrossrefService extends DOIService {
+class CrossrefService extends DOIService {
 
     const CROSSREF_STATUS_DOI_INVALID_CODE = 400;
     const CROSSREF_STATUS_DOI_INVALID_MESSAGE_LOCALE_KEY = 'plugins.generic.scieloScreening.doiCrossrefInvalidErrorCode';

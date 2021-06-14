@@ -10,7 +10,7 @@ spl_autoload_register(
                 'screeningchecker' => '/classes/ScreeningChecker.inc.php',
                 'doiservice' => '/classes/DOIService.inc.php',
                 'doiorgservice' => '/classes/DOIOrgService.inc.php',
-                'doicrossrefservice' => '/classes/DOICrossrefService.inc.php',
+                'crossrefservice' => '/classes/CrossrefService.inc.php',
                 'doisystemclient' => '/classes/DOISystemClient.inc.php',
             );
         }
