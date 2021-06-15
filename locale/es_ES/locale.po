@@ -96,7 +96,7 @@ msgstr "Los DOI no pueden ser lo mismo"
 msgid "plugins.generic.scieloScreening.attentionRules"
 msgstr "Por favor, respete las reglas establecidas anteriormente"
 
-msgid "plugins.generic.scieloScreening.doiCrossrefRequirement"
+msgid "plugins.generic.scieloScreening.crossrefRequirement"
 msgstr "Sólo se aceptan DOIs de la Crossref"
 
 msgid "plugins.generic.scieloScreening.doiNotRegistered"
@@ -179,5 +179,5 @@ msgstr "Falló la comunicación con {$server}. Vuelva a intentarlo en unos momen
 msgid "plugins.generic.scieloScreening.httpDOINullErrorCode"
 msgstr "Verifique que el DOI se haya ingresado correctamente."
 
-msgid "plugins.generic.scieloScreening.doiCrossrefInvalidErrorCode"
+msgid "plugins.generic.scieloScreening.crossrefInvalidErrorCode"
 msgstr "El valor ingresado no es un DOI."

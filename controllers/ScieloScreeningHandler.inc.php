@@ -76,14 +76,14 @@ class ScieloScreeningHandler extends Handler {
         $responseCrossref = array();
 
         $crossrefClient = new DOISystemClient('Crossref.org', 'https://api.crossref.org/works?filter=doi:');
-        $doiCrossrefService = new CrossrefService($args['doiString'], $crossrefClient);
+        $crossrefService = new CrossrefService($args['doiString'], $crossrefClient);
 
-        if (!$doiCrossrefService->DOIExists()) {
-            $statusMessage = $doiCrossrefService->getStatusResponseMessage();
+        if (!$crossrefService->DOIExists()) {
+            $statusMessage = $crossrefService->getStatusResponseMessage();
             $response = $this->getDOIStatusResponseMessage($statusMessage);
             return json_encode($response);
         } else {
-            $responseCrossref = $doiCrossrefService->getResponseContent();
+            $responseCrossref = $crossrefService->getResponseContent();
         }
         
         if(!$checker->checkCrossrefResponse($responseCrossref)) {

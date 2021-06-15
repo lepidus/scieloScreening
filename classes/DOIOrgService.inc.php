@@ -3,7 +3,7 @@
 class DOIOrgService extends DOIService {
 
     const DOI_ORG_STATUS_DOI_FOUND_CODE = 302;
-    const DOI_ORG_STATUS_DOI_FOUND_MESSAGE_LOCALE_KEY = 'plugins.generic.scieloScreening.doiCrossrefRequirement';
+    const DOI_ORG_STATUS_DOI_FOUND_MESSAGE_LOCALE_KEY = 'plugins.generic.scieloScreening.crossrefRequirement';
 
     const DOI_ORG_STATUS_DOI_NOT_FOUND_CODE = 404;
     const DOI_ORG_STATUS_DOI_NOT_FOUND_MESSAGE_LOCALE_KEY = 'plugins.generic.scieloScreening.httpDOINotFoundErrorCode';

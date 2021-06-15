@@ -58,13 +58,11 @@ class DOIService {
     }
     
     public function getResponseStatusCode() {
-        $responseStatusCode = $this->doiClient->getDOIStatus($this->doi);
-        return $responseStatusCode;
+        return $this->doiClient->getDOIStatus($this->doi);;
     }
     
     public function getResponseContent() {
-        $responseContent = $this->doiClient->getDOIResponse($this->doi);
-        return $responseContent;
+        return $this->doiClient->getDOIResponse($this->doi);
     }
 
     public function DOIExists() {
