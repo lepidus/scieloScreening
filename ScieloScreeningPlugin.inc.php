@@ -10,6 +10,7 @@
 import('lib.pkp.classes.plugins.GenericPlugin');
 import('plugins.generic.scieloScreening.classes.DOIScreeningDAO');
 import('plugins.generic.scieloScreening.controllers.ScieloScreeningHandler');
+import('plugins.generic.scieloScreening.classes.ScreeningChecker');
 
 class ScieloScreeningPlugin extends GenericPlugin {
 
@@ -33,8 +34,9 @@ class ScieloScreeningPlugin extends GenericPlugin {
 
 			HookRegistry::register('LoadComponentHandler', array($this, 'setupScieloScreeningHandler'));
             HookRegistry::register('authorform::Constructor', array($this, 'changeAuthorForm'));
-            HookRegistry::register('submissionsubmitstep4form::display', array($this, 'addToStep4'));
             HookRegistry::register('submissionsubmitstep2form::display', array($this, 'addToStep2'));
+            HookRegistry::register('submissionsubmitstep3form::validate', array($this, 'addValidationToStep3'));
+            HookRegistry::register('submissionsubmitstep4form::display', array($this, 'addToStep4'));
 		}
 		return $success;
 	}
@@ -73,6 +75,39 @@ class ScieloScreeningPlugin extends GenericPlugin {
         $newStep2 = substr_replace($step2, $template, $posInsert, 0);
 
         $step2 = $newStep2;
+    }
+
+    public function addValidationToStep3($hookName, $params) {
+        $form =& $params[0];
+        $form->readUserVars(array('inputNumberAuthors'));
+        $submission = $form->submission;
+        $inputNumberAuthors = $form->getData('inputNumberAuthors');
+
+        $checker = new ScreeningChecker();
+        $authors = $submission->getAuthors();
+        if($inputNumberAuthors != count($authors)) {
+            $form->addErrorField('inputNumberAuthors');
+            $form->addError('inputNumberAuthors', __("plugins.generic.scieloScreening.required.numberAuthors"));
+            return;
+        };
+        
+        $nameAuthors = array_map(function($author){
+            return $author->getLocalizedGivenName() . $author->getLocalizedFamilyName();
+        }, $authors);
+        if($checker->checkHasUppercaseAuthors($nameAuthors)){
+            $form->addErrorField('authorsGridContainer');
+            $form->addError('authorsGridContainer', __("plugins.generic.scieloScreening.required.nameUppercase"));
+            return;
+        }
+
+        $orcidAuthors = array_map(function($author){
+            return $author->getOrcid();
+        }, $authors);
+        if(!$checker->checkOrcidAuthors($orcidAuthors)) {
+            $form->addErrorField('authorsGridContainer');
+            $form->addError('authorsGridContainer', __("plugins.generic.scieloScreening.required.orcidLeastOne"));
+            return;
+        }
     }
 
     function addToStep4($hookName, $params){

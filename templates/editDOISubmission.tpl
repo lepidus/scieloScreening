@@ -26,7 +26,7 @@
             {translate key="plugins.generic.scieloScreening.submission.numberAuthors"}
             <span class="req">*</span>
         </p>
-        <input id="inputNumberAuthors" class="required" type="number" required="1" min="1" max="100">
+        <input id="inputNumberAuthors" name="inputNumberAuthors" class="required" type="number" required="1" min="1" max="100">
     </div>
 
     <script>
@@ -42,9 +42,6 @@
     {if count($dois) == 0}
     {capture assign=checkAuthorsUrl}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.scieloScreening.controllers.ScieloScreeningHandler" op="checkAuthors" escape=false}{/capture}
     <script>
-        var screeningChecked = false;
-        var postResponse;
-
         $(function(){ldelim}
             $("#openDOIModal").click(function(){ldelim}
                 $("#DOIModal").addClass("is_visible");
@@ -57,43 +54,8 @@
             $("#checkCantScreening").click(function(){ldelim}
                 if($(this).is(":checked")){ldelim}
                     $("#errorScreening").css("display", "none");
-                    screeningChecked = true;
                 {rdelim}
                 else if($(this).is(":not(:checked)")){ldelim}
-                    $("#errorScreening").css("display", "block");
-                    screeningChecked = false;
-                {rdelim}
-            {rdelim});
-
-            $(".pkp_button.submitFormButton").mouseover(async function(){ldelim}
-                await $.post(
-                    "{$checkAuthorsUrl}",
-                    {ldelim}
-                        submissionId: {$submissionId},
-                        numberAuthors: $('#inputNumberAuthors').val()
-                    {rdelim},
-                    function (result){ldelim}
-                        result = JSON.parse(result);
-                        postResponse = result;
-                    {rdelim}
-                );
-
-                if(postResponse['statusNumberAuthors'] == 'error'){ldelim}
-                    alert("{translate key="plugins.generic.scieloScreening.required.numberAuthors"}");
-                    return;
-                {rdelim}
-
-                if(postResponse['statusUppercase'] == 'error'){ldelim}
-                    alert("{translate key="plugins.generic.scieloScreening.required.nameUppercase"}");
-                    return;
-                {rdelim}
-
-                if(postResponse['statusOrcid'] == 'error'){ldelim}
-                    alert("{translate key="plugins.generic.scieloScreening.required.orcidLeastOne"}");
-                    return;
-                {rdelim}
-                
-                if(!screeningChecked){ldelim}
                     $("#errorScreening").css("display", "block");
                 {rdelim}
             {rdelim});
