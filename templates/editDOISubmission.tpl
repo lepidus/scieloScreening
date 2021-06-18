@@ -68,7 +68,7 @@
     {fbvFormSection}
         <div class="pkp_controllers_grid">
             <div class="header">
-                <h4 id="doiTitle">{translate key="plugins.generic.scieloScreening.nome"}</h4>
+                <h4 id="doiTitle">{translate key="plugins.generic.scieloScreening.doiScreeningLabel"}</h4>
                 <span id="asterix" class="req">*</span>
                 {if count($dois) > 0}
                 <div id="boxScreening">
@@ -84,7 +84,7 @@
                     <div id="boxCantScreening">
                         <h4>{translate key="plugins.generic.scieloScreening.caseCantScreening"}</h4>
                         <div id="boxCheck">
-                            <input id="checkCantScreening" name="checkCantScreening" type="checkbox">
+                            <input id="checkCantScreening" name="checkCantScreening" type="checkbox" value="1">
                             <label id="labelCheck" for="checkCantScreening">{translate key="plugins.generic.scieloScreening.declaration"}</label>
                         </div>
                     </div>

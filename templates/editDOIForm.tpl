@@ -19,7 +19,6 @@
         $("#generalMessage").addClass("mySuccess");
         $('#generalMessage').css('display', 'block');
 
-        screeningChecked = true;
         $("#boxCantScreening").css("display", "none");
     {rdelim}
 
@@ -102,7 +101,7 @@
 
 <div id="doiForm">
     <div id="doiFormArea">
-        <h2>{translate key="plugins.generic.scieloScreening.nome"}</h2>
+        <h2>{translate key="plugins.generic.scieloScreening.doiScreeningLabel"}</h2>
         <p>{translate key="plugins.generic.scieloScreening.submission.description"}</p>
         <span id="generalMessage" class="myError" style="display:none"></span>
         <div id="formFields">

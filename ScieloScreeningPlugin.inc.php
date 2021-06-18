@@ -79,9 +79,10 @@ class ScieloScreeningPlugin extends GenericPlugin {
 
     public function addValidationToStep3($hookName, $params) {
         $form =& $params[0];
-        $form->readUserVars(array('inputNumberAuthors'));
+        $form->readUserVars(array('inputNumberAuthors', 'checkCantScreening'));
         $submission = $form->submission;
         $inputNumberAuthors = $form->getData('inputNumberAuthors');
+        $checkCantScreening = $form->getData('checkCantScreening');
 
         $checker = new ScreeningChecker();
         $authors = $submission->getAuthors();
@@ -106,6 +107,14 @@ class ScieloScreeningPlugin extends GenericPlugin {
         if(!$checker->checkOrcidAuthors($orcidAuthors)) {
             $form->addErrorField('authorsGridContainer');
             $form->addError('authorsGridContainer', __("plugins.generic.scieloScreening.required.orcidLeastOne"));
+            return;
+        }
+
+        $doisInformedAtScreening = DAORegistry::getDAO('DOIScreeningDAO')->getBySubmissionId($submission->getId());
+        $doiScreeningDone = (count($doisInformedAtScreening) > 0); 
+        if($checkCantScreening != "1" && !$doiScreeningDone) {
+            $form->addErrorField('errorScreening');
+            $form->addError('errorScreening', __("plugins.generic.scieloScreening.required.doiScreening"));
             return;
         }
     }
