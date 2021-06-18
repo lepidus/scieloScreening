@@ -81,6 +81,8 @@ class ScieloScreeningPlugin extends GenericPlugin {
         $form =& $params[0];
         $form->readUserVars(array('inputNumberAuthors', 'checkCantScreening'));
         $submission = $form->submission;
+        if(!$this->userIsAuthor($submission)) return;
+        
         $inputNumberAuthors = $form->getData('inputNumberAuthors');
         $checkCantScreening = $form->getData('checkCantScreening');
 
@@ -162,10 +164,9 @@ class ScieloScreeningPlugin extends GenericPlugin {
         $submission = DAORegistry::getDAO('SubmissionDAO')->getById($submissionId);
         
         $dois = DAORegistry::getDAO('DOIScreeningDAO')->getBySubmissionId($submissionId);
-        $authors = $submission->getAuthors();
 
         $smarty->assign([
-            'roleId' => $authors[0]->getUserGroup()->getRoleId(),
+            'userIsAuthor' => $this->userIsAuthor($submission),
             'dois' => $dois
         ]);
         
@@ -235,7 +236,7 @@ class ScieloScreeningPlugin extends GenericPlugin {
         return new DOIScreeningMigration();
     }
 
-    function userIsAuthor($submission){
+    private function userIsAuthor($submission){
         $currentUser = \Application::get()->getRequest()->getUser();
         $currentUserAssignedRoles = array();
         if ($currentUser) {

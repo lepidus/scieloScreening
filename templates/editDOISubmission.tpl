@@ -17,7 +17,7 @@
 </script>
 
 
-{if $roleId == ROLE_ID_AUTHOR}
+{if $userIsAuthor}
     <label id="contributorsTitle">
         {translate key="plugins.generic.scieloScreening.submission.contributors"}
     </label>
@@ -109,4 +109,4 @@
         {/if}
     {/fbvFormSection}
 
-{/if} {* $roleId == ROLE_ID_AUTHOR *}
+{/if} {* $userIsAuthor *}
