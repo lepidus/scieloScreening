@@ -1,4 +1,5 @@
 <?php
+import ('plugins.generic.scieloScreening.classes.DOIService');
 
 class CrossrefService extends DOIService {
 

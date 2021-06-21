@@ -1,6 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+import ('plugins.generic.scieloScreening.classes.ScreeningChecker');
 
 final class ScreeningCheckerTest extends TestCase
 {
@@ -55,12 +56,12 @@ final class ScreeningCheckerTest extends TestCase
     {
         $checker = new ScreeningChecker();
 
-        $labelsGalleys = ["pdf", "jpg",];
+        $labelsGalleys = ["application/pdf", "image/jpeg"];
         list($status, $number) = $checker->checkNumberPdfs($labelsGalleys);
         $this->assertTrue($status);
         $this->assertEquals(1, $number);
 
-        $labelsGalleys = ["pdf", "pdf", "pdf"];
+        $labelsGalleys = ["application/pdf", "application/pdf", "application/pdf"];
         list($status, $number) = $checker->checkNumberPdfs($labelsGalleys);
         $this->assertFalse($status);
         $this->assertEquals(3, $number);

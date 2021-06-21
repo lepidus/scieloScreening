@@ -1,7 +1,8 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-require "DOISystemClientForTests.inc.php";
+import ('plugins.generic.scieloScreening.tests.DOISystemClientForTests');
+import ('plugins.generic.scieloScreening.classes.DOIService');
 
 final class DOIServiceTest extends TestCase
 {
