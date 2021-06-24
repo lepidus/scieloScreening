@@ -14,8 +14,8 @@ msgstr ""
 msgid "plugins.generic.scieloScreening.displayName"
 msgstr "Moderación de SciELO"
 
-msgid "plugins.generic.scieloScreening.nome"
-msgstr "Verificación SciELO"
+msgid "plugins.generic.scieloScreening.doiScreeningLabel"
+msgstr "Verificación de DOIs"
 
 msgid "plugins.generic.scieloScreening.description"
 msgstr "Agrega nuevas reglas de verificación durante el envío de acuerdo con las políticas editoriales de SciELO Preprints"
@@ -24,8 +24,8 @@ msgstr "Agrega nuevas reglas de verificación durante el envío de acuerdo con l
 msgid "plugins.generic.scieloScreening.required.numberPDFs"
 msgstr "Debe enviar al menos uno y no más de un documento PDF"
 
-msgid "plugins.generic.scieloScreening.required.publishedBefore"
-msgstr "Debe insertar DOIs de sus proprios artículos publicados en revistas especializadas"
+msgid "plugins.generic.scieloScreening.required.doiScreening"
+msgstr "¡Debe realizar la Verificación de DOIs abajo!"
 
 msgid "plugins.generic.scieloScreening.required.affiliationForAll"
 msgstr "Todos los contribuyentes de envío deben tener su afiliación lleno"

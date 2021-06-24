@@ -30,29 +30,6 @@ class ScieloScreeningHandler extends Handler {
         return http_response_code(200);
     }
 
-    function checkAuthors($args, $request){
-        $checker = new ScreeningChecker();
-        $submission = DAORegistry::getDAO('SubmissionDAO')->getById($args['submissionId']);
-        $authors = $submission->getAuthors();
-        $numberAuthors = $args['numberAuthors'];
-        $response = array();
-        
-        $response['statusNumberAuthors'] = ($numberAuthors != count($authors)) ? ("error") : ("success");
-        
-        $nameAuthors = array_map(function($author){
-            return $author->getLocalizedGivenName() . $author->getLocalizedFamilyName();
-        }, $authors);
-        $response['statusUppercase'] = ($checker->checkHasUppercaseAuthors($nameAuthors)) ? ("error") : ("success");
-
-        $orcidAuthors = array_map(function($author){
-            return $author->getOrcid();
-        }, $authors);
-        
-        $response['statusOrcid'] = ($checker->checkOrcidAuthors($orcidAuthors)) ? ('success') : ("error");
-
-        return json_encode($response);
-    }
-
     function checkNumberPdfs($args, $request){
         $checker = new ScreeningChecker();
         $submission = DAORegistry::getDAO('SubmissionDAO')->getById($args['submissionId']);

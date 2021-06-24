@@ -14,8 +14,8 @@ msgstr ""
 msgid "plugins.generic.scieloScreening.displayName"
 msgstr "SciELO Screening"
 
-msgid "plugins.generic.scieloScreening.nome"
-msgstr "SciELO Screening"
+msgid "plugins.generic.scieloScreening.doiScreeningLabel"
+msgstr "DOI Screening"
 
 msgid "plugins.generic.scieloScreening.description"
 msgstr "Adds new screening rules during submission according to SciELO Preprints' editorial policies"
@@ -24,8 +24,8 @@ msgstr "Adds new screening rules during submission according to SciELO Preprints
 msgid "plugins.generic.scieloScreening.required.numberPDFs"
 msgstr "You must send at least one and no more than one PDF document"
 
-msgid "plugins.generic.scieloScreening.required.publishedBefore"
-msgstr "You need to insert DOIs from previous articles of your own authorship published in peer reviewed journals"
+msgid "plugins.generic.scieloScreening.required.doiScreening"
+msgstr "You need to perform the DOI Screening below!"
 
 msgid "plugins.generic.scieloScreening.required.affiliationForAll"
 msgstr "All submission contributors must have their affiliation filled"
