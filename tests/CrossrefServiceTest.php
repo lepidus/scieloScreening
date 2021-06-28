@@ -1,8 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-import ('plugins.generic.scieloScreening.tests.DOISystemClientForTests');
-import ('plugins.generic.scieloScreening.classes.CrossrefService');
+require "DOISystemClientForTests.inc.php";
 
 final class CrossrefServiceTest extends TestCase
 {

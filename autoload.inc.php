@@ -12,6 +12,7 @@ spl_autoload_register(
                 'doiorgservice' => '/classes/DOIOrgService.inc.php',
                 'crossrefservice' => '/classes/CrossrefService.inc.php',
                 'doisystemclient' => '/classes/DOISystemClient.inc.php',
+                'doisystemclientfortests' => '/tests/DOISystemClientForTests.inc.php'
             );
         }
         $cn = strtolower($class);
