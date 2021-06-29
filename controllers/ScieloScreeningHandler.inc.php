@@ -30,24 +30,6 @@ class ScieloScreeningHandler extends Handler {
         return http_response_code(200);
     }
 
-    function checkNumberPdfs($args, $request){
-        $checker = new ScreeningChecker();
-        $submission = DAORegistry::getDAO('SubmissionDAO')->getById($args['submissionId']);
-        $galleys = $submission->getGalleys();
-        $response = array();
-
-        $fileTypeGalleys = array_map(function($galley){
-            return ($galley->getFileType());
-        }, $galleys);
-
-        if(!$checker->checkNumberPdfs($fileTypeGalleys)[0])
-            $response['statusNumberPdfs'] = 'error';
-        else
-            $response['statusNumberPdfs'] = 'success';
-
-        return json_encode($response);
-    }
-
     public function validateDOI($args, $request){
         $checker = new ScreeningChecker();
         $responseCrossref = array();

@@ -34,7 +34,7 @@ class ScieloScreeningPlugin extends GenericPlugin {
 
 			HookRegistry::register('LoadComponentHandler', array($this, 'setupScieloScreeningHandler'));
             HookRegistry::register('authorform::Constructor', array($this, 'changeAuthorForm'));
-            HookRegistry::register('submissionsubmitstep2form::display', array($this, 'addToStep2'));
+            HookRegistry::register('submissionsubmitstep2form::validate', array($this, 'addValidationToStep2'));
             HookRegistry::register('submissionsubmitstep3form::validate', array($this, 'addValidationToStep3'));
             HookRegistry::register('submissionsubmitstep4form::display', array($this, 'addToStep4'));
 		}
@@ -56,27 +56,23 @@ class ScieloScreeningPlugin extends GenericPlugin {
         $params[1] = $path;
     }
 
-    function addToStep2($hookName, $params) {
-        $output =& $params[1];
-        $templateMgr = TemplateManager::getManager(null);
+    public function addValidationToStep2($hookName, $params) {
+        $form =& $params[0];
+        $submission = $form->submission;
 
-        if($output == "") {
-            $output = $templateMgr->fetch($params[0]->getTemplate());
+        $checker = new ScreeningChecker();
+        $galleys = $submission->getGalleys();
+        $galleysFileTypes = array_map(function($galley){
+            return ($galley->getFileType());
+        }, $galleys);
+
+        if(!$checker->checkNumberPdfs($galleysFileTypes)[0]){
+            $form->addErrorField('submitStep2FormNotification');
+            $form->addError('submitStep2FormNotification', __("plugins.generic.scieloScreening.required.numberPDFs"));
+            return;
         }
-
-        $checkNumberPDFs = $templateMgr->fetch($this->getTemplateResource('checkPDFStep2.tpl'));
-
-        $this->insertTemplateIntoStep2($checkNumberPDFs, $output);
-        return true;
     }
-
-    function insertTemplateIntoStep2($template, &$step2) {
-        $posInsert = strpos($step2, "<div id=\"formatsGridContainer");
-        $newStep2 = substr_replace($step2, $template, $posInsert, 0);
-
-        $step2 = $newStep2;
-    }
-
+    
     public function addValidationToStep3($hookName, $params) {
         $form =& $params[0];
         $form->readUserVars(array('inputNumberAuthors', 'checkCantScreening'));
@@ -89,8 +85,8 @@ class ScieloScreeningPlugin extends GenericPlugin {
         $checker = new ScreeningChecker();
         $authors = $submission->getAuthors();
         if($inputNumberAuthors != count($authors)) {
-            $form->addErrorField('inputNumberAuthors');
-            $form->addError('inputNumberAuthors', __("plugins.generic.scieloScreening.required.numberAuthors"));
+            $form->addErrorField('submitStep2FormNotification');
+            $form->addError('submitStep2FormNotification', __("plugins.generic.scieloScreening.required.numberAuthors"));
             return;
         };
         

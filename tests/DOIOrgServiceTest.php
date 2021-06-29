@@ -1,7 +1,6 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-require "DOISystemClientForTests.inc.php";
 
 final class DOIOrgServiceTest extends TestCase
 {
