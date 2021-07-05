@@ -24,6 +24,7 @@ jobs:
           date_version=$(xmlstarlet sel -t -v 'version/date' version.xml)
           current_date=$(date +'%Y-%m-%d')
           if [ $date_version != $current_date ]; then exit 1; fi
+        shell: bash
       - name: Create the tar.gz package
         run: |
           mkdir $PLUGIN_NAME
