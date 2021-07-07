@@ -5,7 +5,7 @@ import('plugins.generic.scieloScreening.classes.DOIScreening');
 import('plugins.generic.scieloScreening.classes.DOIScreeningDAO');
 import('plugins.generic.scieloScreening.classes.ScreeningChecker');
 import('plugins.generic.scieloScreening.classes.DOIService');
-import('plugins.generic.scieloScreening.classes.DOIOrgService');
+import('plugins.generic.scieloScreening.classes.DOISystemService');
 import('plugins.generic.scieloScreening.classes.CrossrefService');
 import('plugins.generic.scieloScreening.classes.DOISystemClient');
 
@@ -47,7 +47,7 @@ class ScieloScreeningHandler extends Handler {
         
         if(!$checker->checkCrossrefResponse($responseCrossref)) {
             $doiOrgClient = new DOISystemClient('DOI.org', 'https://doi.org/');
-            $doiOrgService = new DOIOrgService($args['doiString'], $doiOrgClient);
+            $doiOrgService = new DOISystemService($args['doiString'], $doiOrgClient);
             $statusMessage = $doiOrgService->getStatusResponseMessage();
             $response = $this->getDOIStatusResponseMessage($statusMessage);
             return json_encode($response);
