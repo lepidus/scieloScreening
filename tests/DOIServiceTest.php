@@ -7,7 +7,7 @@ final class DOIServiceTest extends TestCase
     private $server = 'DOI.Org';
     private $serverUrl = 'https://doi.org/';
 
-    public function testIsInvalidWhenResultsOnAHTTP400FromDOIOrg(): void {
+    public function testIsInvalidWhenResultsOnAHTTP400FromDOISystem(): void {
         $DOIService = new DOIService("10.1145/1998076.1998132", new DOISystemClientForTests($this->server, $this->serverUrl, 500));
 
         $expectedValidationResult = DOIService::HTTPS_STATUS_INTERNAL_SERVER_ERROR_MESSAGE_LOCALE_KEY;
@@ -16,7 +16,7 @@ final class DOIServiceTest extends TestCase
         $this->assertEquals($expectedValidationResult, $validationResult);
     }
 
-    public function testIsInvalidWhenResultsOnAHTTP408FromDOIOrg(): void
+    public function testIsInvalidWhenResultsOnAHTTP408FromDOISystem(): void
     {
         $DOIService = new DOIService("10.1145/1998076.1998132", new DOISystemClientForTests($this->server, $this->serverUrl, 408));
 
@@ -26,7 +26,7 @@ final class DOIServiceTest extends TestCase
         $this->assertEquals($expectedValidationResult, $validationResult);
     }
 
-    public function testIsInvalidWhenFailureWithCommunicationsWithDOIOrg(): void
+    public function testIsInvalidWhenFailureWithCommunicationsWithDOISystem(): void
     {
         $exceptionWithCommunication = true;
         $DOIService = new DOIService("10.1145/1998076.1998132", new DOISystemClientForTests($this->server, $this->serverUrl, null, $exceptionWithCommunication), 'DOI.org');

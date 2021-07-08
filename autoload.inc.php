@@ -9,7 +9,7 @@ spl_autoload_register(
             $classes = array(
                 'screeningchecker' => '/classes/ScreeningChecker.inc.php',
                 'doiservice' => '/classes/DOIService.inc.php',
-                'doiorgservice' => '/classes/DOIOrgService.inc.php',
+                'doisystemservice' => '/classes/DOISystemService.inc.php',
                 'crossrefservice' => '/classes/CrossrefService.inc.php',
                 'doisystemclient' => '/classes/DOISystemClient.inc.php',
                 'doisystemclientfortests' => '/tests/DOISystemClientForTests.inc.php'

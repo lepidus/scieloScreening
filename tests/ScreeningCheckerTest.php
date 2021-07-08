@@ -104,11 +104,21 @@ final class ScreeningCheckerTest extends TestCase
     public function testDOIAuthorNameOnlyFirstAndLastNameEqualsSubmissionAuthorName(): void
     {
         $checker = new ScreeningChecker();
-        $crossrefClient = new DOISystemClient('Crossref.org', 'https://api.crossref.org/works?filter=doi:');
-
-        $responseCrossref = $crossrefClient->getDOIResponse("10.14295/jmphc.v12.993");
-
-        $authorsCrossref = $responseCrossref['message']['items'][0]['author']; //Síntique Lopes
+        
+        $authorsCrossref = Array(
+            Array(
+                    "given" => "Jamile",
+                    "family" => "Xavier",
+                    "sequence" => "first",
+                    "affiliation" => Array()
+            ),
+            Array(
+                    'given' => "Síntique",
+                    "family" => "Lopes",
+                    "sequence" => "additional",
+                    "affiliation" => Array()
+            )
+        );
 
         $authorSubmission = "Síntique Priscila Alves Lopes";
 
@@ -153,13 +163,12 @@ final class ScreeningCheckerTest extends TestCase
     public function testCheckDOIArticle(): void
     {
         $checker = new ScreeningChecker();
-        $crossrefClient = new DOISystemClient('Crossref.org', 'https://api.crossref.org/works?filter=doi:');
-        
-        $responseCrossref = $crossrefClient->getDOIResponse("10.1145/1998076.1998132");
 
-        $itemCrossref = $responseCrossref['message']['items'][0];
+        $type = Array(
+            'type' => 'proceedings-article'
+        );
 
-        $this->assertFalse($checker->checkDOIArticle($itemCrossref));
+        $this->assertFalse($checker->checkDOIArticle($type));
     }
 
     public function testCheckDOIRepeated(): void
@@ -173,12 +182,8 @@ final class ScreeningCheckerTest extends TestCase
     public function testCheckDOIsLastTwoYears(): void
     {
         $checker = new ScreeningChecker();
-        $crossrefClient = new DOISystemClient('Crossref.org', 'https://api.crossref.org/works?filter=doi:');
-        
-        $responseCrossref = $crossrefClient->getDOIResponse("10.1145/1998076.1998132");
-        $firstYear = $responseCrossref['message']['items'][0]['published-print']['date-parts'][0][0];
-        $responseCrossref = $crossrefClient->getDOIResponse("10.1016/j.datak.2003.10.003");
-        $secondYear = $responseCrossref['message']['items'][0]['published-print']['date-parts'][0][0];
+        $firstYear = 2011;
+        $secondYear = 2004;
 
         $this->assertFalse($checker->checkDOIsLastTwoYears([$firstYear, $secondYear]));
     }
@@ -187,24 +192,67 @@ final class ScreeningCheckerTest extends TestCase
     {
         $checker = new ScreeningChecker();
 
-        $dois = ["10.1016/j.datak.2003.10.003", "10.1016/S0169-023X(01)00047-7"];
         $nameAuthor = "Altigran S. da Silva";
 
-        $crossrefClient = new DOISystemClient('Crossref.org', 'https://api.crossref.org/works?filter=doi:');
+        $firstResponse = Array(
+            'status' => 'ok',
+            'message' => Array(
+                'items' => Array(
+                    'author' => Array(
+                        Array(
+                            'given' => 'Altigran S.',
+                            'family' => 'da Silva',
+                            'sequence' => 'first',
+                            'affiliation' => Array()
+                        ),
+                        Array(
+                            'given' => 'Marcos André',
+                            'family' => 'Gonçalves',
+                            'sequence' => 'additional',
+                            'affiliation' => Array()
+                        )
+                    ),
+                    'type' => 'journal-article',
+                )
+            )            
+        );
 
-        $firstResponse = $crossrefClient->getDOIResponse($dois[0]);
+        $secondResponse = Array(
+            'status' => 'ok',
+            'message'=> Array(
+                'items' => Array(
+                    'author' => Array(
+                        Array(
+                            'given' => 'Alberto H.F.',
+                            'family' => 'Laender',
+                            'sequence' => 'first',
+                            'affiliation' => Array()
+                        ),
+                        Array(
+                            'given' => 'Altigran S.',
+                            'family' => 'da Silva',
+                            'sequence' => 'additional',
+                            'affiliation' => Array()
+                        )
+                    ),
+                    'type' => 'journal-article',
+                )
+            )
+        );
+
         $this->assertTrue($checker->checkCrossrefResponse($firstResponse));
-
-        $secondResponse = $crossrefClient->getDOIResponse($dois[1]);
         $this->assertTrue($checker->checkCrossrefResponse($secondResponse));
-
-        $firstItem = $firstResponse['message']['items'][0];
-        $secondItem = $secondResponse['message']['items'][0];
-
-        $this->assertTrue($checker->checkDOIFromAuthor($nameAuthor, $firstItem['author']));
-        $this->assertTrue($checker->checkDOIFromAuthor($nameAuthor, $secondItem['author']));
-
+        
+        $firstItem = $firstResponse['message']['items'];
+        $secondItem = $secondResponse['message']['items'];
+        
         $this->assertTrue($checker->checkDOIArticle($firstItem));
         $this->assertTrue($checker->checkDOIArticle($secondItem));
+        
+        $firstItemAuthors = $firstItem['author'];
+        $secondItemAuthors = $secondItem['author'];
+
+        $this->assertTrue($checker->checkDOIFromAuthor($nameAuthor, $firstItemAuthors));
+        $this->assertTrue($checker->checkDOIFromAuthor($nameAuthor, $firstItemAuthors));
     }
 }

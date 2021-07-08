@@ -1,6 +1,6 @@
 <?php
 
-class DOIOrgService extends DOIService {
+class DOISystemService extends DOIService {
 
     const DOI_ORG_STATUS_DOI_FOUND_CODE = 302;
     const DOI_ORG_STATUS_DOI_FOUND_MESSAGE_LOCALE_KEY = 'plugins.generic.scieloScreening.crossrefRequirement';
