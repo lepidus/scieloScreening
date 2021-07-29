@@ -34,7 +34,8 @@ class DOIScreeningDAO extends DAO {
 		$inserted = Capsule::table('doi_screening')
 		->insert([
 			'submission_id' => (int) $doiScreening->getSubmissionId(),
-			'doi_code' => $doiScreening->getDOICode()
+			'doi_code' => $doiScreening->getDOICode(),
+			'confirmed_authorship' => $doiScreening->getConfirmedAuthorship()
 		]);	
 	}
 
@@ -52,6 +53,10 @@ class DOIScreeningDAO extends DAO {
 		$doiScreening->setDOIId($row['doi_id']);
 		$doiScreening->setSubmissionId($row['submission_id']);
 		$doiScreening->setDOICode($row['doi_code']);
+		if(is_null($row['confirmed_authorship']))
+			$doiScreening->setConfirmedAuthorship(true);
+		else
+			$doiScreening->setConfirmedAuthorship($row['confirmed_authorship']);
 
 		return $doiScreening;
 	}

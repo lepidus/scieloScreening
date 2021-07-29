@@ -19,11 +19,19 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 class DOIScreeningMigration extends Migration {
     
     public function up() {
-		// A DOI provided during the screening. Every publication should have two of this
-		Capsule::schema()->create('doi_screening', function (Blueprint $table) {
-			$table->bigInteger('doi_id')->autoIncrement();
-			$table->bigInteger('submission_id');
-			$table->string('doi_code', 255);
-		});
+		if(Capsule::schema()->hasTable('doi_screening')) {
+			Capsule::schema()->table('doi_screening', function (Blueprint $table) {
+				$table->boolean('confirmed_authorship')->nullable();
+			});
+		}
+		else {
+			// A DOI provided during the screening. Every publication should have two of this
+			Capsule::schema()->create('doi_screening', function (Blueprint $table) {
+				$table->bigInteger('doi_id')->autoIncrement();
+				$table->bigInteger('submission_id');
+				$table->string('doi_code', 255);
+				$table->boolean('confirmed_authorship')->nullable();
+			});
+		}
     }
 }

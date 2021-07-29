@@ -30,8 +30,17 @@ class DOIScreening extends DataObject {
     function getDOICode(){
         return $this->getData('doiCode');
     }
+    
     function setDOICode($doiCode){
         return $this->setData('doiCode', $doiCode);
+    }
+
+    function getConfirmedAuthorship() {
+        return $this->getData('confirmedAuthorship');
+    }
+
+    function setConfirmedAuthorship($statusAuthorship) {
+        return $this->setData('confirmedAuthorship', $statusAuthorship);
     }
 
 }
