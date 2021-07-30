@@ -39,6 +39,13 @@
     border-radius: 12px;
 }
 
+.statusWarning {
+    width: 24px;
+    height: 24px;
+    background-color: #daa520;
+    border-radius: 12px;
+}
+
 .statusNotOkay {
     width: 24px;
     height: 24px;

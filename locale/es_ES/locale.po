@@ -49,6 +49,9 @@ msgstr "No ha completado la afiliación para todos los contribuyentes."
 msgid "plugins.generic.scieloScreening.step4.dois"
 msgstr "No ha realizado la verificación de sus publicaciones anteriores."
 
+msgid "plugins.generic.scieloScreening.step4.doisWithoutConfirmedAuthorship"
+msgstr "No fue posible confirmar la autoría de algunos DOI informados, pero aún se enviarán a los moderadores."
+
 msgid "plugins.generic.scieloScreening.step4.metadataNotEnglish"
 msgstr "Los seguintes metadatos deben completarse en inglés:"
 
@@ -139,6 +142,9 @@ msgstr "Vea el estado de cada una de las comprobaciones a continuación:"
 
 msgid "plugins.generic.scieloScreening.info.doiOkay"
 msgstr "La verificación de los DOI se realizó correctamente. Vea cada DOI ingresado a continuación:"
+
+msgid "plugins.generic.scieloScreening.info.doiWithoutConfirmedAuthorship"
+msgstr "No fue posible confirmar la autoría de todos los DOI informados"
 
 msgid "plugins.generic.scieloScreening.info.doiNotOkay"
 msgstr "¡La verificación de los DOI no se ha llevado a cabo!"

@@ -130,9 +130,22 @@ class ScieloScreeningHandler extends Handler {
         $doiScreeningDAO = new DOIScreeningDAO();
         $dois = $doiScreeningDAO->getBySubmissionId($submission->getId());
 
+        $statusDOI = (count($dois) > 0);
+        $doiWithoutConfirmedAuthorship = false;
+        if($statusDOI) {
+            foreach($dois as $doi) {
+                if(!$doi->getConfirmedAuthorship()){
+                    $doiWithoutConfirmedAuthorship = true;
+                    $statusDOI = false;
+                    break;
+                }
+            }
+        }
+
         return [
-            'statusDOI' => (count($dois) > 0),
-            'dois' => $dois
+            'statusDOI' => $statusDOI,
+            'dois' => $dois,
+            'doiWithoutConfirmedAuthorship' => $doiWithoutConfirmedAuthorship
         ];
     }
 
