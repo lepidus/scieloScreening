@@ -12,6 +12,7 @@
 <script>
     var doisOkay = [false, false, false];
     var doisYears = [0,0,0];
+    var doisConfirmedAuthorship = [1, 1, 1];
 
     function sucessoScreening(){ldelim}
         $('#generalMessage').text("{translate key="plugins.generic.scieloScreening.successfulScreening"}");
@@ -45,9 +46,9 @@
         {rdelim}
 
         var doisToSave = [
-            (doisOkay[0]) ? ($('#firstDOI').val()) : (""),
-            (doisOkay[1]) ? ($('#secondDOI').val()) : (""),
-            (doisOkay[2]) ? ($('#thirdDOI').val()) : ("")
+            (doisOkay[0]) ? ([$('#firstDOI').val(), doisConfirmedAuthorship[0]]) : (""),
+            (doisOkay[1]) ? ([$('#secondDOI').val(), doisConfirmedAuthorship[1]]) : (""),
+            (doisOkay[2]) ? ([$('#thirdDOI').val(), doisConfirmedAuthorship[2]]) : ("")
         ];
 
         $.post(
@@ -87,6 +88,7 @@
 
         doisOkay[flag] = true;
         doisYears[flag] = postValidateResponse['yearArticle'];
+        doisConfirmedAuthorship[flag] = postValidateResponse['doiConfirmedAuthorship'] ? 1 : 0;
     {rdelim}
 
     $(function(){ldelim}

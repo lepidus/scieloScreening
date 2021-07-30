@@ -21,7 +21,8 @@ class ScieloScreeningHandler extends Handler {
                 if($doi){
                     $doiObj = new DOIScreening();
                     $doiObj->setSubmissionId($args['submissionId']);
-                    $doiObj->setDOICode($doi);
+                    $doiObj->setDOICode($doi[0]);
+                    $doiObj->setConfirmedAuthorship((int) $doi[1]);
                     $doiScreeningDAO->insertObject($doiObj);
                 }
             }
@@ -58,13 +59,10 @@ class ScieloScreeningHandler extends Handler {
         $authorSubmission = $submission->getAuthors()[0];
         $authorSubmission = $authorSubmission->getGivenName('en_US') . ' ' .  $authorSubmission->getFamilyName('en_US');
         $authorsCrossref = $itemCrossref['author'];
+        $doiConfirmedAuthorship = true;
 
         if(!$checker->checkDOIFromAuthor($authorSubmission, $authorsCrossref)){
-            $response = [
-                'statusValidate' => 0,
-                'messageError' => __("plugins.generic.scieloScreening.doiFromAuthor")
-            ];
-            return json_encode($response);
+            $doiConfirmedAuthorship = false;
         }
 
         if(!$checker->checkDOIArticle($itemCrossref)) {
@@ -83,7 +81,8 @@ class ScieloScreeningHandler extends Handler {
 
         return json_encode([
             'statusValidate' => 1,
-            'yearArticle' => $yearArticle
+            'yearArticle' => $yearArticle,
+            'doiConfirmedAuthorship' => $doiConfirmedAuthorship
         ]);
     }
 
