@@ -27,7 +27,7 @@
                         {/foreach}
                     </ul>
                 </div>
-            {elseif $statusDOI == false && $doiWithoutConfirmedAuthorship == true}
+            {elseif $statusDOI == false && $doisConfirmedAuthorship == false}
                 <div id="doiHeader">
                     <div class="statusWarning"></div>
                     <span id="doiMessage">{translate key="plugins.generic.scieloScreening.info.doiWithoutConfirmedAuthorship"}</span>

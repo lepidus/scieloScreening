@@ -6,12 +6,12 @@
             <h3>{translate key="plugins.generic.scieloScreening.step4.warning"}</h3>
         </div>
         <div class="screeningStep4Body">
-            {if $statusDOI == false && $doiWithoutConfirmedAuthorship == false}
+            {if $statusDOI == false && $doisConfirmedAuthorship == true}
                 <div class="warningField">
                     <div class="statusNotOkay"></div>
                     <span>{translate key="plugins.generic.scieloScreening.step4.dois"}</span>
                 </div>
-            {elseif $statusDOI == false && $doiWithoutConfirmedAuthorship == true}
+            {elseif $statusDOI == false && $doisConfirmedAuthorship == false}
                 <div class="warningField">
                     <div class="statusWarning"></div>
                     <span>{translate key="plugins.generic.scieloScreening.step4.doisWithoutConfirmedAuthorship"}</span>
