@@ -27,6 +27,20 @@
                         {/foreach}
                     </ul>
                 </div>
+            {elseif $statusDOI == false && $doisConfirmedAuthorship == false}
+                <div id="doiHeader">
+                    <div class="statusWarning"></div>
+                    <span id="doiMessage">{translate key="plugins.generic.scieloScreening.info.doiWithoutConfirmedAuthorship"}</span>
+                </div>
+                <div id="doiBody">
+                    <ul>
+                        {foreach from=$dois item="doi"}
+                            <li>
+                                <a href="https://doi.org/{$doi->getDOICode()}" target="_blank">{$doi->getDOICode()}</a>
+                            </li>
+                        {/foreach}
+                    </ul>
+                </div>
             {else}
                 <div id="doiHeader" class="headerWithoutBody">
                     <div class="statusNotOkay"></div>
