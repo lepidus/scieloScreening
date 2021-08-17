@@ -21,6 +21,11 @@
         $('#generalMessage').css('display', 'block');
 
         $("#boxCantScreening").css("display", "none");
+
+        delayTime = 3 * 1000;
+        setTimeout(function() {
+            $("#DOIModal").removeClass("is_visible");
+        }, delayTime);
     {rdelim}
 
     async function makeSubmit(e){ldelim}
