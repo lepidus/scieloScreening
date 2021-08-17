@@ -33,9 +33,29 @@
     color: #d00a6c;
 }
 
+.myWarning {
+    margin-top: 4px;
+    margin-bottom: 4px;
+    padding-left: 0.5em;
+    border-left: 8px solid #daa520;
+    font-size: 14px;
+    line-height: 24px;
+    color: #daa520;
+}
+
 .mySuccess {
     margin-top: 4px;
     margin-bottom: 4px;
+    padding-left: 0.5em;
+    border-left: 8px solid #00b28d;
+    font-size: 14px;
+    line-height: 24px;
+    color: #00b28d;
+}
+
+.mySuccessGeneral {
+    margin-top: 4px;
+    margin-bottom: 14px;
     padding: 0.5em;
     border: 2px solid #00b28d;
     border-radius: 14px;

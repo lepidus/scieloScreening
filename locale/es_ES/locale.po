@@ -114,6 +114,12 @@ msgstr "Por favor, ingrese un DOI que sea suyo. También asegúrese de que su no
 msgid "plugins.generic.scieloScreening.doiFromJournal"
 msgstr "Por favor, ingrese un DOI de una publicación en una revista"
 
+msgid "plugins.generic.scieloScreening.warningValidatingDOI"
+msgstr "Validando el DOI ingresado..."
+
+msgid "plugins.generic.scieloScreening.DOIValidated"
+msgstr "¡DOI validado con éxito!"
+
 msgid "plugins.generic.scieloScreening.successfulScreening"
 msgstr "¡Operación realizada con éxito!"
 

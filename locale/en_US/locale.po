@@ -114,6 +114,12 @@ msgstr "Please, enter a DOI of yours. Also make sure your name in the system is 
 msgid "plugins.generic.scieloScreening.doiFromJournal"
 msgstr "Please, enter a DOI of a journal publication"
 
+msgid "plugins.generic.scieloScreening.warningValidatingDOI"
+msgstr "Validating the DOI inserted..."
+
+msgid "plugins.generic.scieloScreening.DOIValidated"
+msgstr "DOI validated successfully!"
+
 msgid "plugins.generic.scieloScreening.successfulScreening"
 msgstr "Operation performed successfully!"
 
