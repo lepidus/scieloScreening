@@ -83,6 +83,9 @@ msgstr "Asegúrese de que todos los contribuyentes tengan sus afiliaciones compl
 msgid "plugins.generic.scieloScreening.submission.description"
 msgstr "Inserte DOIs de sus proprios artículos publicados en revistas especializadas. Debe ingressar dos DOI de los últimos 2 años O tres DOI de cualquier fecha"
 
+msgid "plugins.generic.scieloScreening.submission.waitDOIValidation"
+msgstr "Después de ingresar cada DOI, se iniciará un proceso de validación. Debe esperar a que se validen todos los DOI ingresados ​​antes de hacer clic en \"Guardar\""
+
 msgid "plugins.generic.scieloScreening.submission.first"
 msgstr "Primero DOI"
 

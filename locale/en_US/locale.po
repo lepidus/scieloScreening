@@ -83,6 +83,9 @@ msgstr "Please make sure that all contributors have their affiliations filled. T
 msgid "plugins.generic.scieloScreening.submission.description"
 msgstr "Please insert DOIs from previous articles of your own authorship published in peer reviewed journals. You must enter two DOIs from the past 2 years OR three DOIs from any date"
 
+msgid "plugins.generic.scieloScreening.submission.waitDOIValidation"
+msgstr "After inserting each DOI, a validation process will be started. You must wait for all DOIs inserted to be validated before clicking \"Save\""
+
 msgid "plugins.generic.scieloScreening.submission.first"
 msgstr "First DOI"
 

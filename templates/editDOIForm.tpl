@@ -105,6 +105,7 @@
     <div id="doiFormArea">
         <h2>{translate key="plugins.generic.scieloScreening.doiScreeningLabel"}</h2>
         <p>{translate key="plugins.generic.scieloScreening.submission.description"}</p>
+        <p>{translate key="plugins.generic.scieloScreening.submission.waitDOIValidation"}</p>
         <span id="generalMessage" class="myError" style="display:none"></span>
         <div id="formFields">
             <div id="firstFormField">
