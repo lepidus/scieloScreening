@@ -83,6 +83,9 @@ msgstr "Por favor, verifique se todos os contribuidores estão com suas afiliaç
 msgid "plugins.generic.scieloScreening.submission.description"
 msgstr "Por favor, insira DOIs de artigos de sua autoria publicados em revistas especializadas. Você deve inserir dois DOIs dos últimos 2 anos OU três DOIs de qualquer data"
 
+msgid "plugins.generic.scieloScreening.submission.waitDOIValidation"
+msgstr "Após inserir cada DOI, um processo de validação será iniciado. É necessário esperar que todos os DOIs inseridos sejam validados antes de clicar em \"Salvar\""
+
 msgid "plugins.generic.scieloScreening.submission.first"
 msgstr "Primeiro DOI"
 
@@ -110,6 +113,12 @@ msgstr "Por favor, insira um DOI que seja seu. Verifique também se seu nome no 
 
 msgid "plugins.generic.scieloScreening.doiFromJournal"
 msgstr "Por favor, insira um DOI de uma publicação em periódico"
+
+msgid "plugins.generic.scieloScreening.warningValidatingDOI"
+msgstr "Validando o DOI inserido..."
+
+msgid "plugins.generic.scieloScreening.DOIValidated"
+msgstr "DOI validado com sucesso!"
 
 msgid "plugins.generic.scieloScreening.successfulScreening"
 msgstr "Operação realizada com sucesso!"
