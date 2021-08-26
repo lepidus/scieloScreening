@@ -113,7 +113,7 @@ class ScieloScreeningHandler extends Handler {
             return json_encode($response);
         }
         else if($countOkay == 2){
-            if($checker->checkDOIsLastTwoYears($args['doisYears'])){
+            if(!$checker->checkDOIsLastTwoYears($args['doisYears'])){
                 $response = [
                     'statusValidateDOIs' => 0,
                     'messageError' => __("plugins.generic.scieloScreening.attentionRules")
