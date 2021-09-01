@@ -22,7 +22,7 @@
                     <ul>
                         {foreach from=$dois item="doi"}
                             <li>
-                                <a href="https://doi.org/{$doi->getDOICode()}">{$doi->getDOICode()}</a>
+                                <a href="https://doi.org/{$doi->getDOICode()}" target="_blank" rel="noopener noreferrer">{$doi->getDOICode()}</a>
                             </li>
                         {/foreach}
                     </ul>
