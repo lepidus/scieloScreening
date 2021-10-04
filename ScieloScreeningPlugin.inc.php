@@ -118,31 +118,29 @@ class ScieloScreeningPlugin extends GenericPlugin {
     }
 
     function addToStep4($hookName, $params){
-        $output =& $params[1];
         $submission = $params[0]->submission;
-        $templateMgr = TemplateManager::getManager(null);
-        $outputWasEmpty = false;
-
-        if($output == "") {
-            $outputWasEmpty = true;
-            $output = $templateMgr->fetch($params[0]->getTemplate());
-        }
+        $request = PKPApplication::get()->getRequest();
+        $templateMgr = TemplateManager::getManager($request);
 
         $scieloScreeningHandler = new ScieloScreeningHandler();
         $dataScreening = $scieloScreeningHandler->getScreeningData($submission);
         $templateMgr->assign($dataScreening);
-        $statusScreening = $templateMgr->fetch($this->getTemplateResource('statusScreeningStep4.tpl'));
-
-        $this->insertTemplateIntoStep4($statusScreening, $output);
-        if(!$outputWasEmpty) return true;
+        $templateMgr->registerFilter("output", array($this, 'statusScreeningFormFilter'));
+        
+        return false;
     }
 
-    private function insertTemplateIntoStep4($template, &$step4) {
-        $posInsert = strpos($step4, "<p>");
-        $newStep4 = substr_replace($step4, $template, $posInsert, 0);
-
-        $step4 = $newStep4;
-    }
+    public function statusScreeningFormFilter($output, $templateMgr) {
+		if (preg_match('/<input[^>]+name="submissionId"[^>]*>/', $output, $matches, PREG_OFFSET_CAPTURE)) {
+			$match = $matches[0][0];
+            $posMatch = $matches[0][1];
+			$screeningTemplate = $templateMgr->fetch($this->getTemplateResource('statusScreeningStep4.tpl'));
+			
+            $output = substr_replace($output, $screeningTemplate, $posMatch + strlen($match), 0);
+			$templateMgr->unregisterFilter('output', array($this, 'statusScreeningFormFilter'));
+		}
+		return $output;
+	}
 
     public function getDisplayName() {
 		return __('plugins.generic.scieloScreening.displayName');
