@@ -7,9 +7,8 @@ include:
 test:
   script:
     - export DEBIAN_FRONTEND=noninteractive;
-    - apt update && apt install locales-all phpunit -yqq
+    - apt update && apt install phpunit -yqq
     - phpunit --bootstrap autoload.inc.php --log-junit phpunit-report.xml tests 
-  allow_failure: true
   artifacts:
     when: always
     reports:
