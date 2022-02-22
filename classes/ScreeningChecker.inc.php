@@ -116,6 +116,7 @@ class ScreeningChecker {
     }
 
     public function removeAccentuation($authorName){
+        setlocale(LC_CTYPE, 'en_US');
         $nameWithoutAccentuation = iconv('UTF-8', 'ASCII//TRANSLIT', $authorName);
 
         if ($nameWithoutAccentuation == false) {
