@@ -1,9 +1,7 @@
 test:
   script:
-    - export DEBIAN_FRONTEND=noninteractive
-    - export LC_ALL=pt_BR.UTF-8
-    # - export LANG=pt_BR.UTF-8
-    - apt update && apt install phpunit locales locales-all -yqq
+    - export DEBIAN_FRONTEND=noninteractive; export LC_ALL=pt_BR.UTF-8
+    - apt update && apt install locales-all phpunit -yqq
     - phpunit --bootstrap autoload.inc.php tests
 
 include:
