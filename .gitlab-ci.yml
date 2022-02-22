@@ -1,8 +1,11 @@
 test:
   script:
     - export DEBIAN_FRONTEND=noninteractive
-    - apt update && apt install phpunit locales -yqq
-    - locale-gen pt_BR.UTF-8 && update-locale LANG=pt_BR.UTF-8
+    - export LC_ALL=pt_BR.UTF-8
+    - export LANG=pt_BR.UTF-8
+    - export LANGUAGE=pt_BR.UTF-8
+    - apt update && apt install phpunit locales locales-all -yqq
+    - locale-gen pt_BR.UTF-8
     - phpunit --bootstrap autoload.inc.php tests
 
 include:
