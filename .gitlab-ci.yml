@@ -1,7 +1,6 @@
-before_script:
-  - apt install phpunit
 test:
   script:
+    - apt update && apt install phpunit -yqq
     - phpunit --bootstrap autoload.inc.php tests
 
 include:
