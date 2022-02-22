@@ -1,5 +1,6 @@
 test:
   script:
+    - export DEBIAN_FRONTEND=noninteractive
     - apt update && apt install phpunit -yqq
     - phpunit --bootstrap autoload.inc.php tests
 
