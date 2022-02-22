@@ -1,24 +1,8 @@
-image: php:7.4-cli
-
-cache:
-  paths:
-    - vendor/
-
 before_script:
-  - apt-get update -yqq
-  - apt-get install -yqq curl git libpq-dev libcurl4-gnutls-dev libicu-dev libvpx-dev libjpeg-dev libpng-dev libxpm-dev zlib1g-dev libfreetype6-dev libxml2-dev libexpat1-dev libbz2-dev libgmp3-dev libldap2-dev unixodbc-dev libsqlite3-dev libaspell-dev libsnmp-dev libpcre3-dev libtidy-dev libonig-dev libzip-dev
-  - docker-php-ext-install mbstring pdo_pgsql curl intl gd xml zip bz2
-  - curl -sS https://getcomposer.org/installer -o composer-setup.php
-  - HASH=`curl -sS https://composer.github.io/installer.sig`
-  - composer require --dev phpunit/phpunit ^9
-
+  - apt install phpunit
 test:
   script:
-   - vendor/bin/phpunit --bootstrap src/autoload.php --colors=never --log-junit phpunit-report.xml tests
-  artifacts:
-    when: always
-    reports:
-      junit: phpunit-report.xml
+    - phpunit --bootstrap autoload.inc.php tests
 
 include:
   - project: 'documentacao-e-tarefas/modelosparaintegracaocontinua'
