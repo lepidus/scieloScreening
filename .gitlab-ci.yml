@@ -6,7 +6,7 @@ include:
 
 test:
   script:
-    - export DEBIAN_FRONTEND=noninteractive; export LC_ALL=pt_BR.UTF-8
+    - export DEBIAN_FRONTEND=noninteractive; #export LC_ALL=pt_BR.UTF-8
     - apt update && apt install locales-all phpunit -yqq
     - phpunit --bootstrap autoload.inc.php --log-junit phpunit-report.xml tests 
   allow_failure: true
