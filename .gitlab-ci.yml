@@ -1,11 +1,16 @@
-test:
-  script:
-    - export DEBIAN_FRONTEND=noninteractive; export LC_ALL=pt_BR.UTF-8
-    - apt update && apt install locales-all phpunit -yqq
-    - phpunit --bootstrap autoload.inc.php tests
-
 include:
   - project: 'documentacao-e-tarefas/modelosparaintegracaocontinua'
     ref: main
     file:
       - 'templates/groups/pkp_plugin_mirrored.yml'
+
+test:
+  script:
+    - export DEBIAN_FRONTEND=noninteractive; export LC_ALL=pt_BR.UTF-8
+    - apt update && apt install locales-all phpunit -yqq
+    - phpunit --bootstrap autoload.inc.php --log-junit phpunit-report.xml tests 
+  allow_failure: true
+  artifacts:
+    when: always
+    reports:
+      junit: phpunit-report.xml
