@@ -5,7 +5,6 @@ test:
     - export LANG=pt_BR.UTF-8
     - export LANGUAGE=pt_BR.UTF-8
     - apt update && apt install phpunit locales locales-all -yqq
-    - locale-gen pt_BR.UTF-8
     - phpunit --bootstrap autoload.inc.php tests
 
 include:
