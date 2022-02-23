@@ -3,7 +3,4 @@ include:
     ref: main
     file:
       - 'templates/groups/pkp_plugin_mirrored.yml'
-  - project: 'documentacao-e-tarefas/modelosparaintegracaocontinua'
-    ref: phpunit#278
-    file:
       - 'templates/phpunit.yml'
