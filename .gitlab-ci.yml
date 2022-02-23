@@ -3,7 +3,7 @@ include:
     ref: main
     file:
       - 'templates/groups/pkp_plugin_mirrored.yml'
-  - project: 'softwares-pkp/plugins_ojs/doiscielo'
-    ref: executeTestsCI#278
+  - project: 'documentacao-e-tarefas/modelosparaintegracaocontinua'
+    ref: phpunit#278
     file:
-      - 'phpunit.yml'
+      - 'templates/phpunit.yml'
