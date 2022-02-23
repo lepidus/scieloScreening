@@ -1,0 +1,9 @@
+phpunit:
+  script:
+    - export DEBIAN_FRONTEND=noninteractive;
+    - apt update && apt install locales-all phpunit -yqq
+    - phpunit --bootstrap autoload.inc.php --log-junit phpunit-report.xml tests 
+  artifacts:
+    when: always
+    reports:
+      junit: phpunit-report.xml
