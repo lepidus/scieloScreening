@@ -1,6 +1,6 @@
 <?php
 import('plugins.generic.scieloScreening.controllers.ScieloScreeningHandler');
-
+import('plugins.generic.scieloScreening.classes.DOIScreening');
 use PHPUnit\Framework\TestCase;
 
 final class ScreeningHandlerTest extends TestCase {
@@ -16,5 +16,17 @@ final class ScreeningHandlerTest extends TestCase {
         $screeningHandler = new ScieloScreeningHandler();
 
         $this->assertEquals($expectedAuthors, $screeningHandler->getDoiAuthorsNames($this->mockResponseAPICrossref));
+    }
+
+    public function testStatusDoisReturnsAuthorsNamesWhenAuthorshipNotConfirmed(): void {
+        $doiObj = new DOIScreening();
+        $doiObj->setDOICode($this->doi);
+        $doiObj->setConfirmedAuthorship(false);
+        
+        $screeningHandler = new ScieloScreeningHandler();
+        $statusDOI = $screeningHandler->getStatusDOI($this->submission, [$doiObj]);
+
+        $this->assertEquals(, $statusDOI['authorsFromDOIs'][0]);
+        $this->assertEquals(, $statusDOI['authorFromSubmission']);
     }
 }
