@@ -221,4 +221,21 @@ class ScieloScreeningHandler extends Handler {
 
         return $dataScreening;
     }
+
+    public function getDoiAuthorsNames($response){
+        $decodeAPI = json_decode($response, true);
+        
+        $authors = $decodeAPI['message']['items'][0]['author'];
+        $authorsNames = [];
+
+        foreach($authors as $author) {
+            $given = $author['given'];
+            $family = $author['family'];
+
+            $authorsNames[] = $given . " " . $family;
+        }
+
+        return $authorsNames;
+    }
+
 }
