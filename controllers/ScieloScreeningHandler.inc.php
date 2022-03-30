@@ -125,26 +125,32 @@ class ScieloScreeningHandler extends Handler {
         return json_encode(['statusValidateDOIs' => 1]);
     }
 
-    private function getStatusDOI($submission) {
-        $doiScreeningDAO = new DOIScreeningDAO();
-        $dois = $doiScreeningDAO->getBySubmissionId($submission->getId());
-
+    public function getStatusDOI($submission, $dois) {
         $statusDOI = (count($dois) > 0);
         $doisConfirmedAuthorship = true;
+        $authorsDOIs = array();
+
         if($statusDOI) {
             foreach($dois as $doi) {
                 if(!$doi->getConfirmedAuthorship()){
                     $doisConfirmedAuthorship = false;
                     $statusDOI = false;
-                    break;
                 }
+                
+                $responseCrossref = file_get_contents('https://api.crossref.org/works?filter=doi:'.$doi->getDOICode());
+                $authorsDOIs[] = implode(", ", $this->getDoiAuthorsNames($responseCrossref));
             }
         }
+
+        $submissionAuthor = $submission->getData('authors')[0];
+        $subAuthorName = $submissionAuthor->getLocalizedData('givenName') . ' ' . $submissionAuthor->getLocalizedData('familyName');
 
         return [
             'statusDOI' => $statusDOI,
             'dois' => $dois,
-            'doisConfirmedAuthorship' => $doisConfirmedAuthorship
+            'doisConfirmedAuthorship' => $doisConfirmedAuthorship,
+            'authorFromSubmission' => $subAuthorName,
+            'authorsFromDOIs' => $authorsDOIs
         ];
     }
 
@@ -208,8 +214,11 @@ class ScieloScreeningHandler extends Handler {
     }
 
     public function getScreeningData($submission){
+        $doiScreeningDAO = new DOIScreeningDAO();
+        $dois = $doiScreeningDAO->getBySubmissionId($submission->getId());
+        
         $dataScreening = array_merge(
-            $this->getStatusDOI($submission),
+            $this->getStatusDOI($submission, $dois),
             $this->getStatusAuthors($submission),
             $this->getStatusMetadataEnglish($submission),
             $this->getStatusPDFs($submission)
