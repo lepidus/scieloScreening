@@ -30,13 +30,16 @@
             {elseif $statusDOI == false && $doisConfirmedAuthorship == false}
                 <div id="doiHeader">
                     <div class="statusWarning"></div>
-                    <span id="doiMessage">{translate key="plugins.generic.scieloScreening.info.doiWithoutConfirmedAuthorship"}</span>
+                    <span id="doiMessage">{translate key="plugins.generic.scieloScreening.info.doisWithoutConfirmedAuthorship"}</span>
                 </div>
                 <div id="doiBody">
+                    <span>{translate key="plugins.generic.scieloScreening.info.authorNameMetadata" authorName=$authorFromSubmission}</span><br>
+                    <span>{translate key="plugins.generic.scieloScreening.info.doisInformed"}</span><br>
                     <ul>
-                        {foreach from=$dois item="doi"}
+                        {foreach from=$dois key="i" item="doi"}
                             <li>
-                                <a href="https://doi.org/{$doi->getDOICode()}" target="_blank">{$doi->getDOICode()}</a>
+                                <a href="https://doi.org/{$doi->getDOICode()}" target="_blank" rel="noopener noreferrer">{$doi->getDOICode()}</a><br>
+                                <span>{translate key="plugins.generic.scieloScreening.info.namesPresentInDOI" authorsNames=$authorsFromDOIs[$i]}</span>
                             </li>
                         {/foreach}
                     </ul>

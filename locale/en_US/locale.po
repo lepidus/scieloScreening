@@ -50,7 +50,10 @@ msgid "plugins.generic.scieloScreening.step4.dois"
 msgstr "You did not perform the screening of your previous publications."
 
 msgid "plugins.generic.scieloScreening.step4.doisWithoutConfirmedAuthorship"
-msgstr "It was not possible to confirm the authorship of some informed DOIs, but they will still be submitted to moderators"
+msgstr "It was not possible to confirm the authorship of some informed DOIs"
+
+msgid "plugins.generic.scieloScreening.step4.certifyYourNameinDOIs"
+msgstr "Make sure your name is among the authors of the informed DOIs and if so, proceed. A manual check will be done by moderators after submission."
 
 msgid "plugins.generic.scieloScreening.step4.metadataNotEnglish"
 msgstr "The following metadata must be filled in english:"
@@ -152,8 +155,17 @@ msgstr "See the status of each screening step below:"
 msgid "plugins.generic.scieloScreening.info.doiOkay"
 msgstr "The DOI screening was done correctly. See each DOI inserted below:"
 
-msgid "plugins.generic.scieloScreening.info.doiWithoutConfirmedAuthorship"
+msgid "plugins.generic.scieloScreening.info.doisWithoutConfirmedAuthorship"
 msgstr "It was not possible to confirm the authorship of all the DOIs informed"
+
+msgid "plugins.generic.scieloScreening.info.authorNameMetadata"
+msgstr "The name present in the metadata of this submission is: {$authorName}"
+
+msgid "plugins.generic.scieloScreening.info.doisInformed"
+msgstr "DOIs informed:"
+
+msgid "plugins.generic.scieloScreening.info.namesPresentInDOI"
+msgstr "Names present in this DOI: {$authorsNames}"
 
 msgid "plugins.generic.scieloScreening.info.doiNotOkay"
 msgstr "The DOI screening was not done!"

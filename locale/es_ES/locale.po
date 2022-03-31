@@ -50,7 +50,10 @@ msgid "plugins.generic.scieloScreening.step4.dois"
 msgstr "No ha realizado la verificación de sus publicaciones anteriores."
 
 msgid "plugins.generic.scieloScreening.step4.doisWithoutConfirmedAuthorship"
-msgstr "No fue posible confirmar la autoría de algunos DOI informados, pero aún se enviarán a los moderadores."
+msgstr "No fue posible confirmar la autoría de algunos DOI informados"
+
+msgid "plugins.generic.scieloScreening.step4.certifyYourNameinDOIs"
+msgstr "Asegúrese de que su nombre esté entre los autores en los DOI informados y, de ser así, continúe. Los moderadores realizarán una verificación manual después del envío."
 
 msgid "plugins.generic.scieloScreening.step4.metadataNotEnglish"
 msgstr "Los seguintes metadatos deben completarse en inglés:"
@@ -152,8 +155,17 @@ msgstr "Vea el estado de cada una de las comprobaciones a continuación:"
 msgid "plugins.generic.scieloScreening.info.doiOkay"
 msgstr "La verificación de los DOI se realizó correctamente. Vea cada DOI ingresado a continuación:"
 
-msgid "plugins.generic.scieloScreening.info.doiWithoutConfirmedAuthorship"
+msgid "plugins.generic.scieloScreening.info.doisWithoutConfirmedAuthorship"
 msgstr "No fue posible confirmar la autoría de todos los DOI informados"
+
+msgid "plugins.generic.scieloScreening.info.authorNameMetadata"
+msgstr "El nombre en los metadatos de este envío aparece como: {$authorName}"
+
+msgid "plugins.generic.scieloScreening.info.doisInformed"
+msgstr "DOIs informados:"
+
+msgid "plugins.generic.scieloScreening.info.namesPresentInDOI"
+msgstr "Nombres que aparecen en este DOI: {$authorsNames}"
 
 msgid "plugins.generic.scieloScreening.info.doiNotOkay"
 msgstr "¡La verificación de los DOI no se ha llevado a cabo!"
