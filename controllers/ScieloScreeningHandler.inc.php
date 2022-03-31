@@ -241,7 +241,8 @@ class ScieloScreeningHandler extends Handler {
             $given = $author['given'];
             $family = $author['family'];
 
-            $authorsNames[] = $given . " " . $family;
+            if(!empty($given) && !empty($family))
+                $authorsNames[] = $given . " " . $family;
         }
 
         return $authorsNames;
