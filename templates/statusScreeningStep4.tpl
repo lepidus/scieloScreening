@@ -12,9 +12,23 @@
                     <span>{translate key="plugins.generic.scieloScreening.step4.dois"}</span>
                 </div>
             {elseif $statusDOI == false && $doisConfirmedAuthorship == false}
-                <div class="warningField">
+                <div id="doiHeader">
                     <div class="statusWarning"></div>
-                    <span>{translate key="plugins.generic.scieloScreening.step4.doisWithoutConfirmedAuthorship"}</span>
+                    <span id="doiMessage">{translate key="plugins.generic.scieloScreening.step4.doisWithoutConfirmedAuthorship"}</span>
+                </div>
+                <div id="doiBody">
+                    <span>{translate key="plugins.generic.scieloScreening.info.authorNameMetadata" authorName=$authorFromSubmission}</span><br>
+                    <span>{translate key="plugins.generic.scieloScreening.info.doisInformed"}</span><br>
+                    <ul>
+                        {foreach from=$dois key="i" item="doi"}
+                            <li>
+                                <a href="https://doi.org/{$doi->getDOICode()}" target="_blank" rel="noopener noreferrer">{$doi->getDOICode()}</a><br>
+                                <span>{translate key="plugins.generic.scieloScreening.info.namesPresentInDOI" authorsNames=$authorsFromDOIs[$i]}</span>
+                            </li>
+                        {/foreach}
+                    </ul>
+                    
+                
                 </div>
             {/if}
             {if $statusAffiliation == false}
