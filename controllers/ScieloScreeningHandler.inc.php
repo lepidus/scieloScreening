@@ -57,7 +57,7 @@ class ScieloScreeningHandler extends Handler {
         $itemCrossref = $responseCrossref['message']['items'][0];
         $submission = Services::get('submission')->get((int)$args['submissionId']);
         $authorSubmission = $submission->getAuthors()[0];
-        $authorSubmission = $authorSubmission->getGivenName('en_US') . ' ' .  $authorSubmission->getFamilyName('en_US');
+        $authorSubmission = $authorSubmission->getLocalizedData('givenName', 'en_US') . ' ' .  $authorSubmission->getLocalizedData('familyName', 'en_US');
         $authorsCrossref = $itemCrossref['author'];
         $doiConfirmedAuthorship = true;
 
