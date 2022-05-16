@@ -80,9 +80,9 @@ function submissionStep4() {
 
 function checkDOIsWithConfirmedAuthorship() {
     cy.get('#screeningInfo-button').click();
-    cy.get('#doiBody > ul > li > a').eq(0).contains("10.1016/j.datak.2003.10.003 (authorship confirmed)");
-    cy.get('#doiBody > ul > li > a').eq(1).contains("10.34117/bjdv8n2-322 (authorship not confirmed)");
-    cy.get('#doiBody > ul > li > a').eq(2).contains("10.4025/actascianimsci.v42i1.44580 (authorship not confirmed)");
+    cy.get('#doiBody > ul > li > a').eq(0).next().contains("(authorship confirmed)");
+    cy.get('#doiBody > ul > li > a').eq(1).next().contains("(authorship not confirmed)");
+    cy.get('#doiBody > ul > li > a').eq(2).next().contains("(authorship not confirmed)");
 }
 
 describe('SciELO Screening Plugin - Show which DOIs have authorship confirmed', function() {

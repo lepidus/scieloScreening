@@ -38,7 +38,8 @@
                     <ul>
                         {foreach from=$dois key="i" item="doi"}
                             <li>
-                                <a href="https://doi.org/{$doi->getDOICode()}" target="_blank" rel="noopener noreferrer">{$doi->getDOICode()}</a><br>
+                                <a href="https://doi.org/{$doi->getDOICode()}" target="_blank" rel="noopener noreferrer">{$doi->getDOICode()}</a>
+                                <span>({$doi->getConfirmedAuthorshipString()})</span><br>
                                 <span>{translate key="plugins.generic.scieloScreening.info.namesPresentInDOI" authorsNames=$authorsFromDOIs[$i]}</span>
                             </li>
                         {/foreach}
