@@ -57,6 +57,7 @@ class ScieloScreeningHandler extends Handler {
         $submission = Services::get('submission')->get((int)$args['submissionId']);
         $doiConfirmedAuthorship = $this->checkDOIAuthorship($submission, $responseCrossref);
 
+        $itemCrossref = $responseCrossref['message']['items'][0];
         if(!$checker->checkDOIArticle($itemCrossref)) {
             $response = [
                 'statusValidate' => 0,
