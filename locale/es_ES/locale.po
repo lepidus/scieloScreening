@@ -208,3 +208,9 @@ msgstr "Verifique que el DOI se haya ingresado correctamente."
 
 msgid "plugins.generic.scieloScreening.crossrefInvalidErrorCode"
 msgstr "El valor ingresado no es un DOI."
+
+msgid "plugins.generic.scieloScreening.authorshipConfirmed"
+msgstr "autoría confirmada"
+
+msgid "plugins.generic.scieloScreening.authorshipNotConfirmed"
+msgstr "autoría no confirmada"

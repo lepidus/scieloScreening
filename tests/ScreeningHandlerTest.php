@@ -23,10 +23,11 @@ final class ScreeningHandlerTest extends TestCase {
     private function createSubmissionWithAuthors() {
         $submission = new Submission();
         $publication = new Publication();
-        $author = new Author();
         
+        $author = new Author();        
         $author->setData('givenName', ['en_US' => $this->authorGivenName]);
 		$author->setData('familyName', ['en_US' => $this->authorFamilyName]);
+        
         $publication->setData('id', $this->publicationId);
         $publication->setData('authors', [$author]);
         $submission->setData('publications', [$publication]);
@@ -53,5 +54,23 @@ final class ScreeningHandlerTest extends TestCase {
 
         $this->assertEquals($authorFullName, $statusDOI['authorFromSubmission']);
         $this->assertEquals($implodedAuthors, $statusDOI['authorsFromDOIs'][0]);
+    }
+
+    public function testDOIAuthorshipAnySubmissionAuthor(): void {
+        $dummyAuthor = new Author();        
+        $dummyAuthor->setData('givenName', ['en_US' => 'Peewee']);
+		$dummyAuthor->setData('familyName', ['en_US' => 'Herman']);
+        $rightAuthor = new Author();        
+        $rightAuthor->setData('givenName', ['en_US' => 'Altigran']);
+		$rightAuthor->setData('familyName', ['en_US' => 'S. da Silva']);
+
+        $publication = $this->submission->getData('publications')[0];
+        $publication->setData('authors', [$dummyAuthor, $rightAuthor]);
+
+        $screeningHandler = new ScieloScreeningHandler();
+        $responseJson = json_decode($this->mockResponseAPICrossref, true);
+        $confirmedAuthorship = $screeningHandler->checkDOIAuthorship($this->submission, $responseJson);
+
+        $this->assertTrue($confirmedAuthorship);
     }
 }

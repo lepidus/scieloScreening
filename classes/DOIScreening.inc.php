@@ -39,6 +39,13 @@ class DOIScreening extends DataObject {
         return $this->getData('confirmedAuthorship');
     }
 
+    function getConfirmedAuthorshipString() {
+        if($this->getData('confirmedAuthorship'))
+            return __('plugins.generic.scieloScreening.authorshipConfirmed');
+        
+        return __('plugins.generic.scieloScreening.authorshipNotConfirmed');
+    }
+
     function setConfirmedAuthorship($statusAuthorship) {
         return $this->setData('confirmedAuthorship', $statusAuthorship);
     }

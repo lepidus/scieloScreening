@@ -54,17 +54,10 @@ class ScieloScreeningHandler extends Handler {
             return json_encode($response);
         }
 
-        $itemCrossref = $responseCrossref['message']['items'][0];
         $submission = Services::get('submission')->get((int)$args['submissionId']);
-        $authorSubmission = $submission->getAuthors()[0];
-        $authorSubmission = $authorSubmission->getLocalizedData('givenName', 'en_US') . ' ' .  $authorSubmission->getLocalizedData('familyName', 'en_US');
-        $authorsCrossref = $itemCrossref['author'];
-        $doiConfirmedAuthorship = true;
+        $doiConfirmedAuthorship = $this->checkDOIAuthorship($submission, $responseCrossref);
 
-        if(!$checker->checkDOIFromAuthor($authorSubmission, $authorsCrossref)){
-            $doiConfirmedAuthorship = false;
-        }
-
+        $itemCrossref = $responseCrossref['message']['items'][0];
         if(!$checker->checkDOIArticle($itemCrossref)) {
             $response = [
                 'statusValidate' => 0,
@@ -84,6 +77,23 @@ class ScieloScreeningHandler extends Handler {
             'yearArticle' => $yearArticle,
             'doiConfirmedAuthorship' => $doiConfirmedAuthorship
         ]);
+    }
+
+    public function checkDOIAuthorship($submission, $responseCrossref){
+        $itemCrossref = $responseCrossref['message']['items'][0];
+        $authorsSubmission = $submission->getAuthors();
+        $checker = new ScreeningChecker();
+
+        foreach($authorsSubmission as $authorSubmission){
+            $authorName = $authorSubmission->getLocalizedData('givenName', 'en_US') . ' ' .  $authorSubmission->getLocalizedData('familyName', 'en_US');
+            $authorsCrossref = $itemCrossref['author'];
+
+            if($checker->checkDOIFromAuthor($authorName, $authorsCrossref)){
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function getDOIStatusResponseMessage($statusMessage) {
