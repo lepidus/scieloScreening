@@ -191,6 +191,14 @@ msgstr "Ningún autor ha confirmado su ORCID"
 msgid "plugins.generic.scieloScreening.info.pdfsOkay"
 msgstr "Solo se envió un documento PDF"
 
+
+msgid "plugins.generic.scieloScreening.log.doiValidatedAuthorshipConfirmed"
+msgstr "El DOI {$doi} fue validado con éxito y se confirmó su autoría."
+
+msgid "plugins.generic.scieloScreening.log.doiValidatedAuthorshipNotConfirmed"
+msgstr "El DOI {$doi} fue validado con éxito, pero no se confirmó su autoría."
+
+
 msgid "plugins.generic.scieloScreening.httpDOINotFoundErrorCode"
 msgstr "El DOI ingresado no está registrado. Confirme que sea correcto y, en caso de duda, consulte con la publicación fuente."
 

@@ -1,6 +1,8 @@
 <?php
 
 import('classes.handler.Handler');
+import('classes.log.SubmissionEventLogEntry');
+import('lib.pkp.classes.log.SubmissionLog');
 import('plugins.generic.scieloScreening.classes.DOIScreening');
 import('plugins.generic.scieloScreening.classes.DOIScreeningDAO');
 import('plugins.generic.scieloScreening.classes.ScreeningChecker');
@@ -72,6 +74,11 @@ class ScieloScreeningHandler extends Handler {
         else
             $yearArticle = $itemCrossref['published-online']['date-parts'][0][0];
 
+        if($doiConfirmedAuthorship)
+            SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_METADATA_UPDATE, 'plugins.generic.scieloScreening.log.doiValidatedAuthorshipConfirmed', ['doi' => $args['doiString']]);
+        else
+            SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_METADATA_UPDATE, 'plugins.generic.scieloScreening.log.doiValidatedAuthorshipNotConfirmed', ['doi' => $args['doiString']]);
+        
         return json_encode([
             'statusValidate' => 1,
             'yearArticle' => $yearArticle,
