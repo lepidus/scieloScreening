@@ -198,6 +198,9 @@ msgstr "El DOI {$doi} fue validado con éxito y se confirmó su autoría."
 msgid "plugins.generic.scieloScreening.log.doiValidatedAuthorshipNotConfirmed"
 msgstr "El DOI {$doi} fue validado con éxito, pero no se confirmó su autoría."
 
+msgid "plugins.generic.scieloScreening.log.doiNotValidated"
+msgstr "El DOI {$doi} no pudo ser validado. El mensaje que devolvió fue: {$errorMessage}"
+
 
 msgid "plugins.generic.scieloScreening.httpDOINotFoundErrorCode"
 msgstr "El DOI ingresado no está registrado. Confirme que sea correcto y, en caso de duda, consulte con la publicación fuente."

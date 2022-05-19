@@ -36,6 +36,7 @@ class ScieloScreeningHandler extends Handler {
     public function validateDOI($args, $request){
         $checker = new ScreeningChecker();
         $responseCrossref = array();
+        $submission = Services::get('submission')->get((int)$args['submissionId']);
 
         $crossrefClient = new DOISystemClient('Crossref.org', 'https://api.crossref.org/works?filter=doi:');
         $crossrefService = new CrossrefService($args['doiString'], $crossrefClient);
@@ -43,6 +44,9 @@ class ScieloScreeningHandler extends Handler {
         if (!$crossrefService->DOIExists()) {
             $statusMessage = $crossrefService->getStatusResponseMessage();
             $response = $this->getDOIStatusResponseMessage($statusMessage);
+            
+            SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_METADATA_UPDATE, 'plugins.generic.scieloScreening.log.doiNotValidated', ['doi' => $args['doiString'], 'errorMessage' => $response['messageError']]);
+
             return json_encode($response);
         } else {
             $responseCrossref = $crossrefService->getResponseContent();
@@ -53,10 +57,12 @@ class ScieloScreeningHandler extends Handler {
             $doiOrgService = new DOISystemService($args['doiString'], $doiOrgClient);
             $statusMessage = $doiOrgService->getStatusResponseMessage();
             $response = $this->getDOIStatusResponseMessage($statusMessage);
+
+            SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_METADATA_UPDATE, 'plugins.generic.scieloScreening.log.doiNotValidated', ['doi' => $args['doiString'], 'errorMessage' => $response['messageError']]);
+
             return json_encode($response);
         }
 
-        $submission = Services::get('submission')->get((int)$args['submissionId']);
         $doiConfirmedAuthorship = $this->checkDOIAuthorship($submission, $responseCrossref);
 
         $itemCrossref = $responseCrossref['message']['items'][0];
@@ -65,6 +71,9 @@ class ScieloScreeningHandler extends Handler {
                 'statusValidate' => 0,
                 'messageError' => __("plugins.generic.scieloScreening.doiFromJournal")
             ];
+
+            SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_METADATA_UPDATE, 'plugins.generic.scieloScreening.log.doiNotValidated', ['doi' => $args['doiString'], 'errorMessage' => $response['messageError']]);
+
             return json_encode($response);
         }
 
