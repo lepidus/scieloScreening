@@ -33,6 +33,16 @@ class ScieloScreeningHandler extends Handler {
         return http_response_code(200);
     }
 
+    private function logDOIValidationEvent($request, $submission, $doi, $response) {
+        if(array_key_exists('messageError', $response)) {
+            SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_METADATA_UPDATE, 'plugins.generic.scieloScreening.log.doiNotValidated', ['doi' => $doi, 'errorMessage' => $response['messageError']]);
+        } else if($response['doiConfirmedAuthorship']){
+            SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_METADATA_UPDATE, 'plugins.generic.scieloScreening.log.doiValidatedAuthorshipConfirmed', ['doi' => $doi]);
+        } else {
+            SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_METADATA_UPDATE, 'plugins.generic.scieloScreening.log.doiValidatedAuthorshipNotConfirmed', ['doi' => $doi]);
+        }
+    }
+
     public function validateDOI($args, $request){
         $checker = new ScreeningChecker();
         $responseCrossref = array();
@@ -45,7 +55,7 @@ class ScieloScreeningHandler extends Handler {
             $statusMessage = $crossrefService->getStatusResponseMessage();
             $response = $this->getDOIStatusResponseMessage($statusMessage);
             
-            SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_METADATA_UPDATE, 'plugins.generic.scieloScreening.log.doiNotValidated', ['doi' => $args['doiString'], 'errorMessage' => $response['messageError']]);
+            $this->logDOIValidationEvent($request, $submission, $args['doiString'], $response);
             return json_encode($response);
         } else {
             $responseCrossref = $crossrefService->getResponseContent();
@@ -57,11 +67,9 @@ class ScieloScreeningHandler extends Handler {
             $statusMessage = $doiOrgService->getStatusResponseMessage();
             $response = $this->getDOIStatusResponseMessage($statusMessage);
 
-            SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_METADATA_UPDATE, 'plugins.generic.scieloScreening.log.doiNotValidated', ['doi' => $args['doiString'], 'errorMessage' => $response['messageError']]);
+            $this->logDOIValidationEvent($request, $submission, $args['doiString'], $response);
             return json_encode($response);
         }
-
-        $doiConfirmedAuthorship = $this->checkDOIAuthorship($submission, $responseCrossref);
 
         $itemCrossref = $responseCrossref['message']['items'][0];
         if(!$checker->checkDOIArticle($itemCrossref)) {
@@ -69,27 +77,25 @@ class ScieloScreeningHandler extends Handler {
                 'statusValidate' => 0,
                 'messageError' => __("plugins.generic.scieloScreening.doiFromJournal")
             ];
-
-            SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_METADATA_UPDATE, 'plugins.generic.scieloScreening.log.doiNotValidated', ['doi' => $args['doiString'], 'errorMessage' => $response['messageError']]);
+            $this->logDOIValidationEvent($request, $submission, $args['doiString'], $response);
             return json_encode($response);
         }
 
         $yearArticle = 0;
-        if(isset($itemCrossref['published-print']))
+        if(isset($itemCrossref['published-print'])){
             $yearArticle = $itemCrossref['published-print']['date-parts'][0][0];
-        else
+        } else {
             $yearArticle = $itemCrossref['published-online']['date-parts'][0][0];
+        }
 
-        if($doiConfirmedAuthorship)
-            SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_METADATA_UPDATE, 'plugins.generic.scieloScreening.log.doiValidatedAuthorshipConfirmed', ['doi' => $args['doiString']]);
-        else
-            SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_METADATA_UPDATE, 'plugins.generic.scieloScreening.log.doiValidatedAuthorshipNotConfirmed', ['doi' => $args['doiString']]);
-        
-        return json_encode([
+        $response = [
             'statusValidate' => 1,
             'yearArticle' => $yearArticle,
-            'doiConfirmedAuthorship' => $doiConfirmedAuthorship
-        ]);
+            'doiConfirmedAuthorship' => $this->checkDOIAuthorship($submission, $responseCrossref)
+        ];
+            
+        $this->logDOIValidationEvent($request, $submission, $args['doiString'], $response);
+        return json_encode($response);
     }
 
     public function checkDOIAuthorship($submission, $responseCrossref){
@@ -116,6 +122,14 @@ class ScieloScreeningHandler extends Handler {
         ];
     }
 
+    private function logDOIScreeningEvent($request, $submission, $doisImploded = null) {
+        if(is_null($doisImploded)) {
+            SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_METADATA_UPDATE, 'plugins.generic.scieloScreening.log.doiScreeningCompletedSuccess');
+        } else {
+            SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_METADATA_UPDATE, 'plugins.generic.scieloScreening.log.doiScreeningNotCompleted', ['doisImploded' => $doisImploded]);
+        }
+    }
+    
     public function validateDOIsFromScreening($args, $request){
         $checker = new ScreeningChecker();
         $submission = Services::get('submission')->get((int)$args['submissionId']);
@@ -125,7 +139,7 @@ class ScieloScreeningHandler extends Handler {
                 'statusValidateDOIs' => 0,
                 'messageError' => __("plugins.generic.scieloScreening.doiDifferentRequirement")
             ];
-            SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_METADATA_UPDATE, 'plugins.generic.scieloScreening.log.doiScreeningNotCompleted', ['doisImploded' => implode(", ", $args['dois'])]);
+            $this->logDOIScreeningEvent($request, $submission, implode(", ", $args['dois']));
             return json_encode($response);
         }
 
@@ -135,7 +149,7 @@ class ScieloScreeningHandler extends Handler {
                 'statusValidateDOIs' => 0,
                 'messageError' => __("plugins.generic.scieloScreening.attentionRules")
             ];
-            SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_METADATA_UPDATE, 'plugins.generic.scieloScreening.log.doiScreeningNotCompleted', ['doisImploded' => implode(", ", $args['dois'])]);
+            $this->logDOIScreeningEvent($request, $submission, implode(", ", $args['dois']));
             return json_encode($response);
         }
         else if($countOkay == 2){
@@ -144,12 +158,12 @@ class ScieloScreeningHandler extends Handler {
                     'statusValidateDOIs' => 0,
                     'messageError' => __("plugins.generic.scieloScreening.attentionRules")
                 ];
-                SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_METADATA_UPDATE, 'plugins.generic.scieloScreening.log.doiScreeningNotCompleted', ['doisImploded' => implode(", ", $args['dois'])]);
+                $this->logDOIScreeningEvent($request, $submission, implode(", ", $args['dois']));
                 return json_encode($response);
             }
         }
 
-        SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_METADATA_UPDATE, 'plugins.generic.scieloScreening.log.doiScreeningCompletedSuccess');
+        $this->logDOIScreeningEvent($request, $submission);
         return json_encode(['statusValidateDOIs' => 1]);
     }
 
