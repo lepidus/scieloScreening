@@ -47,7 +47,7 @@ msgid "plugins.generic.scieloScreening.step4.affiliation"
 msgstr "You have not filled in the affiliation for all contributors."
 
 msgid "plugins.generic.scieloScreening.step4.dois"
-msgstr "You did not perform the screening of your previous publications."
+msgstr "You informed not having DOIs of previous publications."
 
 msgid "plugins.generic.scieloScreening.step4.doisWithoutConfirmedAuthorship"
 msgstr "It was not possible to confirm the authorship of some informed DOIs"
@@ -168,7 +168,7 @@ msgid "plugins.generic.scieloScreening.info.namesPresentInDOI"
 msgstr "Names present in this DOI: {$authorsNames}"
 
 msgid "plugins.generic.scieloScreening.info.doiNotOkay"
-msgstr "The DOI screening was not done!"
+msgstr "The submitter informed not having DOIs of previous publications"
 
 msgid "plugins.generic.scieloScreening.info.metadataEnglishOkay"
 msgstr "All metadata was filled in english"

@@ -8,7 +8,7 @@
         <div class="screeningStep4Body">
             {if $statusDOI == false && $doisConfirmedAuthorship == true}
                 <div class="warningField">
-                    <div class="statusNotOkay"></div>
+                    <div class="statusWarning"></div>
                     <span>{translate key="plugins.generic.scieloScreening.step4.dois"}</span>
                 </div>
             {elseif $statusDOI == false && $doisConfirmedAuthorship == false}

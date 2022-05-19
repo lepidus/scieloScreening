@@ -47,7 +47,7 @@
                 </div>
             {else}
                 <div id="doiHeader" class="headerWithoutBody">
-                    <div class="statusNotOkay"></div>
+                    <div class="statusWarning"></div>
                     <span id="doiMessage">{translate key="plugins.generic.scieloScreening.info.doiNotOkay"}</span>
                 </div>
             {/if}
