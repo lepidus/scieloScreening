@@ -191,6 +191,23 @@ msgstr "Nenhum autor confirmou o seu ORCID"
 msgid "plugins.generic.scieloScreening.info.pdfsOkay"
 msgstr "Apenas um documento PDF foi submetido"
 
+
+msgid "plugins.generic.scieloScreening.log.doiValidatedAuthorshipConfirmed"
+msgstr "O DOI {$doi} foi validado com sucesso e sua autoria foi confirmada."
+
+msgid "plugins.generic.scieloScreening.log.doiValidatedAuthorshipNotConfirmed"
+msgstr "O DOI {$doi} foi validado com sucesso, mas sua autoria não foi confirmada."
+
+msgid "plugins.generic.scieloScreening.log.doiNotValidated"
+msgstr "O DOI {$doi} não pôde ser validado. A mensagem retornada foi: {$errorMessage}"
+
+msgid "plugins.generic.scieloScreening.log.doiScreeningCompletedSuccess"
+msgstr "A verificação de DOIs foi finalizada com sucesso."
+
+msgid "plugins.generic.scieloScreening.log.doiScreeningNotCompleted"
+msgstr "O autor submissor tentou finalizar a verificação de DOIs, mas sem sucesso. Os DOIs informados foram: {$doisImploded}"
+
+
 msgid "plugins.generic.scieloScreening.httpDOINotFoundErrorCode"
 msgstr "O DOI inserido não está registrado. Confirme se o mesmo está correto e, em caso de dúvida, verifique com a publicação de origem."
 
