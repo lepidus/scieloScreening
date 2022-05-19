@@ -125,6 +125,7 @@ class ScieloScreeningHandler extends Handler {
                 'statusValidateDOIs' => 0,
                 'messageError' => __("plugins.generic.scieloScreening.doiDifferentRequirement")
             ];
+            SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_METADATA_UPDATE, 'plugins.generic.scieloScreening.log.doiScreeningNotCompleted', ['doisImploded' => implode(", ", $args['dois'])]);
             return json_encode($response);
         }
 
@@ -134,6 +135,7 @@ class ScieloScreeningHandler extends Handler {
                 'statusValidateDOIs' => 0,
                 'messageError' => __("plugins.generic.scieloScreening.attentionRules")
             ];
+            SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_METADATA_UPDATE, 'plugins.generic.scieloScreening.log.doiScreeningNotCompleted', ['doisImploded' => implode(", ", $args['dois'])]);
             return json_encode($response);
         }
         else if($countOkay == 2){
@@ -142,12 +144,12 @@ class ScieloScreeningHandler extends Handler {
                     'statusValidateDOIs' => 0,
                     'messageError' => __("plugins.generic.scieloScreening.attentionRules")
                 ];
+                SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_METADATA_UPDATE, 'plugins.generic.scieloScreening.log.doiScreeningNotCompleted', ['doisImploded' => implode(", ", $args['dois'])]);
                 return json_encode($response);
             }
         }
 
         SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_METADATA_UPDATE, 'plugins.generic.scieloScreening.log.doiScreeningCompletedSuccess');
-
         return json_encode(['statusValidateDOIs' => 1]);
     }
 

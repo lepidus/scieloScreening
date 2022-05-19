@@ -204,6 +204,9 @@ msgstr "O DOI {$doi} não pôde ser validado. A mensagem retornada foi: {$errorM
 msgid "plugins.generic.scieloScreening.log.doiScreeningCompletedSuccess"
 msgstr "A verificação de DOIs foi finalizada com sucesso."
 
+msgid "plugins.generic.scieloScreening.log.doiScreeningNotCompleted"
+msgstr "O autor submissor tentou finalizar a verificação de DOIs, mas sem sucesso. Os DOIs informados foram: {$doisImploded}"
+
 
 msgid "plugins.generic.scieloScreening.httpDOINotFoundErrorCode"
 msgstr "O DOI inserido não está registrado. Confirme se o mesmo está correto e, em caso de dúvida, verifique com a publicação de origem."

@@ -53,6 +53,8 @@ function performDOIScrening() {
     cy.get('#firstDOI').type("10.1010/notARealDoi", { delay: 0 });
     cy.get('#firstDOILabel').click();
     cy.wait(5000);
+    cy.get('#doiSubmit').click();
+
     cy.get('#firstDOI').clear();
     cy.get('#firstDOI').type("10.1016/j.datak.2003.10.003", { delay: 0 });
     cy.get('#firstDOILabel').click();
@@ -93,6 +95,7 @@ function userLogout() {
 function checkDOIScreeningOutputsHaveBeenLogged() {
     cy.get('.pkpButton').contains('Activity Log').click();
     cy.get('.gridCellContainer > span').should('contain', 'The DOI 10.1010/notARealDoi could not be validated. The returned message was:');
+    cy.get('.gridCellContainer > span').should('contain', 'The submitter tried to complete the DOI screening without success. The DOIs informed were:')
 
     cy.get('.gridCellContainer > span').should('contain', 'The DOI 10.1016/j.datak.2003.10.003 was successfully validated and its authorship has been confirmed.');
     cy.get('.gridCellContainer > span').should('contain', 'The DOI 10.34117/bjdv8n2-322 was successfully validated, but its authorship has not been confirmed.');
