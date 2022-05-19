@@ -36,6 +36,7 @@
             {ldelim}
                 doisOkay: doisOkay,
                 doisYears: doisYears,
+                submissionId: {$submissionId},
                 dois: [$('#firstDOI').val(), $('#secondDOI').val(), $('#thirdDOI').val()]
             {rdelim},
             function (result){ldelim}

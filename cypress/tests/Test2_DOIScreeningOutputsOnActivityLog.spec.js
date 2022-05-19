@@ -90,15 +90,17 @@ function userLogout() {
     cy.get("a.pkpDropdown__action").contains("Logout").click();
 }
 
-function checkDOIsValidationHasBeenLogged() {
+function checkDOIScreeningOutputsHaveBeenLogged() {
     cy.get('.pkpButton').contains('Activity Log').click();
     cy.get('.gridCellContainer > span').should('contain', 'The DOI 10.1010/notARealDoi could not be validated. The returned message was:');
+
     cy.get('.gridCellContainer > span').should('contain', 'The DOI 10.1016/j.datak.2003.10.003 was successfully validated and its authorship has been confirmed.');
     cy.get('.gridCellContainer > span').should('contain', 'The DOI 10.34117/bjdv8n2-322 was successfully validated, but its authorship has not been confirmed.');
     cy.get('.gridCellContainer > span').should('contain', 'The DOI 10.4025/actascianimsci.v42i1.44580 was successfully validated, but its authorship has not been confirmed.');
+    cy.get('.gridCellContainer > span').should('contain', 'The DOI screening was completed successfully.');
 }
 
-describe("SciELO Screening Plugin - DOI validation is logged in submission's activity log", function() {
+describe("SciELO Screening Plugin - DOI Screening outputs are logged in submission's activity log", function() {
     it("Author user submits", function() {
         cy.visit(Cypress.env('baseUrl') + 'index.php/scielo/submissions');
         loginAuthorUser();
@@ -110,10 +112,10 @@ describe("SciELO Screening Plugin - DOI validation is logged in submission's act
         submissionStep4();
         userLogout();
     });
-    it("Check if plugin has logged status of DOI validation in submission's activity log", function() {
+    it("Check if plugin has logged outputs of DOI screening in submission's activity log", function() {
         loginAdminUser();
         cy.get("#active-button").click();
         cy.get(".listPanel__itemActions:visible > a.pkpButton").first().click();
-        checkDOIsValidationHasBeenLogged();
+        checkDOIScreeningOutputsHaveBeenLogged();
     });
 });

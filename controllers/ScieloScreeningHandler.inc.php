@@ -46,7 +46,6 @@ class ScieloScreeningHandler extends Handler {
             $response = $this->getDOIStatusResponseMessage($statusMessage);
             
             SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_METADATA_UPDATE, 'plugins.generic.scieloScreening.log.doiNotValidated', ['doi' => $args['doiString'], 'errorMessage' => $response['messageError']]);
-
             return json_encode($response);
         } else {
             $responseCrossref = $crossrefService->getResponseContent();
@@ -59,7 +58,6 @@ class ScieloScreeningHandler extends Handler {
             $response = $this->getDOIStatusResponseMessage($statusMessage);
 
             SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_METADATA_UPDATE, 'plugins.generic.scieloScreening.log.doiNotValidated', ['doi' => $args['doiString'], 'errorMessage' => $response['messageError']]);
-
             return json_encode($response);
         }
 
@@ -73,7 +71,6 @@ class ScieloScreeningHandler extends Handler {
             ];
 
             SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_METADATA_UPDATE, 'plugins.generic.scieloScreening.log.doiNotValidated', ['doi' => $args['doiString'], 'errorMessage' => $response['messageError']]);
-
             return json_encode($response);
         }
 
@@ -121,7 +118,8 @@ class ScieloScreeningHandler extends Handler {
 
     public function validateDOIsFromScreening($args, $request){
         $checker = new ScreeningChecker();
-        
+        $submission = Services::get('submission')->get((int)$args['submissionId']);
+
         if($checker->checkDOIRepeated($args['dois'])){
             $response = [
                 'statusValidateDOIs' => 0,
@@ -147,6 +145,8 @@ class ScieloScreeningHandler extends Handler {
                 return json_encode($response);
             }
         }
+
+        SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_METADATA_UPDATE, 'plugins.generic.scieloScreening.log.doiScreeningCompletedSuccess');
 
         return json_encode(['statusValidateDOIs' => 1]);
     }
