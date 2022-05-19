@@ -38,18 +38,22 @@ function submissionStep2() {
 function addContributor() {
     cy.get('a[id^="component-grid-users-author-authorgrid-addAuthor-button-"]').click();
     cy.wait(250);
-    cy.get('input[id^="givenName-en_US-"]').type("Altigran S.", {delay: 0});
-    cy.get('input[id^="familyName-en_US-"]').type("da Silva", {delay: 0});
+    cy.get('input[id^="givenName-en_US-"]').type("Altigran S.", { delay: 0 });
+    cy.get('input[id^="familyName-en_US-"]').type("da Silva", { delay: 0 });
     cy.get('select[id^="country"]').select("Brasil");
-    cy.get('input[id^="email"]').type("altigran.silva@lepidus.com.br", {delay: 0});
-    cy.get('input[id^="orcid-"]').type("https://orcid.org/0000-0001-2345-6789", {delay: 0});
-    cy.get('input[id^="affiliation-en_US-"]').type("UFAM", {delay: 0});
+    cy.get('input[id^="email"]').type("altigran.silva@lepidus.com.br", { delay: 0 });
+    cy.get('input[id^="orcid-"]').type("https://orcid.org/0000-0001-2345-6789", { delay: 0 });
+    cy.get('input[id^="affiliation-en_US-"]').type("UFAM", { delay: 0 });
     cy.get('label').contains("Author").click();
     cy.get('#editAuthor > .formButtons > .submitFormButton').click();
 }
 
 function performDOIScrening() {
     cy.get('#openDOIModal').click();
+    cy.get('#firstDOI').type("10.1010/notARealDoi", { delay: 0 });
+    cy.get('#firstDOILabel').click();
+    cy.wait(5000);
+    cy.get('#firstDOI').clear();
     cy.get('#firstDOI').type("10.1016/j.datak.2003.10.003", { delay: 0 });
     cy.get('#firstDOILabel').click();
     cy.wait(5000);
@@ -88,6 +92,7 @@ function userLogout() {
 
 function checkDOIsValidationHasBeenLogged() {
     cy.get('.pkpButton').contains('Activity Log').click();
+    cy.get('.gridCellContainer > span').should('contain', 'The DOI 10.1010/notARealDoi could not be validated. The returned message was:');
     cy.get('.gridCellContainer > span').should('contain', 'The DOI 10.1016/j.datak.2003.10.003 was successfully validated and its authorship has been confirmed.');
     cy.get('.gridCellContainer > span').should('contain', 'The DOI 10.34117/bjdv8n2-322 was successfully validated, but its authorship has not been confirmed.');
     cy.get('.gridCellContainer > span').should('contain', 'The DOI 10.4025/actascianimsci.v42i1.44580 was successfully validated, but its authorship has not been confirmed.');
