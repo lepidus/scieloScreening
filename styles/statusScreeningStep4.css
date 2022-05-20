@@ -2,7 +2,10 @@
     margin-top: 0px;
     margin-bottom: 18px;
 }
-
+#statusScreeningStep4 {
+    border: 1px solid #c2c0c0;
+    padding: 20px;
+}
 #screeningStep4Header h3 {
     font-size: 16px;
     line-height: 24px;
