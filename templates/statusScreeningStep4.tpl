@@ -3,6 +3,7 @@
 
     <div id="statusScreeningStep4">
         <div id="screeningStep4Header">
+            <h2>{translate key="plugins.generic.scieloScreening.displayName"}</h2>
             <h3>{translate key="plugins.generic.scieloScreening.step4.warning"}</h3>
         </div>
         <div class="screeningStep4Body">
