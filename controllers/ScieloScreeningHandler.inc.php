@@ -184,8 +184,11 @@ class ScieloScreeningHandler extends Handler {
             }
         }
 
-        $submissionAuthor = $submission->getCurrentPublication()->getData('authors')[0];
-        $subAuthorName = $submissionAuthor->getLocalizedData('givenName') . ' ' . $submissionAuthor->getLocalizedData('familyName');
+        $authors = $submission->getCurrentPublication()->getData('authors');
+        if(!empty($authors)) {
+            $submissionAuthor = $authors[0];
+            $subAuthorName = $submissionAuthor->getLocalizedData('givenName') . ' ' . $submissionAuthor->getLocalizedData('familyName');
+        }
 
         return [
             'statusDOI' => $statusDOI,
