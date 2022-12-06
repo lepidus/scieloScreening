@@ -9,12 +9,12 @@
         <div class="screeningStep4Body">
             {if $statusDOI == false && $doisConfirmedAuthorship == true}
                 <div class="warningField">
-                    <div class="statusWarning"></div>
+                    <div class="statusScreeningWarning"></div>
                     <span>{translate key="plugins.generic.scieloScreening.step4.dois"}</span>
                 </div>
             {elseif $statusDOI == false && $doisConfirmedAuthorship == false}
                 <div id="doiHeader">
-                    <div class="statusWarning"></div>
+                    <div class="statusScreeningWarning"></div>
                     <span id="doiMessage">{translate key="plugins.generic.scieloScreening.step4.doisWithoutConfirmedAuthorship"}</span>
                 </div>
                 <div id="doiBody">

@@ -29,7 +29,7 @@
                 </div>
             {elseif $statusDOI == false && $doisConfirmedAuthorship == false}
                 <div id="doiHeader">
-                    <div class="statusWarning"></div>
+                    <div class="statusScreeningWarning"></div>
                     <span id="doiMessage">{translate key="plugins.generic.scieloScreening.info.doisWithoutConfirmedAuthorship"}</span>
                 </div>
                 <div id="doiBody">
@@ -47,7 +47,7 @@
                 </div>
             {else}
                 <div id="doiHeader" class="headerWithoutBody">
-                    <div class="statusWarning"></div>
+                    <div class="statusScreeningWarning"></div>
                     <span id="doiMessage">{translate key="plugins.generic.scieloScreening.info.doiNotOkay"}</span>
                 </div>
             {/if}
