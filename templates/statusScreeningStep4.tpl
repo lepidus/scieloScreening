@@ -41,7 +41,7 @@
             {if $statusMetadataEnglish == false}
                 <div class="warningField">
                     <div class="statusNotOkay"></div>
-                    <span>{translate key="plugins.generic.scieloScreening.step4.metadataNotEnglish"} {$textMetadata}</span>
+                    <span>{translate key="plugins.generic.scieloScreening.step4.metadataNotEnglish"} {$textMetadataScreening}</span>
                 </div>
             {/if}
             {if $numPDFs == 0}

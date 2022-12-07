@@ -61,7 +61,7 @@
             {else}
                 <div id="metadataEnglishHeader" class="headerWithoutBody">
                     <div class="statusNotOkay"></div>
-                    <span id="metadataEnglishMessage">{translate key="plugins.generic.scieloScreening.info.metadataEnglishNotOkay"} {$textMetadata}</span>
+                    <span id="metadataEnglishMessage">{translate key="plugins.generic.scieloScreening.info.metadataEnglishNotOkay"} {$textMetadataScreening}</span>
                 </div>
             {/if}
         </div>
