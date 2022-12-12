@@ -8,13 +8,13 @@
         </div>
         <div class="screeningStep4Body">
             {if $statusDOI == false && $doisConfirmedAuthorship == true}
-                <div class="warningField">
-                    <div class="statusScreeningWarning"></div>
+                <div class="screeningWarningField">
+                    <div class="screeningStatusWarning"></div>
                     <span>{translate key="plugins.generic.scieloScreening.step4.dois"}</span>
                 </div>
             {elseif $statusDOI == false && $doisConfirmedAuthorship == false}
                 <div id="doiHeader">
-                    <div class="statusScreeningWarning"></div>
+                    <div class="screeningStatusWarning"></div>
                     <span id="doiMessage">{translate key="plugins.generic.scieloScreening.step4.doisWithoutConfirmedAuthorship"}</span>
                 </div>
                 <div id="doiBody">
@@ -33,25 +33,25 @@
                 </div>
             {/if}
             {if $statusAffiliation == false}
-                <div class="warningField">
-                    <div class="statusNotOkay"></div>
+                <div class="screeningWarningField">
+                    <div class="screeningStatusNotOkay"></div>
                     <span>{translate key="plugins.generic.scieloScreening.step4.affiliation"}</span>
                 </div>
             {/if}
             {if $statusMetadataEnglish == false}
-                <div class="warningField">
-                    <div class="statusNotOkay"></div>
+                <div class="screeningWarningField">
+                    <div class="screeningStatusNotOkay"></div>
                     <span>{translate key="plugins.generic.scieloScreening.step4.metadataNotEnglish"} {$textMetadataScreening}</span>
                 </div>
             {/if}
             {if $numPDFs == 0}
-                <div class="warningField">
-                    <div class="statusNotOkay"></div>
+                <div class="screeningWarningField">
+                    <div class="screeningStatusNotOkay"></div>
                     <span>{translate key="plugins.generic.scieloScreening.step4.noPDFs"}</span>
                 </div>
             {elseif $numPDFs > 1}
-                <div id="manyPDFHeader" class="warningField">
-                    <div class="statusNotOkay"></div>
+                <div id="manyPDFHeader" class="screeningWarningField">
+                    <div class="screeningStatusNotOkay"></div>
                     <span>{translate key="plugins.generic.scieloScreening.step4.manyPDFs.header"}</span>
                 </div>
                 <div id="manyPDFBody">
