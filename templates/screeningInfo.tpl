@@ -15,7 +15,7 @@
         <div id="doiInfoField">
             {if $statusDOI == true}
                 <div id="doiHeader">
-                    <div class="statusOkay"></div>
+                    <div class="screeningStatusOkay"></div>
                     <span id="doiMessage">{translate key="plugins.generic.scieloScreening.info.doiOkay"}</span>
                 </div>
                 <div id="doiBody">
@@ -29,7 +29,7 @@
                 </div>
             {elseif $statusDOI == false && $doisConfirmedAuthorship == false}
                 <div id="doiHeader">
-                    <div class="statusWarning"></div>
+                    <div class="screeningStatusWarning"></div>
                     <span id="doiMessage">{translate key="plugins.generic.scieloScreening.info.doisWithoutConfirmedAuthorship"}</span>
                 </div>
                 <div id="doiBody">
@@ -47,7 +47,7 @@
                 </div>
             {else}
                 <div id="doiHeader" class="headerWithoutBody">
-                    <div class="statusWarning"></div>
+                    <div class="screeningStatusWarning"></div>
                     <span id="doiMessage">{translate key="plugins.generic.scieloScreening.info.doiNotOkay"}</span>
                 </div>
             {/if}
@@ -55,25 +55,25 @@
         <div id="metadataEnglishInfoField">
             {if $statusMetadataEnglish == true}
                 <div id="metadataEnglishHeader" class="headerWithoutBody">
-                    <div class="statusOkay"></div>
+                    <div class="screeningStatusOkay"></div>
                     <span id="metadataEnglishMessage">{translate key="plugins.generic.scieloScreening.info.metadataEnglishOkay"}</span>
                 </div>
             {else}
                 <div id="metadataEnglishHeader" class="headerWithoutBody">
-                    <div class="statusNotOkay"></div>
-                    <span id="metadataEnglishMessage">{translate key="plugins.generic.scieloScreening.info.metadataEnglishNotOkay"} {$textMetadata}</span>
+                    <div class="screeningStatusNotOkay"></div>
+                    <span id="metadataEnglishMessage">{translate key="plugins.generic.scieloScreening.info.metadataEnglishNotOkay"} {$textMetadataScreening}</span>
                 </div>
             {/if}
         </div>
         <div id="affiliationInfoField">
             {if $statusAffiliation == true}
                 <div id="affiliationHeader" class="headerWithoutBody">
-                    <div class="statusOkay"></div>
+                    <div class="screeningStatusOkay"></div>
                     <span id="affiliationMessage">{translate key="plugins.generic.scieloScreening.info.affiliationOkay"}</span>
                 </div>
             {else}
                 <div id="affiliationHeader">
-                    <div class="statusNotOkay"></div>
+                    <div class="screeningStatusNotOkay"></div>
                     <span id="affiliationMessage">{translate key="plugins.generic.scieloScreening.info.affiliationNotOkay"}</span>
                 </div>
                 <div id="affiliationBody">
@@ -90,12 +90,12 @@
         <div id="orcidInfoField">
             {if $statusOrcid == true}
                 <div id="orcidHeader" class="headerWithoutBody">
-                    <div class="statusOkay"></div>
+                    <div class="screeningStatusOkay"></div>
                     <span id="orcidMessage">{translate key="plugins.generic.scieloScreening.info.orcidOkay"}</span>
                 </div>
             {else}
                 <div id="orcidHeader" class="headerWithoutBody">
-                    <div class="statusNotOkay"></div>
+                    <div class="screeningStatusNotOkay"></div>
                     <span id="orcidMessage">{translate key="plugins.generic.scieloScreening.info.orcidNotOkay"}</span>
                 </div>
             {/if}
@@ -103,12 +103,12 @@
         <div id="numPDFInfoField">
             {if $numPDFs == 0}
                 <div id="pdfsHeader" class="headerWithoutBody">
-                    <div class="statusNotOkay"></div>
+                    <div class="screeningStatusNotOkay"></div>
                     <span id="pdfsMessage">{translate key="plugins.generic.scieloScreening.step4.noPDFs"}</span>
                 </div>
             {elseif $numPDFs > 1}
                 <div id="pdfsHeader">
-                    <div class="statusNotOkay"></div>
+                    <div class="screeningStatusNotOkay"></div>
                     <span id="pdfsMessage">{translate key="plugins.generic.scieloScreening.step4.manyPDFs.header"}</span>
                 </div>
                 <div id="pdfsBody">
@@ -120,7 +120,7 @@
                 </div>
             {else}
                 <div id="pdfsHeader" class="headerWithoutBody">
-                    <div class="statusOkay"></div>
+                    <div class="screeningStatusOkay"></div>
                     <span id="pdfsMessage">{translate key="plugins.generic.scieloScreening.info.pdfsOkay"}</span>
                 </div>
             {/if}

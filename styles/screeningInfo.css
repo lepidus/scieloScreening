@@ -32,21 +32,21 @@
     border-bottom-right-radius: 10px;
 }
 
-.statusOkay {
+.screeningStatusOkay {
     width: 24px;
     height: 24px;
     background-color: #00b28d;
     border-radius: 12px;
 }
 
-.statusWarning {
+.screeningStatusWarning {
     width: 24px;
     height: 24px;
     background-color: #daa520;
     border-radius: 12px;
 }
 
-.statusNotOkay {
+.screeningStatusNotOkay {
     width: 24px;
     height: 24px;
     background-color: #d00a6c;
