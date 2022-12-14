@@ -3,3 +3,4 @@ include:
     ref: main
     file:
       - 'templates/groups/pkp_plugin.yml'
+      - 'templates/phpunit.yml'
