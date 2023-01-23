@@ -70,8 +70,8 @@ final class ScreeningCheckerTest extends TestCase
     {
         $checker = new ScreeningChecker();
 
-        $authorsCrossrefCase1 =  array(array('given' => "Síntique", 'family' => "Priscila Alves Lopes")); 
-        $authorsCrossrefCase2 =  array(array('given' => "Maria", 'family' => "Síntique Lopes")); 
+        $authorsCrossrefCase1 =  array(array('given' => "Síntique", 'family' => "Priscila Alves Lopes"));
+        $authorsCrossrefCase2 =  array(array('given' => "Maria", 'family' => "Síntique Lopes"));
         $authorsCrossrefCase3 =  array(array('given' => "Yves", 'family' => "Schafer Weiss"));
 
         $authorSubmissionCase1 = "Síntique Priscila Alves Lopes";
@@ -80,17 +80,16 @@ final class ScreeningCheckerTest extends TestCase
         $this->assertTrue($checker->checkDOIFromAuthor($authorSubmissionCase1, $authorsCrossrefCase1));
         $this->assertFalse($checker->checkDOIFromAuthor($authorSubmissionCase1, $authorsCrossrefCase2));
         $this->assertTrue($checker->checkDOIFromAuthor($authorSubmissionCase2, $authorsCrossrefCase3));
-
     }
 
     public function testDOIAuthorNameWithAbreviationEqualsSubmissionAuthorName(): void
     {
         $checker = new ScreeningChecker();
 
-        $authorsCrossrefCase1 =  array(array('given' => "Síntique", 'family' => "Priscila A. Lopes")); 
-        $authorsCrossrefCase2 =  array(array('given' => "Síntique", 'family' => "P. Alves Lopes")); 
-        $authorsCrossrefCase3 =  array(array('given' => "Síntique", 'family' => "P. A. Lopes")); 
-        $authorsCrossrefCase4 =  array(array('given' => "Síntique", 'family' => "X. Z. Lopes"));  
+        $authorsCrossrefCase1 =  array(array('given' => "Síntique", 'family' => "Priscila A. Lopes"));
+        $authorsCrossrefCase2 =  array(array('given' => "Síntique", 'family' => "P. Alves Lopes"));
+        $authorsCrossrefCase3 =  array(array('given' => "Síntique", 'family' => "P. A. Lopes"));
+        $authorsCrossrefCase4 =  array(array('given' => "Síntique", 'family' => "X. Z. Lopes"));
 
         $authorSubmission = "Síntique Priscila Alves Lopes";
 
@@ -98,25 +97,24 @@ final class ScreeningCheckerTest extends TestCase
         $this->assertTrue($checker->checkDOIFromAuthor($authorSubmission, $authorsCrossrefCase2));
         $this->assertTrue($checker->checkDOIFromAuthor($authorSubmission, $authorsCrossrefCase3));
         $this->assertFalse($checker->checkDOIFromAuthor($authorSubmission, $authorsCrossrefCase4));
-
     }
 
     public function testDOIAuthorNameOnlyFirstAndLastNameEqualsSubmissionAuthorName(): void
     {
         $checker = new ScreeningChecker();
-        
-        $authorsCrossref = Array(
-            Array(
+
+        $authorsCrossref = array(
+            array(
                     "given" => "Jamile",
                     "family" => "Xavier",
                     "sequence" => "first",
-                    "affiliation" => Array()
+                    "affiliation" => array()
             ),
-            Array(
+            array(
                     'given' => "Síntique",
                     "family" => "Lopes",
                     "sequence" => "additional",
-                    "affiliation" => Array()
+                    "affiliation" => array()
             )
         );
 
@@ -129,7 +127,7 @@ final class ScreeningCheckerTest extends TestCase
     {
         $checker = new ScreeningChecker();
 
-        $authorsCrossref =  array(array('given' => "Síntique", 'family' => "das Dores Lopes")); 
+        $authorsCrossref =  array(array('given' => "Síntique", 'family' => "das Dores Lopes"));
 
         $authorSubmission = "Síntique Priscila Alves Lopes";
 
@@ -145,15 +143,15 @@ final class ScreeningCheckerTest extends TestCase
         $nameExpectedCase1 = "Sintique Priscila Alves Lopes";
         $nameExpectedCase2 = "Yves Muller Schroder";
 
-        $this->assertEquals($nameResultedCase1,$nameExpectedCase1);
-        $this->assertEquals($nameResultedCase2,$nameExpectedCase2);
+        $this->assertEquals($nameResultedCase1, $nameExpectedCase1);
+        $this->assertEquals($nameResultedCase2, $nameExpectedCase2);
     }
 
     public function testDOIAuthorNameWithoutAccentuationEqualsSubmissionAuthorNameWithAccentuation(): void
     {
         $checker = new ScreeningChecker();
 
-        $authorsCrossref =  array(array('given' => "Sintique", 'family' => "Lopes")); 
+        $authorsCrossref =  array(array('given' => "Sintique", 'family' => "Lopes"));
 
         $authorSubmission = "Síntique Priscila Alves Lopes";
 
@@ -164,7 +162,7 @@ final class ScreeningCheckerTest extends TestCase
     {
         $checker = new ScreeningChecker();
 
-        $type = Array(
+        $type = array(
             'type' => 'proceedings-article'
         );
 
@@ -194,45 +192,45 @@ final class ScreeningCheckerTest extends TestCase
 
         $nameAuthor = "Altigran S. da Silva";
 
-        $firstResponse = Array(
+        $firstResponse = array(
             'status' => 'ok',
-            'message' => Array(
-                'items' => Array(
-                    'author' => Array(
-                        Array(
+            'message' => array(
+                'items' => array(
+                    'author' => array(
+                        array(
                             'given' => 'Altigran S.',
                             'family' => 'da Silva',
                             'sequence' => 'first',
-                            'affiliation' => Array()
+                            'affiliation' => array()
                         ),
-                        Array(
+                        array(
                             'given' => 'Marcos André',
                             'family' => 'Gonçalves',
                             'sequence' => 'additional',
-                            'affiliation' => Array()
+                            'affiliation' => array()
                         )
                     ),
                     'type' => 'journal-article',
                 )
-            )            
+            )
         );
 
-        $secondResponse = Array(
+        $secondResponse = array(
             'status' => 'ok',
-            'message'=> Array(
-                'items' => Array(
-                    'author' => Array(
-                        Array(
+            'message'=> array(
+                'items' => array(
+                    'author' => array(
+                        array(
                             'given' => 'Alberto H.F.',
                             'family' => 'Laender',
                             'sequence' => 'first',
-                            'affiliation' => Array()
+                            'affiliation' => array()
                         ),
-                        Array(
+                        array(
                             'given' => 'Altigran S.',
                             'family' => 'da Silva',
                             'sequence' => 'additional',
-                            'affiliation' => Array()
+                            'affiliation' => array()
                         )
                     ),
                     'type' => 'journal-article',
@@ -242,13 +240,13 @@ final class ScreeningCheckerTest extends TestCase
 
         $this->assertTrue($checker->checkCrossrefResponse($firstResponse));
         $this->assertTrue($checker->checkCrossrefResponse($secondResponse));
-        
+
         $firstItem = $firstResponse['message']['items'];
         $secondItem = $secondResponse['message']['items'];
-        
+
         $this->assertTrue($checker->checkDOIArticle($firstItem));
         $this->assertTrue($checker->checkDOIArticle($secondItem));
-        
+
         $firstItemAuthors = $firstItem['author'];
         $secondItemAuthors = $secondItem['author'];
 

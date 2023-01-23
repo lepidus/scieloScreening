@@ -11,7 +11,7 @@ final class DOISystemClientTest extends TestCase
     {
         $doiSystemClient = new DOISystemClient($this->server, $this->serverUrl);
         $httpResponseCode = "HTTP/1.1 302";
-        
+
         $expectedValidationResult =  302;
         $validationResult =  $doiSystemClient->getHTTPErrorCodeByHTTPStatus($httpResponseCode);
 
@@ -22,7 +22,7 @@ final class DOISystemClientTest extends TestCase
     {
         $doiSystemClient = new DOISystemClient($this->server, $this->serverUrl);
         $httpResponseCode = "HTTP/1.1 404";
-        
+
         $expectedValidationResult =  404;
         $validationResult =  $doiSystemClient->getHTTPErrorCodeByHTTPStatus($httpResponseCode);
 
@@ -33,7 +33,7 @@ final class DOISystemClientTest extends TestCase
     {
         $doiSystemClient = new DOISystemClient($this->server, $this->serverUrl);
         $httpResponseCode = "HTTP/1.1 500";
-        
+
         $expectedValidationResult =  500;
         $validationResult =  $doiSystemClient->getHTTPErrorCodeByHTTPStatus($httpResponseCode);
 
@@ -44,7 +44,7 @@ final class DOISystemClientTest extends TestCase
     {
         $doiSystemClient = new DOISystemClient($this->server, $this->serverUrl);
         $httpResponseCode = "HTTP/1.1 301";
-        
+
         $expectedValidationResult =  301;
         $validationResult =  $doiSystemClient->getHTTPErrorCodeByHTTPStatus($httpResponseCode);
 

@@ -9,47 +9,54 @@
  * Data object representing a DOI provided during the screening
  */
 
-class DOIScreening extends DataObject {
-
-    function getDOIId(){
+class DOIScreening extends DataObject
+{
+    public function getDOIId()
+    {
         return $this->getData('doiId');
     }
 
-    function setDOIId($doiId){
+    public function setDOIId($doiId)
+    {
         return $this->setData('doiId', $doiId);
     }
 
-	function getSubmissionId(){
-		return $this->getData('submissionId');
-	}
-    
-	function setSubmissionId($submissionId){
-		return $this->setData('submissionId', $submissionId);
+    public function getSubmissionId()
+    {
+        return $this->getData('submissionId');
     }
-    
-    function getDOICode(){
+
+    public function setSubmissionId($submissionId)
+    {
+        return $this->setData('submissionId', $submissionId);
+    }
+
+    public function getDOICode()
+    {
         return $this->getData('doiCode');
     }
-    
-    function setDOICode($doiCode){
+
+    public function setDOICode($doiCode)
+    {
         return $this->setData('doiCode', $doiCode);
     }
 
-    function getConfirmedAuthorship() {
+    public function getConfirmedAuthorship()
+    {
         return $this->getData('confirmedAuthorship');
     }
 
-    function getConfirmedAuthorshipString() {
-        if($this->getData('confirmedAuthorship'))
+    public function getConfirmedAuthorshipString()
+    {
+        if ($this->getData('confirmedAuthorship')) {
             return __('plugins.generic.scieloScreening.authorshipConfirmed');
-        
+        }
+
         return __('plugins.generic.scieloScreening.authorshipNotConfirmed');
     }
 
-    function setConfirmedAuthorship($statusAuthorship) {
+    public function setConfirmedAuthorship($statusAuthorship)
+    {
         return $this->setData('confirmedAuthorship', $statusAuthorship);
     }
-
 }
-
-?>

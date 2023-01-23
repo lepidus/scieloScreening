@@ -1,37 +1,43 @@
 <?php
 
-class DOISystemClient {
-
+class DOISystemClient
+{
     private $server;
     private $serverUrl;
 
-    function __construct($server, $serverUrl) {
+    public function __construct($server, $serverUrl)
+    {
         $this->server = $server;
         $this->serverUrl = $serverUrl;
     }
 
-    public function getServer() {
+    public function getServer()
+    {
         return $this->server;
     }
 
-    public function getServerUrl() {
+    public function getServerUrl()
+    {
         return $this->serverUrl;
     }
 
-    public function getDOIStatus($doi) {
+    public function getDOIStatus($doi)
+    {
         $doiStatus = get_headers($this->getServerUrl() . $doi)[0];
         $doiStatusErrorCode = $this->getHTTPErrorCodeByHTTPStatus($doiStatus);
         return $doiStatusErrorCode;
     }
 
-    public function getDOIResponse($doi) {
+    public function getDOIResponse($doi)
+    {
         $response = file_get_contents($this->getServerUrl() . $doi);
         $jsonResponse = json_decode($response, true);
 
         return $jsonResponse;
     }
 
-    public function getHTTPErrorCodeByHTTPStatus($doiStatus) {
+    public function getHTTPErrorCodeByHTTPStatus($doiStatus)
+    {
         $errorCodeArrayKeyByPartitionedResponse = 1;
         $httpErrorCodeLength = 3;
 
