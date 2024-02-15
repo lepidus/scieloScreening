@@ -46,7 +46,7 @@ class ScieloScreeningPlugin extends GenericPlugin
 
     public function setupScieloScreeningHandler($hookName, $params)
     {
-        $component =& $params[0];
+        $component = &$params[0];
         if ($component == 'plugins.generic.scieloScreening.controllers.ScieloScreeningHandler') {
             return true;
         }
@@ -63,7 +63,7 @@ class ScieloScreeningPlugin extends GenericPlugin
 
     public function addValidationToStep2($hookName, $params)
     {
-        $form =& $params[0];
+        $form = &$params[0];
         $submission = $form->submission;
 
         $checker = new ScreeningChecker();
@@ -81,7 +81,7 @@ class ScieloScreeningPlugin extends GenericPlugin
 
     public function addValidationToStep3($hookName, $params)
     {
-        $form =& $params[0];
+        $form = &$params[0];
         $form->readUserVars(array('inputNumberAuthors', 'checkCantScreening'));
         $submission = $form->submission;
         if (!$this->userIsAuthor($submission)) {
@@ -165,8 +165,8 @@ class ScieloScreeningPlugin extends GenericPlugin
 
     public function metadataFieldEdit($hookName, $params)
     {
-        $smarty =& $params[1];
-        $output =& $params[2];
+        $smarty = &$params[1];
+        $output = &$params[2];
 
         $submissionId = $smarty->smarty->get_template_vars('submissionId');
         $submission = DAORegistry::getDAO('SubmissionDAO')->getById($submissionId);
@@ -184,8 +184,8 @@ class ScieloScreeningPlugin extends GenericPlugin
 
     public function addToPublicationForms($hookName, $params)
     {
-        $smarty =& $params[1];
-        $output =& $params[2];
+        $smarty = &$params[1];
+        $output = &$params[2];
         $submission = $smarty->get_template_vars('submission');
         $scieloScreeningHandler = new ScieloScreeningHandler();
         $dataScreening = $scieloScreeningHandler->getScreeningData($submission);
@@ -200,15 +200,15 @@ class ScieloScreeningPlugin extends GenericPlugin
 
     public function addGalleysWarning($hookName, $params)
     {
-        $smarty =& $params[1];
-        $output =& $params[2];
+        $smarty = &$params[1];
+        $output = &$params[2];
 
         $output .= sprintf('%s', $smarty->fetch($this->getTemplateResource('addGalleysWarning.tpl')));
     }
 
     public function listRules($hookName, $args)
     {
-        $rules =& $args[0];
+        $rules = &$args[0];
         $pluginRules['hasPublishedBefore'] =
             "<p>" . $this->getDisplayName() . "<br />\n" .
             $this->getDescription() . "</p>\n";
@@ -218,7 +218,7 @@ class ScieloScreeningPlugin extends GenericPlugin
 
     public function validate($hookName, $args)
     {
-        $errors =& $args[0];
+        $errors = &$args[0];
         $submission = $args[2];
         $scieloScreeningHandler = new ScieloScreeningHandler();
         $statusAuthors = $scieloScreeningHandler->getStatusAuthors($submission);

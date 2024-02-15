@@ -217,7 +217,7 @@ final class ScreeningCheckerTest extends TestCase
 
         $secondResponse = array(
             'status' => 'ok',
-            'message'=> array(
+            'message' => array(
                 'items' => array(
                     'author' => array(
                         array(
