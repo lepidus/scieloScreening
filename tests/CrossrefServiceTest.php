@@ -1,15 +1,15 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-
-require "DOISystemClientForTests.inc.php";
+use APP\plugins\generic\scieloScreening\classes\CrossrefService;
+use APP\plugins\generic\scieloScreening\tests\DOISystemClientForTests;
 
 final class CrossrefServiceTest extends TestCase
 {
     private $server = 'Crossref.Org';
     private $serverUrl = 'https://api.crossref.org/works?filter=doi:';
 
-    public function testIsInvalidWhenResultsOnAHTTP400FromCrossref(): void
+    public function testIsInvalidWhenResultsOnAHttp400FromCrossref(): void
     {
         $crossrefService = new CrossrefService("10.1145/1998076.1998132", new DOISystemClientForTests($this->server, $this->serverUrl, 400));
 

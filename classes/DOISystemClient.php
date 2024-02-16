@@ -1,5 +1,9 @@
 <?php
 
+namespace APP\plugins\generic\scieloScreening\classes;
+
+use APP\plugins\generic\scieloScreening\classes\DOIService;
+
 class DOISystemClient
 {
     private $server;
@@ -49,6 +53,6 @@ class DOISystemClient
             return $httpIntegerErrorCodeByResponse;
         }
 
-        return CrossrefNonExistentDOI::VALIDATION_ERROR_STATUS;
+        return DOIService::VALIDATION_ERROR_STATUS;
     }
 }

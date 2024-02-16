@@ -1,5 +1,7 @@
 <?php
 
+namespace APP\plugins\generic\scieloScreening\classes;
+
 class DOIService
 {
     protected $doiClient;
@@ -55,7 +57,7 @@ class DOIService
                 return $this->getMessage($this->responseStatusMapping[$httpErrorCode]);
             }
             return $this->getMessage(self::HTTPS_UNKNOWN_ERROR_CODE_MESSAGE_LOCALE_KEY, $this->getParams());
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             return $this->getMessage(self::COMMUNICATION_FAILURE_MESSAGE_LOCALE_KEY, $this->getParams());
         }
     }

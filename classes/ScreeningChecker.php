@@ -9,6 +9,8 @@
  * Object to execute a series of verifications that are used by the plugin
  */
 
+namespace APP\plugins\generic\scieloScreening\classes;
+
 class ScreeningChecker
 {
     public function isUppercase($string)
@@ -97,10 +99,10 @@ class ScreeningChecker
         $equalsName = false;
         $countNamesEquals = 0;
 
-        for ($i=0; $i < sizeof($tokensAuthorSubmission); $i++) {
+        for ($i = 0; $i < sizeof($tokensAuthorSubmission); $i++) {
             $abbreviation = $tokensAuthorSubmission[$i][0] . '.';
             if ((strcasecmp($tokensAuthorSubmission[$i], $tokensAuthorCrossref[$i]) == 0) ||  (strcasecmp($abbreviation, $tokensAuthorCrossref[$i]) == 0)) {
-                $countNamesEquals+=1;
+                $countNamesEquals += 1;
             }
         }
 
@@ -114,7 +116,7 @@ class ScreeningChecker
     public function checkAuthorSurnameWhenSingleName($tokensAuthorSubmission, $tokensAuthorCrossref)
     {
         $equalsName = false;
-        for ($i=1; $i < sizeof($tokensAuthorSubmission); $i++) {
+        for ($i = 1; $i < sizeof($tokensAuthorSubmission); $i++) {
             $abbreviation = $tokensAuthorSubmission[$i][0] . '.';
             if ((strcasecmp($tokensAuthorSubmission[$i], $tokensAuthorCrossref[1]) == 0) ||  (strcasecmp($abbreviation, $tokensAuthorCrossref[1]) == 0)) {
                 $equalsName = true;
@@ -125,7 +127,7 @@ class ScreeningChecker
 
     public function removeAccentuation($authorName)
     {
-        setlocale(LC_CTYPE, 'pt_BR');
+        setlocale(LC_CTYPE, 'pt_BR.utf8');
         $nameWithoutAccentuation = iconv('UTF-8', 'ASCII//TRANSLIT', $authorName);
 
         if ($nameWithoutAccentuation == false) {

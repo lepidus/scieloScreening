@@ -1,6 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+use APP\plugins\generic\scieloScreening\classes\ScreeningChecker;
 
 final class ScreeningCheckerTest extends TestCase
 {
@@ -66,7 +67,7 @@ final class ScreeningCheckerTest extends TestCase
         $this->assertEquals(3, $number);
     }
 
-    public function testDOIAuthorNameEqualsSubmissionAuthorName(): void
+    public function testDoiAuthorNameEqualsSubmissionAuthorName(): void
     {
         $checker = new ScreeningChecker();
 
@@ -82,7 +83,7 @@ final class ScreeningCheckerTest extends TestCase
         $this->assertTrue($checker->checkDOIFromAuthor($authorSubmissionCase2, $authorsCrossrefCase3));
     }
 
-    public function testDOIAuthorNameWithAbreviationEqualsSubmissionAuthorName(): void
+    public function testDoiAuthorNameWithAbreviationEqualsSubmissionAuthorName(): void
     {
         $checker = new ScreeningChecker();
 
@@ -99,7 +100,7 @@ final class ScreeningCheckerTest extends TestCase
         $this->assertFalse($checker->checkDOIFromAuthor($authorSubmission, $authorsCrossrefCase4));
     }
 
-    public function testDOIAuthorNameOnlyFirstAndLastNameEqualsSubmissionAuthorName(): void
+    public function testDoiAuthorNameOnlyFirstAndLastNameEqualsSubmissionAuthorName(): void
     {
         $checker = new ScreeningChecker();
 
@@ -123,7 +124,7 @@ final class ScreeningCheckerTest extends TestCase
         $this->assertTrue($checker->checkDOIFromAuthor($authorSubmission, $authorsCrossref));
     }
 
-    public function testDOIAuthorNameWithMiddleNameDifferentSubmissionAuthorName(): void
+    public function testDoiAuthorNameWithMiddleNameDifferentSubmissionAuthorName(): void
     {
         $checker = new ScreeningChecker();
 
@@ -147,7 +148,7 @@ final class ScreeningCheckerTest extends TestCase
         $this->assertEquals($nameResultedCase2, $nameExpectedCase2);
     }
 
-    public function testDOIAuthorNameWithoutAccentuationEqualsSubmissionAuthorNameWithAccentuation(): void
+    public function testDoiAuthorNameWithoutAccentuationEqualsSubmissionAuthorNameWithAccentuation(): void
     {
         $checker = new ScreeningChecker();
 
@@ -158,7 +159,7 @@ final class ScreeningCheckerTest extends TestCase
         $this->assertTrue($checker->checkDOIFromAuthor($authorSubmission, $authorsCrossref));
     }
 
-    public function testCheckDOIArticle(): void
+    public function testCheckDoiArticle(): void
     {
         $checker = new ScreeningChecker();
 
@@ -169,7 +170,7 @@ final class ScreeningCheckerTest extends TestCase
         $this->assertFalse($checker->checkDOIArticle($type));
     }
 
-    public function testCheckDOIRepeated(): void
+    public function testCheckDoiRepeated(): void
     {
         $checker = new ScreeningChecker();
         $dois = ["10.1016/j.datak.2003.10.003", "10.1016/j.datak.2003.10.003", "10.1145/1998076.1998132"];
@@ -177,7 +178,7 @@ final class ScreeningCheckerTest extends TestCase
         $this->assertTrue($checker->checkDOIRepeated($dois));
     }
 
-    public function testCheckDOIsLastTwoYears(): void
+    public function testCheckDoisLastTwoYears(): void
     {
         $checker = new ScreeningChecker();
         $firstYear = 2011;
@@ -186,7 +187,7 @@ final class ScreeningCheckerTest extends TestCase
         $this->assertFalse($checker->checkDOIsLastTwoYears([$firstYear, $secondYear]));
     }
 
-    public function testValidateDOI(): void
+    public function testValidateDoi(): void
     {
         $checker = new ScreeningChecker();
 
@@ -217,7 +218,7 @@ final class ScreeningCheckerTest extends TestCase
 
         $secondResponse = array(
             'status' => 'ok',
-            'message'=> array(
+            'message' => array(
                 'items' => array(
                     'author' => array(
                         array(

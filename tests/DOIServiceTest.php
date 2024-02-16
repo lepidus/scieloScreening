@@ -1,13 +1,15 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+use APP\plugins\generic\scieloScreening\classes\DOIService;
+use APP\plugins\generic\scieloScreening\tests\DOISystemClientForTests;
 
 final class DOIServiceTest extends TestCase
 {
     private $server = 'DOI.Org';
     private $serverUrl = 'https://doi.org/';
 
-    public function testIsInvalidWhenResultsOnAHTTP400FromDOISystem(): void
+    public function testIsInvalidWhenResultsOnAHttp400FromDoiSystem(): void
     {
         $DOIService = new DOIService("10.1145/1998076.1998132", new DOISystemClientForTests($this->server, $this->serverUrl, 500));
 
@@ -17,7 +19,7 @@ final class DOIServiceTest extends TestCase
         $this->assertEquals($expectedValidationResult, $validationResult);
     }
 
-    public function testIsInvalidWhenResultsOnAHTTP408FromDOISystem(): void
+    public function testIsInvalidWhenResultsOnAHttp408FromDoiSystem(): void
     {
         $DOIService = new DOIService("10.1145/1998076.1998132", new DOISystemClientForTests($this->server, $this->serverUrl, 408));
 
@@ -27,7 +29,7 @@ final class DOIServiceTest extends TestCase
         $this->assertEquals($expectedValidationResult, $validationResult);
     }
 
-    public function testIsInvalidWhenFailureWithCommunicationsWithDOISystem(): void
+    public function testIsInvalidWhenFailureWithCommunicationsWithDoiSystem(): void
     {
         $exceptionWithCommunication = true;
         $DOIService = new DOIService("10.1145/1998076.1998132", new DOISystemClientForTests($this->server, $this->serverUrl, null, $exceptionWithCommunication), 'DOI.org');
@@ -38,7 +40,7 @@ final class DOIServiceTest extends TestCase
         $this->assertEquals($expectedValidationResult, $validationResult);
     }
 
-    public function testIfDOIExistsInCrossref(): void
+    public function testIfDoiExistsInCrossref(): void
     {
         $DOIService = new DOIService("10.1145/1998076.1998132", new DOISystemClientForTests($this->server, $this->serverUrl, 200), 'DOI.org');
 

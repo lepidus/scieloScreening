@@ -1,13 +1,15 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+use APP\plugins\generic\scieloScreening\classes\DOISystemService;
+use APP\plugins\generic\scieloScreening\tests\DOISystemClientForTests;
 
 final class DOISystemServiceTest extends TestCase
 {
     private $server = 'DOI.Org';
     private $serverUrl = 'https://doi.org/';
 
-    public function testIsInvalidWhenResultsOnAHTTP302FromDOISystem(): void
+    public function testIsInvalidWhenResultsOnAHttp302FromDoiSystem(): void
     {
         $DOISystemService = new DOISystemService("10.1145/1998076.1998132", new DOISystemClientForTests($this->server, $this->serverUrl, 302));
 
@@ -17,7 +19,7 @@ final class DOISystemServiceTest extends TestCase
         $this->assertEquals($expectedValidationResult, $validationResult);
     }
 
-    public function testIsInvalidWhenResultsOnAHTTP404FromDOISystem(): void
+    public function testIsInvalidWhenResultsOnAHttp404FromDoiSystem(): void
     {
         $DOISystemService = new DOISystemService("10.1145/1998076.1998132", new DOISystemClientForTests($this->server, $this->serverUrl, 404));
 
@@ -27,7 +29,7 @@ final class DOISystemServiceTest extends TestCase
         $this->assertEquals($expectedValidationResult, $validationResult);
     }
 
-    public function testIsInvalidWhenResultsOnAHTTP301FromDOISystem(): void
+    public function testIsInvalidWhenResultsOnAHttp301FromDoiSystem(): void
     {
         $DOISystemService = new DOISystemService("10.1145/1998076.1998132", new DOISystemClientForTests($this->server, $this->serverUrl, 301));
 

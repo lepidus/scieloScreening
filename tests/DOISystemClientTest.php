@@ -1,13 +1,14 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+use APP\plugins\generic\scieloScreening\classes\DOISystemClient;
 
 final class DOISystemClientTest extends TestCase
 {
     private $server = 'DOI.Org';
     private $serverUrl = 'https://doi.org/';
 
-    public function test302ResponseWhenHTTPStatusIsDOIFoundFromDOISystem(): void
+    public function test302ResponseWhenHttpStatusIsDoiFoundFromDoiSystem(): void
     {
         $doiSystemClient = new DOISystemClient($this->server, $this->serverUrl);
         $httpResponseCode = "HTTP/1.1 302";
@@ -18,7 +19,7 @@ final class DOISystemClientTest extends TestCase
         $this->assertEquals($expectedValidationResult, $validationResult);
     }
 
-    public function test404ResponseWhenHTTPStatusIsNotFoundFromDOISystem(): void
+    public function test404ResponseWhenHttpStatusIsNotFoundFromDoiSystem(): void
     {
         $doiSystemClient = new DOISystemClient($this->server, $this->serverUrl);
         $httpResponseCode = "HTTP/1.1 404";
@@ -29,7 +30,7 @@ final class DOISystemClientTest extends TestCase
         $this->assertEquals($expectedValidationResult, $validationResult);
     }
 
-    public function test500ResponseWhenHTTPStatusIsInternalServerProblemFromDOISystem(): void
+    public function test500ResponseWhenHttpStatusIsInternalServerProblemFromDoiSystem(): void
     {
         $doiSystemClient = new DOISystemClient($this->server, $this->serverUrl);
         $httpResponseCode = "HTTP/1.1 500";
@@ -40,7 +41,7 @@ final class DOISystemClientTest extends TestCase
         $this->assertEquals($expectedValidationResult, $validationResult);
     }
 
-    public function test301ResponseWhenHTTPStatusIsDOINullFromDOISystem(): void
+    public function test301ResponseWhenHttpStatusIsDoiNullFromDoiSystem(): void
     {
         $doiSystemClient = new DOISystemClient($this->server, $this->serverUrl);
         $httpResponseCode = "HTTP/1.1 301";

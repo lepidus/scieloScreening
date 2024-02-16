@@ -1,5 +1,9 @@
 <?php
 
+namespace APP\plugins\generic\scieloScreening\classes;
+
+use APP\plugins\generic\scieloScreening\classes\DOIService;
+
 class DOISystemService extends DOIService
 {
     public const DOI_ORG_STATUS_DOI_FOUND_CODE = 302;

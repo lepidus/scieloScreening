@@ -1,5 +1,9 @@
 <?php
 
+namespace APP\plugins\generic\scieloScreening\classes;
+
+use APP\plugins\generic\scieloScreening\classes\DOIService;
+
 class CrossrefService extends DOIService
 {
     public const CROSSREF_STATUS_DOI_INVALID_CODE = 400;

@@ -1,6 +1,8 @@
 <?php
 
-import('plugins.generic.scieloScreening.classes.DOISystemClient');
+namespace APP\plugins\generic\scieloScreening\tests;
+
+use APP\plugins\generic\scieloScreening\classes\DOISystemClient;
 
 class DOISystemClientForTests extends DOISystemClient
 {
@@ -18,7 +20,7 @@ class DOISystemClientForTests extends DOISystemClient
     public function getDOIStatus($doi)
     {
         if ($this->shouldGenerateExceptions) {
-            throw new Exception("Failure to communicate with the " . $this->server . " Server");
+            throw new \Exception("Failure to communicate with the " . $this->server . " Server");
         }
 
         return $this->expectedStatus;
