@@ -1,15 +1,21 @@
 <?php
 
-import('classes.handler.Handler');
-import('classes.log.SubmissionEventLogEntry');
-import('lib.pkp.classes.log.SubmissionLog');
-import('plugins.generic.scieloScreening.classes.DOIScreening');
-import('plugins.generic.scieloScreening.classes.DOIScreeningDAO');
-import('plugins.generic.scieloScreening.classes.ScreeningChecker');
-import('plugins.generic.scieloScreening.classes.DOIService');
-import('plugins.generic.scieloScreening.classes.DOISystemService');
-import('plugins.generic.scieloScreening.classes.CrossrefService');
-import('plugins.generic.scieloScreening.classes.DOISystemClient');
+namespace APP\plugins\generic\scieloScreening\controllers;
+
+use APP\handler\Handler;
+
+use APP\core\Application;
+use APP\facades\Repo;
+use PKP\core\Core;
+use PKP\security\Validation;
+use PKP\log\event\PKPSubmissionEventLogEntry;
+use APP\plugins\generic\scieloScreening\classes\DOIScreening;
+use APP\plugins\generic\scieloScreening\classes\DOIScreeningDAO;
+use APP\plugins\generic\scieloScreening\classes\ScreeningChecker;
+use APP\plugins\generic\scieloScreening\classes\DOIService;
+use APP\plugins\generic\scieloScreening\classes\DOISystemService;
+use APP\plugins\generic\scieloScreening\classes\CrossrefService;
+use APP\plugins\generic\scieloScreening\classes\DOISystemClient;
 
 class ScieloScreeningHandler extends Handler
 {
@@ -34,22 +40,39 @@ class ScieloScreeningHandler extends Handler
         return http_response_code(200);
     }
 
+    private function logSubmissionEvent($request, $submision, $message)
+    {
+        $user = $request->getUser();
+        $eventLog = Repo::eventLog()->newDataObject([
+            'assocType' => Application::ASSOC_TYPE_SUBMISSION,
+            'assocId' => $submission->getId(),
+            'eventType' => PKPSubmissionEventLogEntry::SUBMISSION_LOG_METADATA_UPDATE,
+            'userId' => Validation::loggedInAs() ?? $user->getId(),
+            'message' => $message,
+            'isTranslated' => true,
+            'dateLogged' => Core::getCurrentDate(),
+        ]);
+        Repo::eventLog()->add($eventLog);
+    }
+
     private function logDOIValidationEvent($request, $submission, $doi, $response)
     {
         if (array_key_exists('messageError', $response)) {
-            SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_METADATA_UPDATE, 'plugins.generic.scieloScreening.log.doiNotValidated', ['doi' => $doi, 'errorMessage' => $response['messageError']]);
+            $message = __('plugins.generic.scieloScreening.log.doiNotValidated', ['doi' => $doi, 'errorMessage' => $response['messageError']]);
         } elseif ($response['doiConfirmedAuthorship']) {
-            SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_METADATA_UPDATE, 'plugins.generic.scieloScreening.log.doiValidatedAuthorshipConfirmed', ['doi' => $doi]);
+            $message = __('plugins.generic.scieloScreening.log.doiValidatedAuthorshipConfirmed', ['doi' => $doi]);
         } else {
-            SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_METADATA_UPDATE, 'plugins.generic.scieloScreening.log.doiValidatedAuthorshipNotConfirmed', ['doi' => $doi]);
+            $message = __('plugins.generic.scieloScreening.log.doiValidatedAuthorshipNotConfirmed', ['doi' => $doi]);
         }
+
+        $this->logSubmissionEvent($request, $submision, $message);
     }
 
     public function validateDOI($args, $request)
     {
         $checker = new ScreeningChecker();
         $responseCrossref = array();
-        $submission = Services::get('submission')->get((int)$args['submissionId']);
+        $submission = Repo::submission()->get((int) $args['submissionId']);
 
         $crossrefClient = new DOISystemClient('Crossref.org', 'https://api.crossref.org/works?filter=doi:');
         $crossrefService = new CrossrefService($args['doiString'], $crossrefClient);
@@ -104,11 +127,11 @@ class ScieloScreeningHandler extends Handler
     public function checkDOIAuthorship($submission, $responseCrossref)
     {
         $itemCrossref = $responseCrossref['message']['items'][0];
-        $authorsSubmission = $submission->getAuthors();
+        $authorsSubmission = $submission->getCurrentPublication()->getData('authors');
         $checker = new ScreeningChecker();
 
         foreach ($authorsSubmission as $authorSubmission) {
-            $authorName = $authorSubmission->getLocalizedData('givenName', 'en_US') . ' ' .  $authorSubmission->getLocalizedData('familyName', 'en_US');
+            $authorName = $authorSubmission->getLocalizedData('givenName', 'en') . ' ' .  $authorSubmission->getLocalizedData('familyName', 'en');
             $authorsCrossref = $itemCrossref['author'];
 
             if ($checker->checkDOIFromAuthor($authorName, $authorsCrossref)) {
@@ -130,16 +153,18 @@ class ScieloScreeningHandler extends Handler
     private function logDOIScreeningEvent($request, $submission, $doisImploded = null)
     {
         if (is_null($doisImploded)) {
-            SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_METADATA_UPDATE, 'plugins.generic.scieloScreening.log.doiScreeningCompletedSuccess');
+            $message = __('plugins.generic.scieloScreening.log.doiScreeningCompletedSuccess');
         } else {
-            SubmissionLog::logEvent($request, $submission, SUBMISSION_LOG_METADATA_UPDATE, 'plugins.generic.scieloScreening.log.doiScreeningNotCompleted', ['doisImploded' => $doisImploded]);
+            $message = __('plugins.generic.scieloScreening.log.doiScreeningNotCompleted', ['doisImploded' => $doisImploded]);
         }
+
+        $this->logSubmissionEvent($request, $submision, $message);
     }
 
     public function validateDOIsFromScreening($args, $request)
     {
         $checker = new ScreeningChecker();
-        $submission = Services::get('submission')->get((int)$args['submissionId']);
+        $submission = Repo::submission()->get((int) $args['submissionId']);
 
         if ($checker->checkDOIRepeated($args['dois'])) {
             $response = [
@@ -237,7 +262,7 @@ class ScieloScreeningHandler extends Handler
         $textMetadataScreening = "";
 
         foreach ($metadataList as $metadata) {
-            if ($publication->getData($metadata, 'en_US') == "") {
+            if ($publication->getData($metadata, 'en') == "") {
                 $statusMetadataEnglish = false;
 
                 if ($textMetadataScreening != "") {

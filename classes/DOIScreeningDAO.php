@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @file plugins/generic/scieloScreening/classes/DOIScreeningDAO.inc.php
+ * @file plugins/generic/scieloScreening/classes/DOIScreeningDAO.php
  *
  * @class DOIScreeningDAO
  * @ingroup plugins_generic_scieloScreening
@@ -9,48 +9,47 @@
  * Operations for retrieving and modifying DOIScreening objects.
  */
 
-import('lib.pkp.classes.db.DAO');
-import('plugins.generic.scieloScreening.classes.DOIScreening');
+namespace APP\plugins\generic\scieloScreening\classes;
 
-use Illuminate\Database\Capsule\Manager as Capsule;
-use Illuminate\Support\Collection;
+use APP\plugins\generic\scieloScreening\classes\DOIScreening;
+use PKP\db\DAO;
+use Illuminate\Support\Facades\DB;
 
 class DOIScreeningDAO extends DAO
 {
-    public function getBySubmissionId($submissionId)
+    public function getBySubmissionId(int $submissionId): array
     {
-        $result = Capsule::table('doi_screening')
-        ->where('submission_id', $submissionId)
-        ->get();
+        $result = DB::table('doi_screening')
+            ->where('submission_id', $submissionId)
+            ->get();
 
-        $returner = array();
+        $dois = array();
         foreach ($result->toArray() as $row) {
-            $returner[] = $this->_fromRow(get_object_vars($row));
+            $dois[] = $this->fromRow(get_object_vars($row));
         }
 
-        return $returner;
+        return $dois;
     }
 
-    public function insertObject($doiScreening)
+    public function insertObject(DOIScreening $doiScreening)
     {
-        $inserted = Capsule::table('doi_screening')
-        ->insert([
+        $inserted = DB::table('doi_screening')->insert([
             'submission_id' => (int) $doiScreening->getSubmissionId(),
             'doi_code' => $doiScreening->getDOICode(),
             'confirmed_authorship' => $doiScreening->getConfirmedAuthorship()
         ]);
     }
 
-    public function updateObject($doiScreening)
+    public function updateObject(DOIScreening $doiScreening)
     {
-        Capsule::table('doi_screening')
-        ->where('doi_id', (int) $doiScreening->getDOIId())
-        ->update([
-            'doi_code' => $doiScreening->getDOICode()
-        ]);
+        DB::table('doi_screening')
+            ->where('doi_id', (int) $doiScreening->getDOIId())
+            ->update([
+                'doi_code' => $doiScreening->getDOICode()
+            ]);
     }
 
-    public function _fromRow($row)
+    public function fromRow($row)
     {
         $doiScreening = new DOIScreening();
 

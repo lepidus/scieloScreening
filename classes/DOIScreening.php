@@ -1,13 +1,17 @@
 <?php
 
 /**
- * @file plugins/generic/scieloScreening/classes/DOIScreening.inc.php
+ * @file plugins/generic/scieloScreening/classes/DOIScreening.php
  *
  * @class DOIScreening
  * @ingroup plugins_generic_scieloScreening
  *
  * Data object representing a DOI provided during the screening
  */
+
+namespace APP\plugins\generic\scieloScreening\classes;
+
+use PKP\core\DataObject;
 
 class DOIScreening extends DataObject
 {

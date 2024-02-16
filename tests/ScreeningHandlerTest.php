@@ -1,10 +1,10 @@
 <?php
 
-import('plugins.generic.scieloScreening.controllers.ScieloScreeningHandler');
-import('plugins.generic.scieloScreening.classes.DOIScreening');
-import('classes.submission.Submission');
-import('classes.publication.Publication');
-import('classes.article.Author');
+use APP\plugins\generic\scieloScreening\controllers\ScieloScreeningHandler;
+use APP\plugins\generic\scieloScreening\classes\DOIScreening;
+use APP\submission\Submission;
+use APP\publication\Publication;
+use APP\author\Author;
 use PHPUnit\Framework\TestCase;
 
 final class ScreeningHandlerTest extends TestCase
@@ -29,8 +29,8 @@ final class ScreeningHandlerTest extends TestCase
         $publication = new Publication();
 
         $author = new Author();
-        $author->setData('givenName', ['en_US' => $this->authorGivenName]);
-        $author->setData('familyName', ['en_US' => $this->authorFamilyName]);
+        $author->setData('givenName', ['en' => $this->authorGivenName]);
+        $author->setData('familyName', ['en' => $this->authorFamilyName]);
 
         $publication->setData('id', $this->publicationId);
         $publication->setData('authors', [$author]);
@@ -40,14 +40,14 @@ final class ScreeningHandlerTest extends TestCase
         return $submission;
     }
 
-    public function testGetAuthorsNamesFromDOI(): void
+    public function testGetAuthorsNamesFromDoi(): void
     {
         $screeningHandler = new ScieloScreeningHandler();
 
         $this->assertEquals($this->expectedAuthors, $screeningHandler->getDoiAuthorsNames($this->mockResponseAPICrossref));
     }
 
-    public function testStatusDOIsReturnsAuthorsNamesWhenAuthorshipNotConfirmed(): void
+    public function testStatusDoisReturnsAuthorsNamesWhenAuthorshipNotConfirmed(): void
     {
         $doiObj = new DOIScreening();
         $doiObj->setDOICode($this->doi);
@@ -62,14 +62,14 @@ final class ScreeningHandlerTest extends TestCase
         $this->assertEquals($implodedAuthors, $statusDOI['authorsFromDOIs'][0]);
     }
 
-    public function testDOIAuthorshipAnySubmissionAuthor(): void
+    public function testDoiAuthorshipAnySubmissionAuthor(): void
     {
         $dummyAuthor = new Author();
-        $dummyAuthor->setData('givenName', ['en_US' => 'Peewee']);
-        $dummyAuthor->setData('familyName', ['en_US' => 'Herman']);
+        $dummyAuthor->setData('givenName', ['en' => 'Peewee']);
+        $dummyAuthor->setData('familyName', ['en' => 'Herman']);
         $rightAuthor = new Author();
-        $rightAuthor->setData('givenName', ['en_US' => 'Altigran']);
-        $rightAuthor->setData('familyName', ['en_US' => 'S. da Silva']);
+        $rightAuthor->setData('givenName', ['en' => 'Altigran']);
+        $rightAuthor->setData('familyName', ['en' => 'S. da Silva']);
 
         $publication = $this->submission->getData('publications')[0];
         $publication->setData('authors', [$dummyAuthor, $rightAuthor]);

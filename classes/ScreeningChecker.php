@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @file plugins/generic/scieloScreening/classes/ScreeningChecker.inc.php
+ * @file plugins/generic/scieloScreening/classes/ScreeningChecker.php
  *
  * @class ScreeningChecker
  * @ingroup plugins_generic_scieloScreening
@@ -163,15 +163,15 @@ class ScreeningChecker
 
     public function checkAffiliationAuthors($affiliationAuthors, $nameAuthors)
     {
-        $statusAf = true;
+        $statusAffiliation = true;
         $authorsNoAffiliation = array();
         for ($i = 0; $i < count($nameAuthors); $i++) {
             if ($affiliationAuthors[$i] == "") {
-                $statusAf = false;
+                $statusAffiliation = false;
                 $authorsNoAffiliation[] = $nameAuthors[$i];
             }
         }
 
-        return [$statusAf, $authorsNoAffiliation];
+        return [$statusAffiliation, $authorsNoAffiliation];
     }
 }
