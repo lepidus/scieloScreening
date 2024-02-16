@@ -7,46 +7,48 @@
  *
  * @brief Plugin class for the DefaultScreening plugin.
  */
-import('lib.pkp.classes.plugins.GenericPlugin');
-import('plugins.generic.scieloScreening.classes.DOIScreeningDAO');
-import('plugins.generic.scieloScreening.controllers.ScieloScreeningHandler');
-import('plugins.generic.scieloScreening.classes.ScreeningChecker');
+
+namespace APP\plugins\generic\scieloScreening;
+
+use PKP\plugins\GenericPlugin;
+use APP\core\Application;
+use PKP\plugins\Hook;
+use APP\plugins\generic\scieloScreening\classes\DOIScreeningDAO;
+use APP\plugins\generic\scieloScreening\classes\migration\DOIScreeningMigration;
+use APP\plugins\generic\scieloScreening\controllers\ScieloScreeningHandler;
+use APP\plugins\generic\scieloScreening\classes\ScreeningChecker;
 
 class ScieloScreeningPlugin extends GenericPlugin
 {
     public function register($category, $path, $mainContextId = null)
     {
         $success = parent::register($category, $path, $mainContextId);
-        if (!Config::getVar('general', 'installed') || defined('RUNNING_UPGRADE')) {
+
+        if (Application::isUnderMaintenance()) {
             return true;
         }
+
         if ($success && $this->getEnabled($mainContextId)) {
-            $doiScreeningDAO = new DOIScreeningDAO();
-            DAORegistry::registerDAO('DOIScreeningDAO', $doiScreeningDAO);
+            // Hook::add('Publication::validatePublish', [$this, 'validate']);
 
-            // Add a new ruleset for publishing
-            \HookRegistry::register('Publication::validatePublish', [$this, 'validate']);
+            // Hook::add('Settings::Workflow::listScreeningPlugins', [$this, 'listRules']);
 
-            // Show plugin rules for editors in settings
-            \HookRegistry::register('Settings::Workflow::listScreeningPlugins', [$this, 'listRules']);
+            // Hook::add('Templates::Submission::SubmissionMetadataForm::AdditionalMetadata', [$this, 'metadataFieldEdit']);
+            // Hook::add('Template::Workflow::Publication', [$this, 'addToPublicationForms']);
+            // Hook::add('Template::Workflow::Publication', [$this, 'addGalleysWarning']);
 
-            // Adds the DOI Form to submission
-            HookRegistry::register('Templates::Submission::SubmissionMetadataForm::AdditionalMetadata', array($this, 'metadataFieldEdit'));
-            HookRegistry::register('Template::Workflow::Publication', array($this, 'addToPublicationForms'));
-            HookRegistry::register('Template::Workflow::Publication', array($this, 'addGalleysWarning'));
-
-            HookRegistry::register('LoadComponentHandler', array($this, 'setupScieloScreeningHandler'));
-            HookRegistry::register('authorform::Constructor', array($this, 'changeAuthorForm'));
-            HookRegistry::register('submissionsubmitstep2form::validate', array($this, 'addValidationToStep2'));
-            HookRegistry::register('submissionsubmitstep3form::validate', array($this, 'addValidationToStep3'));
-            HookRegistry::register('submissionsubmitstep4form::display', array($this, 'addToStep4'));
+            // Hook::add('LoadComponentHandler', [$this, 'setupScieloScreeningHandler']);
+            // Hook::add('authorform::Constructor', [$this, 'changeAuthorForm']);
+            // Hook::add('submissionsubmitstep2form::validate', [$this, 'addValidationToStep2']);
+            // Hook::add('submissionsubmitstep3form::validate', [$this, 'addValidationToStep3']);
+            // Hook::add('submissionsubmitstep4form::display', [$this, 'addToStep4']);
         }
         return $success;
     }
 
     public function setupScieloScreeningHandler($hookName, $params)
     {
-        $component =& $params[0];
+        $component = & $params[0];
         if ($component == 'plugins.generic.scieloScreening.controllers.ScieloScreeningHandler') {
             return true;
         }
@@ -63,7 +65,7 @@ class ScieloScreeningPlugin extends GenericPlugin
 
     public function addValidationToStep2($hookName, $params)
     {
-        $form =& $params[0];
+        $form = & $params[0];
         $submission = $form->submission;
 
         $checker = new ScreeningChecker();
@@ -81,7 +83,7 @@ class ScieloScreeningPlugin extends GenericPlugin
 
     public function addValidationToStep3($hookName, $params)
     {
-        $form =& $params[0];
+        $form = & $params[0];
         $form->readUserVars(array('inputNumberAuthors', 'checkCantScreening'));
         $submission = $form->submission;
         if (!$this->userIsAuthor($submission)) {
@@ -129,7 +131,7 @@ class ScieloScreeningPlugin extends GenericPlugin
     public function addToStep4($hookName, $params)
     {
         $submission = $params[0]->submission;
-        $request = PKPApplication::get()->getRequest();
+        $request = Application::get()->getRequest();
         $templateMgr = TemplateManager::getManager($request);
 
         $scieloScreeningHandler = new ScieloScreeningHandler();
@@ -165,8 +167,8 @@ class ScieloScreeningPlugin extends GenericPlugin
 
     public function metadataFieldEdit($hookName, $params)
     {
-        $smarty =& $params[1];
-        $output =& $params[2];
+        $smarty = & $params[1];
+        $output = & $params[2];
 
         $submissionId = $smarty->smarty->get_template_vars('submissionId');
         $submission = DAORegistry::getDAO('SubmissionDAO')->getById($submissionId);
@@ -184,8 +186,8 @@ class ScieloScreeningPlugin extends GenericPlugin
 
     public function addToPublicationForms($hookName, $params)
     {
-        $smarty =& $params[1];
-        $output =& $params[2];
+        $smarty = & $params[1];
+        $output = & $params[2];
         $submission = $smarty->get_template_vars('submission');
         $scieloScreeningHandler = new ScieloScreeningHandler();
         $dataScreening = $scieloScreeningHandler->getScreeningData($submission);
@@ -200,15 +202,15 @@ class ScieloScreeningPlugin extends GenericPlugin
 
     public function addGalleysWarning($hookName, $params)
     {
-        $smarty =& $params[1];
-        $output =& $params[2];
+        $smarty = & $params[1];
+        $output = & $params[2];
 
         $output .= sprintf('%s', $smarty->fetch($this->getTemplateResource('addGalleysWarning.tpl')));
     }
 
     public function listRules($hookName, $args)
     {
-        $rules =& $args[0];
+        $rules = & $args[0];
         $pluginRules['hasPublishedBefore'] =
             "<p>" . $this->getDisplayName() . "<br />\n" .
             $this->getDescription() . "</p>\n";
@@ -218,7 +220,7 @@ class ScieloScreeningPlugin extends GenericPlugin
 
     public function validate($hookName, $args)
     {
-        $errors =& $args[0];
+        $errors = & $args[0];
         $submission = $args[2];
         $scieloScreeningHandler = new ScieloScreeningHandler();
         $statusAuthors = $scieloScreeningHandler->getStatusAuthors($submission);
@@ -245,7 +247,6 @@ class ScieloScreeningPlugin extends GenericPlugin
 
     public function getInstallMigration()
     {
-        $this->import('classes.migration.DOIScreeningMigration');
         return new DOIScreeningMigration();
     }
 
