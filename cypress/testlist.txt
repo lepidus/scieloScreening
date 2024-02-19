@@ -1,0 +1,15 @@
+---Dentro do fluxo de submissão---
+
+Nomes de autores não estão em caixa alta
+Ao menos um autor tem ORCID atribuído
+Todos os autores devem ter afiliação atribuída
+Informar número de autores no passo de coautores
+Verificar que foi enviado um e apenas um PDF
+Metadados da submissão foram informados em inglês
+
+Verificação de DOIs
+
+----Após submissão---
+
+Exibição dos estados das verificações no fluxo de trabalho
+Verificar exibição dos registros no Histórico de Atividades

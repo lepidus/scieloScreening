@@ -8,7 +8,7 @@ The verifications performed are:
 * The submitter author must add one PDF, and no more than one, as a galley.
 * All submission contributors must have their affiliation filled
 * At least one contributor must have his ORCID confirmed.
-* The submitter should inform the number of contributors at submission step 3.
+* The submitter should inform the number of contributors at Contributors Step.
 * None of the contributors can have his name filled all in capital letters
 
 ## Compatibility
