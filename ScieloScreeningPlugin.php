@@ -30,6 +30,7 @@ class ScieloScreeningPlugin extends GenericPlugin
 
         if ($success && $this->getEnabled($mainContextId)) {
             Hook::add('Form::config::after', array($this, 'editContributorForm'));
+            Hook::add('Submission::validateSubmit', [$this, 'validateSubmissionFields']);
             // Hook::add('Publication::validatePublish', [$this, 'validate']);
 
             // Hook::add('Settings::Workflow::listScreeningPlugins', [$this, 'listRules']);
@@ -82,6 +83,24 @@ class ScieloScreeningPlugin extends GenericPlugin
                 }
             }
         }
+
+        return false;
+    }
+
+    public function validateSubmissionFields($hookName, $params)
+    {
+        $errors = &$params[0];
+        $submission = $params[1];
+        $contributorsErrors = $errors['contributors'] ?? [];
+
+        $scieloScreeningHandler = new ScieloScreeningHandler();
+        $dataScreening = $scieloScreeningHandler->getScreeningData($submission);
+
+        if (!$dataScreening['statusAffiliation']) {
+            $contributorsErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.affiliation');
+        }
+
+        $errors['contributors'] = $contributorsErrors;
 
         return false;
     }

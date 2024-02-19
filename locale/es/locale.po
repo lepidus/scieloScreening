@@ -40,10 +40,7 @@ msgid "plugins.generic.scieloScreening.required.nameUppercase"
 msgstr "Algunos autores tienen su nombre en mayúsculas. Le pedimos que los corrija."
 
 
-msgid "plugins.generic.scieloScreening.step4.warning"
-msgstr "No se han realizado los siguientes pasos de verificación. Tienes la opción de volver y hacerlos."
-
-msgid "plugins.generic.scieloScreening.step4.affiliation"
+msgid "plugins.generic.scieloScreening.reviewStep.error.affiliation"
 msgstr "No ha completado la afiliación para todos los contribuyentes."
 
 msgid "plugins.generic.scieloScreening.step4.dois"

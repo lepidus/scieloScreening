@@ -67,11 +67,21 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         beginSubmission(submissionData);
         detailsStep(submissionData);
         cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+
+        cy.contains('h2', 'Review and Submit');
+        cy.contains('You have not filled in the affiliation for all contributors');
+
+        cy.get('.pkpSteps__step button:contains("Contributors")').click();
 
         cy.get('.contributorsListPanel button:contains("Delete")').click();
         cy.contains('button', 'Delete Contributor').click();
         cy.waitJQuery();
 
         addContributor(submissionData.contributors[0]);
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.contains('You have not filled in the affiliation for all contributors').should('not.exist');
     });
 });

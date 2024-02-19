@@ -40,11 +40,8 @@ msgid "plugins.generic.scieloScreening.required.nameUppercase"
 msgstr "Some authors have their name in capital letters. We ask that you correct them."
 
 
-msgid "plugins.generic.scieloScreening.step4.warning"
-msgstr "The following verification steps have not been performed. You have the option to go back and do them."
-
-msgid "plugins.generic.scieloScreening.step4.affiliation"
-msgstr "You have not filled in the affiliation for all contributors."
+msgid "plugins.generic.scieloScreening.reviewStep.error.affiliation"
+msgstr "You have not filled in the affiliation for all contributors"
 
 msgid "plugins.generic.scieloScreening.step4.dois"
 msgstr "You informed not having DOIs of previous publications."
