@@ -29,6 +29,7 @@ class ScieloScreeningPlugin extends GenericPlugin
         }
 
         if ($success && $this->getEnabled($mainContextId)) {
+            Hook::add('Form::config::after', array($this, 'editContributorForm'));
             // Hook::add('Publication::validatePublish', [$this, 'validate']);
 
             // Hook::add('Settings::Workflow::listScreeningPlugins', [$this, 'listRules']);
@@ -38,12 +39,26 @@ class ScieloScreeningPlugin extends GenericPlugin
             // Hook::add('Template::Workflow::Publication', [$this, 'addGalleysWarning']);
 
             // Hook::add('LoadComponentHandler', [$this, 'setupScieloScreeningHandler']);
-            // Hook::add('authorform::Constructor', [$this, 'changeAuthorForm']);
             // Hook::add('submissionsubmitstep2form::validate', [$this, 'addValidationToStep2']);
             // Hook::add('submissionsubmitstep3form::validate', [$this, 'addValidationToStep3']);
             // Hook::add('submissionsubmitstep4form::display', [$this, 'addToStep4']);
         }
         return $success;
+    }
+
+    public function getDisplayName()
+    {
+        return __('plugins.generic.scieloScreening.displayName');
+    }
+
+    public function getDescription()
+    {
+        return __('plugins.generic.scieloScreening.description');
+    }
+
+    public function getInstallMigration()
+    {
+        return new DOIScreeningMigration();
     }
 
     public function setupScieloScreeningHandler($hookName, $params)
@@ -55,12 +70,20 @@ class ScieloScreeningPlugin extends GenericPlugin
         return false;
     }
 
-    public function changeAuthorForm($hookName, $params)
+    public function editContributorForm($hookName, $params)
     {
-        $path = "../../../plugins/generic/scieloScreening/templates/authorForm.tpl";
+        $formConfig = &$params[0];
 
-        $params[0]->setTemplate($path);
-        $params[1] = $path;
+        if($formConfig['id'] == 'contributor') {
+            foreach ($formConfig['fields'] as &$field) {
+                if ($field['name'] == 'affiliation') {
+                    $field['isRequired'] = true;
+                    break;
+                }
+            }
+        }
+
+        return false;
     }
 
     public function addValidationToStep2($hookName, $params)
@@ -155,16 +178,6 @@ class ScieloScreeningPlugin extends GenericPlugin
         return $output;
     }
 
-    public function getDisplayName()
-    {
-        return __('plugins.generic.scieloScreening.displayName');
-    }
-
-    public function getDescription()
-    {
-        return __('plugins.generic.scieloScreening.description');
-    }
-
     public function metadataFieldEdit($hookName, $params)
     {
         $smarty = & $params[1];
@@ -243,11 +256,6 @@ class ScieloScreeningPlugin extends GenericPlugin
         }
 
         return $okayForPublishing;
-    }
-
-    public function getInstallMigration()
-    {
-        return new DOIScreeningMigration();
     }
 
     private function userIsAuthor($submission)

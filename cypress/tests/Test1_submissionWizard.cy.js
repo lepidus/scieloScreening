@@ -45,7 +45,8 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
                     'given': 'Tony',
                     'family': 'Revolori',
                     'email': 'tony.revolori@budapest.com',
-                    'country': 'United States'
+                    'country': 'United States',
+                    'affiliation': 'Hollywood'
                 }
             ]
 		};
