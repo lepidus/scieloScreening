@@ -234,23 +234,21 @@ class ScieloScreeningHandler extends Handler
     public function getStatusAuthors($submission)
     {
         $checker = new ScreeningChecker();
-        $authors = $submission->getAuthors();
+        $authors = $submission->getCurrentPublication()->getData('authors');
 
-        $affiliationAuthors = array_map(function ($author) {
-            return $author->getLocalizedAffiliation();
-        }, $authors);
-        $nameAuthors = array_map(function ($author) {
-            return $author->getLocalizedGivenName() . " " . $author->getLocalizedFamilyName();
-        }, $authors);
-        $orcidAuthors = array_map(function ($author) {
-            return $author->getOrcid();
-        }, $authors);
+        $affiliationAuthors = $nameAuthors = $orcidAuthors = [];
 
-        list($statusAf, $listAuthors) = $checker->checkAffiliationAuthors($affiliationAuthors, $nameAuthors);
+        foreach ($authors as $author) {
+            $affiliationAuthors[] = $author->getLocalizedAffiliation();
+            $nameAuthors[] = $author->getLocalizedGivenName() . " " . $author->getLocalizedFamilyName();
+            $orcidAuthors[] = $author->getOrcid();
+        }
+
+        list($statusAffiliation, $authorsWithoutAffiliation) = $checker->checkAffiliationAuthors($affiliationAuthors, $nameAuthors);
         return [
-            'statusAffiliation' => $statusAf,
+            'statusAffiliation' => $statusAffiliation,
             'statusOrcid' => $checker->checkOrcidAuthors($orcidAuthors),
-            'listAuthors' => $listAuthors
+            'authorsWithoutAffiliation' => $authorsWithoutAffiliation
         ];
     }
 
@@ -301,7 +299,6 @@ class ScieloScreeningHandler extends Handler
         $dois = $doiScreeningDAO->getBySubmissionId($submission->getId());
 
         $dataScreening = array_merge(
-            $this->getStatusDOI($submission, $dois),
             $this->getStatusAuthors($submission),
             $this->getStatusMetadataEnglish($submission),
             $this->getStatusPDFs($submission)

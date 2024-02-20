@@ -78,9 +78,9 @@
                 </div>
                 <div id="affiliationBody">
                     <ul>
-                        {foreach from=$listAuthors item="author"}
+                        {foreach from=$authorsWithoutAffiliation item="authorName"}
                             <li>
-                                {$author}
+                                {$authorName|escape}
                             </li>
                         {/foreach}
                     </ul>
