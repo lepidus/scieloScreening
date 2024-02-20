@@ -72,9 +72,22 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.contains('button', 'Delete Contributor').click();
         cy.waitJQuery();
 
+        cy.contains('h2', 'Number of contributors');
+        cy.contains('Please inform the total number of contributors to this publication');
+        cy.get('input[name="numberContributors"]').clear().type('5', {delay: 0});
+
         addContributor(submissionData.contributors[0]);
         cy.contains('button', 'Continue').click();
         cy.contains('button', 'Continue').click();
+        cy.wait(1000);
         cy.contains('You have not filled in the affiliation for all contributors').should('not.exist');
+        cy.contains('The number of contributors entered is not the same as that reported');
+
+        cy.get('.pkpSteps__step button:contains("Contributors")').click();
+        cy.get('input[name="numberContributors"]').clear().type('1', {delay: 0});
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.wait(1000);
+        cy.contains('The number of contributors entered is not the same as that reported').should('not.exist');
     });
 });

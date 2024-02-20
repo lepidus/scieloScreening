@@ -13,6 +13,8 @@ namespace APP\plugins\generic\scieloScreening;
 use PKP\plugins\GenericPlugin;
 use APP\core\Application;
 use PKP\plugins\Hook;
+use APP\pages\submission\SubmissionHandler;
+use APP\plugins\generic\scieloScreening\classes\components\forms\NumberContributorsForm;
 use APP\plugins\generic\scieloScreening\classes\DOIScreeningDAO;
 use APP\plugins\generic\scieloScreening\classes\migration\DOIScreeningMigration;
 use APP\plugins\generic\scieloScreening\controllers\ScieloScreeningHandler;
@@ -30,7 +32,9 @@ class ScieloScreeningPlugin extends GenericPlugin
 
         if ($success && $this->getEnabled($mainContextId)) {
             Hook::add('Form::config::after', array($this, 'editContributorForm'));
+            Hook::add('TemplateManager::display', [$this, 'modifySubmissionSteps']);
             Hook::add('Submission::validateSubmit', [$this, 'validateSubmissionFields']);
+            Hook::add('Schema::get::publication', [$this, 'addOurFieldsToPublicationSchema']);
             // Hook::add('Publication::validatePublish', [$this, 'validate']);
 
             // Hook::add('Settings::Workflow::listScreeningPlugins', [$this, 'listRules']);
@@ -62,6 +66,19 @@ class ScieloScreeningPlugin extends GenericPlugin
         return new DOIScreeningMigration();
     }
 
+    public function addOurFieldsToPublicationSchema($hookName, $params)
+    {
+        $schema = &$params[0];
+
+        $schema->properties->{'numberContributors'} = (object) [
+            'type' => 'integer',
+            'apiSummary' => true,
+            'validation' => ['nullable'],
+        ];
+
+        return false;
+    }
+
     public function setupScieloScreeningHandler($hookName, $params)
     {
         $component = & $params[0];
@@ -87,10 +104,61 @@ class ScieloScreeningPlugin extends GenericPlugin
         return false;
     }
 
+    public function modifySubmissionSteps($hookName, $params)
+    {
+        $request = Application::get()->getRequest();
+        $context = $request->getContext();
+        $templateMgr = $params[0];
+
+        if ($request->getRequestedPage() !== 'submission' || $request->getRequestedOp() === 'saved') {
+            return false;
+        }
+
+        $submission = $request
+            ->getRouter()
+            ->getHandler()
+            ->getAuthorizedContextObject(Application::ASSOC_TYPE_SUBMISSION);
+
+        if (!$submission || !$submission->getData('submissionProgress')) {
+            return false;
+        }
+
+        $publication = $submission->getCurrentPublication();
+        $publicationApiUrl = $request->getDispatcher()->url(
+            $request,
+            Application::ROUTE_API,
+            $request->getContext()->getPath(),
+            'submissions/' . $submission->getId() . '/publications/' . $publication->getId()
+        );
+        $numberContributorsForm = new NumberContributorsForm(
+            $publicationApiUrl,
+            $publication,
+        );
+
+        $steps = $templateMgr->getState('steps');
+        $steps = array_map(function ($step) use ($numberContributorsForm) {
+            if ($step['id'] === 'contributors') {
+                $step['sections'][] = [
+                    'id' => 'numberContributors',
+                    'name' => __('plugins.generic.scieloScreening.section.numberContributors.name'),
+                    'description' => __('plugins.generic.scieloScreening.section.numberContributors.description'),
+                    'type' => SubmissionHandler::SECTION_TYPE_FORM,
+                    'form' => $numberContributorsForm->getConfig(),
+                ];
+            }
+            return $step;
+        }, $steps);
+
+        $templateMgr->setState(['steps' => $steps]);
+
+        return false;
+    }
+
     public function validateSubmissionFields($hookName, $params)
     {
         $errors = &$params[0];
         $submission = $params[1];
+        $publication = $submission->getCurrentPublication();
         $contributorsErrors = $errors['contributors'] ?? [];
 
         $scieloScreeningHandler = new ScieloScreeningHandler();
@@ -98,6 +166,11 @@ class ScieloScreeningPlugin extends GenericPlugin
 
         if (!$dataScreening['statusAffiliation']) {
             $contributorsErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.affiliation');
+        }
+
+        $numberContributorsInformed = $publication->getData('numberContributors');
+        if ($numberContributorsInformed != count($publication->getData('authors'))) {
+            $contributorsErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.numberContributors');
         }
 
         $errors['contributors'] = $contributorsErrors;
