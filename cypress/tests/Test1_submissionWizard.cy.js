@@ -1,3 +1,5 @@
+import '../support/commands.js';
+
 function beginSubmission(submissionData) {
     cy.get('input[name="locale"][value="en"]').click();
     cy.setTinyMceContent('startSubmission-title-control', submissionData.title);
@@ -16,10 +18,13 @@ function detailsStep(submissionData) {
     cy.contains('button', 'Continue').click();
 }
 
-function addContributor(contributorData) {
+function addContributor(contributorData, toUpperCase = false) {
+    let given = (toUpperCase) ? contributorData.given.toUpperCase() : contributorData.given;
+    let family = (toUpperCase) ? contributorData.family.toUpperCase() : contributorData.family; 
+    
     cy.contains('button', 'Add Contributor').click();
-    cy.get('input[name="givenName-en"]').type(contributorData.given, {delay: 0});
-    cy.get('input[name="familyName-en"]').type(contributorData.family, {delay: 0});
+    cy.get('input[name="givenName-en"]').type(given, {delay: 0});
+    cy.get('input[name="familyName-en"]').type(family, {delay: 0});
     cy.get('input[name="email"]').type(contributorData.email, {delay: 0});
     cy.get('select[name="country"]').select(contributorData.country);
     
@@ -47,6 +52,13 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
                     'email': 'tony.revolori@budapest.com',
                     'country': 'United States',
                     'affiliation': 'Hollywood'
+                },
+                {
+                    'given': 'Ralph',
+                    'family': 'Fiennes',
+                    'email': 'ralph.fiennes@budapest.com',
+                    'country': 'United Kingdom',
+                    'affiliation': 'Hollywood'
                 }
             ]
 		};
@@ -60,7 +72,7 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         ];
     });
     
-    it("All contributors must have affiliation. Must enter the number of contributors", function() {
+    it("All contributors must have affiliation. Must enter the number of contributors", function () {
         cy.login('dphillips', null, 'publicknowledge');
         cy.get('div#myQueue a:contains("New Submission")').click();
 
@@ -89,5 +101,33 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.contains('button', 'Continue').click();
         cy.wait(1000);
         cy.contains('The number of contributors entered is not the same as that reported').should('not.exist');
+    });
+    it('Contributors names should not be uppercase', function () {
+        cy.login('dphillips', null, 'publicknowledge');
+        cy.findSubmission('myQueue', submissionData.title);
+
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        
+        addContributor(submissionData.contributors[1], true);
+        cy.get('input[name="numberContributors"]').clear().type('2', {delay: 0});
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.wait(1000);
+        cy.contains('Some contributors have their name in capital letters. We ask that you correct them.');
+
+        cy.get('.pkpSteps__step button:contains("Contributors")').click();
+        cy.get('.listPanel__itemTitle:visible:contains("RALPH FIENNES")')
+            .parent().parent().within(() => {
+                cy.contains('button', 'Delete').click();
+            });
+        cy.contains('button', 'Delete Contributor').click();
+        cy.waitJQuery();
+
+        addContributor(submissionData.contributors[1]);
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.wait(1000);
+        cy.contains('Some contributors have their name in capital letters. We ask that you correct them.').should('not.exist');
     });
 });

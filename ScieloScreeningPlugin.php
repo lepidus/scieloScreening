@@ -161,16 +161,25 @@ class ScieloScreeningPlugin extends GenericPlugin
         $publication = $submission->getCurrentPublication();
         $contributorsErrors = $errors['contributors'] ?? [];
 
-        $scieloScreeningHandler = new ScieloScreeningHandler();
-        $dataScreening = $scieloScreeningHandler->getScreeningData($submission);
+        $screeningHandler = new ScieloScreeningHandler();
+        $screeningChecker = new ScreeningChecker();
+        $dataScreening = $screeningHandler->getScreeningData($submission);
 
         if (!$dataScreening['statusAffiliation']) {
             $contributorsErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.affiliation');
         }
 
         $numberContributorsInformed = $publication->getData('numberContributors');
-        if ($numberContributorsInformed != count($publication->getData('authors'))) {
+        $authors = $publication->getData('authors')->toArray();
+        if ($numberContributorsInformed != count($authors)) {
             $contributorsErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.numberContributors');
+        }
+
+        $authorsNames = array_map(function ($author) {
+            return $author->getLocalizedGivenName() . $author->getLocalizedFamilyName();
+        }, $authors);
+        if ($screeningChecker->checkHasUppercaseAuthors($authorsNames)) {
+            $contributorsErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.uppercaseContributors');
         }
 
         $errors['contributors'] = $contributorsErrors;

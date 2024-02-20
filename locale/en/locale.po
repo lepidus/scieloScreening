@@ -33,8 +33,6 @@ msgstr "All submission contributors must have their affiliation filled"
 msgid "plugins.generic.scieloScreening.required.orcidLeastOne"
 msgstr "At least one contributor must have their ORCID confirmed. Please, check your e-mail"
 
-msgid "plugins.generic.scieloScreening.required.nameUppercase"
-msgstr "Some authors have their name in capital letters. We ask that you correct them."
 
 
 msgid "plugins.generic.scieloScreening.section.numberContributors.name"
@@ -49,6 +47,9 @@ msgstr "You have not filled in the affiliation for all contributors"
 
 msgid "plugins.generic.scieloScreening.reviewStep.error.numberContributors"
 msgstr "The number of contributors entered is not the same as that reported"
+
+msgid "plugins.generic.scieloScreening.reviewStep.error.uppercaseContributors"
+msgstr "Some contributors have their name in capital letters. We ask that you correct them."
 
 msgid "plugins.generic.scieloScreening.step4.dois"
 msgstr "You informed not having DOIs of previous publications."

@@ -1,10 +1,10 @@
 ---Dentro do fluxo de submissão---
 
-Todos os autores devem ter afiliação atribuída. Número de autores.
++ Todos os autores devem ter afiliação atribuída. Número de autores.
     Ao chegar no passo de coautores, vê que o campo de afiliação é obrigatório
     Cria autor normalmente. Chegando no último passo, vê que não tem msg sobre falta de afiliação
 
-Nomes de autores não estão em caixa alta
++ Nomes de autores não estão em caixa alta
     Insere um autor, com nome em caixa alta
     Vai ao último passo e vê que apareceu msg
     Volta, altera o nome
