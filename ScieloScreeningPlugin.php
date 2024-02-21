@@ -160,6 +160,7 @@ class ScieloScreeningPlugin extends GenericPlugin
         $submission = $params[1];
         $publication = $submission->getCurrentPublication();
         $contributorsErrors = $errors['contributors'] ?? [];
+        $filesErrors = $errors['files'] ?? [];
 
         $screeningHandler = new ScieloScreeningHandler();
         $screeningChecker = new ScreeningChecker();
@@ -171,6 +172,11 @@ class ScieloScreeningPlugin extends GenericPlugin
 
         if (!$dataScreening['statusOrcid']) {
             $contributorsErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.orcidLeastOne');
+        }
+
+        if (!$dataScreening['statusPDFs']) {
+            $errorCase = ($dataScreening['numPDFs'] > 1) ? 'manyPdfs' : 'noPdfs';
+            $filesErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.' . $errorCase);
         }
 
         $numberContributorsInformed = $publication->getData('numberContributors');
@@ -187,6 +193,7 @@ class ScieloScreeningPlugin extends GenericPlugin
         }
 
         $errors['contributors'] = $contributorsErrors;
+        $errors['files'] = $filesErrors;
 
         return false;
     }

@@ -50,6 +50,16 @@ msgstr "Alguns contribuidores estão com o nome em caixa alta. Pedimos que os co
 msgid "plugins.generic.scieloScreening.reviewStep.error.orcidLeastOne"
 msgstr "Ao menos um contribuidor precisa estar com seu ORCID confirmado. Por favor, verifique o seu e-mail."
 
+msgid "plugins.generic.scieloScreening.reviewStep.error.noPdfs"
+msgstr "Você não adicionou nenhum documento PDF a esta submissão"
+
+msgid "plugins.generic.scieloScreening.reviewStep.error.manyPdfs"
+msgstr "Por favor, envie um único arquivo PDF. "
+"Caso esteja enviando arquivos adjacentes ao manuscrito, inclua-os no mesmo arquivo PDF junto ao manuscrito principal. "
+"Caso esteja enviando uma versão corrigida do manuscrito, certifique-se de excluir o arquivo PDF atual antes de enviar um novo. "
+"Caso seja a versão traduzida do manuscrito, será necessário efetuar uma nova submissão, com um ID diferente deste."
+
+
 msgid "plugins.generic.scieloScreening.step4.dois"
 msgstr "Você informou não possuir DOIs de publicações prévias"
 
@@ -61,21 +71,6 @@ msgstr "Certifique-se que o seu nome está entre os autores nos DOIs informados 
 
 msgid "plugins.generic.scieloScreening.step4.metadataNotEnglish"
 msgstr "Os seguintes metadados precisam ser preenchidos em inglês:"
-
-msgid "plugins.generic.scieloScreening.step4.noPDFs"
-msgstr "Você não adicionou nenhum documento PDF a esta submissão"
-
-msgid "plugins.generic.scieloScreening.step4.manyPDFs.header"
-msgstr "Por favor, envie um único arquivo PDF"
-
-msgid "plugins.generic.scieloScreening.step4.manyPDFs.one"
-msgstr "Caso esteja enviando arquivos adjacentes ao manuscrito, inclua-os no mesmo arquivo PDF junto ao manuscrito principal"
-
-msgid "plugins.generic.scieloScreening.step4.manyPDFs.two"
-msgstr "Caso esteja enviando uma versão corrigida do manuscrito, certifique-se de excluir o arquivo PDF atual antes de enviar um novo"
-
-msgid "plugins.generic.scieloScreening.step4.manyPDFs.three"
-msgstr "Caso seja a versão traduzida do manuscrito, será necessário efetuar uma nova submissão, com um ID diferente deste"
 
 
 msgid "plugins.generic.scieloScreening.submission.contributors"

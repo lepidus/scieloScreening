@@ -50,6 +50,15 @@ msgstr "Some contributors have their name in capital letters. We ask that you co
 msgid "plugins.generic.scieloScreening.reviewStep.error.orcidLeastOne"
 msgstr "At least one contributor must have their ORCID confirmed. Please, check your e-mail"
 
+msgid "plugins.generic.scieloScreening.reviewStep.error.noPdfs"
+msgstr "You have not added any PDF documents to this submission"
+
+msgid "plugins.generic.scieloScreening.reviewStep.error.manyPdfs"
+msgstr "Please send a single PDF file. "
+"If you are sending files associated with the manuscript, please include them in the same PDF as the manuscript. "
+"If you are sending a new version of the manuscript, make sure to delete the current PDF file before uploading a new one. "
+"If this is a translated version of the manuscript, a new submission will be necessary, with a different ID."
+
 
 msgid "plugins.generic.scieloScreening.step4.dois"
 msgstr "You informed not having DOIs of previous publications."
@@ -62,21 +71,6 @@ msgstr "Make sure your name is among the authors of the informed DOIs and if so,
 
 msgid "plugins.generic.scieloScreening.step4.metadataNotEnglish"
 msgstr "The following metadata must be filled in english:"
-
-msgid "plugins.generic.scieloScreening.step4.noPDFs"
-msgstr "You have not added any PDF document to this submission"
-
-msgid "plugins.generic.scieloScreening.step4.manyPDFs.header"
-msgstr "Please send a single PDF file"
-
-msgid "plugins.generic.scieloScreening.step4.manyPDFs.one"
-msgstr "If you are sending files associated with the manuscript, please include them in the same PDF as the manuscript"
-
-msgid "plugins.generic.scieloScreening.step4.manyPDFs.two"
-msgstr "If you are sending a new version of the manuscript, make sure to delete the current PDF file before uploading a new one"
-
-msgid "plugins.generic.scieloScreening.step4.manyPDFs.three"
-msgstr "If this is a translated version of the manuscript, a new submission will be necessary, with a different ID"
 
 
 msgid "plugins.generic.scieloScreening.submission.contributors"

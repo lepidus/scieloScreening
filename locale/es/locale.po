@@ -50,6 +50,15 @@ msgstr "Algunos colaboradores tienen su nombre en mayúsculas. Le pedimos que lo
 msgid "plugins.generic.scieloScreening.reviewStep.error.orcidLeastOne"
 msgstr "Al menos un colaborador debe tener su ORCID confirmado. Por favor, revise su correo electrónico"
 
+msgid "plugins.generic.scieloScreening.reviewStep.error.noPdfs"
+msgstr "No ha agregado ningún documento PDF a este envío"
+
+msgid "plugins.generic.scieloScreening.reviewStep.error.manyPdfs"
+msgstr "Por favor, envíe un único archivo PDF. "
+"Si envía archivos adyacentes al manuscrito, por favor inclúyalos en lo mismo archivo PDF con el manuscrito principal. "
+"Si está enviando una versión corregida del manuscrito, asegúrese de borrar el archivo PDF actual antes de enviar uno nuevo. "
+"Si se trata de la versión traducida del manuscrito, se requerirá un nuevo envío, con un ID diferente."
+
 
 msgid "plugins.generic.scieloScreening.step4.dois"
 msgstr "Informaste que no tienes DOIs de publicaciones anteriores"
@@ -62,21 +71,6 @@ msgstr "Asegúrese de que su nombre esté entre los autores en los DOI informado
 
 msgid "plugins.generic.scieloScreening.step4.metadataNotEnglish"
 msgstr "Los seguintes metadatos deben completarse en inglés:"
-
-msgid "plugins.generic.scieloScreening.step4.noPDFs"
-msgstr "No ha agregado ningún documento PDF a este envío"
-
-msgid "plugins.generic.scieloScreening.step4.manyPDFs.header"
-msgstr "Por favor, envíe un único archivo PDF"
-
-msgid "plugins.generic.scieloScreening.step4.manyPDFs.one"
-msgstr "Si envía archivos adyacentes al manuscrito, por favor inclúyalos en lo mismo archivo PDF con el manuscrito principal"
-
-msgid "plugins.generic.scieloScreening.step4.manyPDFs.two"
-msgstr "Si está enviando una versión corregida del manuscrito, asegúrese de borrar el archivo PDF actual antes de enviar uno nuevo"
-
-msgid "plugins.generic.scieloScreening.step4.manyPDFs.three"
-msgstr "Si se trata de la versión traducida del manuscrito, se requerirá un nuevo envío, con un ID diferente"
 
 
 msgid "plugins.generic.scieloScreening.submission.contributors"

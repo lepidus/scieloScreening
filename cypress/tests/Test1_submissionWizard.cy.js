@@ -41,7 +41,7 @@ function addContributor(contributorData, toUpperCase = false) {
 
 describe('SciELO Screening Plugin - Submission wizard tests', function() {
     let submissionData;
-    let files;
+    let dummyPdf;
     
     before(function() {
         Cypress.config('defaultCommandTimeout', 4000);
@@ -74,14 +74,12 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
                 }
             ]
 		};
-        files = [
-            {
-                'file': 'dummy.pdf',
-                'fileName': 'dummy.pdf',
-                'mimeType': 'application/pdf',
-                'genre': 'Preprint Text'
-            }
-        ];
+        dummyPdf = {
+            'file': 'dummy.pdf',
+            'fileName': 'dummy-1.pdf',
+            'mimeType': 'application/pdf',
+            'genre': 'Preprint Text'
+        };
     });
     
     it("All contributors must have affiliation. Must enter the number of contributors", function () {
@@ -160,5 +158,42 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.contains('button', 'Continue').click();
         cy.wait(1000);
         cy.contains('At least one contributor must have their ORCID confirmed. Please, check your e-mail').should('not.exist');
+    });
+    it('Submission should have only one PDF file', function () {
+        cy.login('dphillips', null, 'publicknowledge');
+        cy.findSubmission('myQueue', submissionData.title);
+
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.wait(1000);
+
+        cy.contains('You have not added any PDF documents to this submission');
+        cy.get('.pkpSteps__step button:contains("Upload Files")').click();
+
+        cy.addSubmissionGalleys([dummyPdf, dummyPdf]);
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.wait(1000);
+
+        cy.contains('Please send a single PDF file');
+        cy.contains('If you are sending files associated with the manuscript, please include them in the same PDF as the manuscript');
+        cy.contains('If you are sending a new version of the manuscript, make sure to delete the current PDF file before uploading a new one');
+        cy.contains('If this is a translated version of the manuscript, a new submission will be necessary, with a different ID');
+
+        cy.get('.pkpSteps__step button:contains("Upload Files")').click();
+        cy.get('.show_extras').eq(1).click();
+        cy.get('a.pkp_linkaction_deleteGalley').eq(1).click();
+        cy.contains('button','OK').click();
+
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.wait(1000);
+
+        cy.contains('You have not added any PDF documents to this submission').should('not.exist');
+        cy.contains('Please send a single PDF file').should('not.exist');
     });
 });

@@ -19,7 +19,7 @@
 + Informar número de autores no passo de coautores
     Essa também deve ficar misturada entre as demais, visto que sempre é necessário informar
 
-Verificar que foi enviado um e apenas um PDF
++ Verificar que foi enviado um e apenas um PDF
     (Submissão ainda não tem PDF)
     Vai ao último passo e verifica que aparece a mensagem sobre PDFs
     Vai ao passo de arquivos
@@ -34,8 +34,6 @@ Metadados da submissão foram informados em inglês
     Chegando ao último passo, deve falar que metadados não foram preenchidos
     Voltar e, pra cada metadado, informar em inglês e verificar que mensagem mudou
     Ao final, mensagem deve ter sumido.
-
-Verificação de DOIs
 
 ----Após submissão---
 
