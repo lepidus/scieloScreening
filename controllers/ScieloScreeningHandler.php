@@ -257,22 +257,18 @@ class ScieloScreeningHandler extends Handler
         $publication = $submission->getCurrentPublication();
         $metadataList = array('title', 'abstract', 'keywords');
         $statusMetadataEnglish = true;
-        $textMetadataScreening = "";
+        $missingMetadata = [];
 
         foreach ($metadataList as $metadata) {
             if ($publication->getData($metadata, 'en') == "") {
                 $statusMetadataEnglish = false;
-
-                if ($textMetadataScreening != "") {
-                    $textMetadataScreening .= ", ";
-                }
-                $textMetadataScreening .= __("common." . $metadata);
+                $missingMetadata[] = __("common." . $metadata);
             }
         }
 
         return [
             'statusMetadataEnglish' => $statusMetadataEnglish,
-            'textMetadataScreening' => $textMetadataScreening
+            'missingMetadataEnglish' => implode(', ', $missingMetadata)
         ];
     }
 

@@ -59,6 +59,9 @@ msgstr "Por favor, envíe un único archivo PDF. "
 "Si está enviando una versión corregida del manuscrito, asegúrese de borrar el archivo PDF actual antes de enviar uno nuevo. "
 "Si se trata de la versión traducida del manuscrito, se requerirá un nuevo envío, con un ID diferente."
 
+msgid "plugins.generic.scieloScreening.reviewStep.error.missingMetadataEnglish"
+msgstr "Los seguintes metadatos deben completarse en inglés: {$missingMetadata}"
+
 
 msgid "plugins.generic.scieloScreening.step4.dois"
 msgstr "Informaste que no tienes DOIs de publicaciones anteriores"
@@ -68,9 +71,6 @@ msgstr "No fue posible confirmar la autoría de algunos DOI informados"
 
 msgid "plugins.generic.scieloScreening.step4.certifyYourNameinDOIs"
 msgstr "Asegúrese de que su nombre esté entre los autores en los DOI informados y, de ser así, continúe. Los moderadores realizarán una verificación manual después del envío."
-
-msgid "plugins.generic.scieloScreening.step4.metadataNotEnglish"
-msgstr "Los seguintes metadatos deben completarse en inglés:"
 
 
 msgid "plugins.generic.scieloScreening.submission.contributors"

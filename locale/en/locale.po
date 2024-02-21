@@ -59,6 +59,9 @@ msgstr "Please send a single PDF file. "
 "If you are sending a new version of the manuscript, make sure to delete the current PDF file before uploading a new one. "
 "If this is a translated version of the manuscript, a new submission will be necessary, with a different ID."
 
+msgid "plugins.generic.scieloScreening.reviewStep.error.missingMetadataEnglish"
+msgstr "The following metadata must be filled in english: {$missingMetadata}"
+
 
 msgid "plugins.generic.scieloScreening.step4.dois"
 msgstr "You informed not having DOIs of previous publications."
@@ -68,9 +71,6 @@ msgstr "It was not possible to confirm the authorship of some informed DOIs"
 
 msgid "plugins.generic.scieloScreening.step4.certifyYourNameinDOIs"
 msgstr "Make sure your name is among the authors of the informed DOIs and if so, proceed. A manual check will be done by moderators after submission."
-
-msgid "plugins.generic.scieloScreening.step4.metadataNotEnglish"
-msgstr "The following metadata must be filled in english:"
 
 
 msgid "plugins.generic.scieloScreening.submission.contributors"

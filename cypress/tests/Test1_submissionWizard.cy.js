@@ -212,6 +212,7 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.contains('button', 'Continue').click();
         cy.contains('button', 'Continue').click();
         cy.contains('button', 'Continue').click();
+        cy.wait(1000);
         cy.contains('The following metadata must be filled in english').should('not.exist');
     });
 });

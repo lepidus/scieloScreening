@@ -179,6 +179,12 @@ class ScieloScreeningPlugin extends GenericPlugin
             $filesErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.' . $errorCase);
         }
 
+        if (!$dataScreening['statusMetadataEnglish']) {
+            $errors['missingMetadataEnglish'] = [
+                __('plugins.generic.scieloScreening.reviewStep.error.missingMetadataEnglish', ['missingMetadata' => $dataScreening['missingMetadataEnglish']])
+            ];
+        }
+
         $numberContributorsInformed = $publication->getData('numberContributors');
         $authors = $publication->getData('authors')->toArray();
         if ($numberContributorsInformed != count($authors)) {
