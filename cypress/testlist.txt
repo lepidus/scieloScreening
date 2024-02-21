@@ -10,13 +10,13 @@
     Volta, altera o nome
     Volta ao último passo, vê que msg sumiu
 
-Ao menos um autor tem ORCID atribuído
++ Ao menos um autor tem ORCID atribuído
     (Nenhum dos autores anteriormente teve ORCID atribuído)
     Vai ao último passo, vê que mensagem sobre ORCID de autores está aparecendo
     Volta, adiciona um autor com ORCID
     Vai ao último passo, vê que mensagem sobre ORCID sumiu
 
-Informar número de autores no passo de coautores
++ Informar número de autores no passo de coautores
     Essa também deve ficar misturada entre as demais, visto que sempre é necessário informar
 
 Verificar que foi enviado um e apenas um PDF

@@ -30,9 +30,6 @@ msgstr "¡Debe realizar la Verificación de DOIs abajo!"
 msgid "plugins.generic.scieloScreening.required.affiliationForAll"
 msgstr "Todos los contribuyentes de envío deben tener su afiliación lleno"
 
-msgid "plugins.generic.scieloScreening.required.orcidLeastOne"
-msgstr "Al menos un contribuyente debe tener su ORCID confirmado. Por favor, revise su correo electrónico"
-
 
 msgid "plugins.generic.scieloScreening.section.numberContributors.name"
 msgstr "Número de colaboradores"
@@ -49,6 +46,10 @@ msgstr "El número de colaboradores insertados no es el mismo que el informado"
 
 msgid "plugins.generic.scieloScreening.reviewStep.error.uppercaseContributors"
 msgstr "Algunos colaboradores tienen su nombre en mayúsculas. Le pedimos que los corrija."
+
+msgid "plugins.generic.scieloScreening.reviewStep.error.orcidLeastOne"
+msgstr "Al menos un colaborador debe tener su ORCID confirmado. Por favor, revise su correo electrónico"
+
 
 msgid "plugins.generic.scieloScreening.step4.dois"
 msgstr "Informaste que no tienes DOIs de publicaciones anteriores"

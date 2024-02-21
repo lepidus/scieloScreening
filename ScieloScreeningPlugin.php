@@ -169,6 +169,10 @@ class ScieloScreeningPlugin extends GenericPlugin
             $contributorsErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.affiliation');
         }
 
+        if (!$dataScreening['statusOrcid']) {
+            $contributorsErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.orcidLeastOne');
+        }
+
         $numberContributorsInformed = $publication->getData('numberContributors');
         $authors = $publication->getData('authors')->toArray();
         if ($numberContributorsInformed != count($authors)) {

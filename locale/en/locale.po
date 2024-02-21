@@ -30,10 +30,6 @@ msgstr "You need to perform the DOI Screening below!"
 msgid "plugins.generic.scieloScreening.required.affiliationForAll"
 msgstr "All submission contributors must have their affiliation filled"
 
-msgid "plugins.generic.scieloScreening.required.orcidLeastOne"
-msgstr "At least one contributor must have their ORCID confirmed. Please, check your e-mail"
-
-
 
 msgid "plugins.generic.scieloScreening.section.numberContributors.name"
 msgstr "Number of contributors"
@@ -50,6 +46,10 @@ msgstr "The number of contributors entered is not the same as that reported"
 
 msgid "plugins.generic.scieloScreening.reviewStep.error.uppercaseContributors"
 msgstr "Some contributors have their name in capital letters. We ask that you correct them."
+
+msgid "plugins.generic.scieloScreening.reviewStep.error.orcidLeastOne"
+msgstr "At least one contributor must have their ORCID confirmed. Please, check your e-mail"
+
 
 msgid "plugins.generic.scieloScreening.step4.dois"
 msgstr "You informed not having DOIs of previous publications."

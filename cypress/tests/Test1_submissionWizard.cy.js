@@ -21,16 +21,20 @@ function detailsStep(submissionData) {
 function addContributor(contributorData, toUpperCase = false) {
     let given = (toUpperCase) ? contributorData.given.toUpperCase() : contributorData.given;
     let family = (toUpperCase) ? contributorData.family.toUpperCase() : contributorData.family; 
-    
+
     cy.contains('button', 'Add Contributor').click();
     cy.get('input[name="givenName-en"]').type(given, {delay: 0});
     cy.get('input[name="familyName-en"]').type(family, {delay: 0});
     cy.get('input[name="email"]').type(contributorData.email, {delay: 0});
     cy.get('select[name="country"]').select(contributorData.country);
-    
+
+    if ('orcid' in contributorData) {
+        cy.get('input[name="orcid"]').type(contributorData.orcid, {delay: 0});
+    }
+
     cy.get('input[name="affiliation-en"]').should('have.attr', 'required');
     cy.get('input[name="affiliation-en"]').type(contributorData.affiliation, {delay: 0});
-    
+
     cy.get('.modal__panel:contains("Add Contributor")').find('button').contains('Save').click();
     cy.waitJQuery();
 }
@@ -59,6 +63,14 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
                     'email': 'ralph.fiennes@budapest.com',
                     'country': 'United Kingdom',
                     'affiliation': 'Hollywood'
+                },
+                {
+                    'given': 'Saoirse',
+                    'family': 'Ronan',
+                    'email': 'saoirse.ronan@budapest.com',
+                    'country': 'United States',
+                    'affiliation': 'Hollywood',
+                    'orcid': 'https://orcid.org/0000-0002-1825-0097'
                 }
             ]
 		};
@@ -129,5 +141,24 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.contains('button', 'Continue').click();
         cy.wait(1000);
         cy.contains('Some contributors have their name in capital letters. We ask that you correct them.').should('not.exist');
+    });
+    it('At least one contributor should have a ORCID assigned', function () {
+        cy.login('dphillips', null, 'publicknowledge');
+        cy.findSubmission('myQueue', submissionData.title);
+
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.wait(1000);
+        cy.contains('At least one contributor must have their ORCID confirmed. Please, check your e-mail');
+
+        cy.get('.pkpSteps__step button:contains("Contributors")').click();
+        addContributor(submissionData.contributors[2]);
+        cy.get('input[name="numberContributors"]').clear().type('3', {delay: 0});
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.wait(1000);
+        cy.contains('At least one contributor must have their ORCID confirmed. Please, check your e-mail').should('not.exist');
     });
 });

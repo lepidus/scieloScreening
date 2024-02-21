@@ -30,9 +30,6 @@ msgstr "Você precisa realizar a Verificação de DOIs abaixo!"
 msgid "plugins.generic.scieloScreening.required.affiliationForAll"
 msgstr "Todos os contribuidores da submissão devem ter sua afiliação preenchida"
 
-msgid "plugins.generic.scieloScreening.required.orcidLeastOne"
-msgstr "Ao menos um contribuidor precisa estar com seu ORCID confirmado. Por favor, verifique o seu e-mail."
-
 
 msgid "plugins.generic.scieloScreening.section.numberContributors.name"
 msgstr "Número de contribuidores"
@@ -49,6 +46,9 @@ msgstr "O número de contribuidores inseridos não é igual ao informado"
 
 msgid "plugins.generic.scieloScreening.reviewStep.error.uppercaseContributors"
 msgstr "Alguns contribuidores estão com o nome em caixa alta. Pedimos que os corrija."
+
+msgid "plugins.generic.scieloScreening.reviewStep.error.orcidLeastOne"
+msgstr "Ao menos um contribuidor precisa estar com seu ORCID confirmado. Por favor, verifique o seu e-mail."
 
 msgid "plugins.generic.scieloScreening.step4.dois"
 msgstr "Você informou não possuir DOIs de publicações prévias"
