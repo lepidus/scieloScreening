@@ -11,10 +11,6 @@ function beginSubmission(submissionData) {
 
 function detailsStep(submissionData) {
     cy.setTinyMceContent('titleAbstract-abstract-control-en', submissionData.abstract);
-    submissionData.keywords.forEach(keyword => {
-        cy.get('#titleAbstract-keywords-control-en').type(keyword, {delay: 0});
-        cy.get('#titleAbstract-keywords-control-en').type('{enter}', {delay: 0});
-    });
     cy.contains('button', 'Continue').click();
 }
 
@@ -195,5 +191,27 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
 
         cy.contains('You have not added any PDF documents to this submission').should('not.exist');
         cy.contains('Please send a single PDF file').should('not.exist');
+    });
+    it('Some submission metadata should be inserted in english', function () {
+        cy.login('dphillips', null, 'publicknowledge');
+        cy.findSubmission('myQueue', submissionData.title);
+
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.contains('The following metadata must be filled in english: Keywords');
+
+        cy.get('.pkpSteps__step button:contains("Details")').click();
+        submissionData.keywords.forEach(keyword => {
+            cy.get('#titleAbstract-keywords-control-en').type(keyword, {delay: 0});
+            cy.get('#titleAbstract-keywords-control-en').type('{enter}', {delay: 0});
+        });
+    
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.contains('The following metadata must be filled in english').should('not.exist');
     });
 });
