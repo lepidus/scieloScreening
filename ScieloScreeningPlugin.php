@@ -15,8 +15,6 @@ use APP\core\Application;
 use PKP\plugins\Hook;
 use APP\pages\submission\SubmissionHandler;
 use APP\plugins\generic\scieloScreening\classes\components\forms\NumberContributorsForm;
-use APP\plugins\generic\scieloScreening\classes\DOIScreeningDAO;
-use APP\plugins\generic\scieloScreening\classes\migration\DOIScreeningMigration;
 use APP\plugins\generic\scieloScreening\controllers\ScieloScreeningHandler;
 use APP\plugins\generic\scieloScreening\classes\ScreeningChecker;
 
@@ -61,11 +59,6 @@ class ScieloScreeningPlugin extends GenericPlugin
     public function getDescription()
     {
         return __('plugins.generic.scieloScreening.description');
-    }
-
-    public function getInstallMigration()
-    {
-        return new DOIScreeningMigration();
     }
 
     public function addOurFieldsToPublicationSchema($hookName, $params)

@@ -28,7 +28,7 @@
     Vai ao último passo. Ainda aparece a mensagem sobre PDFs.
     Volta, remove um dos PDFs. Mensagem vai desaparecer.
 
-Metadados da submissão foram informados em inglês
++ Metadados da submissão foram informados em inglês
     (Necessário que haja mais de um idioma pra submissões)
     A submissão deve ser feita em <outro-idioma>. Todos metadados devem ser informados nesse idioma.
     Chegando ao último passo, deve falar que metadados não foram preenchidos
@@ -37,5 +37,5 @@ Metadados da submissão foram informados em inglês
 
 ----Após submissão---
 
-Exibição dos estados das verificações no fluxo de trabalho
++ Exibição dos estados das verificações no fluxo de trabalho
 Verificar exibição dos registros no Histórico de Atividades
