@@ -151,29 +151,11 @@ msgstr "Informação da Moderação SciELO"
 msgid "plugins.generic.scieloScreening.info.description"
 msgstr "Veja abaixo o status de cada uma das verificações:"
 
-msgid "plugins.generic.scieloScreening.info.doiOkay"
-msgstr "A verificação dos DOIs foi feita corretamente. Veja cada DOI inserido abaixo:"
-
-msgid "plugins.generic.scieloScreening.info.doisWithoutConfirmedAuthorship"
-msgstr "Não foi possível confirmar a autoria de todos os DOIs informados"
-
-msgid "plugins.generic.scieloScreening.info.authorNameMetadata"
-msgstr "O nome nos metadados dessa submissão consta como: {$authorName}"
-
-msgid "plugins.generic.scieloScreening.info.doisInformed"
-msgstr "DOIs informados:"
-
-msgid "plugins.generic.scieloScreening.info.namesPresentInDOI"
-msgstr "Nomes que constam nesse DOI: {$authorsNames}"
-
-msgid "plugins.generic.scieloScreening.info.doiNotOkay"
-msgstr "O(a) autor(a) submissor(a) informou não possuir DOIs de publicações prévias"
-
 msgid "plugins.generic.scieloScreening.info.metadataEnglishOkay"
 msgstr "Todos os metadados foram preenchidos em inglês"
 
 msgid "plugins.generic.scieloScreening.info.metadataEnglishNotOkay"
-msgstr "Os seguintes metadados não foram preenchidos em inglês:"
+msgstr "Os seguintes metadados não foram preenchidos em inglês: {$missingMetadata}"
 
 msgid "plugins.generic.scieloScreening.info.affiliationOkay"
 msgstr "Todos os autores tiveram a sua afiliação preenchida"

@@ -21,7 +21,7 @@
             {else}
                 <div id="metadataEnglishHeader" class="headerWithoutBody">
                     <div class="screeningStatusNotOkay"></div>
-                    <span id="metadataEnglishMessage">{translate key="plugins.generic.scieloScreening.info.metadataEnglishNotOkay"} {$textMetadataScreening}</span>
+                    <span id="metadataEnglishMessage">{translate key="plugins.generic.scieloScreening.info.metadataEnglishNotOkay" missingMetadata=$missingMetadataEnglish}</span>
                 </div>
             {/if}
         </div>
@@ -64,18 +64,16 @@
             {if $numPDFs == 0}
                 <div id="pdfsHeader" class="headerWithoutBody">
                     <div class="screeningStatusNotOkay"></div>
-                    <span id="pdfsMessage">{translate key="plugins.generic.scieloScreening.step4.noPDFs"}</span>
+                    <span id="pdfsMessage">{translate key="plugins.generic.scieloScreening.info.noPDFs"}</span>
                 </div>
             {elseif $numPDFs > 1}
                 <div id="pdfsHeader">
                     <div class="screeningStatusNotOkay"></div>
-                    <span id="pdfsMessage">{translate key="plugins.generic.scieloScreening.step4.manyPDFs.header"}</span>
+                    <span id="pdfsMessage">{translate key="plugins.generic.scieloScreening.info.manyPDFs.header"}</span>
                 </div>
                 <div id="pdfsBody">
                     <ul>
-                        <li>{translate key="plugins.generic.scieloScreening.step4.manyPDFs.one"}</li>
-                        <li>{translate key="plugins.generic.scieloScreening.step4.manyPDFs.two"}</li>
-                        <li>{translate key="plugins.generic.scieloScreening.step4.manyPDFs.three"}</li>
+                        {translate key="plugins.generic.scieloScreening.info.manyPDFs.body"}
                     </ul>
                 </div>
             {else}
