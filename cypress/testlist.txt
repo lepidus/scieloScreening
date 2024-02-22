@@ -38,4 +38,3 @@
 ----Após submissão---
 
 + Exibição dos estados das verificações no fluxo de trabalho
-Verificar exibição dos registros no Histórico de Atividades

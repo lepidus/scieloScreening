@@ -12,46 +12,6 @@
         <p>{translate key="plugins.generic.scieloScreening.info.description"}</p>
     </div>
     <div id="screeningInfoFields">
-        <div id="doiInfoField">
-            {if $statusDOI == true}
-                <div id="doiHeader">
-                    <div class="screeningStatusOkay"></div>
-                    <span id="doiMessage">{translate key="plugins.generic.scieloScreening.info.doiOkay"}</span>
-                </div>
-                <div id="doiBody">
-                    <ul>
-                        {foreach from=$dois item="doi"}
-                            <li>
-                                <a href="https://doi.org/{$doi->getDOICode()}" target="_blank" rel="noopener noreferrer">{$doi->getDOICode()}</a>
-                            </li>
-                        {/foreach}
-                    </ul>
-                </div>
-            {elseif $statusDOI == false && $doisConfirmedAuthorship == false}
-                <div id="doiHeader">
-                    <div class="screeningStatusWarning"></div>
-                    <span id="doiMessage">{translate key="plugins.generic.scieloScreening.info.doisWithoutConfirmedAuthorship"}</span>
-                </div>
-                <div id="doiBody">
-                    <span>{translate key="plugins.generic.scieloScreening.info.authorNameMetadata" authorName=$authorFromSubmission}</span><br>
-                    <span>{translate key="plugins.generic.scieloScreening.info.doisInformed"}</span><br>
-                    <ul>
-                        {foreach from=$dois key="i" item="doi"}
-                            <li>
-                                <a href="https://doi.org/{$doi->getDOICode()}" target="_blank" rel="noopener noreferrer">{$doi->getDOICode()}</a>
-                                <span>({$doi->getConfirmedAuthorshipString()})</span><br>
-                                <span>{translate key="plugins.generic.scieloScreening.info.namesPresentInDOI" authorsNames=$authorsFromDOIs[$i]}</span>
-                            </li>
-                        {/foreach}
-                    </ul>
-                </div>
-            {else}
-                <div id="doiHeader" class="headerWithoutBody">
-                    <div class="screeningStatusWarning"></div>
-                    <span id="doiMessage">{translate key="plugins.generic.scieloScreening.info.doiNotOkay"}</span>
-                </div>
-            {/if}
-        </div>
         <div id="metadataEnglishInfoField">
             {if $statusMetadataEnglish == true}
                 <div id="metadataEnglishHeader" class="headerWithoutBody">

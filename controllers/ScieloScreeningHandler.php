@@ -73,9 +73,6 @@ class ScieloScreeningHandler extends Handler
 
     public function getScreeningData($submission)
     {
-        $doiScreeningDAO = new DOIScreeningDAO();
-        $dois = $doiScreeningDAO->getBySubmissionId($submission->getId());
-
         $dataScreening = array_merge(
             $this->getStatusAuthors($submission),
             $this->getStatusMetadataEnglish($submission),
