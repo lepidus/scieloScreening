@@ -205,6 +205,7 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.get('.pkpSteps__step button:contains("Details")').click();
         submissionData.keywords.forEach(keyword => {
             cy.get('#titleAbstract-keywords-control-en').type(keyword, {delay: 0});
+            cy.wait(500);
             cy.get('#titleAbstract-keywords-control-en').type('{enter}', {delay: 0});
         });
     
@@ -214,5 +215,12 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.contains('button', 'Continue').click();
         cy.wait(1000);
         cy.contains('The following metadata must be filled in english').should('not.exist');
+
+        cy.contains('button', 'Submit').click();
+        cy.get('.modal__panel:visible').within(() => {
+            cy.contains('button', 'Submit').click();
+        });
+        cy.waitJQuery();
+        cy.contains('h1', 'Submission complete');
     });
 });

@@ -34,6 +34,7 @@ class ScieloScreeningPlugin extends GenericPlugin
             Hook::add('Form::config::after', array($this, 'editContributorForm'));
             Hook::add('TemplateManager::display', [$this, 'modifySubmissionSteps']);
             Hook::add('Submission::validateSubmit', [$this, 'validateSubmissionFields']);
+            Hook::add('Template::SubmissionWizard::Section::Review', [$this, 'modifyReviewSections']);
             Hook::add('Schema::get::publication', [$this, 'addOurFieldsToPublicationSchema']);
             // Hook::add('Publication::validatePublish', [$this, 'validate']);
 
@@ -180,7 +181,7 @@ class ScieloScreeningPlugin extends GenericPlugin
         }
 
         if (!$dataScreening['statusMetadataEnglish']) {
-            $errors['missingMetadataEnglish'] = [
+            $errors['metadataEnglish'] = [
                 __('plugins.generic.scieloScreening.reviewStep.error.missingMetadataEnglish', ['missingMetadata' => $dataScreening['missingMetadataEnglish']])
             ];
         }
@@ -198,10 +199,27 @@ class ScieloScreeningPlugin extends GenericPlugin
             $contributorsErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.uppercaseContributors');
         }
 
-        $errors['contributors'] = $contributorsErrors;
-        $errors['files'] = $filesErrors;
+        if (!empty($contributorsErrors)) {
+            $errors['contributors'] = $contributorsErrors;
+        }
+        if (!empty($filesErrors)) {
+            $errors['files'] = $filesErrors;
+        }
 
         return false;
+    }
+
+    public function modifyReviewSections($hookName, $params)
+    {
+        $step = $params[0]['step'];
+        $templateMgr = $params[1];
+        $output = &$params[2];
+        $context = Application::get()->getRequest()->getContext();
+        $submission = $templateMgr->getTemplateVars('submission');
+
+        if ($step == 'details') {
+            $output .= $templateMgr->fetch($this->getTemplateResource('reviewMetadataEnglish.tpl'));
+        }
     }
 
     public function addValidationToStep2($hookName, $params)
