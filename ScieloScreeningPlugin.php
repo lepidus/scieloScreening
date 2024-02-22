@@ -36,12 +36,13 @@ class ScieloScreeningPlugin extends GenericPlugin
             Hook::add('Submission::validateSubmit', [$this, 'validateSubmissionFields']);
             Hook::add('Template::SubmissionWizard::Section::Review', [$this, 'modifyReviewSections']);
             Hook::add('Schema::get::publication', [$this, 'addOurFieldsToPublicationSchema']);
+            Hook::add('Template::Workflow::Publication', [$this, 'addToWorkFlow']);
+
             // Hook::add('Publication::validatePublish', [$this, 'validate']);
 
             // Hook::add('Settings::Workflow::listScreeningPlugins', [$this, 'listRules']);
 
             // Hook::add('Templates::Submission::SubmissionMetadataForm::AdditionalMetadata', [$this, 'metadataFieldEdit']);
-            // Hook::add('Template::Workflow::Publication', [$this, 'addToPublicationForms']);
             // Hook::add('Template::Workflow::Publication', [$this, 'addGalleysWarning']);
 
             // Hook::add('LoadComponentHandler', [$this, 'setupScieloScreeningHandler']);
@@ -333,11 +334,11 @@ class ScieloScreeningPlugin extends GenericPlugin
         return false;
     }
 
-    public function addToPublicationForms($hookName, $params)
+    public function addToWorkFlow($hookName, $params)
     {
         $smarty = & $params[1];
         $output = & $params[2];
-        $submission = $smarty->get_template_vars('submission');
+        $submission = $smarty->getTemplateVars('submission');
         $scieloScreeningHandler = new ScieloScreeningHandler();
         $dataScreening = $scieloScreeningHandler->getScreeningData($submission);
 
