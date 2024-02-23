@@ -13,6 +13,9 @@ namespace APP\plugins\generic\scieloScreening;
 use PKP\plugins\GenericPlugin;
 use APP\core\Application;
 use PKP\plugins\Hook;
+use PKP\db\DAORegistry;
+use APP\facades\Repo;
+use PKP\security\Role;
 use APP\pages\submission\SubmissionHandler;
 use APP\plugins\generic\scieloScreening\classes\components\forms\NumberContributorsForm;
 use APP\plugins\generic\scieloScreening\controllers\ScieloScreeningHandler;
@@ -35,11 +38,11 @@ class ScieloScreeningPlugin extends GenericPlugin
             Hook::add('Template::SubmissionWizard::Section::Review', [$this, 'modifyReviewSections']);
             Hook::add('Schema::get::publication', [$this, 'addOurFieldsToPublicationSchema']);
             Hook::add('Template::Workflow::Publication', [$this, 'addToWorkFlow']);
-            Hook::add('Template::Workflow::Publication', [$this, 'addPdfsWarningToGalleyTab']);
+            Hook::add('Template::Workflow::Publication', [$this, 'addPdfsWarningToGalleysTab']);
 
-            // Hook::add('Publication::validatePublish', [$this, 'validate']);
+            Hook::add('Publication::validatePublish', [$this, 'validateOnPosting']);
 
-            // Hook::add('Settings::Workflow::listScreeningPlugins', [$this, 'listRules']);
+            //Hook::add('Settings::Workflow::listScreeningPlugins', [$this, 'listRules']);
 
             // Hook::add('LoadComponentHandler', [$this, 'setupScieloScreeningHandler']);
         }
@@ -240,7 +243,7 @@ class ScieloScreeningPlugin extends GenericPlugin
         );
     }
 
-    public function addPdfsWarningToGalleyTab($hookName, $params)
+    public function addPdfsWarningToGalleysTab($hookName, $params)
     {
         $smarty = & $params[1];
         $output = & $params[2];
@@ -258,20 +261,20 @@ class ScieloScreeningPlugin extends GenericPlugin
         return $rules;
     }
 
-    public function validate($hookName, $args)
+    public function validateOnPosting($hookName, $args)
     {
         $errors = & $args[0];
         $submission = $args[2];
         $scieloScreeningHandler = new ScieloScreeningHandler();
         $statusAuthors = $scieloScreeningHandler->getStatusAuthors($submission);
-        $okayForPublishing = true;
+        $canPostSubmission = true;
 
         if (!$statusAuthors['statusAffiliation']) {
             $errors = array_merge(
                 $errors,
                 array('affiliationForAll' => __('plugins.generic.scieloScreening.required.affiliationForAll'))
             );
-            $okayForPublishing = false;
+            $canPostSubmission = false;
         }
 
         if ($this->userIsAuthor($submission) && !$statusAuthors['statusOrcid']) {
@@ -279,26 +282,26 @@ class ScieloScreeningPlugin extends GenericPlugin
                 $errors,
                 array('orcidLeastOne' => __('plugins.generic.scieloScreening.required.orcidLeastOne'))
             );
-            $okayForPublishing = false;
+            $canPostSubmission = false;
         }
 
-        return $okayForPublishing;
+        return $canPostSubmission;
     }
 
     private function userIsAuthor($submission)
     {
-        $currentUser = \Application::get()->getRequest()->getUser();
+        $currentUser = Application::get()->getRequest()->getUser();
         $currentUserAssignedRoles = array();
         if ($currentUser) {
-            $stageAssignmentDao = DAORegistry::getDAO('StageAssignmentDAO'); /* @var $stageAssignmentDao StageAssignmentDAO */
+            $stageAssignmentDao = DAORegistry::getDAO('StageAssignmentDAO');
             $stageAssignmentsResult = $stageAssignmentDao->getBySubmissionAndUserIdAndStageId($submission->getId(), $currentUser->getId(), $submission->getData('stageId'));
-            $userGroupDao = DAORegistry::getDAO('UserGroupDAO'); /* @var $userGroupDao UserGroupDAO */
+
             while ($stageAssignment = $stageAssignmentsResult->next()) {
-                $userGroup = $userGroupDao->getById($stageAssignment->getUserGroupId(), $submission->getData('contextId'));
+                $userGroup = Repo::userGroup()->get($stageAssignment->getUserGroupId(), $submission->getData('contextId'));
                 $currentUserAssignedRoles[] = (int) $userGroup->getRoleId();
             }
         }
 
-        return $currentUserAssignedRoles[0] == ROLE_ID_AUTHOR;
+        return $currentUserAssignedRoles[0] == Role::ROLE_ID_AUTHOR;
     }
 }

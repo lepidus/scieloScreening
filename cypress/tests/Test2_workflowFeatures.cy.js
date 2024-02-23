@@ -133,4 +133,12 @@ describe('SciELO Screening Plugin - WorkFlow features tests', function() {
         cy.contains('No author had confirmed their ORCID');
         cy.contains('Please send a single PDF file');
     });
+    it("Displays screening rules on submission posting", function () {
+        cy.login('dbarnes', null, 'publicknowledge');
+        cy.findSubmission('active', unscreenedSubmissionData.title);
+        cy.contains('button', 'Preprint').click();
+        
+        cy.get('.pkpHeader__actions button:contains("Post")').click();
+        cy.contains('All submission contributors must have their affiliation filled');
+    });
 });
