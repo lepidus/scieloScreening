@@ -35,18 +35,13 @@ class ScieloScreeningPlugin extends GenericPlugin
             Hook::add('Template::SubmissionWizard::Section::Review', [$this, 'modifyReviewSections']);
             Hook::add('Schema::get::publication', [$this, 'addOurFieldsToPublicationSchema']);
             Hook::add('Template::Workflow::Publication', [$this, 'addToWorkFlow']);
+            Hook::add('Template::Workflow::Publication', [$this, 'addPdfsWarningToGalleyTab']);
 
             // Hook::add('Publication::validatePublish', [$this, 'validate']);
 
             // Hook::add('Settings::Workflow::listScreeningPlugins', [$this, 'listRules']);
 
-            // Hook::add('Templates::Submission::SubmissionMetadataForm::AdditionalMetadata', [$this, 'metadataFieldEdit']);
-            // Hook::add('Template::Workflow::Publication', [$this, 'addGalleysWarning']);
-
             // Hook::add('LoadComponentHandler', [$this, 'setupScieloScreeningHandler']);
-            // Hook::add('submissionsubmitstep2form::validate', [$this, 'addValidationToStep2']);
-            // Hook::add('submissionsubmitstep3form::validate', [$this, 'addValidationToStep3']);
-            // Hook::add('submissionsubmitstep4form::display', [$this, 'addToStep4']);
         }
         return $success;
     }
@@ -216,85 +211,6 @@ class ScieloScreeningPlugin extends GenericPlugin
         }
     }
 
-    public function addValidationToStep2($hookName, $params)
-    {
-        $form = & $params[0];
-        $submission = $form->submission;
-
-        $checker = new ScreeningChecker();
-        $galleys = $submission->getGalleys();
-        $galleysFileTypes = array_map(function ($galley) {
-            return ($galley->getFileType());
-        }, $galleys);
-
-        if (!$checker->checkNumberPdfs($galleysFileTypes)[0]) {
-            $form->addErrorField('submitStep2FormNotification');
-            $form->addError('submitStep2FormNotification', __("plugins.generic.scieloScreening.required.numberPDFs"));
-            return;
-        }
-    }
-
-    public function addValidationToStep3($hookName, $params)
-    {
-        $form = & $params[0];
-        $form->readUserVars(array('inputNumberAuthors', 'checkCantScreening'));
-        $submission = $form->submission;
-        if (!$this->userIsAuthor($submission)) {
-            return;
-        }
-
-        $inputNumberAuthors = $form->getData('inputNumberAuthors');
-        $checkCantScreening = $form->getData('checkCantScreening');
-
-        $checker = new ScreeningChecker();
-        $authors = $submission->getAuthors();
-        if ($inputNumberAuthors != count($authors)) {
-            $form->addErrorField('submitStep2FormNotification');
-            $form->addError('submitStep2FormNotification', __("plugins.generic.scieloScreening.required.numberAuthors"));
-            return;
-        };
-
-        $nameAuthors = array_map(function ($author) {
-            return $author->getLocalizedGivenName() . $author->getLocalizedFamilyName();
-        }, $authors);
-        if ($checker->checkHasUppercaseAuthors($nameAuthors)) {
-            $form->addErrorField('authorsGridContainer');
-            $form->addError('authorsGridContainer', __("plugins.generic.scieloScreening.required.nameUppercase"));
-            return;
-        }
-
-        $orcidAuthors = array_map(function ($author) {
-            return $author->getOrcid();
-        }, $authors);
-        if (!$checker->checkOrcidAuthors($orcidAuthors)) {
-            $form->addErrorField('authorsGridContainer');
-            $form->addError('authorsGridContainer', __("plugins.generic.scieloScreening.required.orcidLeastOne"));
-            return;
-        }
-
-        $doisInformedAtScreening = DAORegistry::getDAO('DOIScreeningDAO')->getBySubmissionId($submission->getId());
-        $doiScreeningDone = (count($doisInformedAtScreening) > 0);
-        if ($checkCantScreening != "1" && !$doiScreeningDone) {
-            $form->addErrorField('errorScreening');
-            $form->addError('errorScreening', __("plugins.generic.scieloScreening.required.doiScreening"));
-            return;
-        }
-    }
-
-    public function addToStep4($hookName, $params)
-    {
-        $submission = $params[0]->submission;
-        $request = Application::get()->getRequest();
-        $templateMgr = TemplateManager::getManager($request);
-
-        $scieloScreeningHandler = new ScieloScreeningHandler();
-        $dataScreening = $scieloScreeningHandler->getScreeningData($submission);
-        $templateMgr->assign($dataScreening);
-        $templateMgr->registerFilter("output", array($this, 'statusScreeningFormFilter'));
-
-        return false;
-    }
-
     public function statusScreeningFormFilter($output, $templateMgr)
     {
         if (preg_match('/<input[^>]+name="submissionId"[^>]*>/', $output, $matches, PREG_OFFSET_CAPTURE)) {
@@ -306,25 +222,6 @@ class ScieloScreeningPlugin extends GenericPlugin
             $templateMgr->unregisterFilter('output', array($this, 'statusScreeningFormFilter'));
         }
         return $output;
-    }
-
-    public function metadataFieldEdit($hookName, $params)
-    {
-        $smarty = & $params[1];
-        $output = & $params[2];
-
-        $submissionId = $smarty->smarty->get_template_vars('submissionId');
-        $submission = DAORegistry::getDAO('SubmissionDAO')->getById($submissionId);
-
-        $dois = DAORegistry::getDAO('DOIScreeningDAO')->getBySubmissionId($submissionId);
-
-        $smarty->assign([
-            'userIsAuthor' => $this->userIsAuthor($submission),
-            'dois' => $dois
-        ]);
-
-        $output .= $smarty->fetch($this->getTemplateResource('editDOISubmission.tpl'));
-        return false;
     }
 
     public function addToWorkFlow($hookName, $params)
@@ -343,7 +240,7 @@ class ScieloScreeningPlugin extends GenericPlugin
         );
     }
 
-    public function addGalleysWarning($hookName, $params)
+    public function addPdfsWarningToGalleyTab($hookName, $params)
     {
         $smarty = & $params[1];
         $output = & $params[2];
