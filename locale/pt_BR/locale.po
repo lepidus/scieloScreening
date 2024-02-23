@@ -21,16 +21,6 @@ msgid "plugins.generic.scieloScreening.description"
 msgstr "Adiciona novas regras de verificação durante a submissão de acordo com as políticas editoriais da SciELO Preprints"
 
 
-msgid "plugins.generic.scieloScreening.required.numberPDFs"
-msgstr "Você deve enviar ao menos um e não mais que um documento PDF"
-
-msgid "plugins.generic.scieloScreening.required.doiScreening"
-msgstr "Você precisa realizar a Verificação de DOIs abaixo!"
-
-msgid "plugins.generic.scieloScreening.required.affiliationForAll"
-msgstr "Todos os contribuidores da submissão devem ter sua afiliação preenchida"
-
-
 msgid "plugins.generic.scieloScreening.section.numberContributors.name"
 msgstr "Número de contribuidores"
 
@@ -39,7 +29,7 @@ msgstr "Por favor, informe o número total de contribuidores desta publicação"
 
 
 msgid "plugins.generic.scieloScreening.reviewStep.error.affiliation"
-msgstr "Você não preencheu a afiliação de todos os contribuidores."
+msgstr "Todos os contribuidores da submissão devem ter sua afiliação preenchida"
 
 msgid "plugins.generic.scieloScreening.reviewStep.error.numberContributors"
 msgstr "O número de contribuidores inseridos não é igual ao informado"

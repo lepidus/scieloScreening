@@ -263,7 +263,7 @@ class ScieloScreeningPlugin extends GenericPlugin
 
     public function validateOnPosting($hookName, $args)
     {
-        $errors = & $args[0];
+        $errors = &$args[0];
         $submission = $args[2];
         $scieloScreeningHandler = new ScieloScreeningHandler();
         $statusAuthors = $scieloScreeningHandler->getStatusAuthors($submission);
@@ -272,7 +272,7 @@ class ScieloScreeningPlugin extends GenericPlugin
         if (!$statusAuthors['statusAffiliation']) {
             $errors = array_merge(
                 $errors,
-                array('affiliationForAll' => __('plugins.generic.scieloScreening.required.affiliationForAll'))
+                ['affiliationForAll' => __('plugins.generic.scieloScreening.reviewStep.error.affiliation')]
             );
             $canPostSubmission = false;
         }
@@ -280,7 +280,7 @@ class ScieloScreeningPlugin extends GenericPlugin
         if ($this->userIsAuthor($submission) && !$statusAuthors['statusOrcid']) {
             $errors = array_merge(
                 $errors,
-                array('orcidLeastOne' => __('plugins.generic.scieloScreening.required.orcidLeastOne'))
+                ['orcidLeastOne' => __('plugins.generic.scieloScreening.reviewStep.error.orcidLeastOne')]
             );
             $canPostSubmission = false;
         }

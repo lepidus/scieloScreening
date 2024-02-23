@@ -140,5 +140,26 @@ describe('SciELO Screening Plugin - WorkFlow features tests', function() {
         
         cy.get('.pkpHeader__actions button:contains("Post")').click();
         cy.contains('All submission contributors must have their affiliation filled');
+        cy.get('a.pkpModalCloseButton:visible').click();
+
+        cy.contains('button', 'Contributors').click();
+        cy.get('.listPanel__itemTitle:visible:contains("Jason Schwartzman")')
+            .parent().parent().within(() => {
+                cy.contains('button', 'Edit').click();
+            });
+        cy.get('input[name="affiliation-en"]').type(unscreenedSubmissionData.contributors[0].affiliation, {delay: 0});
+        cy.get('.modal__panel:contains("Edit")').find('button').contains('Save').click();
+        cy.waitJQuery();
+
+        cy.get('.listPanel__itemTitle:visible:contains("Scarlett Johanson")')
+            .parent().parent().within(() => {
+                cy.contains('button', 'Edit').click();
+            });
+        cy.get('input[name="affiliation-en"]').type(unscreenedSubmissionData.contributors[0].affiliation, {delay: 0});
+        cy.get('.modal__panel:contains("Edit")').find('button').contains('Save').click();
+        cy.waitJQuery();
+
+        cy.get('.pkpHeader__actions button:contains("Post")').click();
+        cy.contains('All requirements have been met. Are you sure you want to post this?');
     });
 });

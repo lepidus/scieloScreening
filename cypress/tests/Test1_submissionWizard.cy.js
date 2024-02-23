@@ -98,7 +98,7 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.contains('button', 'Continue').click();
         cy.contains('button', 'Continue').click();
         cy.wait(1000);
-        cy.contains('You have not filled in the affiliation for all contributors').should('not.exist');
+        cy.contains('All submission contributors must have their affiliation filled').should('not.exist');
         cy.contains('The number of contributors entered is not the same as that reported');
 
         cy.get('.pkpSteps__step button:contains("Contributors")').click();

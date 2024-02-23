@@ -21,16 +21,6 @@ msgid "plugins.generic.scieloScreening.description"
 msgstr "Adds new screening rules during submission according to SciELO Preprints' editorial policies"
 
 
-msgid "plugins.generic.scieloScreening.required.numberPDFs"
-msgstr "You must send at least one and no more than one PDF document"
-
-msgid "plugins.generic.scieloScreening.required.doiScreening"
-msgstr "You need to perform the DOI Screening below!"
-
-msgid "plugins.generic.scieloScreening.required.affiliationForAll"
-msgstr "All submission contributors must have their affiliation filled"
-
-
 msgid "plugins.generic.scieloScreening.section.numberContributors.name"
 msgstr "Number of contributors"
 
@@ -39,7 +29,7 @@ msgstr "Please inform the total number of contributors to this publication"
 
 
 msgid "plugins.generic.scieloScreening.reviewStep.error.affiliation"
-msgstr "You have not filled in the affiliation for all contributors"
+msgstr "All submission contributors must have their affiliation filled"
 
 msgid "plugins.generic.scieloScreening.reviewStep.error.numberContributors"
 msgstr "The number of contributors entered is not the same as that reported"
