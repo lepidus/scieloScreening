@@ -14,9 +14,6 @@ msgstr ""
 msgid "plugins.generic.scieloScreening.displayName"
 msgstr "Moderación de SciELO"
 
-msgid "plugins.generic.scieloScreening.doiScreeningLabel"
-msgstr "Verificación de DOIs"
-
 msgid "plugins.generic.scieloScreening.description"
 msgstr "Agrega nuevas reglas de verificación durante el envío de acuerdo con las políticas editoriales de SciELO Preprints"
 
@@ -51,88 +48,6 @@ msgstr "Por favor, envíe un único archivo PDF. "
 
 msgid "plugins.generic.scieloScreening.reviewStep.error.missingMetadataEnglish"
 msgstr "Los seguintes metadatos deben completarse en inglés: {$missingMetadata}"
-
-
-msgid "plugins.generic.scieloScreening.step4.dois"
-msgstr "Informaste que no tienes DOIs de publicaciones anteriores"
-
-msgid "plugins.generic.scieloScreening.step4.doisWithoutConfirmedAuthorship"
-msgstr "No fue posible confirmar la autoría de algunos DOI informados"
-
-msgid "plugins.generic.scieloScreening.step4.certifyYourNameinDOIs"
-msgstr "Asegúrese de que su nombre esté entre los autores en los DOI informados y, de ser así, continúe. Los moderadores realizarán una verificación manual después del envío."
-
-
-msgid "plugins.generic.scieloScreening.submission.contributors"
-msgstr "Colaboradores/as"
-
-msgid "plugins.generic.scieloScreening.submission.numberAuthors"
-msgstr "Ingrese el número total de autores para esa publicación:"
-
-msgid "plugins.generic.scieloScreening.submission.warningAffiliation"
-msgstr "Asegúrese de que todos los contribuyentes tengan sus afiliaciones completas. Esto es necesario para la aprobación de su envío."
-
-msgid "plugins.generic.scieloScreening.submission.description"
-msgstr "Inserte DOIs de sus proprios artículos publicados en revistas especializadas. Debe ingressar dos DOI de los últimos 2 años O tres DOI de cualquier fecha"
-
-msgid "plugins.generic.scieloScreening.submission.waitDOIValidation"
-msgstr "Después de ingresar cada DOI, se iniciará un proceso de validación. Debe esperar a que se validen todos los DOI ingresados ​​antes de hacer clic en \"Guardar\""
-
-msgid "plugins.generic.scieloScreening.submission.first"
-msgstr "Primero DOI"
-
-msgid "plugins.generic.scieloScreening.submission.second"
-msgstr "Segundo DOI"
-
-msgid "plugins.generic.scieloScreening.submission.third"
-msgstr "Tercero DOI"
-
-
-msgid "plugins.generic.scieloScreening.doiDifferentRequirement"
-msgstr "Los DOI no pueden ser lo mismo"
-
-msgid "plugins.generic.scieloScreening.attentionRules"
-msgstr "Por favor, respete las reglas establecidas anteriormente"
-
-msgid "plugins.generic.scieloScreening.crossrefRequirement"
-msgstr "Sólo se aceptan DOIs de la Crossref"
-
-msgid "plugins.generic.scieloScreening.doiNotRegistered"
-msgstr "El DOI ingresado no está registrado. Confirme que sea correcto y, en caso de duda, consulte con la publicación fuente."
-
-msgid "plugins.generic.scieloScreening.doiFromAuthor"
-msgstr "Por favor, ingrese un DOI que sea suyo. También asegúrese de que su nombre en el sistema sea similar a su nombre en el artículo"
-
-msgid "plugins.generic.scieloScreening.doiFromJournal"
-msgstr "Por favor, ingrese un DOI de una publicación en una revista"
-
-msgid "plugins.generic.scieloScreening.warningValidatingDOI"
-msgstr "Validando el DOI ingresado..."
-
-msgid "plugins.generic.scieloScreening.DOIValidated"
-msgstr "¡DOI validado con éxito!"
-
-msgid "plugins.generic.scieloScreening.successfulScreening"
-msgstr "¡Operación realizada con éxito!"
-
-
-msgid "plugins.generic.scieloScreening.modal"
-msgstr "Hacer verificación"
-
-msgid "plugins.generic.scieloScreening.screeningRequirement"
-msgstr "¡Necesitas realizar este paso!"
-
-msgid "plugins.generic.scieloScreening.instructions"
-msgstr "Para continuar con el envío automáticamente, se debe hacer una verificación de sus publicaciones anteriores. De lo contrario, su publicación deberá ser aprobada por un moderador."
-
-msgid "plugins.generic.scieloScreening.caseCantScreening"
-msgstr "Si no puede hacer la verificación, marque la casilla a continuación:"
-
-msgid "plugins.generic.scieloScreening.declaration"
-msgstr "No tengo los DOI solicitados para proporcionar"
-
-msgid "plugins.generic.scieloScreening.doiScreeningDone"
-msgstr "Ya has completado este paso"
 
 
 msgid "plugins.generic.scieloScreening.info.name"

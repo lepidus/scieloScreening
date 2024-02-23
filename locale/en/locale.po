@@ -14,9 +14,6 @@ msgstr ""
 msgid "plugins.generic.scieloScreening.displayName"
 msgstr "SciELO Screening"
 
-msgid "plugins.generic.scieloScreening.doiScreeningLabel"
-msgstr "DOI Screening"
-
 msgid "plugins.generic.scieloScreening.description"
 msgstr "Adds new screening rules during submission according to SciELO Preprints editorial policies"
 
@@ -51,88 +48,6 @@ msgstr "Please send a single PDF file. "
 
 msgid "plugins.generic.scieloScreening.reviewStep.error.missingMetadataEnglish"
 msgstr "The following metadata must be filled in english: {$missingMetadata}"
-
-
-msgid "plugins.generic.scieloScreening.step4.dois"
-msgstr "You informed not having DOIs of previous publications."
-
-msgid "plugins.generic.scieloScreening.step4.doisWithoutConfirmedAuthorship"
-msgstr "It was not possible to confirm the authorship of some informed DOIs"
-
-msgid "plugins.generic.scieloScreening.step4.certifyYourNameinDOIs"
-msgstr "Make sure your name is among the authors of the informed DOIs and if so, proceed. A manual check will be done by moderators after submission."
-
-
-msgid "plugins.generic.scieloScreening.submission.contributors"
-msgstr "Contributors"
-
-msgid "plugins.generic.scieloScreening.submission.numberAuthors"
-msgstr "Please, enter the total number of authors of this publication:"
-
-msgid "plugins.generic.scieloScreening.submission.warningAffiliation"
-msgstr "Please make sure that all contributors have their affiliations filled. This is necessary for the approval of your submission."
-
-msgid "plugins.generic.scieloScreening.submission.description"
-msgstr "Please insert DOIs from previous articles of your own authorship published in peer reviewed journals. You must enter two DOIs from the past 2 years OR three DOIs from any date"
-
-msgid "plugins.generic.scieloScreening.submission.waitDOIValidation"
-msgstr "After inserting each DOI, a validation process will be started. You must wait for all DOIs inserted to be validated before clicking \"Save\""
-
-msgid "plugins.generic.scieloScreening.submission.first"
-msgstr "First DOI"
-
-msgid "plugins.generic.scieloScreening.submission.second"
-msgstr "Second DOI"
-
-msgid "plugins.generic.scieloScreening.submission.third"
-msgstr "Third DOI"
-
-
-msgid "plugins.generic.scieloScreening.doiDifferentRequirement"
-msgstr "DOI cannot be the same"
-
-msgid "plugins.generic.scieloScreening.attentionRules"
-msgstr "Please, abide by the rules set out above"
-
-msgid "plugins.generic.scieloScreening.crossrefRequirement"
-msgstr "Only DOIs from Crossref are allowed"
-
-msgid "plugins.generic.scieloScreening.doiNotRegistered"
-msgstr "The DOI inserted is not registered. Confirm that it is correct and, in case of any doubt, check with the publication's origin."
-
-msgid "plugins.generic.scieloScreening.doiFromAuthor"
-msgstr "Please, enter a DOI of yours. Also make sure your name in the system is similar to your name in the article"
-
-msgid "plugins.generic.scieloScreening.doiFromJournal"
-msgstr "Please, enter a DOI of a journal publication"
-
-msgid "plugins.generic.scieloScreening.warningValidatingDOI"
-msgstr "Validating the DOI inserted..."
-
-msgid "plugins.generic.scieloScreening.DOIValidated"
-msgstr "DOI validated successfully!"
-
-msgid "plugins.generic.scieloScreening.successfulScreening"
-msgstr "Operation performed successfully!"
-
-
-msgid "plugins.generic.scieloScreening.modal"
-msgstr "Do screening"
-
-msgid "plugins.generic.scieloScreening.screeningRequirement"
-msgstr "You need to perform this step!"
-
-msgid "plugins.generic.scieloScreening.instructions"
-msgstr "To proceed automatically with the submission, you must do a screening of your previous publications. Otherwise, your submission will need to be approved by a moderator."
-
-msgid "plugins.generic.scieloScreening.caseCantScreening"
-msgstr "If you can't do the screening, select the checkbox below:"
-
-msgid "plugins.generic.scieloScreening.declaration"
-msgstr "I don't have the requested DOIs to provide"
-
-msgid "plugins.generic.scieloScreening.doiScreeningDone"
-msgstr "You have already completed this step"
 
 
 msgid "plugins.generic.scieloScreening.info.name"
