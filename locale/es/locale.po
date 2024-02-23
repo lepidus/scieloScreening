@@ -172,6 +172,17 @@ msgstr "Ningún autor ha confirmado su ORCID"
 msgid "plugins.generic.scieloScreening.info.pdfsOkay"
 msgstr "Solo se envió un documento PDF"
 
+msgid "plugins.generic.scieloScreening.info.noPDFs"
+msgstr "No se han agregado documentos PDF a este envío"
+
+msgid "plugins.generic.scieloScreening.info.manyPDFs.header"
+msgstr "Por favor, envíe un único archivo PDF. "
+
+msgid "plugins.generic.scieloScreening.info.manyPDFs.body"
+msgstr "<li>Si envía archivos adyacentes al manuscrito, por favor inclúyalos en lo mismo archivo PDF con el manuscrito principal</li>"
+"<li>Si está enviando una versión corregida del manuscrito, asegúrese de borrar el archivo PDF actual antes de enviar uno nuevo</li>"
+"<li>Si se trata de la versión traducida del manuscrito, se requerirá un nuevo envío, con un ID diferente</li>"
+
 
 msgid "plugins.generic.scieloScreening.log.doiValidatedAuthorshipConfirmed"
 msgstr "El DOI {$doi} fue validado con éxito y se confirmó su autoría."

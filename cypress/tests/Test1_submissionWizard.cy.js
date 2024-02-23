@@ -72,7 +72,7 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
 		};
         dummyPdf = {
             'file': 'dummy.pdf',
-            'fileName': 'dummy-1.pdf',
+            'fileName': 'dummy.pdf',
             'mimeType': 'application/pdf',
             'genre': 'Preprint Text'
         };

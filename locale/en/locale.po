@@ -172,6 +172,17 @@ msgstr "No author had confirmed their ORCID"
 msgid "plugins.generic.scieloScreening.info.pdfsOkay"
 msgstr "Only one PDF document was submitted"
 
+msgid "plugins.generic.scieloScreening.info.noPDFs"
+msgstr "No PDF documents have been added to this submission"
+
+msgid "plugins.generic.scieloScreening.info.manyPDFs.header"
+msgstr "Please send a single PDF file"
+
+msgid "plugins.generic.scieloScreening.info.manyPDFs.body"
+msgstr "<li>If you are sending files associated with the manuscript, please include them in the same PDF as the manuscript</li>"
+"<li>If you are sending a new version of the manuscript, make sure to delete the current PDF file before uploading a new one</li>"
+"<li>If this is a translated version of the manuscript, a new submission will be necessary, with a different ID</li>"
+
 
 msgid "plugins.generic.scieloScreening.log.doiValidatedAuthorshipConfirmed"
 msgstr "The DOI {$doi} was successfully validated and its authorship has been confirmed."
