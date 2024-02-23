@@ -104,33 +104,35 @@ class ScieloScreeningPlugin extends GenericPlugin
             return false;
         }
 
-        $publication = $submission->getCurrentPublication();
-        $publicationApiUrl = $request->getDispatcher()->url(
-            $request,
-            Application::ROUTE_API,
-            $request->getContext()->getPath(),
-            'submissions/' . $submission->getId() . '/publications/' . $publication->getId()
-        );
-        $numberContributorsForm = new NumberContributorsForm(
-            $publicationApiUrl,
-            $publication,
-        );
+        if ($this->userIsAuthor($submission)) {
+            $publication = $submission->getCurrentPublication();
+            $publicationApiUrl = $request->getDispatcher()->url(
+                $request,
+                Application::ROUTE_API,
+                $request->getContext()->getPath(),
+                'submissions/' . $submission->getId() . '/publications/' . $publication->getId()
+            );
+            $numberContributorsForm = new NumberContributorsForm(
+                $publicationApiUrl,
+                $publication,
+            );
 
-        $steps = $templateMgr->getState('steps');
-        $steps = array_map(function ($step) use ($numberContributorsForm) {
-            if ($step['id'] === 'contributors') {
-                $step['sections'][] = [
-                    'id' => 'numberContributors',
-                    'name' => __('plugins.generic.scieloScreening.section.numberContributors.name'),
-                    'description' => __('plugins.generic.scieloScreening.section.numberContributors.description'),
-                    'type' => SubmissionHandler::SECTION_TYPE_FORM,
-                    'form' => $numberContributorsForm->getConfig(),
-                ];
-            }
-            return $step;
-        }, $steps);
+            $steps = $templateMgr->getState('steps');
+            $steps = array_map(function ($step) use ($numberContributorsForm) {
+                if ($step['id'] === 'contributors') {
+                    $step['sections'][] = [
+                        'id' => 'numberContributors',
+                        'name' => __('plugins.generic.scieloScreening.section.numberContributors.name'),
+                        'description' => __('plugins.generic.scieloScreening.section.numberContributors.description'),
+                        'type' => SubmissionHandler::SECTION_TYPE_FORM,
+                        'form' => $numberContributorsForm->getConfig(),
+                    ];
+                }
+                return $step;
+            }, $steps);
 
-        $templateMgr->setState(['steps' => $steps]);
+            $templateMgr->setState(['steps' => $steps]);
+        }
 
         return false;
     }
@@ -166,10 +168,12 @@ class ScieloScreeningPlugin extends GenericPlugin
             ];
         }
 
-        $numberContributorsInformed = $publication->getData('numberContributors');
         $authors = $publication->getData('authors')->toArray();
-        if ($numberContributorsInformed != count($authors)) {
-            $contributorsErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.numberContributors');
+        if ($this->userIsAuthor($submission)) {
+            $numberContributorsInformed = $publication->getData('numberContributors');
+            if ($numberContributorsInformed != count($authors)) {
+                $contributorsErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.numberContributors');
+            }
         }
 
         $authorsNames = array_map(function ($author) {
