@@ -18,7 +18,7 @@ msgid "plugins.generic.scieloScreening.doiScreeningLabel"
 msgstr "DOI Screening"
 
 msgid "plugins.generic.scieloScreening.description"
-msgstr "Adds new screening rules during submission according to SciELO Preprints' editorial policies"
+msgstr "Adds new screening rules during submission according to SciELO Preprints editorial policies"
 
 
 msgid "plugins.generic.scieloScreening.section.numberContributors.name"
@@ -190,26 +190,20 @@ msgid "plugins.generic.scieloScreening.log.doiScreeningNotCompleted"
 msgstr "The submitter tried to complete the DOI screening without success. The DOIs informed were: {$doisImploded}"
 
 
-msgid "plugins.generic.scieloScreening.httpDOINotFoundErrorCode"
-msgstr "The DOI entered is not registered. Confirm that it is correct and, if problem persists, check the source publication."
+msgid "plugins.generic.scieloScreening.screeningRules.affiliation"
+msgstr "All submission contributors must have their affiliation filled"
 
-msgid "plugins.generic.scieloScreening.httpServerErrorCode"
-msgstr "{$server} server error, try again in a few moments and if the problem persists, contact your administrator."
+msgid "plugins.generic.scieloScreening.screeningRules.orcidLeastOne"
+msgstr "At least one contributor must have their ORCID confirmed"
 
-msgid "plugins.generic.scieloScreening.unknownHttpErrorCode"
-msgstr "Unknown return code from {$server}. Try again in a few moments and, if the problem persists, contact your administrator."
+msgid "plugins.generic.scieloScreening.screeningRules.numberContributors"
+msgstr "The total number of contributors to the submission must be entered"
 
-msgid "plugins.generic.scieloScreening.communicationFailure"
-msgstr "Communication with {$server} failed. Try again in a few moments and, if the problem persists, contact your administrator."
+msgid "plugins.generic.scieloScreening.screeningRules.uppercaseContributors"
+msgstr "No contributor should have their name in capital letters"
 
-msgid "plugins.generic.scieloScreening.httpDOINullErrorCode"
-msgstr "Check that the DOI has been entered correctly."
+msgid "plugins.generic.scieloScreening.screeningRules.numPdfs"
+msgstr "Only one PDF document should be sent"
 
-msgid "plugins.generic.scieloScreening.crossrefInvalidErrorCode"
-msgstr "The value entered is not a DOI."
-
-msgid "plugins.generic.scieloScreening.authorshipConfirmed"
-msgstr "authorship confirmed"
-
-msgid "plugins.generic.scieloScreening.authorshipNotConfirmed"
-msgstr "authorship not confirmed"
+msgid "plugins.generic.scieloScreening.screeningRules.metadataEnglish"
+msgstr "Title, abstract and keywords must be also filled in English, as well as in the language of submission."

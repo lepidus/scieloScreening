@@ -41,8 +41,7 @@ class ScieloScreeningPlugin extends GenericPlugin
             Hook::add('Template::Workflow::Publication', [$this, 'addPdfsWarningToGalleysTab']);
 
             Hook::add('Publication::validatePublish', [$this, 'validateOnPosting']);
-
-            //Hook::add('Settings::Workflow::listScreeningPlugins', [$this, 'listRules']);
+            Hook::add('Settings::Workflow::listScreeningPlugins', [$this, 'listPluginScreeningRules']);
 
             // Hook::add('LoadComponentHandler', [$this, 'setupScieloScreeningHandler']);
         }
@@ -251,13 +250,19 @@ class ScieloScreeningPlugin extends GenericPlugin
         $output .= sprintf('%s', $smarty->fetch($this->getTemplateResource('addGalleysWarning.tpl')));
     }
 
-    public function listRules($hookName, $args)
+    public function listPluginScreeningRules($hookName, $args)
     {
         $rules = & $args[0];
-        $pluginRules['hasPublishedBefore'] =
-            "<p>" . $this->getDisplayName() . "<br />\n" .
-            $this->getDescription() . "</p>\n";
-        $rules = array_merge($rules, $pluginRules);
+        $ourRulesSuffix = ['affiliation','orcidLeastOne', 'numberContributors', 'uppercaseContributors', 'numPdfs', 'metadataEnglish'];
+        $ourRulesString = "<p>" . $this->getDisplayName() . "<br><br>" . $this->getDescription() .  "<ul>";
+
+        foreach ($ourRulesSuffix as $suffix) {
+            $ourRulesString .= '<li>' . __('plugins.generic.scieloScreening.screeningRules.' . $suffix) . '</li>';
+        }
+
+        $ourRulesString .= "</ul></p>";
+        $rules['scieloScreening'] = $ourRulesString;
+
         return $rules;
     }
 

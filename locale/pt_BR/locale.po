@@ -190,26 +190,20 @@ msgid "plugins.generic.scieloScreening.log.doiScreeningNotCompleted"
 msgstr "O autor submissor tentou finalizar a verificação de DOIs, mas sem sucesso. Os DOIs informados foram: {$doisImploded}"
 
 
-msgid "plugins.generic.scieloScreening.httpDOINotFoundErrorCode"
-msgstr "O DOI inserido não está registrado. Confirme se o mesmo está correto e, em caso de dúvida, verifique com a publicação de origem."
+msgid "plugins.generic.scieloScreening.screeningRules.affiliation"
+msgstr "Todos os contribuidores da submissão devem ter sua afiliação preenchida"
 
-msgid "plugins.generic.scieloScreening.httpServerErrorCode"
-msgstr "Erro no servidor {$server}, tente novamente em alguns instantes e, caso o problema persista, entre em contato com o administrador."
+msgid "plugins.generic.scieloScreening.screeningRules.orcidLeastOne"
+msgstr "Ao menos um contribuidor precisa estar com seu ORCID confirmado"
 
-msgid "plugins.generic.scieloScreening.unknownHttpErrorCode"
-msgstr "Código de retorno desconhecido de {$server}. Tente novamente em alguns instantes e, caso o problema persista, entre em contato com o administrador."
+msgid "plugins.generic.scieloScreening.screeningRules.numberContributors"
+msgstr "Deve ser informado o número total de contribuidores da submissão"
 
-msgid "plugins.generic.scieloScreening.communicationFailure"
-msgstr "Falha na comunicação com {$server}. Tente novamente em alguns instantes e, caso o problema persista, entre em contato com o administrador."
+msgid "plugins.generic.scieloScreening.screeningRules.uppercaseContributors"
+msgstr "Nenhum contribuidor deve ter seu nome em caixa alta"
 
-msgid "plugins.generic.scieloScreening.httpDOINullErrorCode"
-msgstr "Verifique se o DOI foi inserido corretamente."
+msgid "plugins.generic.scieloScreening.screeningRules.numPdfs"
+msgstr "Deve ser enviado apenas um único documento PDF"
 
-msgid "plugins.generic.scieloScreening.crossrefInvalidErrorCode"
-msgstr "O valor inserido não é um DOI."
-
-msgid "plugins.generic.scieloScreening.authorshipConfirmed"
-msgstr "autoria confirmada"
-
-msgid "plugins.generic.scieloScreening.authorshipNotConfirmed"
-msgstr "autoria não confirmada"
+msgid "plugins.generic.scieloScreening.screeningRules.metadataEnglish"
+msgstr "Título, resumo e palavras-chave também devem ser informadas em inglês, além de no idioma da submissão"
