@@ -4,12 +4,12 @@ This plugin adds a series of verifications to OPS, performed over authors' submi
 
 The verifications performed are:
 
-* DOIs Screening: The submitter author must inform DOIs of his previous published articles.
 * The submitter author must add one PDF, and no more than one, as a galley.
-* All submission contributors must have their affiliation filled
+* All submission contributors must have their affiliation filled.
 * At least one contributor must have his ORCID confirmed.
 * The submitter should inform the number of contributors at Contributors Step.
-* None of the contributors can have his name filled all in capital letters
+* None of the contributors can have his name filled all in capital letters.
+* Title, abstract and keywords must be also filled in English, as well as in the language of submission.
 
 ## Compatibility
 
