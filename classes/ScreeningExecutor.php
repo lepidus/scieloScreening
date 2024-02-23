@@ -1,17 +1,10 @@
 <?php
 
-namespace APP\plugins\generic\scieloScreening\controllers;
+namespace APP\plugins\generic\scieloScreening\classes;
 
-use APP\handler\Handler;
-
-use APP\core\Application;
-use APP\facades\Repo;
-use PKP\core\Core;
-use PKP\security\Validation;
-use PKP\log\event\PKPSubmissionEventLogEntry;
 use APP\plugins\generic\scieloScreening\classes\ScreeningChecker;
 
-class ScieloScreeningHandler extends Handler
+class ScreeningExecutor
 {
     public function getStatusAuthors($submission)
     {

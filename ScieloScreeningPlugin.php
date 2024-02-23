@@ -18,7 +18,7 @@ use APP\facades\Repo;
 use PKP\security\Role;
 use APP\pages\submission\SubmissionHandler;
 use APP\plugins\generic\scieloScreening\classes\components\forms\NumberContributorsForm;
-use APP\plugins\generic\scieloScreening\controllers\ScieloScreeningHandler;
+use APP\plugins\generic\scieloScreening\classes\ScreeningExecutor;
 use APP\plugins\generic\scieloScreening\classes\ScreeningChecker;
 
 class ScieloScreeningPlugin extends GenericPlugin
@@ -42,8 +42,6 @@ class ScieloScreeningPlugin extends GenericPlugin
 
             Hook::add('Publication::validatePublish', [$this, 'validateOnPosting']);
             Hook::add('Settings::Workflow::listScreeningPlugins', [$this, 'listPluginScreeningRules']);
-
-            // Hook::add('LoadComponentHandler', [$this, 'setupScieloScreeningHandler']);
         }
         return $success;
     }
@@ -68,15 +66,6 @@ class ScieloScreeningPlugin extends GenericPlugin
             'validation' => ['nullable'],
         ];
 
-        return false;
-    }
-
-    public function setupScieloScreeningHandler($hookName, $params)
-    {
-        $component = & $params[0];
-        if ($component == 'plugins.generic.scieloScreening.controllers.ScieloScreeningHandler') {
-            return true;
-        }
         return false;
     }
 
@@ -154,9 +143,9 @@ class ScieloScreeningPlugin extends GenericPlugin
         $contributorsErrors = $errors['contributors'] ?? [];
         $filesErrors = $errors['files'] ?? [];
 
-        $screeningHandler = new ScieloScreeningHandler();
+        $screeningExecutor = new ScreeningExecutor();
         $screeningChecker = new ScreeningChecker();
-        $dataScreening = $screeningHandler->getScreeningData($submission);
+        $dataScreening = $screeningExecutor->getScreeningData($submission);
 
         if (!$dataScreening['statusAffiliation']) {
             $contributorsErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.affiliation');
@@ -231,8 +220,8 @@ class ScieloScreeningPlugin extends GenericPlugin
         $smarty = & $params[1];
         $output = & $params[2];
         $submission = $smarty->getTemplateVars('submission');
-        $scieloScreeningHandler = new ScieloScreeningHandler();
-        $dataScreening = $scieloScreeningHandler->getScreeningData($submission);
+        $screeningExecutor = new ScreeningExecutor();
+        $dataScreening = $screeningExecutor->getScreeningData($submission);
 
         $smarty->assign($dataScreening);
         $output .= sprintf(
@@ -270,8 +259,8 @@ class ScieloScreeningPlugin extends GenericPlugin
     {
         $errors = &$args[0];
         $submission = $args[2];
-        $scieloScreeningHandler = new ScieloScreeningHandler();
-        $statusAuthors = $scieloScreeningHandler->getStatusAuthors($submission);
+        $screeningExecutor = new ScreeningExecutor();
+        $statusAuthors = $screeningExecutor->getStatusAuthors($submission);
         $canPostSubmission = true;
 
         if (!$statusAuthors['statusAffiliation']) {
