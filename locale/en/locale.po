@@ -1,0 +1,124 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2021-02-08T19:28:03+00:00\n"
+"PO-Revision-Date: 2021-02-08T19:28:03+00:00\n"
+"Language: \n"
+
+msgid "plugins.generic.scieloScreening.displayName"
+msgstr "SciELO Screening"
+
+msgid "plugins.generic.scieloScreening.description"
+msgstr "Adds new screening rules during submission according to SciELO Preprints editorial policies"
+
+
+msgid "plugins.generic.scieloScreening.section.numberContributors.name"
+msgstr "Number of contributors"
+
+msgid "plugins.generic.scieloScreening.section.numberContributors.description"
+msgstr "Please inform the total number of contributors to this publication"
+
+
+msgid "plugins.generic.scieloScreening.reviewStep.error.affiliation"
+msgstr "All submission contributors must have their affiliation filled"
+
+msgid "plugins.generic.scieloScreening.reviewStep.error.numberContributors"
+msgstr "The number of contributors entered is not the same as that reported"
+
+msgid "plugins.generic.scieloScreening.reviewStep.error.uppercaseContributors"
+msgstr "Some contributors have their name in capital letters. We ask that you correct them."
+
+msgid "plugins.generic.scieloScreening.reviewStep.error.orcidLeastOne"
+msgstr "At least one contributor must have their ORCID confirmed. Please, check your e-mail"
+
+msgid "plugins.generic.scieloScreening.reviewStep.error.noPdfs"
+msgstr "You have not added any PDF documents to this submission"
+
+msgid "plugins.generic.scieloScreening.reviewStep.error.manyPdfs"
+msgstr "Please send a single PDF file. "
+"If you are sending files associated with the manuscript, please include them in the same PDF as the manuscript. "
+"If you are sending a new version of the manuscript, make sure to delete the current PDF file before uploading a new one. "
+"If this is a translated version of the manuscript, a new submission will be necessary, with a different ID."
+
+msgid "plugins.generic.scieloScreening.reviewStep.error.missingMetadataEnglish"
+msgstr "The following metadata must be filled in english: {$missingMetadata}"
+
+
+msgid "plugins.generic.scieloScreening.info.name"
+msgstr "SciELO Screening Info"
+
+msgid "plugins.generic.scieloScreening.info.description"
+msgstr "See the status of each screening step below:"
+
+msgid "plugins.generic.scieloScreening.info.metadataEnglishOkay"
+msgstr "All metadata was filled in english"
+
+msgid "plugins.generic.scieloScreening.info.metadataEnglishNotOkay"
+msgstr "The following metadata was not filled in english: {$missingMetadata}"
+
+msgid "plugins.generic.scieloScreening.info.affiliationOkay"
+msgstr "All authors had their affiliation filled"
+
+msgid "plugins.generic.scieloScreening.info.affiliationNotOkay"
+msgstr "The authors below have not filled out their affiliations:"
+
+msgid "plugins.generic.scieloScreening.info.orcidOkay"
+msgstr "ORCID status is confirmed"
+
+msgid "plugins.generic.scieloScreening.info.orcidNotOkay"
+msgstr "No author had confirmed their ORCID"
+
+msgid "plugins.generic.scieloScreening.info.pdfsOkay"
+msgstr "Only one PDF document was submitted"
+
+msgid "plugins.generic.scieloScreening.info.noPDFs"
+msgstr "No PDF documents have been added to this submission"
+
+msgid "plugins.generic.scieloScreening.info.manyPDFs.header"
+msgstr "Please send a single PDF file"
+
+msgid "plugins.generic.scieloScreening.info.manyPDFs.body"
+msgstr "<li>If you are sending files associated with the manuscript, please include them in the same PDF as the manuscript</li>"
+"<li>If you are sending a new version of the manuscript, make sure to delete the current PDF file before uploading a new one</li>"
+"<li>If this is a translated version of the manuscript, a new submission will be necessary, with a different ID</li>"
+
+
+msgid "plugins.generic.scieloScreening.log.doiValidatedAuthorshipConfirmed"
+msgstr "The DOI {$doi} was successfully validated and its authorship has been confirmed."
+
+msgid "plugins.generic.scieloScreening.log.doiValidatedAuthorshipNotConfirmed"
+msgstr "The DOI {$doi} was successfully validated, but its authorship has not been confirmed."
+
+msgid "plugins.generic.scieloScreening.log.doiNotValidated"
+msgstr "The DOI {$doi} could not be validated. The returned message was: {$errorMessage}"
+
+msgid "plugins.generic.scieloScreening.log.doiScreeningCompletedSuccess"
+msgstr "The DOI screening was completed successfully."
+
+msgid "plugins.generic.scieloScreening.log.doiScreeningNotCompleted"
+msgstr "The submitter tried to complete the DOI screening without success. The DOIs informed were: {$doisImploded}"
+
+
+msgid "plugins.generic.scieloScreening.screeningRules.affiliation"
+msgstr "All submission contributors must have their affiliation filled"
+
+msgid "plugins.generic.scieloScreening.screeningRules.orcidLeastOne"
+msgstr "At least one contributor must have their ORCID confirmed"
+
+msgid "plugins.generic.scieloScreening.screeningRules.numberContributors"
+msgstr "The total number of contributors to the submission must be entered"
+
+msgid "plugins.generic.scieloScreening.screeningRules.uppercaseContributors"
+msgstr "No contributor should have their name in capital letters"
+
+msgid "plugins.generic.scieloScreening.screeningRules.numPdfs"
+msgstr "Only one PDF document should be sent"
+
+msgid "plugins.generic.scieloScreening.screeningRules.metadataEnglish"
+msgstr "Title, abstract and keywords must be also filled in English, as well as in the language of submission."

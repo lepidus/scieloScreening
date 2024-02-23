@@ -14,136 +14,40 @@ msgstr ""
 msgid "plugins.generic.scieloScreening.displayName"
 msgstr "Moderação SciELO"
 
-msgid "plugins.generic.scieloScreening.doiScreeningLabel"
-msgstr "Verificação de DOIs"
-
 msgid "plugins.generic.scieloScreening.description"
 msgstr "Adiciona novas regras de verificação durante a submissão de acordo com as políticas editoriais da SciELO Preprints"
 
 
-msgid "plugins.generic.scieloScreening.required.numberPDFs"
-msgstr "Você deve enviar ao menos um e não mais que um documento PDF"
+msgid "plugins.generic.scieloScreening.section.numberContributors.name"
+msgstr "Número de contribuidores"
 
-msgid "plugins.generic.scieloScreening.required.doiScreening"
-msgstr "Você precisa realizar a Verificação de DOIs abaixo!"
+msgid "plugins.generic.scieloScreening.section.numberContributors.description"
+msgstr "Por favor, informe o número total de contribuidores desta publicação"
 
-msgid "plugins.generic.scieloScreening.required.affiliationForAll"
+
+msgid "plugins.generic.scieloScreening.reviewStep.error.affiliation"
 msgstr "Todos os contribuidores da submissão devem ter sua afiliação preenchida"
 
-msgid "plugins.generic.scieloScreening.required.orcidLeastOne"
+msgid "plugins.generic.scieloScreening.reviewStep.error.numberContributors"
+msgstr "O número de contribuidores inseridos não é igual ao informado"
+
+msgid "plugins.generic.scieloScreening.reviewStep.error.uppercaseContributors"
+msgstr "Alguns contribuidores estão com o nome em caixa alta. Pedimos que os corrija."
+
+msgid "plugins.generic.scieloScreening.reviewStep.error.orcidLeastOne"
 msgstr "Ao menos um contribuidor precisa estar com seu ORCID confirmado. Por favor, verifique o seu e-mail."
 
-msgid "plugins.generic.scieloScreening.required.numberAuthors"
-msgstr "O número de autores inseridos não é igual ao informado"
-
-msgid "plugins.generic.scieloScreening.required.nameUppercase"
-msgstr "Alguns autores estão com o nome em caixa alta. Pedimos que os corrija."
-
-
-msgid "plugins.generic.scieloScreening.step4.warning"
-msgstr "As seguintes etapas de verificação não foram realizadas. Você tem a opção de voltar e fazê-las."
-
-msgid "plugins.generic.scieloScreening.step4.affiliation"
-msgstr "Você não preencheu a afiliação de todos os contribuidores."
-
-msgid "plugins.generic.scieloScreening.step4.dois"
-msgstr "Você informou não possuir DOIs de publicações prévias"
-
-msgid "plugins.generic.scieloScreening.step4.doisWithoutConfirmedAuthorship"
-msgstr "Não foi possível confirmar a autoria de alguns DOIs informados"
-
-msgid "plugins.generic.scieloScreening.step4.certifyYourNameinDOIs"
-msgstr "Certifique-se que o seu nome está entre os autores nos DOIs informados e, caso positivo, prossiga. Será feita uma verificação manual pelos moderadores após a submissão."
-
-msgid "plugins.generic.scieloScreening.step4.metadataNotEnglish"
-msgstr "Os seguintes metadados precisam ser preenchidos em inglês:"
-
-msgid "plugins.generic.scieloScreening.step4.noPDFs"
+msgid "plugins.generic.scieloScreening.reviewStep.error.noPdfs"
 msgstr "Você não adicionou nenhum documento PDF a esta submissão"
 
-msgid "plugins.generic.scieloScreening.step4.manyPDFs.header"
-msgstr "Por favor, envie um único arquivo PDF"
+msgid "plugins.generic.scieloScreening.reviewStep.error.manyPdfs"
+msgstr "Por favor, envie um único arquivo PDF. "
+"Caso esteja enviando arquivos adjacentes ao manuscrito, inclua-os no mesmo arquivo PDF junto ao manuscrito principal. "
+"Caso esteja enviando uma versão corrigida do manuscrito, certifique-se de excluir o arquivo PDF atual antes de enviar um novo. "
+"Caso seja a versão traduzida do manuscrito, será necessário efetuar uma nova submissão, com um ID diferente deste."
 
-msgid "plugins.generic.scieloScreening.step4.manyPDFs.one"
-msgstr "Caso esteja enviando arquivos adjacentes ao manuscrito, inclua-os no mesmo arquivo PDF junto ao manuscrito principal"
-
-msgid "plugins.generic.scieloScreening.step4.manyPDFs.two"
-msgstr "Caso esteja enviando uma versão corrigida do manuscrito, certifique-se de excluir o arquivo PDF atual antes de enviar um novo"
-
-msgid "plugins.generic.scieloScreening.step4.manyPDFs.three"
-msgstr "Caso seja a versão traduzida do manuscrito, será necessário efetuar uma nova submissão, com um ID diferente deste"
-
-
-msgid "plugins.generic.scieloScreening.submission.contributors"
-msgstr "Coautores"
-
-msgid "plugins.generic.scieloScreening.submission.numberAuthors"
-msgstr "Por favor, insira o número total de autores dessa publicação:"
-
-msgid "plugins.generic.scieloScreening.submission.warningAffiliation"
-msgstr "Por favor, verifique se todos os contribuidores estão com suas afiliações preenchidas. Isso é necessário para a aprovação da sua submissão."
-
-msgid "plugins.generic.scieloScreening.submission.description"
-msgstr "Por favor, insira DOIs de artigos de sua autoria publicados em revistas especializadas. Você deve inserir dois DOIs dos últimos 2 anos OU três DOIs de qualquer data"
-
-msgid "plugins.generic.scieloScreening.submission.waitDOIValidation"
-msgstr "Após inserir cada DOI, um processo de validação será iniciado. É necessário esperar que todos os DOIs inseridos sejam validados antes de clicar em \"Salvar\""
-
-msgid "plugins.generic.scieloScreening.submission.first"
-msgstr "Primeiro DOI"
-
-msgid "plugins.generic.scieloScreening.submission.second"
-msgstr "Segundo DOI"
-
-msgid "plugins.generic.scieloScreening.submission.third"
-msgstr "Terceiro DOI"
-
-
-msgid "plugins.generic.scieloScreening.doiDifferentRequirement"
-msgstr "Os DOIs não podem ser iguais"
-
-msgid "plugins.generic.scieloScreening.attentionRules"
-msgstr "Por favor, cumpra as regras colocadas acima"
-
-msgid "plugins.generic.scieloScreening.crossrefRequirement"
-msgstr "Apenas DOIs da Crossref são aceitos"
-
-msgid "plugins.generic.scieloScreening.doiNotRegistered"
-msgstr "O DOI inserido não está registrado. Confirme se o mesmo está correto e, em caso de dúvida, verifique com a publicação de origem."
-
-msgid "plugins.generic.scieloScreening.doiFromAuthor"
-msgstr "Por favor, insira um DOI que seja seu. Verifique também se seu nome no sistema é semelhante ao seu nome no artigo"
-
-msgid "plugins.generic.scieloScreening.doiFromJournal"
-msgstr "Por favor, insira um DOI de uma publicação em periódico"
-
-msgid "plugins.generic.scieloScreening.warningValidatingDOI"
-msgstr "Validando o DOI inserido..."
-
-msgid "plugins.generic.scieloScreening.DOIValidated"
-msgstr "DOI validado com sucesso!"
-
-msgid "plugins.generic.scieloScreening.successfulScreening"
-msgstr "Operação realizada com sucesso!"
-
-
-msgid "plugins.generic.scieloScreening.modal"
-msgstr "Fazer verificação"
-
-msgid "plugins.generic.scieloScreening.screeningRequirement"
-msgstr "Você precisa realizar esta etapa!"
-
-msgid "plugins.generic.scieloScreening.instructions"
-msgstr "Para prosseguir automaticamente com a submissão, você deve fazer uma verificação de suas publicações prévias. Caso contrário, sua submissão precisará ser aprovada por um moderador."
-
-msgid "plugins.generic.scieloScreening.caseCantScreening"
-msgstr "Se você não pode fazer a verificação, selecione a caixa abaixo:"
-
-msgid "plugins.generic.scieloScreening.declaration"
-msgstr "Eu não possuo os DOIs solicitados para fornecer"
-
-msgid "plugins.generic.scieloScreening.doiScreeningDone"
-msgstr "Você já realizou esta etapa"
+msgid "plugins.generic.scieloScreening.reviewStep.error.missingMetadataEnglish"
+msgstr "Os seguintes metadados precisam ser preenchidos em inglês: {$missingMetadata}"
 
 
 msgid "plugins.generic.scieloScreening.info.name"
@@ -152,29 +56,11 @@ msgstr "Informação da Moderação SciELO"
 msgid "plugins.generic.scieloScreening.info.description"
 msgstr "Veja abaixo o status de cada uma das verificações:"
 
-msgid "plugins.generic.scieloScreening.info.doiOkay"
-msgstr "A verificação dos DOIs foi feita corretamente. Veja cada DOI inserido abaixo:"
-
-msgid "plugins.generic.scieloScreening.info.doisWithoutConfirmedAuthorship"
-msgstr "Não foi possível confirmar a autoria de todos os DOIs informados"
-
-msgid "plugins.generic.scieloScreening.info.authorNameMetadata"
-msgstr "O nome nos metadados dessa submissão consta como: {$authorName}"
-
-msgid "plugins.generic.scieloScreening.info.doisInformed"
-msgstr "DOIs informados:"
-
-msgid "plugins.generic.scieloScreening.info.namesPresentInDOI"
-msgstr "Nomes que constam nesse DOI: {$authorsNames}"
-
-msgid "plugins.generic.scieloScreening.info.doiNotOkay"
-msgstr "O(a) autor(a) submissor(a) informou não possuir DOIs de publicações prévias"
-
 msgid "plugins.generic.scieloScreening.info.metadataEnglishOkay"
 msgstr "Todos os metadados foram preenchidos em inglês"
 
 msgid "plugins.generic.scieloScreening.info.metadataEnglishNotOkay"
-msgstr "Os seguintes metadados não foram preenchidos em inglês:"
+msgstr "Os seguintes metadados não foram preenchidos em inglês: {$missingMetadata}"
 
 msgid "plugins.generic.scieloScreening.info.affiliationOkay"
 msgstr "Todos os autores tiveram a sua afiliação preenchida"
@@ -190,6 +76,17 @@ msgstr "Nenhum autor confirmou o seu ORCID"
 
 msgid "plugins.generic.scieloScreening.info.pdfsOkay"
 msgstr "Apenas um documento PDF foi submetido"
+
+msgid "plugins.generic.scieloScreening.info.noPDFs"
+msgstr "Nenhum documento PDF foi adicionado a esta submissão"
+
+msgid "plugins.generic.scieloScreening.info.manyPDFs.header"
+msgstr "Por favor, envie um único arquivo PDF. "
+
+msgid "plugins.generic.scieloScreening.info.manyPDFs.body"
+msgstr "<li>Caso esteja enviando arquivos adjacentes ao manuscrito, inclua-os no mesmo arquivo PDF junto ao manuscrito principal</li>"
+"<li>Caso esteja enviando uma versão corrigida do manuscrito, certifique-se de excluir o arquivo PDF atual antes de enviar um novo</li>"
+"<li>Caso seja a versão traduzida do manuscrito, será necessário efetuar uma nova submissão, com um ID diferente deste</li>"
 
 
 msgid "plugins.generic.scieloScreening.log.doiValidatedAuthorshipConfirmed"
@@ -208,26 +105,20 @@ msgid "plugins.generic.scieloScreening.log.doiScreeningNotCompleted"
 msgstr "O autor submissor tentou finalizar a verificação de DOIs, mas sem sucesso. Os DOIs informados foram: {$doisImploded}"
 
 
-msgid "plugins.generic.scieloScreening.httpDOINotFoundErrorCode"
-msgstr "O DOI inserido não está registrado. Confirme se o mesmo está correto e, em caso de dúvida, verifique com a publicação de origem."
+msgid "plugins.generic.scieloScreening.screeningRules.affiliation"
+msgstr "Todos os contribuidores da submissão devem ter sua afiliação preenchida"
 
-msgid "plugins.generic.scieloScreening.httpServerErrorCode"
-msgstr "Erro no servidor {$server}, tente novamente em alguns instantes e, caso o problema persista, entre em contato com o administrador."
+msgid "plugins.generic.scieloScreening.screeningRules.orcidLeastOne"
+msgstr "Ao menos um contribuidor precisa estar com seu ORCID confirmado"
 
-msgid "plugins.generic.scieloScreening.unknownHttpErrorCode"
-msgstr "Código de retorno desconhecido de {$server}. Tente novamente em alguns instantes e, caso o problema persista, entre em contato com o administrador."
+msgid "plugins.generic.scieloScreening.screeningRules.numberContributors"
+msgstr "Deve ser informado o número total de contribuidores da submissão"
 
-msgid "plugins.generic.scieloScreening.communicationFailure"
-msgstr "Falha na comunicação com {$server}. Tente novamente em alguns instantes e, caso o problema persista, entre em contato com o administrador."
+msgid "plugins.generic.scieloScreening.screeningRules.uppercaseContributors"
+msgstr "Nenhum contribuidor deve ter seu nome em caixa alta"
 
-msgid "plugins.generic.scieloScreening.httpDOINullErrorCode"
-msgstr "Verifique se o DOI foi inserido corretamente."
+msgid "plugins.generic.scieloScreening.screeningRules.numPdfs"
+msgstr "Deve ser enviado apenas um único documento PDF"
 
-msgid "plugins.generic.scieloScreening.crossrefInvalidErrorCode"
-msgstr "O valor inserido não é um DOI."
-
-msgid "plugins.generic.scieloScreening.authorshipConfirmed"
-msgstr "autoria confirmada"
-
-msgid "plugins.generic.scieloScreening.authorshipNotConfirmed"
-msgstr "autoria não confirmada"
+msgid "plugins.generic.scieloScreening.screeningRules.metadataEnglish"
+msgstr "Título, resumo e palavras-chave também devem ser informadas em inglês, além de no idioma da submissão"

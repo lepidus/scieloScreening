@@ -1,0 +1,124 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2021-02-08T19:29:52+00:00\n"
+"PO-Revision-Date: 2021-02-08T19:29:52+00:00\n"
+"Language: \n"
+
+msgid "plugins.generic.scieloScreening.displayName"
+msgstr "Moderación de SciELO"
+
+msgid "plugins.generic.scieloScreening.description"
+msgstr "Agrega nuevas reglas de verificación durante el envío de acuerdo con las políticas editoriales de SciELO Preprints"
+
+
+msgid "plugins.generic.scieloScreening.section.numberContributors.name"
+msgstr "Número de colaboradores"
+
+msgid "plugins.generic.scieloScreening.section.numberContributors.description"
+msgstr "Por favor, introduzca el número total de colaboradores de esta publicación"
+
+
+msgid "plugins.generic.scieloScreening.reviewStep.error.affiliation"
+msgstr "Todos los colaboradores de envío deben tener su afiliación lleno"
+
+msgid "plugins.generic.scieloScreening.reviewStep.error.numberContributors"
+msgstr "El número de colaboradores insertados no es el mismo que el informado"
+
+msgid "plugins.generic.scieloScreening.reviewStep.error.uppercaseContributors"
+msgstr "Algunos colaboradores tienen su nombre en mayúsculas. Le pedimos que los corrija."
+
+msgid "plugins.generic.scieloScreening.reviewStep.error.orcidLeastOne"
+msgstr "Al menos un colaborador debe tener su ORCID confirmado. Por favor, revise su correo electrónico"
+
+msgid "plugins.generic.scieloScreening.reviewStep.error.noPdfs"
+msgstr "No ha agregado ningún documento PDF a este envío"
+
+msgid "plugins.generic.scieloScreening.reviewStep.error.manyPdfs"
+msgstr "Por favor, envíe un único archivo PDF. "
+"Si envía archivos adyacentes al manuscrito, por favor inclúyalos en lo mismo archivo PDF con el manuscrito principal. "
+"Si está enviando una versión corregida del manuscrito, asegúrese de borrar el archivo PDF actual antes de enviar uno nuevo. "
+"Si se trata de la versión traducida del manuscrito, se requerirá un nuevo envío, con un ID diferente."
+
+msgid "plugins.generic.scieloScreening.reviewStep.error.missingMetadataEnglish"
+msgstr "Los seguintes metadatos deben completarse en inglés: {$missingMetadata}"
+
+
+msgid "plugins.generic.scieloScreening.info.name"
+msgstr "Información de Moderación de SciELO"
+
+msgid "plugins.generic.scieloScreening.info.description"
+msgstr "Vea el estado de cada una de las comprobaciones a continuación:"
+
+msgid "plugins.generic.scieloScreening.info.metadataEnglishOkay"
+msgstr "Todos los metadatos se completaron en inglés"
+
+msgid "plugins.generic.scieloScreening.info.metadataEnglishNotOkay"
+msgstr "Los seguintes metadatos no se completaron en inglés: {$missingMetadata}"
+
+msgid "plugins.generic.scieloScreening.info.affiliationOkay"
+msgstr "Todos los autores completaron su afiliación"
+
+msgid "plugins.generic.scieloScreening.info.affiliationNotOkay"
+msgstr "Los siguientes autores no completaron sus afiliaciones:"
+
+msgid "plugins.generic.scieloScreening.info.orcidOkay"
+msgstr "Se confirma el estado ORCID"
+
+msgid "plugins.generic.scieloScreening.info.orcidNotOkay"
+msgstr "Ningún autor ha confirmado su ORCID"
+
+msgid "plugins.generic.scieloScreening.info.pdfsOkay"
+msgstr "Solo se envió un documento PDF"
+
+msgid "plugins.generic.scieloScreening.info.noPDFs"
+msgstr "No se han agregado documentos PDF a este envío"
+
+msgid "plugins.generic.scieloScreening.info.manyPDFs.header"
+msgstr "Por favor, envíe un único archivo PDF. "
+
+msgid "plugins.generic.scieloScreening.info.manyPDFs.body"
+msgstr "<li>Si envía archivos adyacentes al manuscrito, por favor inclúyalos en lo mismo archivo PDF con el manuscrito principal</li>"
+"<li>Si está enviando una versión corregida del manuscrito, asegúrese de borrar el archivo PDF actual antes de enviar uno nuevo</li>"
+"<li>Si se trata de la versión traducida del manuscrito, se requerirá un nuevo envío, con un ID diferente</li>"
+
+
+msgid "plugins.generic.scieloScreening.log.doiValidatedAuthorshipConfirmed"
+msgstr "El DOI {$doi} fue validado con éxito y se confirmó su autoría."
+
+msgid "plugins.generic.scieloScreening.log.doiValidatedAuthorshipNotConfirmed"
+msgstr "El DOI {$doi} fue validado con éxito, pero no se confirmó su autoría."
+
+msgid "plugins.generic.scieloScreening.log.doiNotValidated"
+msgstr "El DOI {$doi} no pudo ser validado. El mensaje que devolvió fue: {$errorMessage}"
+
+msgid "plugins.generic.scieloScreening.log.doiScreeningCompletedSuccess"
+msgstr "La verificación de los DOI se completó con éxito."
+
+msgid "plugins.generic.scieloScreening.log.doiScreeningNotCompleted"
+msgstr "El autor remitente intentó finalizar la verificación DOI, pero sin éxito. Los DOI informados fueron: {$doisImploded}"
+
+
+msgid "plugins.generic.scieloScreening.screeningRules.affiliation"
+msgstr "Todos los colaboradores de envío deben tener su afiliación lleno"
+
+msgid "plugins.generic.scieloScreening.screeningRules.orcidLeastOne"
+msgstr "Al menos un colaborador debe tener su ORCID confirmado"
+
+msgid "plugins.generic.scieloScreening.screeningRules.numberContributors"
+msgstr "Debe indicarse el número total de colaboradores al envío"
+
+msgid "plugins.generic.scieloScreening.screeningRules.uppercaseContributors"
+msgstr "Ningún colaborador debe llevar su nombre en mayúsculas"
+
+msgid "plugins.generic.scieloScreening.screeningRules.numPdfs"
+msgstr "Sólo debe enviarse un documento PDF"
+
+msgid "plugins.generic.scieloScreening.screeningRules.metadataEnglish"
+msgstr "El título, el resumen y las palabras clave también deben estar en inglés, así como en la lengua de envío"

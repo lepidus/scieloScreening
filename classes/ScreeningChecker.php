@@ -1,13 +1,15 @@
 <?php
 
 /**
- * @file plugins/generic/scieloScreening/classes/ScreeningChecker.inc.php
+ * @file plugins/generic/scieloScreening/classes/ScreeningChecker.php
  *
  * @class ScreeningChecker
  * @ingroup plugins_generic_scieloScreening
  *
  * Object to execute a series of verifications that are used by the plugin
  */
+
+namespace APP\plugins\generic\scieloScreening\classes;
 
 class ScreeningChecker
 {
@@ -125,7 +127,7 @@ class ScreeningChecker
 
     public function removeAccentuation($authorName)
     {
-        setlocale(LC_CTYPE, 'pt_BR');
+        setlocale(LC_CTYPE, 'pt_BR.utf8');
         $nameWithoutAccentuation = iconv('UTF-8', 'ASCII//TRANSLIT', $authorName);
 
         if ($nameWithoutAccentuation == false) {
@@ -161,15 +163,15 @@ class ScreeningChecker
 
     public function checkAffiliationAuthors($affiliationAuthors, $nameAuthors)
     {
-        $statusAf = true;
+        $statusAffiliation = true;
         $authorsNoAffiliation = array();
         for ($i = 0; $i < count($nameAuthors); $i++) {
             if ($affiliationAuthors[$i] == "") {
-                $statusAf = false;
+                $statusAffiliation = false;
                 $authorsNoAffiliation[] = $nameAuthors[$i];
             }
         }
 
-        return [$statusAf, $authorsNoAffiliation];
+        return [$statusAffiliation, $authorsNoAffiliation];
     }
 }

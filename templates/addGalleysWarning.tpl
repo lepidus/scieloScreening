@@ -9,14 +9,12 @@
 <div id="warningGalleys">
     <div id="warningGalleysHeader">
         <span>
-            {translate key="plugins.generic.scieloScreening.step4.manyPDFs.header"}
+            {translate key="plugins.generic.scieloScreening.info.manyPDFs.header"}
         </span>
     </div>
     <div id="warningGalleysBody">
         <ul>
-            <li>{translate key="plugins.generic.scieloScreening.step4.manyPDFs.one"}</li>
-            <li>{translate key="plugins.generic.scieloScreening.step4.manyPDFs.two"}</li>
-            <li>{translate key="plugins.generic.scieloScreening.step4.manyPDFs.three"}</li>
+            {translate key="plugins.generic.scieloScreening.info.manyPDFs.body"}
         </ul>
     </div>
 </div>

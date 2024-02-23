@@ -12,46 +12,6 @@
         <p>{translate key="plugins.generic.scieloScreening.info.description"}</p>
     </div>
     <div id="screeningInfoFields">
-        <div id="doiInfoField">
-            {if $statusDOI == true}
-                <div id="doiHeader">
-                    <div class="screeningStatusOkay"></div>
-                    <span id="doiMessage">{translate key="plugins.generic.scieloScreening.info.doiOkay"}</span>
-                </div>
-                <div id="doiBody">
-                    <ul>
-                        {foreach from=$dois item="doi"}
-                            <li>
-                                <a href="https://doi.org/{$doi->getDOICode()}" target="_blank" rel="noopener noreferrer">{$doi->getDOICode()}</a>
-                            </li>
-                        {/foreach}
-                    </ul>
-                </div>
-            {elseif $statusDOI == false && $doisConfirmedAuthorship == false}
-                <div id="doiHeader">
-                    <div class="screeningStatusWarning"></div>
-                    <span id="doiMessage">{translate key="plugins.generic.scieloScreening.info.doisWithoutConfirmedAuthorship"}</span>
-                </div>
-                <div id="doiBody">
-                    <span>{translate key="plugins.generic.scieloScreening.info.authorNameMetadata" authorName=$authorFromSubmission}</span><br>
-                    <span>{translate key="plugins.generic.scieloScreening.info.doisInformed"}</span><br>
-                    <ul>
-                        {foreach from=$dois key="i" item="doi"}
-                            <li>
-                                <a href="https://doi.org/{$doi->getDOICode()}" target="_blank" rel="noopener noreferrer">{$doi->getDOICode()}</a>
-                                <span>({$doi->getConfirmedAuthorshipString()})</span><br>
-                                <span>{translate key="plugins.generic.scieloScreening.info.namesPresentInDOI" authorsNames=$authorsFromDOIs[$i]}</span>
-                            </li>
-                        {/foreach}
-                    </ul>
-                </div>
-            {else}
-                <div id="doiHeader" class="headerWithoutBody">
-                    <div class="screeningStatusWarning"></div>
-                    <span id="doiMessage">{translate key="plugins.generic.scieloScreening.info.doiNotOkay"}</span>
-                </div>
-            {/if}
-        </div>
         <div id="metadataEnglishInfoField">
             {if $statusMetadataEnglish == true}
                 <div id="metadataEnglishHeader" class="headerWithoutBody">
@@ -61,7 +21,7 @@
             {else}
                 <div id="metadataEnglishHeader" class="headerWithoutBody">
                     <div class="screeningStatusNotOkay"></div>
-                    <span id="metadataEnglishMessage">{translate key="plugins.generic.scieloScreening.info.metadataEnglishNotOkay"} {$textMetadataScreening}</span>
+                    <span id="metadataEnglishMessage">{translate key="plugins.generic.scieloScreening.info.metadataEnglishNotOkay" missingMetadata=$missingMetadataEnglish}</span>
                 </div>
             {/if}
         </div>
@@ -78,9 +38,9 @@
                 </div>
                 <div id="affiliationBody">
                     <ul>
-                        {foreach from=$listAuthors item="author"}
+                        {foreach from=$authorsWithoutAffiliation item="authorName"}
                             <li>
-                                {$author}
+                                {$authorName|escape}
                             </li>
                         {/foreach}
                     </ul>
@@ -104,18 +64,16 @@
             {if $numPDFs == 0}
                 <div id="pdfsHeader" class="headerWithoutBody">
                     <div class="screeningStatusNotOkay"></div>
-                    <span id="pdfsMessage">{translate key="plugins.generic.scieloScreening.step4.noPDFs"}</span>
+                    <span id="pdfsMessage">{translate key="plugins.generic.scieloScreening.info.noPDFs"}</span>
                 </div>
             {elseif $numPDFs > 1}
                 <div id="pdfsHeader">
                     <div class="screeningStatusNotOkay"></div>
-                    <span id="pdfsMessage">{translate key="plugins.generic.scieloScreening.step4.manyPDFs.header"}</span>
+                    <span id="pdfsMessage">{translate key="plugins.generic.scieloScreening.info.manyPDFs.header"}</span>
                 </div>
                 <div id="pdfsBody">
                     <ul>
-                        <li>{translate key="plugins.generic.scieloScreening.step4.manyPDFs.one"}</li>
-                        <li>{translate key="plugins.generic.scieloScreening.step4.manyPDFs.two"}</li>
-                        <li>{translate key="plugins.generic.scieloScreening.step4.manyPDFs.three"}</li>
+                        {translate key="plugins.generic.scieloScreening.info.manyPDFs.body"}
                     </ul>
                 </div>
             {else}

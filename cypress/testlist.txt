@@ -1,0 +1,40 @@
+---Dentro do fluxo de submissão---
+
++ Todos os autores devem ter afiliação atribuída. Número de autores.
+    Ao chegar no passo de coautores, vê que o campo de afiliação é obrigatório
+    Cria autor normalmente. Chegando no último passo, vê que não tem msg sobre falta de afiliação
+
++ Nomes de autores não estão em caixa alta
+    Insere um autor, com nome em caixa alta
+    Vai ao último passo e vê que apareceu msg
+    Volta, altera o nome
+    Volta ao último passo, vê que msg sumiu
+
++ Ao menos um autor tem ORCID atribuído
+    (Nenhum dos autores anteriormente teve ORCID atribuído)
+    Vai ao último passo, vê que mensagem sobre ORCID de autores está aparecendo
+    Volta, adiciona um autor com ORCID
+    Vai ao último passo, vê que mensagem sobre ORCID sumiu
+
++ Informar número de autores no passo de coautores
+    Essa também deve ficar misturada entre as demais, visto que sempre é necessário informar
+
++ Verificar que foi enviado um e apenas um PDF
+    (Submissão ainda não tem PDF)
+    Vai ao último passo e verifica que aparece a mensagem sobre PDFs
+    Vai ao passo de arquivos
+        Deve haver mensagem sobre arquivos PDF
+        Adiciona dois PDFs
+    Vai ao último passo. Ainda aparece a mensagem sobre PDFs.
+    Volta, remove um dos PDFs. Mensagem vai desaparecer.
+
++ Metadados da submissão foram informados em inglês
+    (Necessário que haja mais de um idioma pra submissões)
+    A submissão deve ser feita em <outro-idioma>. Todos metadados devem ser informados nesse idioma.
+    Chegando ao último passo, deve falar que metadados não foram preenchidos
+    Voltar e, pra cada metadado, informar em inglês e verificar que mensagem mudou
+    Ao final, mensagem deve ter sumido.
+
+----Após submissão---
+
++ Exibição dos estados das verificações no fluxo de trabalho
