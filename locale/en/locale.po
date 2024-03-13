@@ -122,3 +122,46 @@ msgstr "Only one PDF document should be sent"
 
 msgid "plugins.generic.scieloScreening.screeningRules.metadataEnglish"
 msgstr "Title, abstract and keywords must be also filled in English, as well as in the language of submission."
+
+
+msgid "plugins.generic.scieloScreening.settings.title"
+msgstr "ORCID API Settings"
+
+msgid "plugins.generic.scieloScreening.settings.description"
+msgstr "Please configure the ORCID API access for use in pulling ORCID records information"
+
+msgid "plugins.generic.scieloScreening.settings.globallyconfigured"
+msgstr "The ORCID API was configured globally by the host. The following credentials have been saved."
+
+msgid "plugins.generic.scieloScreening.settings.orcidAPIPath"
+msgstr "ORCID API"
+
+msgid "plugins.generic.scieloScreening.settings.orcidClientId"
+msgstr "Client ID"
+
+msgid "plugins.generic.scieloScreening.settings.orcidClientSecret"
+msgstr "Client Secret"
+
+msgid "plugins.generic.scieloScreening.settings.hidden"
+msgstr "hidden"
+
+msgid "plugins.generic.scieloScreening.settings.orcidAPIPath.public"
+msgstr "Public"
+
+msgid "plugins.generic.scieloScreening.settings.orcidAPIPath.publicSandbox"
+msgstr "Public Sandbox"
+
+msgid "plugins.generic.scieloScreening.settings.orcidAPIPath.member"
+msgstr "Member"
+
+msgid "plugins.generic.scieloScreening.settings.orcidAPIPath.memberSandbox"
+msgstr "Member Sandbox"
+
+msgid "plugins.generic.scieloScreening.settings.orcidAPIPathRequired"
+msgstr "Please, inform which ORCID API should be used"
+
+msgid "plugins.generic.scieloScreening.settings.orcidClientIdError"
+msgstr "Invalid client ID"
+
+msgid "plugins.generic.scieloScreening.settings.orcidClientSecretError"
+msgstr "Invalid client secret"

@@ -122,3 +122,46 @@ msgstr "Sólo debe enviarse un documento PDF"
 
 msgid "plugins.generic.scieloScreening.screeningRules.metadataEnglish"
 msgstr "El título, el resumen y las palabras clave también deben estar en inglés, así como en la lengua de envío"
+
+
+msgid "plugins.generic.scieloScreening.settings.title"
+msgstr "Configuración de la API de ORCID"
+
+msgid "plugins.generic.scieloScreening.settings.description"
+msgstr "Por favor configure el acceso a la API de ORCID para extraer información del registro de ORCID."
+
+msgid "plugins.generic.scieloScreening.settings.globallyconfigured"
+msgstr "El host configuró globalmente la API de ORCID. Se han guardado las siguientes credenciales."
+
+msgid "plugins.generic.scieloScreening.settings.orcidAPIPath"
+msgstr "ORCID API"
+
+msgid "plugins.generic.scieloScreening.settings.orcidClientId"
+msgstr "ID del Cliente"
+
+msgid "plugins.generic.scieloScreening.settings.orcidClientSecret"
+msgstr "Secreto del Cliente"
+
+msgid "plugins.generic.scieloScreening.settings.hidden"
+msgstr "oculto"
+
+msgid "plugins.generic.scieloScreening.settings.orcidAPIPath.public"
+msgstr "Público"
+
+msgid "plugins.generic.scieloScreening.settings.orcidAPIPath.publicSandbox"
+msgstr "Sandbox Pública"
+
+msgid "plugins.generic.scieloScreening.settings.orcidAPIPath.member"
+msgstr "Miembro"
+
+msgid "plugins.generic.scieloScreening.settings.orcidAPIPath.memberSandbox"
+msgstr "Miembro Sandbox"
+
+msgid "plugins.generic.scieloScreening.settings.orcidAPIPathRequired"
+msgstr "Indique qué API de ORCID se debe utilizar"
+
+msgid "plugins.generic.scieloScreening.settings.orcidClientIdError"
+msgstr "ID de cliente no válido"
+
+msgid "plugins.generic.scieloScreening.settings.orcidClientSecretError"
+msgstr "Secreto de Cliente no válido"

@@ -16,10 +16,16 @@ use PKP\plugins\Hook;
 use PKP\db\DAORegistry;
 use APP\facades\Repo;
 use PKP\security\Role;
+use PKP\linkAction\LinkAction;
+use PKP\linkAction\request\AjaxModal;
+use APP\template\TemplateManager;
+use PKP\core\JSONMessage;
 use APP\pages\submission\SubmissionHandler;
 use APP\plugins\generic\scieloScreening\classes\components\forms\NumberContributorsForm;
 use APP\plugins\generic\scieloScreening\classes\ScreeningExecutor;
 use APP\plugins\generic\scieloScreening\classes\ScreeningChecker;
+use APP\plugins\generic\scieloScreening\classes\OrcidClient;
+use APP\plugins\generic\scieloScreening\ScieloScreeningSettingsForm;
 
 class ScieloScreeningPlugin extends GenericPlugin
 {
@@ -54,6 +60,54 @@ class ScieloScreeningPlugin extends GenericPlugin
     public function getDescription()
     {
         return __('plugins.generic.scieloScreening.description');
+    }
+
+    public function getActions($request, $actionArgs)
+    {
+        $router = $request->getRouter();
+        return array_merge(
+            array(
+                new LinkAction(
+                    'settings',
+                    new AjaxModal($router->url($request, null, null, 'manage', null, array('verb' => 'settings', 'plugin' => $this->getName(), 'category' => 'generic')), $this->getDisplayName()),
+                    __('manager.plugins.settings'),
+                    null
+                ),
+            ),
+            parent::getActions($request, $actionArgs)
+        );
+    }
+
+    public function manage($args, $request)
+    {
+        $context = $request->getContext();
+        $contextId = ($context == null) ? 0 : $context->getId();
+
+        switch ($request->getUserVar('verb')) {
+            case 'settings':
+                $templateMgr = TemplateManager::getManager();
+                $templateMgr->registerPlugin('function', 'plugin_url', array($this, 'smartyPluginUrl'));
+                $apiOptions = [
+                    OrcidClient::ORCID_API_URL_PUBLIC => 'plugins.generic.scieloScreening.settings.orcidAPIPath.public',
+                    OrcidClient::ORCID_API_URL_PUBLIC_SANDBOX => 'plugins.generic.scieloScreening.settings.orcidAPIPath.publicSandbox',
+                    OrcidClient::ORCID_API_URL_MEMBER => 'plugins.generic.scieloScreening.settings.orcidAPIPath.member',
+                    OrcidClient::ORCID_API_URL_MEMBER_SANDBOX => 'plugins.generic.scieloScreening.settings.orcidAPIPath.memberSandbox'
+                ];
+                $templateMgr->assign('orcidApiUrls', $apiOptions);
+
+                $form = new ScieloScreeningSettingsForm($this, $contextId);
+                if ($request->getUserVar('save')) {
+                    $form->readInputData();
+                    if ($form->validate()) {
+                        $form->execute();
+                        return new JSONMessage(true);
+                    }
+                } else {
+                    $form->initData();
+                }
+                return new JSONMessage(true, $form->fetch($request));
+        }
+        return parent::manage($args, $request);
     }
 
     public function addOurFieldsToPublicationSchema($hookName, $params)
