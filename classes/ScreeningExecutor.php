@@ -7,10 +7,12 @@ use APP\plugins\generic\scieloScreening\classes\ScreeningChecker;
 class ScreeningExecutor
 {
     private $documentChecker;
+    private $orcidClient;
 
-    public function __construct($documentChecker)
+    public function __construct($documentChecker, $orcidClient)
     {
         $this->documentChecker = $documentChecker;
+        $this->orcidClient = $orcidClient;
     }
 
     public function getStatusAuthors($submission)
@@ -74,11 +76,22 @@ class ScreeningExecutor
     public function getStatusDocumentOrcids($submission)
     {
         $authors = $submission->getCurrentPublication()->getData('authors');
-        $orcids = $this->documentChecker->checkTextOrcids();
+        $documentOrcids = $this->documentChecker->checkTextOrcids();
 
-        if ($authors->count() > count($orcids)) {
+        if ($authors->count() > count($documentOrcids)) {
             return 'Unable';
         }
+
+        $accessToken = $this->orcidClient->getReadPublicAccessToken();
+        foreach ($documentOrcids as $orcid) {
+            $orcidWorks = $this->orcidClient->getOrcidWorks($orcid, $accessToken);
+
+            if (!$this->orcidClient->recordHasWorks($orcidWorks)) {
+                return 'NotOkay';
+            }
+        }
+
+        return 'Okay';
     }
 
     public function getScreeningData($submission)

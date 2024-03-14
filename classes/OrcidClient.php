@@ -24,6 +24,51 @@ class OrcidClient
         $this->contextId = $contextId;
     }
 
+    public function getReadPublicAccessToken(): string
+    {
+        $httpClient = Application::get()->getHttpClient();
+
+        $tokenUrl = $this->plugin->getSetting($this->contextId, 'orcidAPIPath') . 'oauth/token';
+        $requestHeaders = ['Accept' => 'application/json'];
+        $requestData = [
+            'client_id' => $this->plugin->getSetting($this->contextId, 'orcidClientId'),
+            'client_secret' => $this->plugin->getSetting($this->contextId, 'orcidClientSecret'),
+            'grant_type' => 'client_credentials',
+            'scope' => '/read-public'
+        ];
+
+        $response = $httpClient->request(
+            'POST',
+            $tokenUrl,
+            [
+                'headers' => $requestHeaders,
+                'form_params' => $requestData,
+            ]
+        );
+
+        $responseJson = json_decode($response->getBody(), true);
+        return $responseJson['access_token'];
+    }
+
+    public function getOrcidWorks(string $orcid, string $accessToken): array
+    {
+        $httpClient = Application::get()->getHttpClient();
+
+        $worksUrl = $this->plugin->getSetting($this->contextId, 'orcidAPIPath') . 'v3.0/' . urlencode($orcid) . '/works';
+        $response = $httpClient->request(
+            'GET',
+            $worksUrl,
+            [
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Authorization' => 'Bearer ' . $accessToken,
+                ],
+            ]
+        );
+
+        return json_decode($response->getBody(), true);
+    }
+
     public function recordHasWorks(array $worksResponse): bool
     {
         return !empty($worksResponse['group']);
