@@ -103,7 +103,7 @@ class ScreeningExecutor
             $this->getStatusAuthors($submission),
             $this->getStatusMetadataEnglish($submission),
             $this->getStatusPDFs($submission),
-            $this->getStatusDocumentOrcids($submission)
+            ['statusDocumentOrcids' => $this->getStatusDocumentOrcids($submission)]
         );
 
         return $dataScreening;
