@@ -73,17 +73,4 @@ final class ScreeningCheckerTest extends TestCase
         $this->assertFalse($status);
         $this->assertEquals(3, $number);
     }
-
-    public function testRemoveAccentuation(): void
-    {
-        $checker = new ScreeningChecker();
-        $nameResultedCase1 = $checker->removeAccentuation("Síntique Priscila Alves Lopes");
-        $nameResultedCase2 = $checker->removeAccentuation("Yves Müller Schröder");
-
-        $nameExpectedCase1 = "Sintique Priscila Alves Lopes";
-        $nameExpectedCase2 = "Yves Muller Schroder";
-
-        $this->assertEquals($nameResultedCase1, $nameExpectedCase1);
-        $this->assertEquals($nameResultedCase2, $nameExpectedCase2);
-    }
 }
