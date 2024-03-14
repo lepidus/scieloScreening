@@ -24,6 +24,7 @@ use APP\pages\submission\SubmissionHandler;
 use APP\plugins\generic\scieloScreening\classes\components\forms\NumberContributorsForm;
 use APP\plugins\generic\scieloScreening\classes\ScreeningExecutor;
 use APP\plugins\generic\scieloScreening\classes\ScreeningChecker;
+use APP\plugins\generic\scieloScreening\classes\DocumentChecker;
 use APP\plugins\generic\scieloScreening\classes\OrcidClient;
 use APP\plugins\generic\scieloScreening\ScieloScreeningSettingsForm;
 
@@ -195,11 +196,14 @@ class ScieloScreeningPlugin extends GenericPlugin
     {
         $errors = &$params[0];
         $submission = $params[1];
+        $context = Application::get()->getRequest()->getContext();
         $publication = $submission->getCurrentPublication();
         $contributorsErrors = $errors['contributors'] ?? [];
         $filesErrors = $errors['files'] ?? [];
 
-        $screeningExecutor = new ScreeningExecutor();
+        $documentChecker = $this->getDocumentChecker($submission);
+        $orcidClient = new OrcidClient($this, $context->getId());
+        $screeningExecutor = new ScreeningExecutor($documentChecker, $orcidClient);
         $screeningChecker = new ScreeningChecker();
         $dataScreening = $screeningExecutor->getScreeningData($submission);
 
@@ -264,8 +268,12 @@ class ScieloScreeningPlugin extends GenericPlugin
     {
         $smarty = & $params[1];
         $output = & $params[2];
+        $context = Application::get()->getRequest()->getContext();
         $submission = $smarty->getTemplateVars('submission');
-        $screeningExecutor = new ScreeningExecutor();
+
+        $documentChecker = $this->getDocumentChecker($submission);
+        $orcidClient = new OrcidClient($this, $context->getId());
+        $screeningExecutor = new ScreeningExecutor($documentChecker, $orcidClient);
         $dataScreening = $screeningExecutor->getScreeningData($submission);
 
         $smarty->assign($dataScreening);
@@ -304,7 +312,7 @@ class ScieloScreeningPlugin extends GenericPlugin
     {
         $errors = &$args[0];
         $submission = $args[2];
-        $screeningExecutor = new ScreeningExecutor();
+        $screeningExecutor = new ScreeningExecutor(null, null);
         $statusAuthors = $screeningExecutor->getStatusAuthors($submission);
         $canPostSubmission = true;
 
@@ -325,6 +333,20 @@ class ScieloScreeningPlugin extends GenericPlugin
         }
 
         return $canPostSubmission;
+    }
+
+    private function getDocumentChecker($submission)
+    {
+        $galleys = $submission->getGalleys();
+
+        if (count($galleys) > 0 && $galleys[0]->getFile()) {
+            $galley = $galleys[0];
+            $path = \Config::getVar('files', 'files_dir') . DIRECTORY_SEPARATOR . $galley->getFile()->getData('path');
+
+            return new DocumentChecker($path);
+        }
+
+        return null;
     }
 
     private function userIsAuthor($submission)

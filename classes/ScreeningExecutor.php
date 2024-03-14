@@ -75,9 +75,12 @@ class ScreeningExecutor
 
     public function getStatusDocumentOrcids($submission)
     {
+        if (!$this->documentChecker) {
+            return 'Unable';
+        }
+
         $authors = $submission->getCurrentPublication()->getData('authors');
         $documentOrcids = $this->documentChecker->checkTextOrcids();
-
         if ($authors->count() > count($documentOrcids)) {
             return 'Unable';
         }
@@ -99,12 +102,9 @@ class ScreeningExecutor
         $dataScreening = array_merge(
             $this->getStatusAuthors($submission),
             $this->getStatusMetadataEnglish($submission),
-            $this->getStatusPDFs($submission)
+            $this->getStatusPDFs($submission),
+            $this->getStatusDocumentOrcids($submission)
         );
-
-        if (in_array(false, $dataScreening, true)) {
-            $dataScreening['errorsScreening'] = true;
-        }
 
         return $dataScreening;
     }
