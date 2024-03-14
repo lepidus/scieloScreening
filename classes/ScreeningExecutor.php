@@ -6,6 +6,13 @@ use APP\plugins\generic\scieloScreening\classes\ScreeningChecker;
 
 class ScreeningExecutor
 {
+    private $documentChecker;
+
+    public function __construct($documentChecker)
+    {
+        $this->documentChecker = $documentChecker;
+    }
+
     public function getStatusAuthors($submission)
     {
         $checker = new ScreeningChecker();
@@ -62,6 +69,16 @@ class ScreeningExecutor
             'statusPDFs' => $statusPDFs,
             'numPDFs' => $numPDFs
         ];
+    }
+
+    public function getStatusDocumentOrcids($submission)
+    {
+        $authors = $submission->getCurrentPublication()->getData('authors');
+        $orcids = $this->documentChecker->checkTextOrcids();
+
+        if ($authors->count() > count($orcids)) {
+            return 'Unable';
+        }
     }
 
     public function getScreeningData($submission)
