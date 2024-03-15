@@ -78,8 +78,14 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
                 'genre': 'Preprint Text'
             },
             {
-                'file': '../../plugins/generic/scieloScreening/cypress/fixtures/orcids_document.pdf',
-                'fileName': 'orcids_document.pdf',
+                'file': '../../plugins/generic/scieloScreening/cypress/fixtures/empty_orcid_document.pdf',
+                'fileName': 'empty_orcid_document.pdf',
+                'mimeType': 'application/pdf',
+                'genre': 'Preprint Text'
+            },
+            {
+                'file': '../../plugins/generic/scieloScreening/cypress/fixtures/filled_orcid_document.pdf',
+                'fileName': 'filled_orcid_document.pdf',
                 'mimeType': 'application/pdf',
                 'genre': 'Preprint Text'
             }
@@ -218,6 +224,20 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.contains('button','OK').click();
         
         cy.addSubmissionGalleys([files[1]]);
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.wait(1000);
+
+        cy.contains('None of the ORCID records provided have publicly listed works, which makes it difficult to moderate the manuscript');
+        cy.contains('Please make sure that at least one of the ORCID registries you have entered includes the most recent scientific production or ensure that the information is public');
+
+        cy.get('.pkpSteps__step button:contains("Upload Files")').click();
+        cy.get('.show_extras').first().click();
+        cy.get('a.pkp_linkaction_deleteGalley').first().click();
+        cy.contains('button','OK').click();
+
+        cy.addSubmissionGalleys([files[2]]);
         cy.contains('button', 'Continue').click();
         cy.contains('button', 'Continue').click();
         cy.contains('button', 'Continue').click();
