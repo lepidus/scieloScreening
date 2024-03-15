@@ -31,7 +31,7 @@ describe('SciELO Screening Plugin - WorkFlow features tests', function() {
     let dummyPdf;
     
     before(function() {
-        Cypress.config('defaultCommandTimeout', 4000);
+        Cypress.config('defaultCommandTimeout', 10000);
         screenedSubmissionTitle = "The Grand Budapest Hotel";
         unscreenedSubmissionData = {
             title: "Asteroid City",

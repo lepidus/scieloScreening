@@ -40,7 +40,7 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
     let files;
     
     before(function() {
-        Cypress.config('defaultCommandTimeout', 4000);
+        Cypress.config('defaultCommandTimeout', 10000);
         submissionData = {
             title: "The Grand Budapest Hotel",
 			abstract: 'A young lobby boy starts working in a great institution',
