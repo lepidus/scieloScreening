@@ -220,6 +220,10 @@ class ScieloScreeningPlugin extends GenericPlugin
             $filesErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.' . $errorCase);
         }
 
+        if ($dataScreening['statusDocumentOrcids'] != 'Okay') {
+            $filesErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.documentOrcid' . $dataScreening['statusDocumentOrcids']);
+        }
+
         if (!$dataScreening['statusMetadataEnglish']) {
             $errors['metadataEnglish'] = [
                 __('plugins.generic.scieloScreening.reviewStep.error.missingMetadataEnglish', ['missingMetadata' => $dataScreening['missingMetadataEnglish']])

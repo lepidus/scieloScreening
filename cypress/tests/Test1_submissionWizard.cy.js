@@ -243,7 +243,8 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.contains('button', 'Continue').click();
         cy.wait(1000);
 
-        cy.contains('The scientific production of the ORCID records has been successfully confirmed');
+        cy.contains('It was not possible to verify the scientific production of the ORCID records').should('not.exist');
+        cy.contains('None of the ORCID records provided have publicly listed works').should('not.exist');
     });
     it('Some submission metadata should be inserted in english', function () {
         cy.login('dphillips', null, 'publicknowledge');

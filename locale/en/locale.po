@@ -49,6 +49,13 @@ msgstr "Please send a single PDF file. "
 msgid "plugins.generic.scieloScreening.reviewStep.error.missingMetadataEnglish"
 msgstr "The following metadata must be filled in english: {$missingMetadata}"
 
+msgid "plugins.generic.scieloScreening.reviewStep.error.documentOrcidUnable"
+msgstr "It was not possible to verify the scientific production of the ORCID records, since no PDF document was sent or it does not have ORCIDs listed"
+
+msgid "plugins.generic.scieloScreening.reviewStep.error.documentOrcidNotOkay"
+msgstr "None of the ORCID records provided have publicly listed works, which makes it difficult to moderate the manuscript. "
+"Please make sure that at least one of the ORCID registries you have entered includes the most recent scientific production or ensure that the information is public."
+
 
 msgid "plugins.generic.scieloScreening.info.name"
 msgstr "SciELO Screening Info"
