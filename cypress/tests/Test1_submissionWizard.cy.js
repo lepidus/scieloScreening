@@ -37,7 +37,7 @@ function addContributor(contributorData, toUpperCase = false) {
 
 describe('SciELO Screening Plugin - Submission wizard tests', function() {
     let submissionData;
-    let dummyPdf;
+    let files;
     
     before(function() {
         Cypress.config('defaultCommandTimeout', 4000);
@@ -70,12 +70,20 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
                 }
             ]
 		};
-        dummyPdf = {
-            'file': 'dummy.pdf',
-            'fileName': 'dummy.pdf',
-            'mimeType': 'application/pdf',
-            'genre': 'Preprint Text'
-        };
+        files = [
+            {
+                'file': 'dummy.pdf',
+                'fileName': 'dummy.pdf',
+                'mimeType': 'application/pdf',
+                'genre': 'Preprint Text'
+            },
+            {
+                'file': '../../plugins/generic/scieloScreening/cypress/fixtures/orcids_document.pdf',
+                'fileName': 'orcids_document.pdf',
+                'mimeType': 'application/pdf',
+                'genre': 'Preprint Text'
+            }
+        ];
     });
     
     it("All contributors must have affiliation. Must enter the number of contributors", function () {
@@ -168,7 +176,7 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.contains('You have not added any PDF documents to this submission');
         cy.get('.pkpSteps__step button:contains("Upload Files")').click();
 
-        cy.addSubmissionGalleys([dummyPdf, dummyPdf]);
+        cy.addSubmissionGalleys([files[0], files[0]]);
         cy.contains('button', 'Continue').click();
         cy.contains('button', 'Continue').click();
         cy.contains('button', 'Continue').click();
@@ -191,6 +199,31 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
 
         cy.contains('You have not added any PDF documents to this submission').should('not.exist');
         cy.contains('Please send a single PDF file').should('not.exist');
+    });
+    it('At least one ORCID must have publicly listed works', function() {
+        cy.login('dphillips', null, 'publicknowledge');
+        cy.findSubmission('myQueue', submissionData.title);
+
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.wait(1000);
+
+        cy.contains('It was not possible to verify the scientific production of the ORCID records, since no PDF document was sent or it does not have ORCIDs listed');
+        
+        cy.get('.pkpSteps__step button:contains("Upload Files")').click();
+        cy.get('.show_extras').first().click();
+        cy.get('a.pkp_linkaction_deleteGalley').first().click();
+        cy.contains('button','OK').click();
+        
+        cy.addSubmissionGalleys([files[1]]);
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.wait(1000);
+
+        cy.contains('The scientific production of the ORCID records has been successfully confirmed');
     });
     it('Some submission metadata should be inserted in english', function () {
         cy.login('dphillips', null, 'publicknowledge');
