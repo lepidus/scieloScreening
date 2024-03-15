@@ -95,6 +95,23 @@ msgstr "<li>If you are sending files associated with the manuscript, please incl
 "<li>If you are sending a new version of the manuscript, make sure to delete the current PDF file before uploading a new one</li>"
 "<li>If this is a translated version of the manuscript, a new submission will be necessary, with a different ID</li>"
 
+msgid "plugins.generic.scieloScreening.info.documentOrcidsOkay"
+msgstr "The scientific production of the ORCID records has been successfully confirmed"
+
+msgid "plugins.generic.scieloScreening.info.documentOrcidsUnable"
+msgstr "It was not possible to verify the scientific production of the ORCID records, since no PDF document was sent or it does not have ORCIDs listed"
+
+msgid "plugins.generic.scieloScreening.info.documentOrcidsNotOkay.header"
+msgstr "None of the ORCID records provided have publicly listed works, which makes it difficult to moderate the manuscript. "
+"Please make sure that at least one of the ORCID registries you have entered includes the most recent scientific production or ensure that the information is public."
+
+msgid "plugins.generic.scieloScreening.info.documentOrcidsNotOkay.body"
+msgstr "<li>We use the scientific production available in the ORCID registry to help moderate our submissions. "
+"This register is one of the international resources that SciELO Preprints uses to qualify preprints. The absence of scientific production registered in ORCID can significantly delay the moderation of the manuscript. "
+"We suggest you read the following post on how to make your ORCID record more reliable: https://info.orcid.org/interpreting-the-trustworthiness-of-an-orcid-record/</li>"
+"<li>See question 10 of <a href=\"https://preprints.scielo.org/index.php/scielo/faq\">our FAQ</a> to find out more about our automatic approval criteria.</li>"
+"<li>Alternatively, it is possible to obtain the endorsement of a veteran researcher in the field who has scientific production reported in their ORCID record that meets the automatic acceptance criteria, which also helps with moderation.</li>"
+
 
 msgid "plugins.generic.scieloScreening.log.doiValidatedAuthorshipConfirmed"
 msgstr "The DOI {$doi} was successfully validated and its authorship has been confirmed."

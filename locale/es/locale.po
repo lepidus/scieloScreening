@@ -95,6 +95,23 @@ msgstr "<li>Si envía archivos adyacentes al manuscrito, por favor inclúyalos e
 "<li>Si está enviando una versión corregida del manuscrito, asegúrese de borrar el archivo PDF actual antes de enviar uno nuevo</li>"
 "<li>Si se trata de la versión traducida del manuscrito, se requerirá un nuevo envío, con un ID diferente</li>"
 
+msgid "plugins.generic.scieloScreening.info.documentOrcidsOkay"
+msgstr "La producción científica de los registros ORCID ha sido confirmada con éxito"
+
+msgid "plugins.generic.scieloScreening.info.documentOrcidsUnable"
+msgstr "No fue posible verificar la producción científica de los registros ORCID, ya que no se envió ningún documento PDF o éste no tiene ORCIDs listados"
+
+msgid "plugins.generic.scieloScreening.info.documentOrcidsNotOkay.header"
+msgstr "Ninguno de los registros ORCID proporcionados incluye trabajos públicos, lo que dificulta la moderación del manuscrito. "
+"Por favor, asegúrese de que al menos uno de los registros ORCID que ha introducido incluye la producción científica más reciente o asegúrese de que la información es pública."
+
+msgid "plugins.generic.scieloScreening.info.documentOrcidsNotOkay.body"
+msgstr "<li>Utilizamos la producción científica disponible en el registro ORCID para ayudar a moderar nuestros envíos. "
+"Este registro é um dos recursos internacionais que o SciELO Preprints usa para qualificar os preprints. A ausência de produção científica registrada no ORCID pode atrasar significativamente a moderação do manuscrito. "
+"Le sugerimos que lea el siguiente post sobre cómo hacer que su registro ORCID sea más fiable: https://info.orcid.org/interpreting-the-trustworthiness-of-an-orcid-record/</li>"
+"<li>Consulte la pregunta 10 de <a href=\"https://preprints.scielo.org/index.php/scielo/faq\">nuestras FAQ</a> para obtener más información sobre nuestros criterios de aprobación automática.</li>"
+"<li>Alternativamente, es posible obtener el aval de un investigador veterano en el campo que tenga producción científica reportada en su registro ORCID que cumpla con los criterios de aceptación automática, lo que también ayuda con la moderación.</li>"
+
 
 msgid "plugins.generic.scieloScreening.log.doiValidatedAuthorshipConfirmed"
 msgstr "El DOI {$doi} fue validado con éxito y se confirmó su autoría."

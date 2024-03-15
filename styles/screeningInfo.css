@@ -10,7 +10,7 @@
     margin-bottom: 18px;
 }
 
-#doiHeader, #metadataEnglishHeader, #affiliationHeader, #orcidHeader, #pdfsHeader {
+#metadataEnglishHeader, #affiliationHeader, #orcidHeader, #pdfsHeader, #documentOrcidsHeader {
     display: flex;
     align-items: center;
     background-color: #DCDCDC;
@@ -24,7 +24,7 @@
     border-bottom-right-radius: 10px;
 }
 
-#doiBody, #affiliationBody, #pdfsBody {
+#affiliationBody, #pdfsBody, #documentOrcidsBody {
     background-color: #f5f5f5;
     padding: 8px;
 
@@ -53,16 +53,16 @@
     border-radius: 12px;
 }
         
-#doiMessage, #metadataEnglishMessage, #affiliationMessage, #orcidMessage, #pdfsMessage {
+#metadataEnglishMessage, #affiliationMessage, #orcidMessage, #pdfsMessage, #documentOrcidsMessage {
     line-height: 24px;
     font-size: 16px;
     margin-left: 0.5em;
 }
 
-#doiInfoField, #metadataEnglishInfoField, #affiliationInfoField, #orcidInfoField, #affiliationInfoField {
+#metadataEnglishInfoField, #affiliationInfoField, #orcidInfoField, #numPDFInfoField {
     margin-bottom: 18px;
 }
 
-#doiBody > span, li {
+li {
     font-size: 16px;
 }
