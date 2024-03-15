@@ -73,15 +73,14 @@ class ScreeningExecutor
         ];
     }
 
-    public function getStatusDocumentOrcids($submission)
+    public function getStatusDocumentOrcids()
     {
         if (!$this->documentChecker) {
             return 'Unable';
         }
 
-        $authors = $submission->getCurrentPublication()->getData('authors');
         $documentOrcids = $this->documentChecker->checkTextOrcids();
-        if ($authors->count() > count($documentOrcids)) {
+        if (empty($documentOrcids)) {
             return 'Unable';
         }
 
@@ -89,12 +88,12 @@ class ScreeningExecutor
         foreach ($documentOrcids as $orcid) {
             $orcidWorks = $this->orcidClient->getOrcidWorks($orcid, $accessToken);
 
-            if (!$this->orcidClient->recordHasWorks($orcidWorks)) {
-                return 'NotOkay';
+            if ($this->orcidClient->recordHasWorks($orcidWorks)) {
+                return 'Okay';
             }
         }
 
-        return 'Okay';
+        return 'NotOkay';
     }
 
     public function getScreeningData($submission)
