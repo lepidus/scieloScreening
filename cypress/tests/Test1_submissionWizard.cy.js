@@ -206,46 +206,6 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.contains('You have not added any PDF documents to this submission').should('not.exist');
         cy.contains('Please send a single PDF file').should('not.exist');
     });
-    it('At least one ORCID must have publicly listed works', function() {
-        cy.login('dphillips', null, 'publicknowledge');
-        cy.findSubmission('myQueue', submissionData.title);
-
-        cy.contains('button', 'Continue').click();
-        cy.contains('button', 'Continue').click();
-        cy.contains('button', 'Continue').click();
-        cy.contains('button', 'Continue').click();
-        cy.wait(1000);
-
-        cy.contains('It was not possible to verify the scientific production of the ORCID records, since no PDF document was sent or it does not have ORCIDs listed');
-        
-        cy.get('.pkpSteps__step button:contains("Upload Files")').click();
-        cy.get('.show_extras').first().click();
-        cy.get('a.pkp_linkaction_deleteGalley').first().click();
-        cy.contains('button','OK').click();
-        
-        cy.addSubmissionGalleys([files[1]]);
-        cy.contains('button', 'Continue').click();
-        cy.contains('button', 'Continue').click();
-        cy.contains('button', 'Continue').click();
-        cy.wait(1000);
-
-        cy.contains('None of the ORCID records provided have publicly listed works, which makes it difficult to moderate the manuscript');
-        cy.contains('Please make sure that at least one of the ORCID registries you have entered includes the most recent scientific production or ensure that the information is public');
-
-        cy.get('.pkpSteps__step button:contains("Upload Files")').click();
-        cy.get('.show_extras').first().click();
-        cy.get('a.pkp_linkaction_deleteGalley').first().click();
-        cy.contains('button','OK').click();
-
-        cy.addSubmissionGalleys([files[2]]);
-        cy.contains('button', 'Continue').click();
-        cy.contains('button', 'Continue').click();
-        cy.contains('button', 'Continue').click();
-        cy.wait(1000);
-
-        cy.contains('It was not possible to verify the scientific production of the ORCID records').should('not.exist');
-        cy.contains('None of the ORCID records provided have publicly listed works').should('not.exist');
-    });
     it('Some submission metadata should be inserted in english', function () {
         cy.login('dphillips', null, 'publicknowledge');
         cy.findSubmission('myQueue', submissionData.title);
@@ -269,6 +229,48 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.contains('button', 'Continue').click();
         cy.wait(1000);
         cy.contains('The following metadata must be filled in english').should('not.exist');
+    });
+    it('It is desirable that at least one ORCID has publicly listed works', function() {
+        cy.login('dphillips', null, 'publicknowledge');
+        cy.findSubmission('myQueue', submissionData.title);
+
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.reload();
+
+        cy.contains('It was not possible to verify the scientific production of the ORCID records, since no PDF document was sent or it does not have ORCIDs listed');
+        cy.contains('button', 'Submit').should('not.be.disabled');
+        
+        cy.get('.pkpSteps__step button:contains("Upload Files")').click();
+        cy.get('.show_extras').first().click();
+        cy.get('a.pkp_linkaction_deleteGalley').first().click();
+        cy.contains('button','OK').click();
+        
+        cy.addSubmissionGalleys([files[1]]);
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.reload();
+
+        cy.contains('None of the ORCID records provided have publicly listed works, which makes it difficult to moderate the manuscript');
+        cy.contains('Please make sure that at least one of the ORCID registries you have entered includes the most recent scientific production or ensure that the information is public');
+        cy.contains('button', 'Submit').should('not.be.disabled');
+
+        cy.get('.pkpSteps__step button:contains("Upload Files")').click();
+        cy.get('.show_extras').first().click();
+        cy.get('a.pkp_linkaction_deleteGalley').first().click();
+        cy.contains('button','OK').click();
+
+        cy.addSubmissionGalleys([files[2]]);
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.reload();
+
+        cy.contains('It was not possible to verify the scientific production of the ORCID records').should('not.exist');
+        cy.contains('None of the ORCID records provided have publicly listed works').should('not.exist');
 
         cy.contains('button', 'Submit').click();
         cy.get('.modal__panel:visible').within(() => {
