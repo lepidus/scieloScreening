@@ -84,13 +84,18 @@ class ScreeningExecutor
             return 'Unable';
         }
 
-        $accessToken = $this->orcidClient->getReadPublicAccessToken();
-        foreach ($documentOrcids as $orcid) {
-            $orcidWorks = $this->orcidClient->getOrcidWorks($orcid, $accessToken);
+        try {
+            $accessToken = $this->orcidClient->getReadPublicAccessToken();
+            foreach ($documentOrcids as $orcid) {
+                $orcidWorks = $this->orcidClient->getOrcidWorks($orcid, $accessToken);
 
-            if ($this->orcidClient->recordHasWorks($orcidWorks)) {
-                return 'Okay';
+                if ($this->orcidClient->recordHasWorks($orcidWorks)) {
+                    return 'Okay';
+                }
             }
+        } catch (\GuzzleHttp\Exception\RequestException $exception) {
+            error_log('Error while trying to get works of a ORCID record');
+            return 'Unable';
         }
 
         return 'NotOkay';
