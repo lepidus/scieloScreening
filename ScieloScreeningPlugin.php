@@ -356,7 +356,7 @@ class ScieloScreeningPlugin extends GenericPlugin
     private function userIsAuthor($submission)
     {
         $currentUser = Application::get()->getRequest()->getUser();
-        $currentUserAssignedRoles = array();
+        $currentUserAssignedRoles = [];
         if ($currentUser) {
             $stageAssignmentDao = DAORegistry::getDAO('StageAssignmentDAO');
             $stageAssignmentsResult = $stageAssignmentDao->getBySubmissionAndUserIdAndStageId($submission->getId(), $currentUser->getId(), $submission->getData('stageId'));
@@ -367,6 +367,6 @@ class ScieloScreeningPlugin extends GenericPlugin
             }
         }
 
-        return $currentUserAssignedRoles[0] == Role::ROLE_ID_AUTHOR;
+        return !empty($currentUserAssignedRoles) and $currentUserAssignedRoles[0] == Role::ROLE_ID_AUTHOR;
     }
 }
