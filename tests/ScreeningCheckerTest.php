@@ -42,21 +42,21 @@ final class ScreeningCheckerTest extends TestCase
     {
         $checker = new ScreeningChecker();
 
-        $affAuthors = ["UFAM", "USP"];
+        $authorsAffiliations = ["UFAM", "USP"];
         $nameAuthors = ["Jhonathan Miranda", "Atila Iamarino"];
-        list($statusAff, $authorsWithoutAff) = $checker->checkAffiliationAuthors($affAuthors, $nameAuthors);
-        $this->assertTrue($statusAff);
-        $this->assertEmpty($authorsWithoutAff);
+        list($statusAffiliation, $authorsWithoutAffiliation) = $checker->checkAffiliationAuthors($authorsAffiliations, $nameAuthors);
+        $this->assertTrue($statusAffiliation);
+        $this->assertEmpty($authorsWithoutAffiliation);
 
-        $affAuthors = [null, "USP"];
-        list($statusAff, $authorsWithoutAff) = $checker->checkAffiliationAuthors($affAuthors, $nameAuthors);
-        $this->assertFalse($statusAff);
-        $this->assertEquals(["Jhonathan Miranda"], $authorsWithoutAff);
+        $authorsAffiliations = [null, "USP"];
+        list($statusAffiliation, $authorsWithoutAffiliation) = $checker->checkAffiliationAuthors($authorsAffiliations, $nameAuthors);
+        $this->assertFalse($statusAffiliation);
+        $this->assertEquals(["Jhonathan Miranda"], $authorsWithoutAffiliation);
 
-        $affAuthors = [null, ""];
-        list($statusAff, $authorsWithoutAff) = $checker->checkAffiliationAuthors($affAuthors, $nameAuthors);
-        $this->assertFalse($statusAff);
-        $this->assertEquals($nameAuthors, $authorsWithoutAff);
+        $authorsAffiliations = [null, ""];
+        list($statusAffiliation, $authorsWithoutAffiliation) = $checker->checkAffiliationAuthors($authorsAffiliations, $nameAuthors);
+        $this->assertFalse($statusAffiliation);
+        $this->assertEquals($nameAuthors, $authorsWithoutAffiliation);
     }
 
     public function testNumberPdfs(): void
