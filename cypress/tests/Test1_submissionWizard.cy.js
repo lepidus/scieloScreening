@@ -254,7 +254,7 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.contains('button', 'Continue').click();
         cy.reload();
 
-        cy.contains('None of the ORCID records provided have publicly listed works, which makes it difficult to moderate the manuscript');
+        cy.contains('None of the ORCID records reported in the manuscript have publicly listed works, making it difficult to moderate it');
         cy.contains('Please make sure that at least one of the ORCID registries you have entered includes the most recent scientific production or ensure that the information is public');
         cy.contains('button', 'Submit').should('not.be.disabled');
 
@@ -270,7 +270,7 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.reload();
 
         cy.contains('It was not possible to verify the scientific production of the ORCID records').should('not.exist');
-        cy.contains('None of the ORCID records provided have publicly listed works').should('not.exist');
+        cy.contains('None of the ORCID records reported in the manuscript have publicly listed works').should('not.exist');
 
         cy.contains('button', 'Submit').click();
         cy.get('.modal__panel:visible').within(() => {

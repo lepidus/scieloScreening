@@ -49,12 +49,8 @@ msgstr "Por favor, envíe un único archivo PDF. "
 msgid "plugins.generic.scieloScreening.reviewStep.error.missingMetadataEnglish"
 msgstr "Los seguintes metadatos deben completarse en inglés: {$missingMetadata}"
 
-msgid "plugins.generic.scieloScreening.reviewStep.error.documentOrcidUnable"
-msgstr "It was not possible to verify the scientific production of the ORCID records, since no PDF document was sent or it does not have ORCIDs listed"
-
-msgid "plugins.generic.scieloScreening.reviewStep.error.documentOrcidNotOkay"
-msgstr "Ninguno de los registros ORCID proporcionados incluye trabajos públicos, lo que dificulta la moderación del manuscrito. "
-"Por favor, asegúrese de que al menos uno de los registros ORCID que ha introducido incluye la producción científica más reciente o asegúrese de que la información es pública."
+msgid "plugins.generic.scieloScreening.reviewStep.error.documentOrcidsHeader"
+msgstr "ORCIDs"
 
 
 msgid "plugins.generic.scieloScreening.info.name"
@@ -102,7 +98,7 @@ msgid "plugins.generic.scieloScreening.info.documentOrcidsUnable"
 msgstr "No fue posible verificar la producción científica de los registros ORCID, ya que no se envió ningún documento PDF o éste no tiene ORCIDs listados"
 
 msgid "plugins.generic.scieloScreening.info.documentOrcidsNotOkay.header"
-msgstr "Ninguno de los registros ORCID proporcionados incluye trabajos públicos, lo que dificulta la moderación del manuscrito. "
+msgstr "Ninguno de los registros ORCID indicados en el manuscrito tiene obras públicas, lo que dificulta su moderación. "
 "Por favor, asegúrese de que al menos uno de los registros ORCID que ha introducido incluye la producción científica más reciente o asegúrese de que la información es pública."
 
 msgid "plugins.generic.scieloScreening.info.documentOrcidsNotOkay.body"

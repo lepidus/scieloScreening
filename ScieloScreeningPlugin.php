@@ -220,10 +220,6 @@ class ScieloScreeningPlugin extends GenericPlugin
             $filesErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.' . $errorCase);
         }
 
-        if ($dataScreening['statusDocumentOrcids'] != 'Okay') {
-            $filesErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.documentOrcid' . $dataScreening['statusDocumentOrcids']);
-        }
-
         if (!$dataScreening['statusMetadataEnglish']) {
             $errors['metadataEnglish'] = [
                 __('plugins.generic.scieloScreening.reviewStep.error.missingMetadataEnglish', ['missingMetadata' => $dataScreening['missingMetadataEnglish']])
@@ -265,6 +261,18 @@ class ScieloScreeningPlugin extends GenericPlugin
 
         if ($step == 'details') {
             $output .= $templateMgr->fetch($this->getTemplateResource('reviewMetadataEnglish.tpl'));
+        }
+
+        if ($step == 'files') {
+            $documentChecker = $this->getDocumentChecker($submission);
+            $orcidClient = new OrcidClient($this, $context->getId());
+            $screeningExecutor = new ScreeningExecutor($documentChecker, $orcidClient);
+            $dataScreening = $screeningExecutor->getScreeningData($submission);
+
+            if ($dataScreening['statusDocumentOrcids'] != 'Okay') {
+                $templateMgr->assign($dataScreening);
+                $output .= $templateMgr->fetch($this->getTemplateResource('reviewDocumentOrcids.tpl'));
+            }
         }
     }
 
