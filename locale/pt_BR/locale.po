@@ -88,7 +88,7 @@ msgid "plugins.generic.scieloScreening.info.noPDFs"
 msgstr "Nenhum documento PDF foi adicionado a esta submissão"
 
 msgid "plugins.generic.scieloScreening.info.manyPDFs.header"
-msgstr "Por favor, envie um único arquivo PDF. "
+msgstr "Por favor, envie um único arquivo PDF"
 
 msgid "plugins.generic.scieloScreening.info.manyPDFs.body"
 msgstr "<li>Caso esteja enviando arquivos adjacentes ao manuscrito, inclua-os no mesmo arquivo PDF junto ao manuscrito principal</li>"
@@ -108,7 +108,7 @@ msgstr "Nenhum dos registros ORCID informados possui trabalhos listados publicam
 msgid "plugins.generic.scieloScreening.info.documentOrcidsNotOkay.body"
 msgstr "<li>Utilizamos a produção científica disponível no registro ORCID para auxiliar na moderação das nossas submissões. "
 "Este registro é um dos recursos internacionais que o SciELO Preprints usa para qualificar os preprints. A ausência de produção científica registrada no ORCID pode atrasar significativamente a moderação do manuscrito. "
-"Sugerimos a leitura do seguinte post com orientações de como tornar o seu registro ORCID mais confiável: https://info.orcid.org/interpreting-the-trustworthiness-of-an-orcid-record/</li>"
+"Sugerimos a leitura <a href=\"https://info.orcid.org/interpreting-the-trustworthiness-of-an-orcid-record\">deste post</a> com orientações de como tornar o seu registro ORCID mais confiável.</li>"
 "<li>Consulte a questão 10 da <a href=\"https://preprints.scielo.org/index.php/scielo/faq\">nossa FAQ</a> para saber mais sobre os nossos critérios de aprovação automática.</li>"
 "<li>Alternativamente, é possível obter o endosso de um(a) pesquisador(a) veterano(a) na área que possua produção científica informada no seu registro ORCID que atenda aos critérios de aceitação automática, isso também ajuda na moderação.</li>"
 

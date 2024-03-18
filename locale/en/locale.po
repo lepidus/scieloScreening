@@ -108,7 +108,7 @@ msgstr "None of the ORCID records provided have publicly listed works, which mak
 msgid "plugins.generic.scieloScreening.info.documentOrcidsNotOkay.body"
 msgstr "<li>We use the scientific production available in the ORCID registry to help moderate our submissions. "
 "This register is one of the international resources that SciELO Preprints uses to qualify preprints. The absence of scientific production registered in ORCID can significantly delay the moderation of the manuscript. "
-"We suggest you read the following post on how to make your ORCID record more reliable: https://info.orcid.org/interpreting-the-trustworthiness-of-an-orcid-record/</li>"
+"We suggest you read <a href=\"https://info.orcid.org/interpreting-the-trustworthiness-of-an-orcid-record\">this post</a> on how to make your ORCID record more reliable.</li>"
 "<li>See question 10 of <a href=\"https://preprints.scielo.org/index.php/scielo/faq\">our FAQ</a> to find out more about our automatic approval criteria.</li>"
 "<li>Alternatively, it is possible to obtain the endorsement of a veteran researcher in the field who has scientific production reported in their ORCID record that meets the automatic acceptance criteria, which also helps with moderation.</li>"
 

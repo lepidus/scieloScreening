@@ -35,6 +35,7 @@
 .screeningStatusOkay {
     width: 24px;
     height: 24px;
+    flex-shrink: 0;
     background-color: #00b28d;
     border-radius: 12px;
 }
@@ -42,6 +43,7 @@
 .screeningStatusWarning {
     width: 24px;
     height: 24px;
+    flex-shrink: 0;
     background-color: #daa520;
     border-radius: 12px;
 }
@@ -49,6 +51,7 @@
 .screeningStatusNotOkay {
     width: 24px;
     height: 24px;
+    flex-shrink: 0;
     background-color: #d00a6c;
     border-radius: 12px;
 }
