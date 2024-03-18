@@ -269,8 +269,7 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.contains('button', 'Continue').click();
         cy.reload();
 
-        cy.contains('It was not possible to verify the scientific production of the ORCID records').should('not.exist');
-        cy.contains('None of the ORCID records reported in the manuscript have publicly listed works').should('not.exist');
+        cy.contains('The scientific production of the ORCID records has been successfully confirmed');
 
         cy.contains('button', 'Submit').click();
         cy.get('.modal__panel:visible').within(() => {

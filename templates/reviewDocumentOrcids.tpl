@@ -11,15 +11,13 @@
     </div>
     <div class="submissionWizard__reviewPanel__body">
         <div class="submissionWizard__reviewPanel__item" >
-            {if $statusDocumentOrcids == 'Unable'}
-                {translate key="plugins.generic.scieloScreening.info.documentOrcidsUnable"}
-            {elseif $statusDocumentOrcids == 'NotOkay'}
-                {translate key="plugins.generic.scieloScreening.info.documentOrcidsNotOkay.header"}
-            {/if}
             {if $statusDocumentOrcids == 'NotOkay'}
+                {translate key="plugins.generic.scieloScreening.info.documentOrcidsNotOkay.header"}
                 <ul>
                     {translate key="plugins.generic.scieloScreening.info.documentOrcidsNotOkay.body"}
                 </ul>
+            {else}
+                {translate key="plugins.generic.scieloScreening.info.documentOrcids{$statusDocumentOrcids}"}
             {/if}
         </div>
     </div>

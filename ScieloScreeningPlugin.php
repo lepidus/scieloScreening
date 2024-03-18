@@ -269,10 +269,8 @@ class ScieloScreeningPlugin extends GenericPlugin
             $screeningExecutor = new ScreeningExecutor($documentChecker, $orcidClient);
             $dataScreening = $screeningExecutor->getScreeningData($submission);
 
-            if ($dataScreening['statusDocumentOrcids'] != 'Okay') {
-                $templateMgr->assign($dataScreening);
-                $output .= $templateMgr->fetch($this->getTemplateResource('reviewDocumentOrcids.tpl'));
-            }
+            $templateMgr->assign($dataScreening);
+            $output .= $templateMgr->fetch($this->getTemplateResource('reviewDocumentOrcids.tpl'));
         }
     }
 
