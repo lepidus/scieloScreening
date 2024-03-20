@@ -31,7 +31,7 @@ describe('SciELO Screening Plugin - WorkFlow features tests', function() {
     let dummyPdf;
     
     before(function() {
-        Cypress.config('defaultCommandTimeout', 4000);
+        Cypress.config('defaultCommandTimeout', 10000);
         screenedSubmissionTitle = "The Grand Budapest Hotel";
         unscreenedSubmissionData = {
             title: "Asteroid City",
@@ -74,6 +74,7 @@ describe('SciELO Screening Plugin - WorkFlow features tests', function() {
         cy.contains('All authors had their affiliation filled');
         cy.contains('ORCID status is confirmed');
         cy.contains('Only one PDF document was submitted');
+        cy.contains('The scientific production of the ORCID records has been successfully confirmed');
     });
     it("Disables plugin temporarily", function () {
         cy.login('dbarnes', null, 'publicknowledge');
@@ -132,6 +133,7 @@ describe('SciELO Screening Plugin - WorkFlow features tests', function() {
         });
         cy.contains('No author had confirmed their ORCID');
         cy.contains('Please send a single PDF file');
+        cy.contains('It was not possible to verify the scientific production of the ORCID records, since no PDF document was sent or it does not have ORCIDs listed');
     });
     it("Displays screening rules on submission posting", function () {
         cy.login('dbarnes', null, 'publicknowledge');

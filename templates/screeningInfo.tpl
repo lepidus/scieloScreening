@@ -83,5 +83,28 @@
                 </div>
             {/if}
         </div>
+        <div id="documentOrcidsInfoField">
+            {if $statusDocumentOrcids == 'Okay'}
+                <div id="documentOrcidsHeader" class="headerWithoutBody">
+                    <div class="screeningStatusOkay"></div>
+                    <span id="documentOrcidsMessage">{translate key="plugins.generic.scieloScreening.info.documentOrcidsOkay"}</span>
+                </div>
+            {elseif $statusDocumentOrcids == 'Unable'}
+                <div id="documentOrcidsHeader" class="headerWithoutBody">
+                    <div class="screeningStatusNotOkay"></div>
+                    <span id="documentOrcidsMessage">{translate key="plugins.generic.scieloScreening.info.documentOrcidsUnable"}</span>
+                </div>
+            {else}
+                <div id="documentOrcidsHeader">
+                    <div class="screeningStatusWarning"></div>
+                    <span id="documentOrcidsMessage">{translate key="plugins.generic.scieloScreening.info.documentOrcidsNotOkay.header"}</span>
+                </div>
+                <div id="documentOrcidsBody">
+                    <ul>
+                        {translate key="plugins.generic.scieloScreening.info.documentOrcidsNotOkay.body"}
+                    </ul>
+                </div>
+            {/if}
+        </div>
     </div>
 </div>

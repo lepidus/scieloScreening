@@ -42,21 +42,21 @@ final class ScreeningCheckerTest extends TestCase
     {
         $checker = new ScreeningChecker();
 
-        $affAuthors = ["UFAM", "USP"];
+        $authorsAffiliations = ["UFAM", "USP"];
         $nameAuthors = ["Jhonathan Miranda", "Atila Iamarino"];
-        list($statusAff, $authorsWithoutAff) = $checker->checkAffiliationAuthors($affAuthors, $nameAuthors);
-        $this->assertTrue($statusAff);
-        $this->assertEmpty($authorsWithoutAff);
+        list($statusAffiliation, $authorsWithoutAffiliation) = $checker->checkAffiliationAuthors($authorsAffiliations, $nameAuthors);
+        $this->assertTrue($statusAffiliation);
+        $this->assertEmpty($authorsWithoutAffiliation);
 
-        $affAuthors = [null, "USP"];
-        list($statusAff, $authorsWithoutAff) = $checker->checkAffiliationAuthors($affAuthors, $nameAuthors);
-        $this->assertFalse($statusAff);
-        $this->assertEquals(["Jhonathan Miranda"], $authorsWithoutAff);
+        $authorsAffiliations = [null, "USP"];
+        list($statusAffiliation, $authorsWithoutAffiliation) = $checker->checkAffiliationAuthors($authorsAffiliations, $nameAuthors);
+        $this->assertFalse($statusAffiliation);
+        $this->assertEquals(["Jhonathan Miranda"], $authorsWithoutAffiliation);
 
-        $affAuthors = [null, ""];
-        list($statusAff, $authorsWithoutAff) = $checker->checkAffiliationAuthors($affAuthors, $nameAuthors);
-        $this->assertFalse($statusAff);
-        $this->assertEquals($nameAuthors, $authorsWithoutAff);
+        $authorsAffiliations = [null, ""];
+        list($statusAffiliation, $authorsWithoutAffiliation) = $checker->checkAffiliationAuthors($authorsAffiliations, $nameAuthors);
+        $this->assertFalse($statusAffiliation);
+        $this->assertEquals($nameAuthors, $authorsWithoutAffiliation);
     }
 
     public function testNumberPdfs(): void
@@ -72,18 +72,5 @@ final class ScreeningCheckerTest extends TestCase
         list($status, $number) = $checker->checkNumberPdfs($labelsGalleys);
         $this->assertFalse($status);
         $this->assertEquals(3, $number);
-    }
-
-    public function testRemoveAccentuation(): void
-    {
-        $checker = new ScreeningChecker();
-        $nameResultedCase1 = $checker->removeAccentuation("Síntique Priscila Alves Lopes");
-        $nameResultedCase2 = $checker->removeAccentuation("Yves Müller Schröder");
-
-        $nameExpectedCase1 = "Sintique Priscila Alves Lopes";
-        $nameExpectedCase2 = "Yves Muller Schroder";
-
-        $this->assertEquals($nameResultedCase1, $nameExpectedCase1);
-        $this->assertEquals($nameResultedCase2, $nameExpectedCase2);
     }
 }

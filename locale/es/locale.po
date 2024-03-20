@@ -49,6 +49,9 @@ msgstr "Por favor, envíe un único archivo PDF. "
 msgid "plugins.generic.scieloScreening.reviewStep.error.missingMetadataEnglish"
 msgstr "Los seguintes metadatos deben completarse en inglés: {$missingMetadata}"
 
+msgid "plugins.generic.scieloScreening.reviewStep.error.documentOrcidsHeader"
+msgstr "ORCIDs"
+
 
 msgid "plugins.generic.scieloScreening.info.name"
 msgstr "Información de Moderación de SciELO"
@@ -81,12 +84,30 @@ msgid "plugins.generic.scieloScreening.info.noPDFs"
 msgstr "No se han agregado documentos PDF a este envío"
 
 msgid "plugins.generic.scieloScreening.info.manyPDFs.header"
-msgstr "Por favor, envíe un único archivo PDF. "
+msgstr "Por favor, envíe un único archivo PDF"
 
 msgid "plugins.generic.scieloScreening.info.manyPDFs.body"
 msgstr "<li>Si envía archivos adyacentes al manuscrito, por favor inclúyalos en lo mismo archivo PDF con el manuscrito principal</li>"
 "<li>Si está enviando una versión corregida del manuscrito, asegúrese de borrar el archivo PDF actual antes de enviar uno nuevo</li>"
 "<li>Si se trata de la versión traducida del manuscrito, se requerirá un nuevo envío, con un ID diferente</li>"
+
+msgid "plugins.generic.scieloScreening.info.documentOrcidsOkay"
+msgstr "La producción científica de los registros ORCID ha sido confirmada con éxito"
+
+msgid "plugins.generic.scieloScreening.info.documentOrcidsUnable"
+msgstr "No fue posible verificar la producción científica de los registros ORCID, ya que no se envió ningún documento PDF o éste no tiene ORCIDs listados"
+
+msgid "plugins.generic.scieloScreening.info.documentOrcidsNotOkay.header"
+msgstr "Ninguno de los registros ORCID indicados en el manuscrito tiene obras públicas, lo que dificulta su moderación. "
+"Por favor, asegúrese de que al menos uno de los registros ORCID que ha introducido incluye la producción científica más reciente o asegúrese de que la información es pública."
+
+msgid "plugins.generic.scieloScreening.info.documentOrcidsNotOkay.body"
+msgstr "<li>Utilizamos la producción científica disponible en el registro ORCID para ayudar a moderar nuestros envíos. "
+"Este registro é um dos recursos internacionais que o SciELO Preprints usa para qualificar os preprints. A ausência de produção científica registrada no ORCID pode atrasar significativamente a moderação do manuscrito. "
+"Le sugerimos que lea <a href=\"https://info.orcid.org/interpreting-the-trustworthiness-of-an-orcid-record\">este post</a> sobre cómo hacer que su registro ORCID sea más fiable: https://info.orcid.org/interpreting-the-trustworthiness-of-an-orcid-record/</li>"
+"<li>Consulte la pregunta 10 de <a href=\"https://preprints.scielo.org/index.php/scielo/faq\">nuestras FAQ</a> para obtener más información sobre nuestros criterios de aprobación automática.</li>"
+"<li>Alternativamente, es posible obtener el aval de un investigador veterano en el campo que tenga producción científica reportada en su registro ORCID que cumpla con los criterios de aceptación automática, lo que también ayuda con la moderación.</li>"
+"<li>Al completar su envío sin informar de la producción científica previa, usted es consciente de que la moderación puede llevar más tiempo debido a la ausencia de producción científica informada en el/los ORCID(s).</li>"
 
 
 msgid "plugins.generic.scieloScreening.log.doiValidatedAuthorshipConfirmed"
@@ -122,3 +143,46 @@ msgstr "Sólo debe enviarse un documento PDF"
 
 msgid "plugins.generic.scieloScreening.screeningRules.metadataEnglish"
 msgstr "El título, el resumen y las palabras clave también deben estar en inglés, así como en la lengua de envío"
+
+
+msgid "plugins.generic.scieloScreening.settings.title"
+msgstr "Configuración de la API de ORCID"
+
+msgid "plugins.generic.scieloScreening.settings.description"
+msgstr "Por favor configure el acceso a la API de ORCID para extraer información del registro de ORCID."
+
+msgid "plugins.generic.scieloScreening.settings.globallyconfigured"
+msgstr "El host configuró globalmente la API de ORCID. Se han guardado las siguientes credenciales."
+
+msgid "plugins.generic.scieloScreening.settings.orcidAPIPath"
+msgstr "ORCID API"
+
+msgid "plugins.generic.scieloScreening.settings.orcidClientId"
+msgstr "ID del Cliente"
+
+msgid "plugins.generic.scieloScreening.settings.orcidClientSecret"
+msgstr "Secreto del Cliente"
+
+msgid "plugins.generic.scieloScreening.settings.hidden"
+msgstr "oculto"
+
+msgid "plugins.generic.scieloScreening.settings.orcidAPIPath.public"
+msgstr "Público"
+
+msgid "plugins.generic.scieloScreening.settings.orcidAPIPath.publicSandbox"
+msgstr "Sandbox Pública"
+
+msgid "plugins.generic.scieloScreening.settings.orcidAPIPath.member"
+msgstr "Miembro"
+
+msgid "plugins.generic.scieloScreening.settings.orcidAPIPath.memberSandbox"
+msgstr "Miembro Sandbox"
+
+msgid "plugins.generic.scieloScreening.settings.orcidAPIPathRequired"
+msgstr "Indique qué API de ORCID se debe utilizar"
+
+msgid "plugins.generic.scieloScreening.settings.orcidClientIdError"
+msgstr "ID de cliente no válido"
+
+msgid "plugins.generic.scieloScreening.settings.orcidClientSecretError"
+msgstr "Secreto de Cliente no válido"

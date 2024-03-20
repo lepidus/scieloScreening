@@ -6,6 +6,15 @@ use APP\plugins\generic\scieloScreening\classes\ScreeningChecker;
 
 class ScreeningExecutor
 {
+    private $documentChecker;
+    private $orcidClient;
+
+    public function __construct($documentChecker, $orcidClient)
+    {
+        $this->documentChecker = $documentChecker;
+        $this->orcidClient = $orcidClient;
+    }
+
     public function getStatusAuthors($submission)
     {
         $checker = new ScreeningChecker();
@@ -64,17 +73,42 @@ class ScreeningExecutor
         ];
     }
 
+    public function getStatusDocumentOrcids()
+    {
+        if (!$this->documentChecker) {
+            return 'Unable';
+        }
+
+        $documentOrcids = $this->documentChecker->checkTextOrcids();
+        if (empty($documentOrcids)) {
+            return 'Unable';
+        }
+
+        try {
+            $accessToken = $this->orcidClient->getReadPublicAccessToken();
+            foreach ($documentOrcids as $orcid) {
+                $orcidWorks = $this->orcidClient->getOrcidWorks($orcid, $accessToken);
+
+                if ($this->orcidClient->recordHasWorks($orcidWorks)) {
+                    return 'Okay';
+                }
+            }
+        } catch (\GuzzleHttp\Exception\RequestException $exception) {
+            error_log('Error while trying to get works of a ORCID record');
+            return 'Unable';
+        }
+
+        return 'NotOkay';
+    }
+
     public function getScreeningData($submission)
     {
         $dataScreening = array_merge(
             $this->getStatusAuthors($submission),
             $this->getStatusMetadataEnglish($submission),
-            $this->getStatusPDFs($submission)
+            $this->getStatusPDFs($submission),
+            ['statusDocumentOrcids' => $this->getStatusDocumentOrcids($submission)]
         );
-
-        if (in_array(false, $dataScreening, true)) {
-            $dataScreening['errorsScreening'] = true;
-        }
 
         return $dataScreening;
     }

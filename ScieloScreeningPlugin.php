@@ -16,10 +16,17 @@ use PKP\plugins\Hook;
 use PKP\db\DAORegistry;
 use APP\facades\Repo;
 use PKP\security\Role;
+use PKP\linkAction\LinkAction;
+use PKP\linkAction\request\AjaxModal;
+use APP\template\TemplateManager;
+use PKP\core\JSONMessage;
 use APP\pages\submission\SubmissionHandler;
 use APP\plugins\generic\scieloScreening\classes\components\forms\NumberContributorsForm;
 use APP\plugins\generic\scieloScreening\classes\ScreeningExecutor;
 use APP\plugins\generic\scieloScreening\classes\ScreeningChecker;
+use APP\plugins\generic\scieloScreening\classes\DocumentChecker;
+use APP\plugins\generic\scieloScreening\classes\OrcidClient;
+use APP\plugins\generic\scieloScreening\ScieloScreeningSettingsForm;
 
 class ScieloScreeningPlugin extends GenericPlugin
 {
@@ -54,6 +61,54 @@ class ScieloScreeningPlugin extends GenericPlugin
     public function getDescription()
     {
         return __('plugins.generic.scieloScreening.description');
+    }
+
+    public function getActions($request, $actionArgs)
+    {
+        $router = $request->getRouter();
+        return array_merge(
+            array(
+                new LinkAction(
+                    'settings',
+                    new AjaxModal($router->url($request, null, null, 'manage', null, array('verb' => 'settings', 'plugin' => $this->getName(), 'category' => 'generic')), $this->getDisplayName()),
+                    __('manager.plugins.settings'),
+                    null
+                ),
+            ),
+            parent::getActions($request, $actionArgs)
+        );
+    }
+
+    public function manage($args, $request)
+    {
+        $context = $request->getContext();
+        $contextId = ($context == null) ? 0 : $context->getId();
+
+        switch ($request->getUserVar('verb')) {
+            case 'settings':
+                $templateMgr = TemplateManager::getManager();
+                $templateMgr->registerPlugin('function', 'plugin_url', array($this, 'smartyPluginUrl'));
+                $apiOptions = [
+                    OrcidClient::ORCID_API_URL_PUBLIC => 'plugins.generic.scieloScreening.settings.orcidAPIPath.public',
+                    OrcidClient::ORCID_API_URL_PUBLIC_SANDBOX => 'plugins.generic.scieloScreening.settings.orcidAPIPath.publicSandbox',
+                    OrcidClient::ORCID_API_URL_MEMBER => 'plugins.generic.scieloScreening.settings.orcidAPIPath.member',
+                    OrcidClient::ORCID_API_URL_MEMBER_SANDBOX => 'plugins.generic.scieloScreening.settings.orcidAPIPath.memberSandbox'
+                ];
+                $templateMgr->assign('orcidApiUrls', $apiOptions);
+
+                $form = new ScieloScreeningSettingsForm($this, $contextId);
+                if ($request->getUserVar('save')) {
+                    $form->readInputData();
+                    if ($form->validate()) {
+                        $form->execute();
+                        return new JSONMessage(true);
+                    }
+                } else {
+                    $form->initData();
+                }
+                return new JSONMessage(true, $form->fetch($request));
+        }
+        return parent::manage($args, $request);
     }
 
     public function addOurFieldsToPublicationSchema($hookName, $params)
@@ -141,11 +196,14 @@ class ScieloScreeningPlugin extends GenericPlugin
     {
         $errors = &$params[0];
         $submission = $params[1];
+        $context = Application::get()->getRequest()->getContext();
         $publication = $submission->getCurrentPublication();
         $contributorsErrors = $errors['contributors'] ?? [];
         $filesErrors = $errors['files'] ?? [];
 
-        $screeningExecutor = new ScreeningExecutor();
+        $documentChecker = $this->getDocumentChecker($submission);
+        $orcidClient = new OrcidClient($this, $context->getId());
+        $screeningExecutor = new ScreeningExecutor($documentChecker, $orcidClient);
         $screeningChecker = new ScreeningChecker();
         $dataScreening = $screeningExecutor->getScreeningData($submission);
 
@@ -204,14 +262,28 @@ class ScieloScreeningPlugin extends GenericPlugin
         if ($step == 'details') {
             $output .= $templateMgr->fetch($this->getTemplateResource('reviewMetadataEnglish.tpl'));
         }
+
+        if ($step == 'files') {
+            $documentChecker = $this->getDocumentChecker($submission);
+            $orcidClient = new OrcidClient($this, $context->getId());
+            $screeningExecutor = new ScreeningExecutor($documentChecker, $orcidClient);
+            $dataScreening = $screeningExecutor->getScreeningData($submission);
+
+            $templateMgr->assign($dataScreening);
+            $output .= $templateMgr->fetch($this->getTemplateResource('reviewDocumentOrcids.tpl'));
+        }
     }
 
     public function addToWorkFlow($hookName, $params)
     {
         $smarty = & $params[1];
         $output = & $params[2];
+        $context = Application::get()->getRequest()->getContext();
         $submission = $smarty->getTemplateVars('submission');
-        $screeningExecutor = new ScreeningExecutor();
+
+        $documentChecker = $this->getDocumentChecker($submission);
+        $orcidClient = new OrcidClient($this, $context->getId());
+        $screeningExecutor = new ScreeningExecutor($documentChecker, $orcidClient);
         $dataScreening = $screeningExecutor->getScreeningData($submission);
 
         $smarty->assign($dataScreening);
@@ -250,7 +322,7 @@ class ScieloScreeningPlugin extends GenericPlugin
     {
         $errors = &$args[0];
         $submission = $args[2];
-        $screeningExecutor = new ScreeningExecutor();
+        $screeningExecutor = new ScreeningExecutor(null, null);
         $statusAuthors = $screeningExecutor->getStatusAuthors($submission);
         $canPostSubmission = true;
 
@@ -273,10 +345,24 @@ class ScieloScreeningPlugin extends GenericPlugin
         return $canPostSubmission;
     }
 
+    private function getDocumentChecker($submission)
+    {
+        $galleys = $submission->getGalleys();
+
+        if (count($galleys) > 0 && $galleys[0]->getFile()) {
+            $galley = $galleys[0];
+            $path = \Config::getVar('files', 'files_dir') . DIRECTORY_SEPARATOR . $galley->getFile()->getData('path');
+
+            return new DocumentChecker($path);
+        }
+
+        return null;
+    }
+
     private function userIsAuthor($submission)
     {
         $currentUser = Application::get()->getRequest()->getUser();
-        $currentUserAssignedRoles = array();
+        $currentUserAssignedRoles = [];
         if ($currentUser) {
             $stageAssignmentDao = DAORegistry::getDAO('StageAssignmentDAO');
             $stageAssignmentsResult = $stageAssignmentDao->getBySubmissionAndUserIdAndStageId($submission->getId(), $currentUser->getId(), $submission->getData('stageId'));
@@ -287,6 +373,6 @@ class ScieloScreeningPlugin extends GenericPlugin
             }
         }
 
-        return $currentUserAssignedRoles[0] == Role::ROLE_ID_AUTHOR;
+        return !empty($currentUserAssignedRoles) and $currentUserAssignedRoles[0] == Role::ROLE_ID_AUTHOR;
     }
 }
