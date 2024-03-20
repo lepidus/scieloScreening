@@ -107,6 +107,7 @@ msgstr "<li>Utilizamos la producción científica disponible en el registro ORCI
 "Le sugerimos que lea <a href=\"https://info.orcid.org/interpreting-the-trustworthiness-of-an-orcid-record\">este post</a> sobre cómo hacer que su registro ORCID sea más fiable: https://info.orcid.org/interpreting-the-trustworthiness-of-an-orcid-record/</li>"
 "<li>Consulte la pregunta 10 de <a href=\"https://preprints.scielo.org/index.php/scielo/faq\">nuestras FAQ</a> para obtener más información sobre nuestros criterios de aprobación automática.</li>"
 "<li>Alternativamente, es posible obtener el aval de un investigador veterano en el campo que tenga producción científica reportada en su registro ORCID que cumpla con los criterios de aceptación automática, lo que también ayuda con la moderación.</li>"
+"<li>Al completar su envío sin informar de la producción científica previa, usted es consciente de que la moderación puede llevar más tiempo debido a la ausencia de producción científica informada en el/los ORCID(s).</li>"
 
 
 msgid "plugins.generic.scieloScreening.log.doiValidatedAuthorshipConfirmed"

@@ -107,6 +107,7 @@ msgstr "<li>We use the scientific production available in the ORCID registry to 
 "We suggest you read <a href=\"https://info.orcid.org/interpreting-the-trustworthiness-of-an-orcid-record\">this post</a> on how to make your ORCID record more reliable.</li>"
 "<li>See question 10 of <a href=\"https://preprints.scielo.org/index.php/scielo/faq\">our FAQ</a> to find out more about our automatic approval criteria.</li>"
 "<li>Alternatively, it is possible to obtain the endorsement of a veteran researcher in the field who has scientific production reported in their ORCID record that meets the automatic acceptance criteria, which also helps with moderation.</li>"
+"<li>By completing your submission without informing previous scientific production, you are aware that moderation may take longer due to the absence of scientific production informed in the ORCID(s).</li>"
 
 
 msgid "plugins.generic.scieloScreening.log.doiValidatedAuthorshipConfirmed"
