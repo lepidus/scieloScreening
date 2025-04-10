@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file plugins/generic/scieloScreening/ScieloScreeningPlugin.inc.php
  *
@@ -35,13 +36,33 @@ class ScieloScreeningPlugin extends GenericPlugin
             HookRegistry::register('Template::Workflow::Publication', array($this, 'addToPublicationForms'));
             HookRegistry::register('Template::Workflow::Publication', array($this, 'addGalleysWarning'));
 
+            HookRegistry::register('Schema::get::submission', [$this, 'addOurFieldsToSubmissionSchema']);
             HookRegistry::register('LoadComponentHandler', array($this, 'setupScieloScreeningHandler'));
             HookRegistry::register('authorform::Constructor', array($this, 'changeAuthorForm'));
             HookRegistry::register('submissionsubmitstep2form::validate', array($this, 'addValidationToStep2'));
+            HookRegistry::register('submissionsubmitstep3form::display', array($this, 'addToStep3'));
             HookRegistry::register('submissionsubmitstep3form::validate', array($this, 'addValidationToStep3'));
             HookRegistry::register('submissionsubmitstep4form::display', array($this, 'addToStep4'));
         }
         return $success;
+    }
+
+    public function addOurFieldsToSubmissionSchema($hookName, $params)
+    {
+        $schema = &$params[0];
+
+        $schema->properties->{'inputNumberAuthors'} = (object) [
+            'type' => 'integer',
+            'apiSummary' => true,
+            'validation' => ['nullable'],
+        ];
+        $schema->properties->{'checkCantScreening'} = (object) [
+            'type' => 'integer',
+            'apiSummary' => true,
+            'validation' => ['nullable'],
+        ];
+
+        return false;
     }
 
     public function setupScieloScreeningHandler($hookName, $params)
@@ -79,17 +100,40 @@ class ScieloScreeningPlugin extends GenericPlugin
         }
     }
 
+    public function addToStep3($hookName, $params)
+    {
+        $submission = $params[0]->submission;
+        $request = PKPApplication::get()->getRequest();
+        $templateMgr = TemplateManager::getManager($request);
+
+        $templateMgr->assign([
+            'inputNumberAuthors' => $submission->getData('inputNumberAuthors'),
+            'checkCantScreening' => $submission->getData('checkCantScreening')
+        ]);
+
+        return false;
+    }
+
     public function addValidationToStep3($hookName, $params)
     {
         $form = &$params[0];
-        $form->readUserVars(array('inputNumberAuthors', 'checkCantScreening'));
+        $form->readUserVars(['inputNumberAuthors', 'checkCantScreening']);
         $submission = $form->submission;
         if (!$this->userIsAuthor($submission)) {
             return;
         }
 
-        $inputNumberAuthors = $form->getData('inputNumberAuthors');
-        $checkCantScreening = $form->getData('checkCantScreening');
+        $inputNumberAuthors = (int) $form->getData('inputNumberAuthors');
+        $checkCantScreening = (int) $form->getData('checkCantScreening');
+
+        Services::get('submission')->edit(
+            $submission,
+            [
+                'inputNumberAuthors' => $inputNumberAuthors,
+                'checkCantScreening' => $checkCantScreening
+            ],
+            Application::get()->getRequest()
+        );
 
         $checker = new ScreeningChecker();
         $authors = $submission->getAuthors();
@@ -119,7 +163,7 @@ class ScieloScreeningPlugin extends GenericPlugin
 
         $doisInformedAtScreening = DAORegistry::getDAO('DOIScreeningDAO')->getBySubmissionId($submission->getId());
         $doiScreeningDone = (count($doisInformedAtScreening) > 0);
-        if ($checkCantScreening != "1" && !$doiScreeningDone) {
+        if ($checkCantScreening != 1 && !$doiScreeningDone) {
             $form->addErrorField('errorScreening');
             $form->addError('errorScreening', __("plugins.generic.scieloScreening.required.doiScreening"));
             return;

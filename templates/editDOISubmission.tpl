@@ -26,7 +26,7 @@
             {translate key="plugins.generic.scieloScreening.submission.numberAuthors"}
             <span class="req">*</span>
         </p>
-        <input id="inputNumberAuthors" name="inputNumberAuthors" class="required" type="number" required="1" min="1" max="100">
+        <input id="inputNumberAuthors" name="inputNumberAuthors" value="{$inputNumberAuthors}" class="required" type="number" required="1" min="1" max="100">
     </div>
 
     <script>
@@ -84,7 +84,7 @@
                     <div id="boxCantScreening">
                         <h4>{translate key="plugins.generic.scieloScreening.caseCantScreening"}</h4>
                         <div id="boxCheck">
-                            <input id="checkCantScreening" name="checkCantScreening" type="checkbox" value="1">
+                            <input id="checkCantScreening" name="checkCantScreening" type="checkbox" value="1" {if $checkCantScreening == 1}checked="true"{/if}>
                             <label id="labelCheck" for="checkCantScreening">{translate key="plugins.generic.scieloScreening.declaration"}</label>
                         </div>
                     </div>
