@@ -111,8 +111,40 @@ class ScieloScreeningPlugin extends GenericPlugin
             'inputNumberAuthors' => $submission->getData('inputNumberAuthors'),
             'checkCantScreening' => $submission->getData('checkCantScreening')
         ]);
+        $templateMgr->registerFilter("output", array($this, 'hidePrefixAndSubtitleFilter'));
 
         return false;
+    }
+
+    public function hidePrefixAndSubtitleFilter($output, $templateMgr)
+    {
+        $fieldsPatterns = [
+            'prefix' => '/<div[^>]+class="section[^>]+>[^<]+<label[^>]+for="title">Prefix/',
+            'title' => '/<div[^>]+class="section[^>]+>[^<]+<label[^>]+for="title-localization/',
+            'subtitle' => '/<div[^>]+class="section[^>]+>[^<]+<label[^>]+for="subtitle/',
+            'abstract' => '/<div[^>]+class="section[^>]+>[^<]+<label[^>]+for="abstract/'
+        ];
+
+        if (preg_match($fieldsPatterns['prefix'], $output, $matchesPrefix, PREG_OFFSET_CAPTURE)
+            && preg_match($fieldsPatterns['title'], $output, $matchesTitle, PREG_OFFSET_CAPTURE)
+            && preg_match($fieldsPatterns['subtitle'], $output, $matchesSubtitle, PREG_OFFSET_CAPTURE)
+            && preg_match($fieldsPatterns['abstract'], $output, $matchesAbstract, PREG_OFFSET_CAPTURE)
+        ) {
+            $posMatchPrefix = $matchesPrefix[0][1];
+            $posMatchTitle = $matchesTitle[0][1];
+            $posMatchSubtitle = $matchesSubtitle[0][1];
+            $posMatchAbstract = $matchesAbstract[0][1];
+
+            $scriptTitleField = $templateMgr->fetch($this->getTemplateResource('scriptTitleField.tpl'));
+
+            $outputSegment1 = substr($output, 0, $posMatchPrefix);
+            $outputSegment2 = substr($output, $posMatchTitle, $posMatchSubtitle - $posMatchTitle) . $scriptTitleField;
+            $outputSegment3 = substr($output, $posMatchAbstract);
+
+            $output = $outputSegment1 . $outputSegment2 . $outputSegment3;
+            $templateMgr->unregisterFilter('output', array($this, 'hidePrefixAndSubtitleFilter'));
+        }
+        return $output;
     }
 
     public function addValidationToStep3($hookName, $params)
