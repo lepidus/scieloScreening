@@ -35,6 +35,7 @@ class ScieloScreeningPlugin extends GenericPlugin
             HookRegistry::register('Templates::Submission::SubmissionMetadataForm::AdditionalMetadata', array($this, 'metadataFieldEdit'));
             HookRegistry::register('Template::Workflow::Publication', array($this, 'addToPublicationForms'));
             HookRegistry::register('Template::Workflow::Publication', array($this, 'addGalleysWarning'));
+            HookRegistry::register('Form::config::after', array($this, 'hidePrefixAndSubtitleFields'));
 
             HookRegistry::register('Schema::get::submission', [$this, 'addOurFieldsToSubmissionSchema']);
             HookRegistry::register('LoadComponentHandler', array($this, 'setupScieloScreeningHandler'));
@@ -248,6 +249,21 @@ class ScieloScreeningPlugin extends GenericPlugin
         $output = &$params[2];
 
         $output .= sprintf('%s', $smarty->fetch($this->getTemplateResource('addGalleysWarning.tpl')));
+    }
+
+    public function hidePrefixAndSubtitleFields($hookName, $params)
+    {
+        $formConfig = &$params[0];
+        $form = $params[1];
+
+        if ($form->id !== 'titleAbstract' || !empty($form->errors)) {
+            return;
+        }
+
+        $filteredFields = array_filter($formConfig['fields'], function ($field) {
+            return $field['name'] != 'prefix' && $field['name'] != 'subtitle';
+        });
+        $formConfig['fields'] = array_values($filteredFields);
     }
 
     public function listRules($hookName, $args)
