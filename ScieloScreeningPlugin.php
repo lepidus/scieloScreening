@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file plugins/generic/scieloScreening/ScieloScreeningPlugin.inc.php
  *
@@ -128,7 +129,7 @@ class ScieloScreeningPlugin extends GenericPlugin
     {
         $formConfig = &$params[0];
 
-        if($formConfig['id'] == 'contributor') {
+        if ($formConfig['id'] == 'contributor') {
             foreach ($formConfig['fields'] as &$field) {
                 if ($field['name'] == 'affiliation') {
                     $field['isRequired'] = true;
