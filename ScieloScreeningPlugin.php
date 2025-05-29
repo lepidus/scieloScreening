@@ -40,7 +40,7 @@ class ScieloScreeningPlugin extends GenericPlugin
         }
 
         if ($success && $this->getEnabled($mainContextId)) {
-            Hook::add('Form::config::after', array($this, 'editContributorForm'));
+            Hook::add('Form::config::after', array($this, 'editFormComponents'));
             Hook::add('TemplateManager::display', [$this, 'modifySubmissionSteps']);
             Hook::add('Submission::validateSubmit', [$this, 'validateSubmissionFields']);
             Hook::add('Template::SubmissionWizard::Section::Review', [$this, 'modifyReviewSections']);
@@ -125,20 +125,37 @@ class ScieloScreeningPlugin extends GenericPlugin
         return false;
     }
 
-    public function editContributorForm($hookName, $params)
+    public function editFormComponents($hookName, $params)
     {
         $formConfig = &$params[0];
 
         if ($formConfig['id'] == 'contributor') {
-            foreach ($formConfig['fields'] as &$field) {
-                if ($field['name'] == 'affiliation') {
-                    $field['isRequired'] = true;
-                    break;
-                }
-            }
+            $formConfig = $this->addRequirementForAffiliation($formConfig);
+        } elseif ($formConfig['id'] == 'titleAbstract') {
+            $formConfig = $this->removePrefixAndSubtitleFields($formConfig);
         }
 
         return false;
+    }
+
+    private function addRequirementForAffiliation($formConfig)
+    {
+        foreach ($formConfig['fields'] as &$field) {
+            if ($field['name'] == 'affiliation') {
+                $field['isRequired'] = true;
+                break;
+            }
+        }
+        return $formConfig;
+    }
+
+    private function removePrefixAndSubtitleFields($formConfig)
+    {
+        $filteredFields = array_filter($formConfig['fields'], function ($field) {
+            return $field['name'] != 'prefix' && $field['name'] != 'subtitle';
+        });
+        $formConfig['fields'] = array_values($filteredFields);
+        return $formConfig;
     }
 
     public function modifySubmissionSteps($hookName, $params)
