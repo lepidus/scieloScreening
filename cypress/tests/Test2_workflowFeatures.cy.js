@@ -76,6 +76,16 @@ describe('SciELO Screening Plugin - WorkFlow features tests', function() {
         cy.contains('Only one PDF document was submitted');
         cy.contains('The scientific production of the ORCID records has been successfully confirmed');
     });
+    it("Prefix and subtitle fields are hidden", function () {
+        cy.login('dphillips', null, 'publicknowledge');
+        cy.findSubmission('myQueue', screenedSubmissionTitle);
+
+        cy.contains('button', 'Preprint').click();
+        cy.contains('button', 'Title & Abstract').click();
+
+        cy.contains('.pkpFormFieldLabel', 'Prefix').should('not.exist');
+        cy.contains('.pkpFormFieldLabel', 'Subtitle').should('not.exist');
+    });
     it("Disables plugin temporarily", function () {
         cy.login('dbarnes', null, 'publicknowledge');
 		cy.contains('a', 'Website').click();
