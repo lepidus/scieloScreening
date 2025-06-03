@@ -158,7 +158,7 @@ class ScieloScreeningPlugin extends GenericPlugin
         $inputNumberAuthors = (int) $form->getData('inputNumberAuthors');
         $checkCantScreening = (int) $form->getData('checkCantScreening');
 
-        Services::get('submission')->edit(
+        $newSubmission = Services::get('submission')->edit(
             $submission,
             [
                 'inputNumberAuthors' => $inputNumberAuthors,
@@ -166,6 +166,7 @@ class ScieloScreeningPlugin extends GenericPlugin
             ],
             Application::get()->getRequest()
         );
+        $form->submission = $newSubmission;
 
         $checker = new ScreeningChecker();
         $authors = $submission->getAuthors();
