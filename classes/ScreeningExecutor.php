@@ -93,8 +93,9 @@ class ScreeningExecutor
                     return 'Okay';
                 }
             }
-        } catch (\GuzzleHttp\Exception\RequestException $exception) {
-            error_log('Error while trying to get works of a ORCID record');
+        } catch (\GuzzleHttp\Exception\TransferException $exception) {
+            $message = $exception->getMessage();
+            error_log('Error while trying to get works of a ORCID record: ' . $message);
             return 'Unable';
         }
 
