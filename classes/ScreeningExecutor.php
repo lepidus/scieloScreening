@@ -76,12 +76,12 @@ class ScreeningExecutor
     public function getStatusDocumentOrcids()
     {
         if (!$this->documentChecker) {
-            return 'Unable';
+            return 'UnableNoFile';
         }
 
         $documentOrcids = $this->documentChecker->checkTextOrcids();
         if (empty($documentOrcids)) {
-            return 'Unable';
+            return 'UnableNoOrcids';
         }
 
         try {
@@ -96,7 +96,7 @@ class ScreeningExecutor
         } catch (\GuzzleHttp\Exception\TransferException $exception) {
             $message = $exception->getMessage();
             error_log('Error while trying to get works of a ORCID record: ' . $message);
-            return 'Unable';
+            return 'UnableException';
         }
 
         return 'NotOkay';

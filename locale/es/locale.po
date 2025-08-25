@@ -94,8 +94,14 @@ msgstr "<li>Si envía archivos adyacentes al manuscrito, por favor inclúyalos e
 msgid "plugins.generic.scieloScreening.info.documentOrcidsOkay"
 msgstr "La producción científica de los registros ORCID ha sido confirmada con éxito"
 
-msgid "plugins.generic.scieloScreening.info.documentOrcidsUnable"
-msgstr "No fue posible verificar la producción científica de los registros ORCID, ya que no se envió ningún documento PDF o éste no tiene ORCIDs listados"
+msgid "plugins.generic.scieloScreening.info.documentOrcidsUnableNoFile"
+msgstr "No fue posible verificar la producción científica de los registros ORCID, ya que no se envió ningún documento PDF"
+
+msgid "plugins.generic.scieloScreening.info.documentOrcidsUnableNoOrcids"
+msgstr "No fue posible verificar la producción científica de los registros ORCID, ya que el documento PDF enviado no tiene ORCIDs listados"
+
+msgid "plugins.generic.scieloScreening.info.documentOrcidsUnableException"
+msgstr "No fue posible verificar la producción científica de los registros ORCID, ya que ocurrió un error inesperado"
 
 msgid "plugins.generic.scieloScreening.info.documentOrcidsNotOkay.header"
 msgstr "Ninguno de los registros ORCID indicados en el manuscrito tiene obras públicas, lo que dificulta su moderación. "
