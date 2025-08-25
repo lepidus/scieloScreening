@@ -177,9 +177,10 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.contains('button', 'Continue').click();
         cy.contains('button', 'Continue').click();
         cy.contains('button', 'Continue').click();
-        cy.wait(1000);
+        cy.reload();
 
         cy.contains('You have not added any PDF documents to this submission');
+        cy.contains('It was not possible to verify the scientific production of the ORCID records, since no PDF document was sent');
         cy.get('.pkpSteps__step button:contains("Upload Files")').click();
 
         cy.addSubmissionGalleys([files[0], files[0]]);
@@ -240,7 +241,7 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.contains('button', 'Continue').click();
         cy.reload();
 
-        cy.contains('It was not possible to verify the scientific production of the ORCID records, since no PDF document was sent or it does not have ORCIDs listed');
+        cy.contains('It was not possible to verify the scientific production of the ORCID records, since the PDF document sent does not have ORCIDs listed');
         cy.contains('button', 'Submit').should('not.be.disabled');
         
         cy.get('.pkpSteps__step button:contains("Upload Files")').click();
