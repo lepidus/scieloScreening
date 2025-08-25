@@ -89,10 +89,10 @@
                     <div class="screeningStatusOkay"></div>
                     <span id="documentOrcidsMessage">{translate key="plugins.generic.scieloScreening.info.documentOrcidsOkay"}</span>
                 </div>
-            {elseif $statusDocumentOrcids == 'Unable'}
+            {elseif str_contains($statusDocumentOrcids, 'Unable')}
                 <div id="documentOrcidsHeader" class="headerWithoutBody">
                     <div class="screeningStatusNotOkay"></div>
-                    <span id="documentOrcidsMessage">{translate key="plugins.generic.scieloScreening.info.documentOrcidsUnable"}</span>
+                    <span id="documentOrcidsMessage">{translate key="plugins.generic.scieloScreening.info.documentOrcids{$statusDocumentOrcids}"}</span>
                 </div>
             {else}
                 <div id="documentOrcidsHeader">

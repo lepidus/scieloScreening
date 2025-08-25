@@ -94,8 +94,14 @@ msgstr "<li>If you are sending files associated with the manuscript, please incl
 msgid "plugins.generic.scieloScreening.info.documentOrcidsOkay"
 msgstr "The scientific production of the ORCID records has been successfully confirmed"
 
-msgid "plugins.generic.scieloScreening.info.documentOrcidsUnable"
-msgstr "It was not possible to verify the scientific production of the ORCID records, since no PDF document was sent or it does not have ORCIDs listed"
+msgid "plugins.generic.scieloScreening.info.documentOrcidsUnableNoFile"
+msgstr "It was not possible to verify the scientific production of the ORCID records, since no PDF document was sent"
+
+msgid "plugins.generic.scieloScreening.info.documentOrcidsUnableNoOrcids"
+msgstr "It was not possible to verify the scientific production of the ORCID records, since the PDF document sent does not have ORCIDs listed"
+
+msgid "plugins.generic.scieloScreening.info.documentOrcidsUnableException"
+msgstr "It was not possible to verify the scientific production of the ORCID records, since an unexpected error occurred"
 
 msgid "plugins.generic.scieloScreening.info.documentOrcidsNotOkay.header"
 msgstr "None of the ORCID records reported in the manuscript have publicly listed works, making it difficult to moderate it. "

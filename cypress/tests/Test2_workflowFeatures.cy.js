@@ -143,7 +143,7 @@ describe('SciELO Screening Plugin - WorkFlow features tests', function() {
         });
         cy.contains('No author had confirmed their ORCID');
         cy.contains('Please send a single PDF file');
-        cy.contains('It was not possible to verify the scientific production of the ORCID records, since no PDF document was sent or it does not have ORCIDs listed');
+        cy.contains('It was not possible to verify the scientific production of the ORCID records, since the PDF document sent does not have ORCIDs listed');
     });
     it("Displays screening rules on submission posting", function () {
         cy.login('dbarnes', null, 'publicknowledge');

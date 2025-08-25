@@ -67,7 +67,7 @@ class ScreeningExecutorTest extends TestCase
     {
         $noDocumentChecker = null;
         $screeningExecutor = new ScreeningExecutor($noDocumentChecker, null);
-        $this->assertEquals('Unable', $screeningExecutor->getStatusDocumentOrcids());
+        $this->assertEquals('UnableNoFile', $screeningExecutor->getStatusDocumentOrcids());
     }
 
     public function testThereAreNoOrcidsOnDocument()
@@ -75,7 +75,7 @@ class ScreeningExecutorTest extends TestCase
         $noTextOrcids = [];
         $documentChecker = new TestDocumentChecker($noTextOrcids);
         $screeningExecutor = new ScreeningExecutor($documentChecker, null);
-        $this->assertEquals('Unable', $screeningExecutor->getStatusDocumentOrcids());
+        $this->assertEquals('UnableNoOrcids', $screeningExecutor->getStatusDocumentOrcids());
     }
 
     public function testNoneOfOrcidsOnDocumentHaveWorks()
