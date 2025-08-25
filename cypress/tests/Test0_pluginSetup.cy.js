@@ -3,6 +3,8 @@ describe('SciELO Screening - Plugin setup', function () {
 		cy.login('dbarnes', null, 'publicknowledge');
 
 		cy.contains('a', 'Website').click();
+
+		cy.waitJQuery();
 		cy.get('#plugins-button').click();
 
 		cy.get('input[id^=select-cell-scieloscreeningplugin]').check();
