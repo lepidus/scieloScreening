@@ -169,6 +169,17 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.wait(1000);
         cy.contains('At least one contributor must have their ORCID confirmed. Please, check your e-mail').should('not.exist');
     });
+    it('License field should be hidden for authors', function () {
+        cy.login('dphillips', null, 'publicknowledge');
+        cy.findSubmission('myQueue', submissionData.title);
+
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+        cy.contains('button', 'Continue').click();
+
+        cy.contains('h2', 'License').should('not.be.visible');
+        cy.contains('Please select the license to apply to your preprint when it is posted').should('not.be.visible');
+    });
     it('Submission should have only one PDF file', function () {
         cy.login('dphillips', null, 'publicknowledge');
         cy.findSubmission('myQueue', submissionData.title);

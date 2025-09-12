@@ -40,7 +40,7 @@ class ScieloScreeningPlugin extends GenericPlugin
         }
 
         if ($success && $this->getEnabled($mainContextId)) {
-            Hook::add('Form::config::after', array($this, 'editFormComponents'));
+            Hook::add('Form::config::after', [$this, 'editFormComponents']);
             Hook::add('TemplateManager::display', [$this, 'modifySubmissionSteps']);
             Hook::add('Submission::validateSubmit', [$this, 'validateSubmissionFields']);
             Hook::add('Template::SubmissionWizard::Section::Review', [$this, 'modifyReviewSections']);
@@ -125,6 +125,12 @@ class ScieloScreeningPlugin extends GenericPlugin
         return false;
     }
 
+    public function getPluginFullPath(): string
+    {
+        $request = Application::get()->getRequest();
+        return $request->getBaseUrl() . DIRECTORY_SEPARATOR . $this->getPluginPath();
+    }
+
     public function editFormComponents($hookName, $params)
     {
         $formConfig = &$params[0];
@@ -188,6 +194,15 @@ class ScieloScreeningPlugin extends GenericPlugin
             $numberContributorsForm = new NumberContributorsForm(
                 $publicationApiUrl,
                 $publication,
+            );
+
+            $templateMgr->addJavaScript(
+                'dataStatementForm',
+                $this->getPluginFullPath() . '/js/EditSubmissionWizard.js',
+                [
+                    'priority' => TemplateManager::STYLE_SEQUENCE_LAST,
+                    'contexts' => ['backend']
+                ]
             );
 
             $steps = $templateMgr->getState('steps');
