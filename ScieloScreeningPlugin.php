@@ -125,6 +125,12 @@ class ScieloScreeningPlugin extends GenericPlugin
         return false;
     }
 
+    public function getPluginFullPath(): string
+    {
+        $request = Application::get()->getRequest();
+        return $request->getBaseUrl() . DIRECTORY_SEPARATOR . $this->getPluginPath();
+    }
+
     public function editFormComponents($hookName, $params)
     {
         $formConfig = &$params[0];
@@ -190,6 +196,15 @@ class ScieloScreeningPlugin extends GenericPlugin
                 $publication,
             );
 
+            $templateMgr->addJavaScript(
+                'dataStatementForm',
+                $this->getPluginFullPath() . '/js/EditSubmissionWizard.js',
+                [
+                    'priority' => TemplateManager::STYLE_SEQUENCE_LAST,
+                    'contexts' => ['backend']
+                ]
+            );
+
             $steps = $templateMgr->getState('steps');
             $steps = array_map(function ($step) use ($numberContributorsForm) {
                 if ($step['id'] === 'contributors') {
@@ -200,15 +215,6 @@ class ScieloScreeningPlugin extends GenericPlugin
                         'type' => SubmissionHandler::SECTION_TYPE_FORM,
                         'form' => $numberContributorsForm->getConfig(),
                     ];
-                }
-                return $step;
-            }, $steps);
-
-            $steps = array_map(function ($step) {
-                if ($step['id'] === 'editors') {
-                    $step['sections'] = array_filter($step['sections'], function ($section) {
-                        return $section['id'] !== 'licenseUrl';
-                    });
                 }
                 return $step;
             }, $steps);
