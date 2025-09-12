@@ -177,8 +177,8 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.contains('button', 'Continue').click();
         cy.contains('button', 'Continue').click();
 
-        cy.contains('h2', 'License').should('not.exist');
-        cy.contains('Please select the license to apply to your preprint when it is posted').should('not.exist');
+        cy.contains('h2', 'License').should('not.be.visible');
+        cy.contains('Please select the license to apply to your preprint when it is posted').should('not.be.visible');
     });
     it('Submission should have only one PDF file', function () {
         cy.login('dphillips', null, 'publicknowledge');
