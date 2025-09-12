@@ -40,7 +40,7 @@ class ScieloScreeningPlugin extends GenericPlugin
         }
 
         if ($success && $this->getEnabled($mainContextId)) {
-            Hook::add('Form::config::after', array($this, 'editFormComponents'));
+            Hook::add('Form::config::after', [$this, 'editFormComponents']);
             Hook::add('TemplateManager::display', [$this, 'modifySubmissionSteps']);
             Hook::add('Submission::validateSubmit', [$this, 'validateSubmissionFields']);
             Hook::add('Template::SubmissionWizard::Section::Review', [$this, 'modifyReviewSections']);
@@ -200,6 +200,15 @@ class ScieloScreeningPlugin extends GenericPlugin
                         'type' => SubmissionHandler::SECTION_TYPE_FORM,
                         'form' => $numberContributorsForm->getConfig(),
                     ];
+                }
+                return $step;
+            }, $steps);
+
+            $steps = array_map(function ($step) {
+                if ($step['id'] === 'editors') {
+                    $step['sections'] = array_filter($step['sections'], function ($section) {
+                        return $section['id'] !== 'licenseUrl';
+                    });
                 }
                 return $step;
             }, $steps);
