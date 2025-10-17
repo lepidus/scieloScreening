@@ -42,6 +42,7 @@ class ScieloScreeningPlugin extends GenericPlugin
         if ($success && $this->getEnabled($mainContextId)) {
             Hook::add('Form::config::after', [$this, 'editFormComponents']);
             Hook::add('preprintgalleyform::display', [$this, 'modifyGalleyForm']);
+            Hook::add('preprintgalleyform::validate', [$this, 'modifyGalleyFormValidation']);
             Hook::add('TemplateManager::display', [$this, 'modifySubmissionSteps']);
             Hook::add('Submission::validateSubmit', [$this, 'validateSubmissionFields']);
             Hook::add('Template::SubmissionWizard::Section::Review', [$this, 'modifyReviewSections']);
@@ -186,6 +187,25 @@ class ScieloScreeningPlugin extends GenericPlugin
         }
 
         return $output;
+    }
+
+    public function modifyGalleyFormValidation($hookName, $params)
+    {
+        $form = &$params[0];
+        $submission = $form->_submission;
+
+        $checker = new ScreeningChecker();
+        $galleys = $submission->getGalleys();
+        $galleysFiletypes = array_map(function ($galley) {
+            return ($galley->getFileType());
+        }, $galleys);
+
+        if ($checker->checkNumberPdfs($galleysFiletypes)[0]) {
+            $form->addErrorField('preprintGalleyFormNotification');
+            $form->addError('preprintGalleyFormNotification', __("plugins.generic.scieloScreening.screeningRules.numPdfs"));
+        }
+
+        return false;
     }
 
     public function modifySubmissionSteps($hookName, $params)

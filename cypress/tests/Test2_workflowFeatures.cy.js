@@ -93,15 +93,15 @@ describe('SciELO Screening Plugin - WorkFlow features tests', function() {
         cy.contains('button', 'Preprint').click();
         cy.contains('button', 'Galleys').click();
 
-        cy.contains('button', 'Add Galley').click();
+        cy.contains('button', 'Add File').click();
         cy.wait(200);
         cy.get('#preprintGalleyForm').within(() => {
             cy.get('input[name="label"]').type('PDF', {delay: 0});
             cy.contains('.submitFormButton', 'Save').click();
         });
         cy.reload();
-        
-        cy.contains("You can't add more than one PDF file");
+
+        cy.contains("Only one PDF document should be sent");
     });
     it("Disables plugin temporarily", function () {
         cy.login('dbarnes', null, 'publicknowledge');
