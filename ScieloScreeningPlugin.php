@@ -194,6 +194,10 @@ class ScieloScreeningPlugin extends GenericPlugin
         $form = &$params[0];
         $submission = $form->_submission;
 
+        if (!empty($submission->getData('submissionProgress'))) {
+            return Hook::CONTINUE;
+        }
+
         $checker = new ScreeningChecker();
         $galleys = $submission->getGalleys();
         $galleysFiletypes = array_map(function ($galley) {
@@ -205,7 +209,7 @@ class ScieloScreeningPlugin extends GenericPlugin
             $form->addError('preprintGalleyFormNotification', __("plugins.generic.scieloScreening.screeningRules.numPdfs"));
         }
 
-        return false;
+        return Hook::CONTINUE;
     }
 
     public function modifySubmissionSteps($hookName, $params)
