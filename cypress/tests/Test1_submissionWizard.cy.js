@@ -194,6 +194,15 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.contains('It was not possible to verify the scientific production of the ORCID records, since no PDF document was sent');
         cy.get('.pkpSteps__step button:contains("Upload Files")').click();
 
+        cy.get('a:contains("Add File")').click();
+        cy.get('.pkp_modal_panel').within(() => {
+            cy.contains('Add File');
+            cy.get('label:contains("This galley will be available at a separate website")').should('not.exist');
+            cy.get('input[name="remotelyHostedContent"]').should('not.exist');
+            cy.get('input[name="urlPath"]').should('not.exist');
+            cy.get('a.pkpModalCloseButton').click();
+        });
+
         cy.addSubmissionGalleys([files[0], files[0]]);
         cy.contains('button', 'Continue').click();
         cy.contains('button', 'Continue').click();
