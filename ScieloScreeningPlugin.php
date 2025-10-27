@@ -41,6 +41,8 @@ class ScieloScreeningPlugin extends GenericPlugin
 
         if ($success && $this->getEnabled($mainContextId)) {
             Hook::add('Form::config::after', [$this, 'editFormComponents']);
+            Hook::add('preprintgalleyform::display', [$this, 'modifyGalleyForm']);
+            Hook::add('preprintgalleyform::validate', [$this, 'modifyGalleyFormValidation']);
             Hook::add('TemplateManager::display', [$this, 'modifySubmissionSteps']);
             Hook::add('Submission::validateSubmit', [$this, 'validateSubmissionFields']);
             Hook::add('Template::SubmissionWizard::Section::Review', [$this, 'modifyReviewSections']);
@@ -162,6 +164,52 @@ class ScieloScreeningPlugin extends GenericPlugin
         });
         $formConfig['fields'] = array_values($filteredFields);
         return $formConfig;
+    }
+
+    public function modifyGalleyForm($hookName, $params)
+    {
+        $request = Application::get()->getRequest();
+        $templateMgr = TemplateManager::getManager($request);
+
+        $templateMgr->registerFilter("output", [$this, 'removeFieldsFromGalleyFormFilter']);
+    }
+
+    public function removeFieldsFromGalleyFormFilter($output, $templateMgr)
+    {
+        if (preg_match('/id="preprintGalleyForm"/', $output)) {
+            preg_match('/<\/form>/', $output, $matches, PREG_OFFSET_CAPTURE);
+
+            $posMatch = $matches[0][1];
+            $removeGalleyFields = $templateMgr->fetch($this->getTemplateResource('removeGalleyFields.tpl'));
+            $output = substr_replace($output, $removeGalleyFields, $posMatch, 0);
+
+            $templateMgr->unregisterFilter('output', array($this, 'removeFieldsFromGalleyFormFilter'));
+        }
+
+        return $output;
+    }
+
+    public function modifyGalleyFormValidation($hookName, $params)
+    {
+        $form = &$params[0];
+        $submission = $form->_submission;
+
+        if (!empty($submission->getData('submissionProgress')) || !empty($form->_preprintGalley)) {
+            return Hook::CONTINUE;
+        }
+
+        $checker = new ScreeningChecker();
+        $galleys = $submission->getGalleys();
+        $galleysFiletypes = array_map(function ($galley) {
+            return ($galley->getFileType());
+        }, $galleys);
+
+        if ($checker->checkNumberPdfs($galleysFiletypes)[0]) {
+            $form->addErrorField('preprintGalleyFormNotification');
+            $form->addError('preprintGalleyFormNotification', __("plugins.generic.scieloScreening.screeningRules.numPdfs"));
+        }
+
+        return Hook::CONTINUE;
     }
 
     public function modifySubmissionSteps($hookName, $params)
