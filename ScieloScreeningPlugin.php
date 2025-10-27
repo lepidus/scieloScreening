@@ -194,7 +194,7 @@ class ScieloScreeningPlugin extends GenericPlugin
         $form = &$params[0];
         $submission = $form->_submission;
 
-        if (!empty($submission->getData('submissionProgress'))) {
+        if (!empty($submission->getData('submissionProgress')) || !empty($form->_preprintGalley)) {
             return Hook::CONTINUE;
         }
 
