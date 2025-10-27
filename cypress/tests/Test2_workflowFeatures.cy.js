@@ -93,7 +93,7 @@ describe('SciELO Screening Plugin - WorkFlow features tests', function() {
         cy.contains('button', 'Preprint').click();
         cy.contains('button', 'Galleys').click();
 
-        cy.contains('a', 'Add File').click();
+        cy.get('a[id^=component-grid-preprintgalleys-preprintgalleygrid-addGalley-button-]').contains("Add File").click();
         cy.wait(200);
         cy.get('#preprintGalleyForm').within(() => {
             cy.get('input[name="label"]').type('PDF', {delay: 0});
