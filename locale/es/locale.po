@@ -157,6 +157,9 @@ msgstr "Configuración de la API de ORCID"
 msgid "plugins.generic.scieloScreening.settings.description"
 msgstr "Por favor configure el acceso a la API de ORCID para extraer información del registro de ORCID."
 
+msgid "plugins.generic.scieloScreening.settings.emptyApiSecretKey"
+msgstr "Es necesario que el administrador establezca un secreto en el archivo de configuración del sitio ('api_key_secret')."
+
 msgid "plugins.generic.scieloScreening.settings.globallyconfigured"
 msgstr "El host configuró globalmente la API de ORCID. Se han guardado las siguientes credenciales."
 

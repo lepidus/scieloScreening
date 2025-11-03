@@ -42,7 +42,8 @@ class ScieloScreeningSettingsForm extends Form
         $this->plugin = $plugin;
         $this->encrypter = new APIKeyEncryption();
 
-        parent::__construct($plugin->getTemplateResource('settingsForm.tpl'));
+        $template = $this->encrypter->secretConfigExists() ? 'settingsForm.tpl' : 'settingsFormEmptySecret.tpl';
+        parent::__construct($plugin->getTemplateResource($template));
 
         $this->addCheck(new FormValidatorPost($this));
         $this->addCheck(new FormValidatorCSRF($this));
