@@ -25,7 +25,6 @@ function addContributor(contributorData, toUpperCase = false) {
     cy.get('select[name="country"]').select(contributorData.country);
 
     if ('orcid' in contributorData) {
-        cy.get('.pkpFormField__control_top > .pkpButton').contains("Override").click();
         cy.get('input[name="orcid"]').type(contributorData.orcid, {delay: 0});
     }
 

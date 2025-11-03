@@ -23,6 +23,7 @@ use PKP\form\validation\FormValidator;
 use PKP\form\validation\FormValidatorPost;
 use PKP\form\validation\FormValidatorCSRF;
 use PKP\form\validation\FormValidatorCustom;
+use APP\plugins\generic\scieloScreening\classes\APIKeyEncryption;
 
 class ScieloScreeningSettingsForm extends Form
 {
@@ -31,15 +32,19 @@ class ScieloScreeningSettingsForm extends Form
         'orcidClientId' => 'string',
         'orcidClientSecret' => 'string',
     );
-
     public $contextId;
     public $plugin;
+    private $encrypter;
 
     public function __construct($plugin, $contextId)
     {
         $this->contextId = $contextId;
         $this->plugin = $plugin;
-        parent::__construct($plugin->getTemplateResource('settingsForm.tpl'));
+        $this->encrypter = new APIKeyEncryption();
+
+        $template = $this->encrypter->secretConfigExists() ? 'settingsForm.tpl' : 'settingsFormEmptySecret.tpl';
+        parent::__construct($plugin->getTemplateResource($template));
+
         $this->addCheck(new FormValidatorPost($this));
         $this->addCheck(new FormValidatorCSRF($this));
 
@@ -59,8 +64,17 @@ class ScieloScreeningSettingsForm extends Form
         $contextId = $this->contextId;
         $plugin = &$this->plugin;
         $this->_data = array();
+
         foreach (self::CONFIG_VARS as $configVar => $type) {
-            $this->_data[$configVar] = $plugin->getSetting($contextId, $configVar);
+            $settingValue = $plugin->getSetting($contextId, $configVar);
+
+            if ($configVar == 'orcidClientId' || $configVar == 'orcidClientSecret') {
+                if (!empty($settingValue) && $this->encrypter->textIsEncrypted($settingValue)) {
+                    $settingValue = $this->encrypter->decryptString($settingValue);
+                }
+            }
+
+            $this->_data[$configVar] = $settingValue;
         }
     }
 
@@ -86,7 +100,8 @@ class ScieloScreeningSettingsForm extends Form
             if ($configVar === 'orcidAPIPath') {
                 $plugin->updateSetting($contextId, $configVar, trim($this->getData($configVar), "\"\';"), $type);
             } else {
-                $plugin->updateSetting($contextId, $configVar, $this->getData($configVar), $type);
+                $encryptedValue = $this->encrypter->encryptString($this->getData($configVar));
+                $plugin->updateSetting($contextId, $configVar, $encryptedValue, $type);
             }
         }
 

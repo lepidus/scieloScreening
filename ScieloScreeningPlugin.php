@@ -22,11 +22,13 @@ use PKP\linkAction\request\AjaxModal;
 use APP\template\TemplateManager;
 use PKP\core\JSONMessage;
 use APP\pages\submission\SubmissionHandler;
+use Illuminate\Database\Migrations\Migration;
 use APP\plugins\generic\scieloScreening\classes\components\forms\NumberContributorsForm;
 use APP\plugins\generic\scieloScreening\classes\ScreeningExecutor;
 use APP\plugins\generic\scieloScreening\classes\ScreeningChecker;
 use APP\plugins\generic\scieloScreening\classes\DocumentChecker;
 use APP\plugins\generic\scieloScreening\classes\OrcidClient;
+use APP\plugins\generic\scieloScreening\classes\migration\EncryptLegacyCredentials;
 use APP\plugins\generic\scieloScreening\ScieloScreeningSettingsForm;
 
 class ScieloScreeningPlugin extends GenericPlugin
@@ -64,6 +66,11 @@ class ScieloScreeningPlugin extends GenericPlugin
     public function getDescription()
     {
         return __('plugins.generic.scieloScreening.description');
+    }
+
+    public function getInstallMigration(): Migration
+    {
+        return new EncryptLegacyCredentials();
     }
 
     public function getActions($request, $actionArgs)
