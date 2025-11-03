@@ -69,8 +69,8 @@ class ScieloScreeningSettingsForm extends Form
             $settingValue = $plugin->getSetting($contextId, $configVar);
 
             if ($configVar == 'orcidClientId' || $configVar == 'orcidClientSecret') {
-                if (!empty($settingValue) && $this->encrypter->isEncrypted($settingValue)) {
-                    $settingValue = $this->encrypter->decrypt($settingValue);
+                if (!empty($settingValue) && $this->encrypter->textIsEncrypted($settingValue)) {
+                    $settingValue = $this->encrypter->decryptString($settingValue);
                 }
             }
 
@@ -100,7 +100,7 @@ class ScieloScreeningSettingsForm extends Form
             if ($configVar === 'orcidAPIPath') {
                 $plugin->updateSetting($contextId, $configVar, trim($this->getData($configVar), "\"\';"), $type);
             } else {
-                $encryptedValue = $this->encrypter->encrypt($this->getData($configVar));
+                $encryptedValue = $this->encrypter->encryptString($this->getData($configVar));
                 $plugin->updateSetting($contextId, $configVar, $encryptedValue, $type);
             }
         }
