@@ -28,7 +28,7 @@ use APP\plugins\generic\scieloScreening\classes\ScreeningExecutor;
 use APP\plugins\generic\scieloScreening\classes\ScreeningChecker;
 use APP\plugins\generic\scieloScreening\classes\DocumentChecker;
 use APP\plugins\generic\scieloScreening\classes\OrcidClient;
-use APP\plugins\generic\plaudit\classes\migration\EncryptLegacyCredentials;
+use APP\plugins\generic\scieloScreening\classes\migration\EncryptLegacyCredentials;
 use APP\plugins\generic\scieloScreening\ScieloScreeningSettingsForm;
 
 class ScieloScreeningPlugin extends GenericPlugin
