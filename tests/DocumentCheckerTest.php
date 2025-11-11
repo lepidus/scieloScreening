@@ -28,7 +28,8 @@ class DocumentCheckerTest extends TestCase
         $expectedOrcids = [
             '0000-0001-5727-2427',
             '0000-0002-1648-966x',
-            '0000-0002-1825-0097'
+            '0000-0002-1825-0097',
+            '0000-0003-1984-8629'
         ];
 
         $this->assertEquals($expectedOrcids, $documentChecker->checkTextOrcids());
