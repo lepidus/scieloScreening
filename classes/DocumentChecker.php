@@ -12,6 +12,8 @@ class DocumentChecker
         shell_exec("pdftotext " . $pathFile . " " . $pathTxt . " -layout 2>/dev/null");
 
         $this->fileText = file_get_contents($pathTxt);
+        $this->fileText = str_replace(["\r", "\n"], '', $this->fileText);
+
         unlink($pathTxt);
     }
 
