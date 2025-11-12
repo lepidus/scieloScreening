@@ -202,6 +202,7 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
             cy.get('input[name="urlPath"]').should('not.exist');
             cy.get('a.pkpModalCloseButton').click();
         });
+        cy.wait(1000);
 
         cy.addSubmissionGalleys([files[0], files[0]]);
         cy.contains('button', 'Continue').click();
