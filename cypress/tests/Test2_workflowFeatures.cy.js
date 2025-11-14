@@ -76,15 +76,27 @@ describe('SciELO Screening Plugin - WorkFlow features tests', function() {
         cy.contains('Only one PDF document was submitted');
         cy.contains('The scientific production of the ORCID records has been successfully confirmed');
     });
-    it("Prefix and subtitle fields are hidden", function () {
+    it("Hides agencies, prefix and subtitle fields", function () {
+        cy.login('dbarnes', null, 'publicknowledge');
+        cy.contains('.app__navItem', 'Workflow').click();
+        cy.get('#metadata-button').click();
+        cy.contains('Enable supporting agencies metadata').parent().within(() => {
+            cy.get('input[type="checkbox"]').check();
+        });
+        cy.get('button:visible:contains("Save")').click();
+        cy.get('.pkpFormPage__status:contains("Saved")');
+        cy.logout();
+
         cy.login('dphillips', null, 'publicknowledge');
         cy.findSubmission('myQueue', screenedSubmissionTitle);
 
         cy.contains('button', 'Preprint').click();
         cy.contains('button', 'Title & Abstract').click();
-
         cy.contains('.pkpFormFieldLabel', 'Prefix').should('not.exist');
         cy.contains('.pkpFormFieldLabel', 'Subtitle').should('not.exist');
+
+        cy.contains('button', 'Metadata').click();
+        cy.contains('.pkpFormFieldLabel', 'Agencies').should('not.exist');
     });
     it("Authors can not send multiple PDFs", function () {
         cy.login('dphillips', null, 'publicknowledge');
