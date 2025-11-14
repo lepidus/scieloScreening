@@ -143,11 +143,18 @@ class ScieloScreeningPlugin extends GenericPlugin
     public function editFormComponents($hookName, $params)
     {
         $formConfig = &$params[0];
+        $form = $params[1];
 
         if ($formConfig['id'] == 'contributor') {
             $formConfig = $this->addRequirementForAffiliation($formConfig);
         } elseif ($formConfig['id'] == 'titleAbstract') {
-            $formConfig = $this->removePrefixAndSubtitleFields($formConfig);
+            $formConfig = $this->removeFieldsOfFormComponent($formConfig, ['prefix', 'subtitle']);
+        } elseif ($formConfig['id'] == 'metadata') {
+            $publication = $form->publication;
+            $submission = Repo::submission()->get($publication->getData('submissionId'));
+            if ($this->userIsAuthor($submission)) {
+                $formConfig = $this->removeFieldsOfFormComponent($formConfig, ['supportingAgencies']);
+            }
         }
 
         return false;
@@ -164,10 +171,10 @@ class ScieloScreeningPlugin extends GenericPlugin
         return $formConfig;
     }
 
-    private function removePrefixAndSubtitleFields($formConfig)
+    private function removeFieldsOfFormComponent($formConfig, $fieldsToRemove)
     {
-        $filteredFields = array_filter($formConfig['fields'], function ($field) {
-            return $field['name'] != 'prefix' && $field['name'] != 'subtitle';
+        $filteredFields = array_filter($formConfig['fields'], function ($field) use ($fieldsToRemove) {
+            return !in_array($field['name'], $fieldsToRemove);
         });
         $formConfig['fields'] = array_values($filteredFields);
         return $formConfig;
