@@ -231,6 +231,10 @@ class ScieloScreeningPlugin extends GenericPlugin
             $contributorsErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.affiliation');
         }
 
+        if ($dataScreening['statusUppercaseAuthors']) {
+            $contributorsErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.uppercaseContributors');
+        }
+
         if (!$dataScreening['statusOrcid']) {
             $contributorsErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.orcidLeastOne');
         }
@@ -252,13 +256,6 @@ class ScieloScreeningPlugin extends GenericPlugin
             if ($numberContributorsInformed != count($authors)) {
                 $contributorsErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.numberContributors');
             }
-        }
-
-        $authorsNames = array_map(function ($author) {
-            return $author->getLocalizedGivenName() . $author->getLocalizedFamilyName();
-        }, $authors);
-        if ($screeningChecker->checkHasUppercaseAuthors($authorsNames)) {
-            $contributorsErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.uppercaseContributors');
         }
 
         if (!empty($contributorsErrors)) {
@@ -296,8 +293,8 @@ class ScieloScreeningPlugin extends GenericPlugin
 
     public function addToWorkFlow($hookName, $params)
     {
-        $smarty = & $params[1];
-        $output = & $params[2];
+        $smarty = &$params[1];
+        $output = &$params[2];
         $context = Application::get()->getRequest()->getContext();
         $submission = $smarty->getTemplateVars('submission');
 

@@ -31,6 +31,7 @@ class ScreeningExecutor
         list($statusAffiliation, $authorsWithoutAffiliation) = $checker->checkAffiliationAuthors($affiliationAuthors, $nameAuthors);
         return [
             'statusAffiliation' => $statusAffiliation,
+            'statusUppercaseAuthors' => $checker->checkHasUppercaseAuthors($nameAuthors),
             'statusOrcid' => $checker->checkOrcidAuthors($orcidAuthors),
             'authorsWithoutAffiliation' => $authorsWithoutAffiliation
         ];
