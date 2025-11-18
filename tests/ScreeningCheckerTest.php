@@ -62,7 +62,7 @@ final class ScreeningCheckerTest extends TestCase
     public function testCreditAuthors()
     {
         $checker = new ScreeningChecker();
-        
+
         $orcids = [null, null, null];
         $this->assertEquals('Skipped', $checker->checkCreditAuthors($orcids));
 

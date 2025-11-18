@@ -20,20 +20,22 @@ class ScreeningExecutor
         $checker = new ScreeningChecker();
         $authors = $submission->getCurrentPublication()->getData('authors');
 
-        $affiliationAuthors = $nameAuthors = $orcidAuthors = [];
+        $affiliationAuthors = $nameAuthors = $orcidAuthors = $creditAuthors = [];
 
         foreach ($authors as $author) {
             $affiliationAuthors[] = $author->getLocalizedAffiliation();
             $nameAuthors[] = $author->getLocalizedGivenName() . " " . $author->getLocalizedFamilyName();
             $orcidAuthors[] = $author->getOrcid();
+            $creditAuthors[] = $author->getData('creditRoles');
         }
 
         list($statusAffiliation, $authorsWithoutAffiliation) = $checker->checkAffiliationAuthors($affiliationAuthors, $nameAuthors);
         return [
             'statusAffiliation' => $statusAffiliation,
+            'authorsWithoutAffiliation' => $authorsWithoutAffiliation,
             'statusUppercaseAuthors' => $checker->checkHasUppercaseAuthors($nameAuthors),
             'statusOrcid' => $checker->checkOrcidAuthors($orcidAuthors),
-            'authorsWithoutAffiliation' => $authorsWithoutAffiliation
+            'statusCreditRoles' => $checker->checkCreditAuthors($creditAuthors)
         ];
     }
 

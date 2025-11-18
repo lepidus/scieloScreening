@@ -28,6 +28,9 @@ msgstr "Por favor, introduzca el número total de colaboradores de esta publicac
 msgid "plugins.generic.scieloScreening.reviewStep.error.affiliation"
 msgstr "Todos los colaboradores de envío deben tener su afiliación lleno"
 
+msgid "plugins.generic.scieloScreening.reviewStep.error.creditRoles"
+msgstr "Todos los colaboradores de envío deben tener al menos un rol CRediT especificado"
+
 msgid "plugins.generic.scieloScreening.reviewStep.error.numberContributors"
 msgstr "El número de colaboradores insertados no es el mismo que el informado"
 

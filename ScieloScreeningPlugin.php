@@ -231,6 +231,10 @@ class ScieloScreeningPlugin extends GenericPlugin
             $contributorsErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.affiliation');
         }
 
+        if ($dataScreening['statusCreditRoles'] == 'NotOkay') {
+            $contributorsErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.creditRoles');
+        }
+
         if ($dataScreening['statusUppercaseAuthors']) {
             $contributorsErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.uppercaseContributors');
         }
