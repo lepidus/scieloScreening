@@ -32,7 +32,7 @@ class FormsEditDispatcher
         $form = $params[1];
 
         if ($formConfig['id'] == 'contributor') {
-            $formConfig = $this->addRequirementForAffiliation($formConfig);
+            $formConfig = $this->addRequirementForFields($formConfig, ['affiliation', 'creditRoles']);
         } elseif ($formConfig['id'] == 'titleAbstract') {
             $formConfig = $this->removeFieldsOfFormComponent($formConfig, ['prefix', 'subtitle']);
         } elseif ($formConfig['id'] == 'metadata') {
@@ -46,12 +46,11 @@ class FormsEditDispatcher
         return Hook::CONTINUE;
     }
 
-    private function addRequirementForAffiliation($formConfig)
+    private function addRequirementForFields($formConfig, $fieldsToRequire)
     {
         foreach ($formConfig['fields'] as &$field) {
-            if ($field['name'] == 'affiliation') {
+            if (in_array($field['name'], $fieldsToRequire)) {
                 $field['isRequired'] = true;
-                break;
             }
         }
         return $formConfig;
