@@ -44,6 +44,7 @@ class ScieloScreeningPlugin extends GenericPlugin
         if ($success && $this->getEnabled($mainContextId)) {
             Hook::add('TemplateManager::display', [$this, 'modifySubmissionSteps']);
             Hook::add('Submission::validateSubmit', [$this, 'validateSubmissionFields']);
+            Hook::add('Author::validate', [$this, 'validateAuthorData']);
             Hook::add('Template::SubmissionWizard::Section::Review', [$this, 'modifyReviewSections']);
             Hook::add('Schema::get::publication', [$this, 'addOurFieldsToPublicationSchema']);
             Hook::add('Template::Workflow::Publication', [$this, 'addToWorkFlow']);
@@ -270,6 +271,19 @@ class ScieloScreeningPlugin extends GenericPlugin
         }
 
         return false;
+    }
+
+    public function validateAuthorData($hookName, $params)
+    {
+        $errors = &$params[0];
+        $author = $params[1];
+        $props = $params[2];
+
+        if (isset($props['creditRoles']) && empty($props['creditRoles'])) {
+            $errors['creditRoles'] = [__('plugins.generic.scieloScreening.reviewStep.error.creditRoles')];
+        }
+
+        return Hook::CONTINUE;
     }
 
     public function modifyReviewSections($hookName, $params)
