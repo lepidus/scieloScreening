@@ -42,11 +42,9 @@ class ScieloScreeningPlugin extends GenericPlugin
         }
 
         if ($success && $this->getEnabled($mainContextId)) {
-            Hook::add('Form::config::after', [$this, 'editFormComponents']);
-            Hook::add('preprintgalleyform::display', [$this, 'modifyGalleyForm']);
-            Hook::add('preprintgalleyform::validate', [$this, 'modifyGalleyFormValidation']);
             Hook::add('TemplateManager::display', [$this, 'modifySubmissionSteps']);
             Hook::add('Submission::validateSubmit', [$this, 'validateSubmissionFields']);
+            Hook::add('Author::validate', [$this, 'validateAuthorData']);
             Hook::add('Template::SubmissionWizard::Section::Review', [$this, 'modifyReviewSections']);
             Hook::add('Schema::get::publication', [$this, 'addOurFieldsToPublicationSchema']);
             Hook::add('Template::Workflow::Publication', [$this, 'addToWorkFlow']);
@@ -54,8 +52,22 @@ class ScieloScreeningPlugin extends GenericPlugin
 
             Hook::add('Publication::validatePublish', [$this, 'validateOnPosting']);
             Hook::add('Settings::Workflow::listScreeningPlugins', [$this, 'listPluginScreeningRules']);
+
+            $this->loadDispatcherClasses();
         }
         return $success;
+    }
+
+    private function loadDispatcherClasses(): void
+    {
+        $dispatcherClasses = [
+            'FormsEditDispatcher'
+        ];
+
+        foreach ($dispatcherClasses as $dispatcherClass) {
+            $dispatcherClass = 'APP\plugins\generic\scieloScreening\classes\dispatchers\\' . $dispatcherClass;
+            $dispatcher = new $dispatcherClass($this);
+        }
     }
 
     public function getDisplayName()
@@ -140,92 +152,6 @@ class ScieloScreeningPlugin extends GenericPlugin
         return $request->getBaseUrl() . DIRECTORY_SEPARATOR . $this->getPluginPath();
     }
 
-    public function editFormComponents($hookName, $params)
-    {
-        $formConfig = &$params[0];
-        $form = $params[1];
-
-        if ($formConfig['id'] == 'contributor') {
-            $formConfig = $this->addRequirementForAffiliation($formConfig);
-        } elseif ($formConfig['id'] == 'titleAbstract') {
-            $formConfig = $this->removeFieldsOfFormComponent($formConfig, ['prefix', 'subtitle']);
-        } elseif ($formConfig['id'] == 'metadata') {
-            $publication = $form->publication;
-            $submission = Repo::submission()->get($publication->getData('submissionId'));
-            if ($this->userIsAuthor($submission)) {
-                $formConfig = $this->removeFieldsOfFormComponent($formConfig, ['supportingAgencies']);
-            }
-        }
-
-        return false;
-    }
-
-    private function addRequirementForAffiliation($formConfig)
-    {
-        foreach ($formConfig['fields'] as &$field) {
-            if ($field['name'] == 'affiliation') {
-                $field['isRequired'] = true;
-                break;
-            }
-        }
-        return $formConfig;
-    }
-
-    private function removeFieldsOfFormComponent($formConfig, $fieldsToRemove)
-    {
-        $filteredFields = array_filter($formConfig['fields'], function ($field) use ($fieldsToRemove) {
-            return !in_array($field['name'], $fieldsToRemove);
-        });
-        $formConfig['fields'] = array_values($filteredFields);
-        return $formConfig;
-    }
-
-    public function modifyGalleyForm($hookName, $params)
-    {
-        $request = Application::get()->getRequest();
-        $templateMgr = TemplateManager::getManager($request);
-
-        $templateMgr->registerFilter("output", [$this, 'removeFieldsFromGalleyFormFilter']);
-    }
-
-    public function removeFieldsFromGalleyFormFilter($output, $templateMgr)
-    {
-        if (preg_match('/id="preprintGalleyForm"/', $output)) {
-            preg_match('/<\/form>/', $output, $matches, PREG_OFFSET_CAPTURE);
-
-            $posMatch = $matches[0][1];
-            $removeGalleyFields = $templateMgr->fetch($this->getTemplateResource('removeGalleyFields.tpl'));
-            $output = substr_replace($output, $removeGalleyFields, $posMatch, 0);
-
-            $templateMgr->unregisterFilter('output', array($this, 'removeFieldsFromGalleyFormFilter'));
-        }
-
-        return $output;
-    }
-
-    public function modifyGalleyFormValidation($hookName, $params)
-    {
-        $form = &$params[0];
-        $submission = $form->_submission;
-
-        if (!empty($submission->getData('submissionProgress')) || !empty($form->_preprintGalley)) {
-            return Hook::CONTINUE;
-        }
-
-        $checker = new ScreeningChecker();
-        $galleys = $submission->getGalleys();
-        $galleysFiletypes = array_map(function ($galley) {
-            return ($galley->getFileType());
-        }, $galleys);
-
-        if ($checker->checkNumberPdfs($galleysFiletypes)[0]) {
-            $form->addErrorField('preprintGalleyFormNotification');
-            $form->addError('preprintGalleyFormNotification', __("plugins.generic.scieloScreening.screeningRules.numPdfs"));
-        }
-
-        return Hook::CONTINUE;
-    }
-
     public function modifySubmissionSteps($hookName, $params)
     {
         $request = Application::get()->getRequest();
@@ -306,6 +232,14 @@ class ScieloScreeningPlugin extends GenericPlugin
             $contributorsErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.affiliation');
         }
 
+        if ($dataScreening['statusCreditRoles'] == 'NotOkay') {
+            $contributorsErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.creditRoles');
+        }
+
+        if ($dataScreening['statusUppercaseAuthors']) {
+            $contributorsErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.uppercaseContributors');
+        }
+
         if (!$dataScreening['statusOrcid']) {
             $contributorsErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.orcidLeastOne');
         }
@@ -329,13 +263,6 @@ class ScieloScreeningPlugin extends GenericPlugin
             }
         }
 
-        $authorsNames = array_map(function ($author) {
-            return $author->getLocalizedGivenName() . $author->getLocalizedFamilyName();
-        }, $authors);
-        if ($screeningChecker->checkHasUppercaseAuthors($authorsNames)) {
-            $contributorsErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.uppercaseContributors');
-        }
-
         if (!empty($contributorsErrors)) {
             $errors['contributors'] = $contributorsErrors;
         }
@@ -344,6 +271,19 @@ class ScieloScreeningPlugin extends GenericPlugin
         }
 
         return false;
+    }
+
+    public function validateAuthorData($hookName, $params)
+    {
+        $errors = &$params[0];
+        $author = $params[1];
+        $props = $params[2];
+
+        if (isset($props['creditRoles']) && empty($props['creditRoles'])) {
+            $errors['creditRoles'] = [__('plugins.generic.scieloScreening.reviewStep.error.creditRoles')];
+        }
+
+        return Hook::CONTINUE;
     }
 
     public function modifyReviewSections($hookName, $params)
@@ -371,8 +311,8 @@ class ScieloScreeningPlugin extends GenericPlugin
 
     public function addToWorkFlow($hookName, $params)
     {
-        $smarty = & $params[1];
-        $output = & $params[2];
+        $smarty = &$params[1];
+        $output = &$params[2];
         $context = Application::get()->getRequest()->getContext();
         $submission = $smarty->getTemplateVars('submission');
 
@@ -454,7 +394,7 @@ class ScieloScreeningPlugin extends GenericPlugin
         return null;
     }
 
-    private function userIsAuthor($submission)
+    public function userIsAuthor($submission)
     {
         $currentUser = Application::get()->getRequest()->getUser();
         $currentUserAssignedRoles = [];

@@ -28,6 +28,9 @@ msgstr "Please inform the total number of contributors to this publication"
 msgid "plugins.generic.scieloScreening.reviewStep.error.affiliation"
 msgstr "All submission contributors must have their affiliation filled"
 
+msgid "plugins.generic.scieloScreening.reviewStep.error.creditRoles"
+msgstr "All submission contributors must have at least one CRediT role specified"
+
 msgid "plugins.generic.scieloScreening.reviewStep.error.numberContributors"
 msgstr "The number of contributors entered is not the same as that reported"
 

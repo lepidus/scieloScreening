@@ -41,6 +41,28 @@ class ScreeningChecker
         return $orcidOne;
     }
 
+    public function checkCreditAuthors($authorsCreditRoles)
+    {
+        $allNull = true;
+        foreach ($authorsCreditRoles as $creditRoles) {
+            if (!is_null($creditRoles)) {
+                $allNull = false;
+                break;
+            }
+        }
+
+        if ($allNull) {
+            return 'Skipped';
+        }
+
+        foreach ($authorsCreditRoles as $creditRoles) {
+            if (empty($creditRoles)) {
+                return 'NotOkay';
+            }
+        }
+        return 'Okay';
+    }
+
     public function checkNumberPdfs($fileTypeGalleys)
     {
         $numPDFs = 0;
