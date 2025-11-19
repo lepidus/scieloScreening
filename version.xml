@@ -8,8 +8,8 @@
 <version>
 	<application>scieloScreening</application>
 	<type>plugins.generic</type>
-	<release>2.1.5.0</release>
-	<date>2025-11-14</date>
+	<release>2.1.6.0</release>
+	<date>2025-11-19</date>
 	<lazy-load>1</lazy-load>
 	<class>ScieloScreeningPlugin</class>
 </version>
