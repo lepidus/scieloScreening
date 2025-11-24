@@ -92,17 +92,22 @@ class FormsEditDispatcher
     {
         $form = &$params[0];
         $submission = $form->_submission;
+        $publication = $form->_publication;
 
         if (!empty($submission->getData('submissionProgress')) || !empty($form->_preprintGalley)) {
             return Hook::CONTINUE;
         }
 
-        $checker = new ScreeningChecker();
-        $galleys = $submission->getGalleys();
+        $galleys = Repo::galley()
+            ->getCollector()
+            ->filterByPublicationIds([$publication->getId()])
+            ->getMany()
+            ->toArray();
         $galleysFiletypes = array_map(function ($galley) {
             return ($galley->getFileType());
         }, $galleys);
 
+        $checker = new ScreeningChecker();
         if ($checker->checkNumberPdfs($galleysFiletypes)[0]) {
             $form->addErrorField('preprintGalleyFormNotification');
             $form->addError('preprintGalleyFormNotification', __("plugins.generic.scieloScreening.screeningRules.numPdfs"));
