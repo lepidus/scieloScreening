@@ -185,7 +185,7 @@ class ScieloScreeningPlugin extends GenericPlugin
             );
 
             $templateMgr->addJavaScript(
-                'dataStatementForm',
+                'scieloScreeningEditSubmissionWizard',
                 $this->getPluginFullPath() . '/js/EditSubmissionWizard.js',
                 [
                     'priority' => TemplateManager::STYLE_SEQUENCE_LAST,
