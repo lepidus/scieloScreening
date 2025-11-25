@@ -232,7 +232,7 @@ class ScieloScreeningPlugin extends GenericPlugin
             $contributorsErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.affiliation');
         }
 
-        if ($dataScreening['statusCreditRoles'] == 'NotOkay') {
+        if ($dataScreening['statusCreditRoles'] == ScreeningChecker::CHECK_STATUS_NOT_OKAY) {
             $contributorsErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.creditRoles');
         }
 
