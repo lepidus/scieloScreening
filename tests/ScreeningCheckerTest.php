@@ -63,22 +63,27 @@ final class ScreeningCheckerTest extends TestCase
     {
         $checker = new ScreeningChecker();
 
-        $orcids = [null, null, null];
-        $this->assertEquals('Skipped', $checker->checkCreditAuthors($orcids));
+        $creditRoles = [null, null, null];
+        $this->assertEquals('Skipped', $checker->checkCreditAuthors($creditRoles));
 
-        $orcids = [
+        $creditRoles = [
+            []
+        ];
+        $this->assertEquals('Skipped', $checker->checkCreditAuthors($creditRoles));
+
+        $creditRoles = [
             ['https://credit.niso.org/contributor-roles/software/'],
             [],
             ['https://credit.niso.org/contributor-roles/conceptualization/']
         ];
-        $this->assertEquals('NotOkay', $checker->checkCreditAuthors($orcids));
+        $this->assertEquals('NotOkay', $checker->checkCreditAuthors($creditRoles));
 
-        $orcids = [
+        $creditRoles = [
             ['https://credit.niso.org/contributor-roles/software/'],
             ['https:/credit.niso.org/contributor-roles/writing-original-draft/'],
             ['https://credit.niso.org/contributor-roles/conceptualization/']
         ];
-        $this->assertEquals('Okay', $checker->checkCreditAuthors($orcids));
+        $this->assertEquals('Okay', $checker->checkCreditAuthors($creditRoles));
     }
 
     public function testNumberPdfs(): void

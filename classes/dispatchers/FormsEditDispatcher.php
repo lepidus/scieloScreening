@@ -32,7 +32,7 @@ class FormsEditDispatcher
         $form = $params[1];
 
         if ($formConfig['id'] == 'contributor') {
-            $formConfig = $this->addRequirementForFields($formConfig, ['affiliation', 'creditRoles']);
+            $formConfig = $this->addRequirementForFields($formConfig, ['affiliation']);
         } elseif ($formConfig['id'] == 'titleAbstract') {
             $formConfig = $this->removeFieldsOfFormComponent($formConfig, ['prefix', 'subtitle']);
         } elseif ($formConfig['id'] == 'metadata') {

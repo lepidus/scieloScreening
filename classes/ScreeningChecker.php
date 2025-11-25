@@ -13,6 +13,10 @@ namespace APP\plugins\generic\scieloScreening\classes;
 
 class ScreeningChecker
 {
+    public const CHECK_STATUS_OKAY = 'Okay';
+    public const CHECK_STATUS_NOT_OKAY = 'NotOkay';
+    public const CHECK_STATUS_SKIPPED = 'Skipped';
+
     public function isUppercase($string)
     {
         $formattedString = str_replace(' ', '', $string);
@@ -51,16 +55,16 @@ class ScreeningChecker
             }
         }
 
-        if ($allNull) {
-            return 'Skipped';
+        if ($allNull || count($authorsCreditRoles) == 1) {
+            return self::CHECK_STATUS_SKIPPED;
         }
 
         foreach ($authorsCreditRoles as $creditRoles) {
             if (empty($creditRoles)) {
-                return 'NotOkay';
+                return self::CHECK_STATUS_NOT_OKAY;
             }
         }
-        return 'Okay';
+        return self::CHECK_STATUS_OKAY;
     }
 
     public function checkNumberPdfs($fileTypeGalleys)
