@@ -51,7 +51,7 @@ class ScreeningChecker
             }
         }
 
-        if ($allNull) {
+        if ($allNull || count($authorsCreditRoles) == 1) {
             return 'Skipped';
         }
 
