@@ -117,13 +117,14 @@ describe('SciELO Screening Plugin - WorkFlow features tests', function() {
     });
     it("Disables plugin temporarily", function () {
         cy.login('dbarnes', null, 'publicknowledge');
-		cy.contains('a', 'Website').click();
+        cy.get('nav').contains('Settings').click();
+        cy.get('nav').contains('Website').click({ force: true });
 
-		cy.waitJQuery();
-		cy.get('#plugins-button').click();
+        cy.waitJQuery();
+        cy.get('#plugins-button').click();
 
-		cy.get('input[id^=select-cell-scieloscreeningplugin]').uncheck();
-        cy.get('.pkp_modal_panel button:contains("OK")').click();
+        cy.get('input[id^=select-cell-scieloscreeningplugin]').uncheck();
+        cy.get('.pkp_modal_panel').contains('button', 'OK').click();
     });
     it("Creates submission without going through screening", function () {
         cy.login('dphillips', null, 'publicknowledge');
@@ -148,12 +149,13 @@ describe('SciELO Screening Plugin - WorkFlow features tests', function() {
     });
     it("Re-enable the plugin", function () {
         cy.login('dbarnes', null, 'publicknowledge');
-		cy.contains('a', 'Website').click();
+        cy.get('nav').contains('Settings').click();
+        cy.get('nav').contains('Website').click({ force: true });
 
-		cy.waitJQuery();
-		cy.get('#plugins-button').click();
+        cy.waitJQuery();
+        cy.get('#plugins-button').click();
 
-		cy.get('input[id^=select-cell-scieloscreeningplugin]').check();
+        cy.get('input[id^=select-cell-scieloscreeningplugin]').check();
         cy.get('input[id^=select-cell-scieloscreeningplugin]').should('be.checked');
     });
     it("Displays screening info in publication tab for unscreened submission", function () {
