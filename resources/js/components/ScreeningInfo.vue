@@ -121,14 +121,14 @@
           <span v-if="screeningData.statusDocumentOrcids === 'Okay'">
             {{ t("plugins.generic.scieloScreening.info.documentOrcidsOkay") }}
           </span>
-          <span
-            v-else-if="screeningData.statusDocumentOrcids?.includes('Unable')"
-          >
-            {{
-              t(
-                `plugins.generic.scieloScreening.info.documentOrcids${screeningData.statusDocumentOrcids}`
-              )
-            }}
+          <span v-else-if="screeningData.statusDocumentOrcids === 'UnableNoFile'">
+            {{ t("plugins.generic.scieloScreening.info.documentOrcidsUnableNoFile") }}
+          </span>
+          <span v-else-if="screeningData.statusDocumentOrcids === 'UnableNoOrcids'">
+            {{ t("plugins.generic.scieloScreening.info.documentOrcidsUnableNoOrcids") }}
+          </span>
+          <span v-else-if="screeningData.statusDocumentOrcids === 'UnableException'">
+            {{ t("plugins.generic.scieloScreening.info.documentOrcidsUnableException") }}
           </span>
           <span v-else>
             {{
@@ -139,9 +139,7 @@
           </span>
         </div>
         <div
-          v-if="screeningData.statusDocumentOrcids
-            && screeningData.statusDocumentOrcids !== 'Okay'
-            && !screeningData.statusDocumentOrcids?.includes('Unable')"
+          v-if="screeningData.statusDocumentOrcids === 'NotOkay'"
           class="screeningInfoFieldBody"
         >
           <ul>
