@@ -104,7 +104,7 @@ class ScieloScreeningPlugin extends GenericPlugin
             'APIHandler::endpoints::submissions',
             function (
                 string $hookName,
-                PKPBaseController &$apiController,
+                PKPBaseController $apiController,
                 APIHandler $apiHandler
             ): bool {
                 $apiHandler->addRoute(
