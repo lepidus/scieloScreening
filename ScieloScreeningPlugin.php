@@ -14,8 +14,9 @@ namespace APP\plugins\generic\scieloScreening;
 use PKP\plugins\GenericPlugin;
 use APP\core\Application;
 use PKP\plugins\Hook;
-use PKP\db\DAORegistry;
 use APP\facades\Repo;
+use PKP\stageAssignment\StageAssignment;
+use PKP\userGroup\UserGroup;
 use PKP\security\Role;
 use PKP\linkAction\LinkAction;
 use PKP\linkAction\request\AjaxModal;
@@ -458,15 +459,19 @@ class ScieloScreeningPlugin extends GenericPlugin
         $currentUser = Application::get()->getRequest()->getUser();
         $currentUserAssignedRoles = [];
         if ($currentUser) {
-            $stageAssignmentDao = DAORegistry::getDAO('StageAssignmentDAO');
-            $stageAssignmentsResult = $stageAssignmentDao->getBySubmissionAndUserIdAndStageId($submission->getId(), $currentUser->getId(), $submission->getData('stageId'));
+            $stageAssignments = StageAssignment::withSubmissionIds([$submission->getId()])
+                ->withStageIds([$submission->getData('stageId')])
+                ->withUserId($currentUser->getId())
+                ->get();
 
-            while ($stageAssignment = $stageAssignmentsResult->next()) {
-                $userGroup = Repo::userGroup()->get($stageAssignment->getUserGroupId(), $submission->getData('contextId'));
-                $currentUserAssignedRoles[] = (int) $userGroup->getRoleId();
+            foreach ($stageAssignments as $stageAssignment) {
+                $userGroup = UserGroup::find($stageAssignment->userGroupId);
+                if ($userGroup) {
+                    $currentUserAssignedRoles[] = (int) $userGroup->roleId;
+                }
             }
         }
 
-        return !empty($currentUserAssignedRoles) and $currentUserAssignedRoles[0] == Role::ROLE_ID_AUTHOR;
+        return !empty($currentUserAssignedRoles) && $currentUserAssignedRoles[0] == Role::ROLE_ID_AUTHOR;
     }
 }
