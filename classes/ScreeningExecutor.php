@@ -53,7 +53,7 @@ class ScreeningExecutor
 
         $affiliationNames = [];
         foreach ($affiliations as $affiliation) {
-            $name = $affiliation->getLocalizedData('name');
+            $name = $affiliation->getLocalizedName();
             if ($name) {
                 $affiliationNames[] = $name;
             }
