@@ -80,9 +80,7 @@ describe('SciELO Screening Plugin - WorkFlow features tests', function() {
         cy.wait(1000);
 
         cy.contains('button', 'Submit').click();
-        cy.get('div[role="dialog"]:visible').within(() => {
-            cy.contains('button', 'Submit').click();
-        });
+        cy.get('[role="dialog"] button').contains('Submit').click({force: true});
         cy.waitJQuery();
         cy.contains('h1', 'Submission complete');
     });
