@@ -1,31 +1,5 @@
 import '../support/commands.js';
 
-function beginSubmission(submissionData) {
-    cy.get('label:contains("English")').click();
-    cy.setTinyMceContent('startSubmission-title-control', submissionData.title);
-
-    cy.get('input[name="submissionRequirements"]').check();
-    cy.get('input[name="privacyConsent"]').check();
-    cy.contains('button', 'Begin Submission').click();
-}
-
-function detailsStep(submissionData) {
-    cy.setTinyMceContent('titleAbstract-abstract-control-en', submissionData.abstract);
-    cy.get('.submissionWizard__footer button').contains('Continue').click();
-}
-
-function addContributor(contributorData) {
-    cy.get('button').contains('Add Contributor').click();
-    cy.wait(1000);
-    cy.get('.pkpFormField:contains("Given Name")').find('input[name*="givenName-en"]').type(contributorData.given, {delay: 0});
-    cy.get('.pkpFormField:contains("Family Name")').find('input[name*="familyName-en"]').type(contributorData.family, {delay: 0});
-    cy.get('.pkpFormField:contains("Email")').find('input').type(contributorData.email, {delay: 0});
-    cy.get('.pkpFormField:contains("Country")').find('select').select(contributorData.country);
-
-    cy.get('div[role=dialog]:contains("Add Contributor")').find('button').contains('Save').click();
-    cy.wait(2000);
-}
-
 describe('SciELO Screening Plugin - WorkFlow features tests', function() {
     let unscreenedSubmissionData;
     let dummyPdf;
@@ -41,15 +15,13 @@ describe('SciELO Screening Plugin - WorkFlow features tests', function() {
                     'given': 'Jason',
                     'family': 'Schwartzman',
                     'email': 'jason.schwartzman@asteroidcity.com',
-                    'country': 'United States',
-                    'affiliation': 'Hollywood'
+                    'country': 'United States'
                 },
                 {
                     'given': 'Scarlett',
                     'family': 'Johanson',
                     'email': 'scarlett.johanson@asteroidcity.com',
-                    'country': 'United States',
-                    'affiliation': 'Hollywood'
+                    'country': 'United States'
                 }
             ]
         };
@@ -97,12 +69,12 @@ describe('SciELO Screening Plugin - WorkFlow features tests', function() {
         cy.login('dphillips', null, 'publicknowledge');
         cy.contains('Start A New Submission').click();
 
-        beginSubmission(unscreenedSubmissionData);
-        detailsStep(unscreenedSubmissionData);
+        cy.beginSubmission(unscreenedSubmissionData);
+        cy.detailsStep(unscreenedSubmissionData);
         cy.addSubmissionGalleys([dummyPdf, dummyPdf]);
         cy.get('.submissionWizard__footer button').contains('Continue').click();
-        addContributor(unscreenedSubmissionData.contributors[0]);
-        addContributor(unscreenedSubmissionData.contributors[1]);
+        cy.addContributor(unscreenedSubmissionData.contributors[0]);
+        cy.addContributor(unscreenedSubmissionData.contributors[1]);
         cy.get('.submissionWizard__footer button').contains('Continue').click();
         cy.get('.submissionWizard__footer button').contains('Continue').click();
         cy.wait(1000);
