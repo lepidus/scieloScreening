@@ -158,6 +158,7 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.wait(1000);
         cy.contains('Some contributors have their name in capital letters. We ask that you correct them.').should('not.exist');
     });
+    
     it('At least one contributor should have a ORCID assigned', function () {
         cy.login('dphillips', null, 'publicknowledge');
         openIncompleteSubmission('Revolori');

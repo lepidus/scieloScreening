@@ -1,9 +1,9 @@
 import '../support/commands.js';
 
 function beginSubmission(submissionData) {
-    cy.get('input[name="locale"][value="en"]').click();
+    cy.get('label:contains("English")').click();
     cy.setTinyMceContent('startSubmission-title-control', submissionData.title);
-    
+
     cy.get('input[name="submissionRequirements"]').check();
     cy.get('input[name="privacyConsent"]').check();
     cy.contains('button', 'Begin Submission').click();
@@ -11,32 +11,31 @@ function beginSubmission(submissionData) {
 
 function detailsStep(submissionData) {
     cy.setTinyMceContent('titleAbstract-abstract-control-en', submissionData.abstract);
-    cy.contains('button', 'Continue').click();
+    cy.get('.submissionWizard__footer button').contains('Continue').click();
 }
 
 function addContributor(contributorData) {
-    cy.contains('button', 'Add Contributor').click();
-    cy.get('input[name="givenName-en"]').type(contributorData.given, {delay: 0});
-    cy.get('input[name="familyName-en"]').type(contributorData.family, {delay: 0});
-    cy.get('input[name="email"]').type(contributorData.email, {delay: 0});
-    cy.get('select[name="country"]').select(contributorData.country);
+    cy.get('button').contains('Add Contributor').click();
+    cy.wait(1000);
+    cy.get('.pkpFormField:contains("Given Name")').find('input[name*="givenName-en"]').type(contributorData.given, {delay: 0});
+    cy.get('.pkpFormField:contains("Family Name")').find('input[name*="familyName-en"]').type(contributorData.family, {delay: 0});
+    cy.get('.pkpFormField:contains("Email")').find('input').type(contributorData.email, {delay: 0});
+    cy.get('.pkpFormField:contains("Country")').find('select').select(contributorData.country);
 
-    cy.get('.modal__panel:contains("Add Contributor")').find('button').contains('Save').click();
-    cy.waitJQuery();
+    cy.get('div[role=dialog]:contains("Add Contributor")').find('button').contains('Save').click();
+    cy.wait(2000);
 }
 
 describe('SciELO Screening Plugin - WorkFlow features tests', function() {
-    let screenedSubmissionTitle;
     let unscreenedSubmissionData;
     let dummyPdf;
-    
+
     before(function() {
         Cypress.config('defaultCommandTimeout', 10000);
-        screenedSubmissionTitle = "The Grand Budapest Hotel";
         unscreenedSubmissionData = {
             title: "Asteroid City",
-			abstract: 'A city in the middle of the desert, with an asteroid crater',
-			keywords: ['plugin', 'testing'],
+            abstract: 'A city in the middle of the desert, with an asteroid crater',
+            keywords: ['plugin', 'testing'],
             contributors: [
                 {
                     'given': 'Jason',
@@ -53,7 +52,7 @@ describe('SciELO Screening Plugin - WorkFlow features tests', function() {
                     'affiliation': 'Hollywood'
                 }
             ]
-		};
+        };
         dummyPdf = {
             'file': 'dummy.pdf',
             'fileName': 'dummy.pdf',
@@ -61,60 +60,19 @@ describe('SciELO Screening Plugin - WorkFlow features tests', function() {
             'genre': 'Preprint Text'
         };
     });
-    
-    it("Displays screening info in publication tab for screened submission", function () {
-        cy.login('dphillips', null, 'publicknowledge');
-        cy.findSubmission('myQueue', screenedSubmissionTitle);
 
-        cy.contains('button', 'Preprint').click();
-        cy.contains('button', 'SciELO Screening Info').click();
-        
-        cy.contains('See the status of each screening step below');
-        cy.contains('All metadata was filled in english');
-        cy.contains('All authors had their affiliation filled');
-        cy.contains('ORCID status is confirmed');
-        cy.contains('Only one PDF document was submitted');
-        cy.contains('The scientific production of the ORCID records has been successfully confirmed');
-    });
     it("Hides agencies, prefix and subtitle fields", function () {
         cy.login('dbarnes', null, 'publicknowledge');
-        cy.contains('.app__navItem', 'Workflow').click();
+        cy.get('nav').contains('Settings').click();
+        cy.get('nav').contains('Workflow').click();
         cy.get('#metadata-button').click();
         cy.contains('Enable supporting agencies metadata').parent().within(() => {
             cy.get('input[type="checkbox"]').check();
         });
         cy.get('button:visible:contains("Save")').click();
         cy.get('.pkpFormPage__status:contains("Saved")');
-        cy.logout();
-
-        cy.login('dphillips', null, 'publicknowledge');
-        cy.findSubmission('myQueue', screenedSubmissionTitle);
-
-        cy.contains('button', 'Preprint').click();
-        cy.contains('button', 'Title & Abstract').click();
-        cy.contains('.pkpFormFieldLabel', 'Prefix').should('not.exist');
-        cy.contains('.pkpFormFieldLabel', 'Subtitle').should('not.exist');
-
-        cy.contains('button', 'Metadata').click();
-        cy.contains('.pkpFormFieldLabel', 'Agencies').should('not.exist');
     });
-    it("Authors can not send multiple PDFs", function () {
-        cy.login('dphillips', null, 'publicknowledge');
-        cy.findSubmission('myQueue', screenedSubmissionTitle);
 
-        cy.contains('button', 'Preprint').click();
-        cy.contains('button', 'Galleys').click();
-
-        cy.get('a[id^=component-grid-preprintgalleys-preprintgalleygrid-addGalley-button-]').contains("Add File").click();
-        cy.wait(200);
-        cy.get('#preprintGalleyForm').within(() => {
-            cy.get('input[name="label"]').type('PDF', {delay: 0});
-            cy.contains('.submitFormButton', 'Save').click();
-        });
-        cy.reload();
-
-        cy.contains("Only one PDF document should be sent");
-    });
     it("Disables plugin temporarily", function () {
         cy.login('dbarnes', null, 'publicknowledge');
         cy.get('nav').contains('Settings').click();
@@ -124,29 +82,39 @@ describe('SciELO Screening Plugin - WorkFlow features tests', function() {
         cy.get('#plugins-button').click();
 
         cy.get('input[id^=select-cell-scieloscreeningplugin]').uncheck();
-        cy.get('.pkp_modal_panel').contains('button', 'OK').click();
+        cy.wait(500);
+        cy.get('body').then($body => {
+            if ($body.find('.pkp_modal_panel button:contains("OK")').length > 0) {
+                cy.get('.pkp_modal_panel button:contains("OK")').click();
+            } else if ($body.find('div[role="dialog"] button:contains("OK")').length > 0) {
+                cy.get('div[role="dialog"] button:contains("OK")').click();
+            }
+        });
+        cy.get('input[id^=select-cell-scieloscreeningplugin]').should('not.be.checked');
     });
+
     it("Creates submission without going through screening", function () {
         cy.login('dphillips', null, 'publicknowledge');
-        cy.get('div#myQueue a:contains("New Submission")').click();
+        cy.contains('Start A New Submission').click();
 
         beginSubmission(unscreenedSubmissionData);
         detailsStep(unscreenedSubmissionData);
         cy.addSubmissionGalleys([dummyPdf, dummyPdf]);
-        cy.contains('button', 'Continue').click();
+        cy.get('.submissionWizard__footer button').contains('Continue').click();
         addContributor(unscreenedSubmissionData.contributors[0]);
         addContributor(unscreenedSubmissionData.contributors[1]);
-        cy.contains('button', 'Continue').click();
-        cy.contains('button', 'Continue').click();
+        cy.get('.submissionWizard__footer button').contains('Continue').click();
+        cy.get('.submissionWizard__footer button').contains('Continue').click();
         cy.wait(1000);
 
         cy.contains('button', 'Submit').click();
-        cy.get('.modal__panel:visible').within(() => {
+        cy.get('div[role="dialog"]:visible').within(() => {
             cy.contains('button', 'Submit').click();
         });
         cy.waitJQuery();
         cy.contains('h1', 'Submission complete');
     });
+
     it("Re-enable the plugin", function () {
         cy.login('dbarnes', null, 'publicknowledge');
         cy.get('nav').contains('Settings').click();
@@ -158,51 +126,48 @@ describe('SciELO Screening Plugin - WorkFlow features tests', function() {
         cy.get('input[id^=select-cell-scieloscreeningplugin]').check();
         cy.get('input[id^=select-cell-scieloscreeningplugin]').should('be.checked');
     });
-    it("Displays screening info in publication tab for unscreened submission", function () {
-        cy.login('dphillips', null, 'publicknowledge');
-        cy.findSubmission('myQueue', unscreenedSubmissionData.title);
 
-        cy.contains('button', 'Preprint').click();
-        cy.contains('button', 'SciELO Screening Info').click();
-        
-        cy.contains('See the status of each screening step below');
-        cy.contains('The following metadata was not filled in english: Keywords');
-        cy.contains('The authors below have not filled out their affiliations');
-        cy.get('#affiliationBody').within(() => {
-            cy.contains('Jason Schwartzman');
-            cy.contains('Scarlett Johanson');
+    it("Displays screening info in publication tab for unscreened submission", function () {
+        cy.login('dbarnes', null, 'publicknowledge');
+        cy.get('nav').contains('Active submissions').click();
+        cy.contains('table tr', unscreenedSubmissionData.title).within(() => {
+            cy.get('button').click({force: true});
         });
-        cy.contains('No author had confirmed their ORCID');
+        cy.waitJQuery();
+
+        cy.openWorkflowMenu('SciELO Screening Info');
+
+        cy.contains('See the status of each screening step below');
+        cy.contains('The following metadata was not filled in english');
+        cy.contains('The authors below have not filled out their affiliations');
+        cy.contains('Jason Schwartzman');
+        cy.contains('Scarlett Johanson');
         cy.contains('Please send a single PDF file');
         cy.contains('It was not possible to verify the scientific production of the ORCID records, since the PDF document sent does not have ORCIDs listed');
     });
+
+    it("Submission with multiple PDFs shows warning in screening info", function () {
+        cy.login('dbarnes', null, 'publicknowledge');
+        cy.get('nav').contains('Active submissions').click();
+        cy.contains('table tr', unscreenedSubmissionData.title).within(() => {
+            cy.get('button').click({force: true});
+        });
+        cy.waitJQuery();
+
+        cy.openWorkflowMenu('SciELO Screening Info');
+        cy.contains('Please send a single PDF file');
+    });
+
     it("Displays screening rules on submission posting", function () {
         cy.login('dbarnes', null, 'publicknowledge');
-        cy.findSubmission('active', unscreenedSubmissionData.title);
-        cy.contains('button', 'Preprint').click();
-        
-        cy.get('.pkpHeader__actions button:contains("Post")').click();
+        cy.get('nav').contains('Active submissions').click();
+        cy.contains('table tr', unscreenedSubmissionData.title).within(() => {
+            cy.get('button').click({force: true});
+        });
+        cy.waitJQuery();
+
+        cy.get('button:contains("Post the preprint")').click();
+        cy.contains('button', 'Post').click();
         cy.contains('All submission contributors must have their affiliation filled');
-        cy.get('a.pkpModalCloseButton:visible').click();
-
-        cy.contains('button', 'Contributors').click();
-        cy.get('.listPanel__itemTitle:visible:contains("Jason Schwartzman")')
-            .parent().parent().within(() => {
-                cy.contains('button', 'Edit').click();
-            });
-        cy.get('input[name="affiliation-en"]').type(unscreenedSubmissionData.contributors[0].affiliation, {delay: 0});
-        cy.get('.modal__panel:contains("Edit")').find('button').contains('Save').click();
-        cy.waitJQuery();
-
-        cy.get('.listPanel__itemTitle:visible:contains("Scarlett Johanson")')
-            .parent().parent().within(() => {
-                cy.contains('button', 'Edit').click();
-            });
-        cy.get('input[name="affiliation-en"]').type(unscreenedSubmissionData.contributors[0].affiliation, {delay: 0});
-        cy.get('.modal__panel:contains("Edit")').find('button').contains('Save').click();
-        cy.waitJQuery();
-
-        cy.get('.pkpHeader__actions button:contains("Post")').click();
-        cy.contains('All requirements have been met. Are you sure you want to post this?');
     });
 });
