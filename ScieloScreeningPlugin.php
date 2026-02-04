@@ -60,19 +60,13 @@ class ScieloScreeningPlugin extends GenericPlugin
 
             $request = Application::get()->getRequest();
             $templateMgr = TemplateManager::getManager($request);
-            $this->_registerWorkflowAssets($request, $templateMgr);
-            $this->_addScreeningApiRoute();
+            $this->registerWorkflowAssets($request, $templateMgr);
+            $this->addScreeningApiRoute();
         }
         return $success;
     }
 
-    /**
-     * Register JavaScript and CSS assets for the workflow page
-     *
-     * @param mixed           $request     The request object
-     * @param TemplateManager $templateMgr The template manager
-     */
-    private function _registerWorkflowAssets($request, $templateMgr): void
+    private function registerWorkflowAssets($request, $templateMgr): void
     {
         $baseUrl = $request->getBaseUrl();
         $pluginPath = $this->getPluginPath();
@@ -96,10 +90,7 @@ class ScieloScreeningPlugin extends GenericPlugin
         );
     }
 
-    /**
-     * Add API route for screening data
-     */
-    private function _addScreeningApiRoute(): void
+    private function addScreeningApiRoute(): void
     {
         Hook::add(
             'APIHandler::endpoints::submissions',
@@ -111,7 +102,7 @@ class ScieloScreeningPlugin extends GenericPlugin
                 $apiHandler->addRoute(
                     'GET',
                     '{submissionId}/screening',
-                    $this->_getScreeningDataHandler(),
+                    $this->getScreeningDataHandler(),
                     'screening.get',
                     [
                         Role::ROLE_ID_SITE_ADMIN,
@@ -125,10 +116,7 @@ class ScieloScreeningPlugin extends GenericPlugin
         );
     }
 
-    /**
-     * Get the screening data handler callback
-     */
-    private function _getScreeningDataHandler(): callable
+    private function getScreeningDataHandler(): callable
     {
         return function (IlluminateRequest $request): JsonResponse {
             $submissionId = $request->route('submissionId');
