@@ -8,13 +8,22 @@ class DocumentChecker
 
     public function __construct(string $pathFile)
     {
+        $this->fileText = '';
+
+        if (!file_exists($pathFile)) {
+            return;
+        }
+
         $pathTxt = substr($pathFile, 0, -3) . 'txt';
-        shell_exec("pdftotext " . $pathFile . " " . $pathTxt . " -layout 2>/dev/null");
+        $command = "pdftotext " . escapeshellarg($pathFile) .
+            " " . escapeshellarg($pathTxt) . " -layout 2>/dev/null";
+        shell_exec($command);
 
-        $this->fileText = file_get_contents($pathTxt);
-        $this->fileText = str_replace(["\r", "\n"], '', $this->fileText);
-
-        unlink($pathTxt);
+        if (file_exists($pathTxt)) {
+            $this->fileText = file_get_contents($pathTxt);
+            $this->fileText = str_replace(["\r", "\n"], '', $this->fileText);
+            unlink($pathTxt);
+        }
     }
 
     public function checkTextOrcids(): array

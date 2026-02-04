@@ -3,6 +3,7 @@
 namespace APP\plugins\generic\scieloScreening\classes;
 
 use APP\plugins\generic\scieloScreening\classes\ScreeningChecker;
+use APP\facades\Repo;
 
 class ScreeningExecutor
 {
@@ -23,7 +24,7 @@ class ScreeningExecutor
         $affiliationAuthors = $nameAuthors = $orcidAuthors = $creditAuthors = [];
 
         foreach ($authors as $author) {
-            $affiliationAuthors[] = $author->getLocalizedAffiliation();
+            $affiliationAuthors[] = $this->getAuthorAffiliationString($author);
             $nameAuthors[] = $author->getLocalizedGivenName() . " " . $author->getLocalizedFamilyName();
             $orcidAuthors[] = $author->getOrcid();
             $creditAuthors[] = $author->getData('creditRoles');
@@ -37,6 +38,28 @@ class ScreeningExecutor
             'statusOrcid' => $checker->checkOrcidAuthors($orcidAuthors),
             'statusCreditRoles' => $checker->checkCreditAuthors($creditAuthors)
         ];
+    }
+
+    private function getAuthorAffiliationString($author)
+    {
+        $affiliations = Repo::affiliation()->getCollector()
+            ->filterByAuthorId($author->getId())
+            ->getMany()
+            ->toArray();
+
+        if (empty($affiliations)) {
+            return '';
+        }
+
+        $affiliationNames = [];
+        foreach ($affiliations as $affiliation) {
+            $name = $affiliation->getLocalizedName();
+            if ($name) {
+                $affiliationNames[] = $name;
+            }
+        }
+
+        return implode('; ', $affiliationNames);
     }
 
     private function getStatusMetadataEnglish($submission)
@@ -62,7 +85,11 @@ class ScreeningExecutor
     private function getStatusPDFs($submission)
     {
         $checker = new ScreeningChecker();
-        $galleys = $submission->getGalleys();
+        $publication = $submission->getCurrentPublication();
+        $galleys = Repo::galley()->getCollector()
+            ->filterByPublicationIds([$publication->getId()])
+            ->getMany()
+            ->toArray();
 
         $fileTypeGalleys = array_map(function ($galley) {
             return ($galley->getFileType());

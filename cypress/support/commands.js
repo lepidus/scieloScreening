@@ -1,35 +1,44 @@
-Cypress.Commands.add('findSubmission', function(tab, title) {
-	cy.get('#' + tab + '-button').click();
-    cy.get('.listPanel__itemSubtitle:visible:contains("' + title + '")').first()
-        .parent().parent().within(() => {
-            cy.get('.pkpButton:contains("View")').click();
-        });
+Cypress.Commands.add('beginSubmission', function(submissionData) {
+    cy.get('label:contains("English")').click();
+    cy.setTinyMceContent('startSubmission-title-control', submissionData.title);
+
+    cy.get('input[name="submissionRequirements"]').check();
+    cy.get('input[name="privacyConsent"]').check();
+    cy.contains('button', 'Begin Submission').click();
 });
 
-Cypress.Commands.add('addSubmissionGalleys', (files) => {
-	files.forEach(file => {
-		cy.get('a[id^=component-grid-preprintgalleys-preprintgalleygrid-addGalley-button-]').contains("Add File").click();
-		cy.wait(2000); // Avoid occasional failure due to form init taking time
-		cy.get('div.pkp_modal_panel').then($modalDiv => {
-			cy.wait(3000);
-			$modalDiv.find('div.header:contains("Add File")');
-			cy.get('div.pkp_modal_panel input[id^="label-"]').type('PDF', {delay: 0});
-			cy.get('div.pkp_modal_panel button:contains("Save")').click();
-			cy.wait(2000); // Avoid occasional failure due to form init taking time
-		});
-		cy.get('select[id=genreId]').select(file.genre);
-		cy.fixture(file.file, 'base64').then(fileContent => {
-			cy.get('input[type=file]').attachFile(
-				{fileContent, 'filePath': file.fileName, 'mimeType': 'application/pdf', 'encoding': 'base64'}
-			);
-		});
-		cy.get('#continueButton').click();
-		cy.wait(2000);
-		for (const field in file.metadata) {
-			cy.get('input[id^="' + Cypress.$.escapeSelector(field) + '"]:visible,textarea[id^="' + Cypress.$.escapeSelector(field) + '"]').type(file.metadata[field], {delay: 0});
-			cy.get('input[id^="language"').click({force: true}); // Close multilingual and datepicker pop-overs
-		}
-		cy.get('#continueButton').click();
-		cy.get('#continueButton').click();
-	});
+Cypress.Commands.add('detailsStep', function(submissionData) {
+    cy.setTinyMceContent('titleAbstract-abstract-control-en', submissionData.abstract);
+    cy.get('.submissionWizard__footer button').contains('Continue').click();
+});
+
+Cypress.Commands.add('addContributor', function(contributorData, toUpperCase = false) {
+    let given = (toUpperCase) ? contributorData.given.toUpperCase() : contributorData.given;
+    let family = (toUpperCase) ? contributorData.family.toUpperCase() : contributorData.family;
+
+    cy.get('button').contains('Add Contributor').click();
+    cy.wait(1000);
+    cy.get('.pkpFormField:contains("Given Name")').find('input[name*="givenName-en"]').type(given, {delay: 0});
+    cy.get('.pkpFormField:contains("Family Name")').find('input[name*="familyName-en"]').type(family, {delay: 0});
+    cy.get('.pkpFormField:contains("Email")').find('input').type(contributorData.email, {delay: 0});
+    cy.get('.pkpFormField:contains("Country")').find('select').select(contributorData.country);
+
+    if ('affiliation' in contributorData) {
+        cy.get('.pkpFormField--affiliations .pkpAutosuggest__input')
+            .type(contributorData.affiliation, {delay: 0})
+            .type('{enter}');
+        cy.wait(1000);
+        cy.get('.pkpFormField--affiliations .pkpButton').contains('Add').click();
+        cy.wait(500);
+    }
+
+    cy.get('div[role=dialog]:contains("Add Contributor")').find('button').contains('Save').click();
+    cy.wait(2000);
+});
+
+Cypress.Commands.add('openIncompleteSubmission', function(authorName) {
+    cy.get('nav').contains('Submissions').click();
+    cy.contains('table tr', authorName).within(() => {
+        cy.get('button').contains('Complete submission').click({force: true});
+    });
 });

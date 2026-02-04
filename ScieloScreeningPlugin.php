@@ -1,12 +1,12 @@
 <?php
 
 /**
- * @file plugins/generic/scieloScreening/ScieloScreeningPlugin.inc.php
+ * @file plugins/generic/scieloScreening/ScieloScreeningPlugin.php
  *
  * @class ScieloScreeningPlugin
  * @ingroup plugins_generic_scieloScreening
  *
- * @brief Plugin class for the DefaultScreening plugin.
+ * @brief Plugin class for the SciELO Screening plugin.
  */
 
 namespace APP\plugins\generic\scieloScreening;
@@ -14,8 +14,9 @@ namespace APP\plugins\generic\scieloScreening;
 use PKP\plugins\GenericPlugin;
 use APP\core\Application;
 use PKP\plugins\Hook;
-use PKP\db\DAORegistry;
 use APP\facades\Repo;
+use PKP\stageAssignment\StageAssignment;
+use PKP\userGroup\UserGroup;
 use PKP\security\Role;
 use PKP\linkAction\LinkAction;
 use PKP\linkAction\request\AjaxModal;
@@ -23,6 +24,11 @@ use APP\template\TemplateManager;
 use PKP\core\JSONMessage;
 use APP\pages\submission\SubmissionHandler;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Http\Request as IlluminateRequest;
+use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
+use PKP\core\PKPBaseController;
+use PKP\handler\APIHandler;
 use APP\plugins\generic\scieloScreening\classes\components\forms\NumberContributorsForm;
 use APP\plugins\generic\scieloScreening\classes\ScreeningExecutor;
 use APP\plugins\generic\scieloScreening\classes\ScreeningChecker;
@@ -46,15 +52,94 @@ class ScieloScreeningPlugin extends GenericPlugin
             Hook::add('Submission::validateSubmit', [$this, 'validateSubmissionFields']);
             Hook::add('Template::SubmissionWizard::Section::Review', [$this, 'modifyReviewSections']);
             Hook::add('Schema::get::publication', [$this, 'addOurFieldsToPublicationSchema']);
-            Hook::add('Template::Workflow::Publication', [$this, 'addToWorkFlow']);
-            Hook::add('Template::Workflow::Publication', [$this, 'addPdfsWarningToGalleysTab']);
 
             Hook::add('Publication::validatePublish', [$this, 'validateOnPosting']);
             Hook::add('Settings::Workflow::listScreeningPlugins', [$this, 'listPluginScreeningRules']);
 
             $this->loadDispatcherClasses();
+
+            $request = Application::get()->getRequest();
+            $templateMgr = TemplateManager::getManager($request);
+            $this->registerWorkflowAssets($request, $templateMgr);
+            $this->addScreeningApiRoute();
         }
         return $success;
+    }
+
+    private function registerWorkflowAssets($request, $templateMgr): void
+    {
+        $baseUrl = $request->getBaseUrl();
+        $pluginPath = $this->getPluginPath();
+
+        $templateMgr->addJavaScript(
+            'scieloScreening',
+            "{$baseUrl}/{$pluginPath}/public/build/build.iife.js",
+            [
+                'inline' => false,
+                'contexts' => ['backend'],
+                'priority' => TemplateManager::STYLE_SEQUENCE_LAST
+            ]
+        );
+
+        $templateMgr->addStyleSheet(
+            'scieloScreeningStyles',
+            "{$baseUrl}/{$pluginPath}/public/build/build.css",
+            [
+                'contexts' => ['backend']
+            ]
+        );
+    }
+
+    private function addScreeningApiRoute(): void
+    {
+        Hook::add(
+            'APIHandler::endpoints::submissions',
+            function (
+                string $hookName,
+                PKPBaseController $apiController,
+                APIHandler $apiHandler
+            ): bool {
+                $apiHandler->addRoute(
+                    'GET',
+                    '{submissionId}/screening',
+                    $this->getScreeningDataHandler(),
+                    'screening.get',
+                    [
+                        Role::ROLE_ID_SITE_ADMIN,
+                        Role::ROLE_ID_MANAGER,
+                        Role::ROLE_ID_SUB_EDITOR,
+                    ]
+                );
+
+                return false;
+            }
+        );
+    }
+
+    private function getScreeningDataHandler(): callable
+    {
+        return function (IlluminateRequest $request): JsonResponse {
+            $submissionId = $request->route('submissionId');
+            $submission = Repo::submission()->get((int) $submissionId);
+
+            if (!$submission) {
+                return response()->json(
+                    ['error' => 'Submission not found'],
+                    Response::HTTP_NOT_FOUND
+                );
+            }
+
+            $context = Application::get()->getRequest()->getContext();
+            $documentChecker = $this->getDocumentChecker($submission);
+            $orcidClient = new OrcidClient($this, $context->getId());
+            $screeningExecutor = new ScreeningExecutor(
+                $documentChecker,
+                $orcidClient
+            );
+            $screeningData = $screeningExecutor->getScreeningData($submission);
+
+            return response()->json($screeningData, Response::HTTP_OK);
+        };
     }
 
     private function loadDispatcherClasses(): void
@@ -295,34 +380,6 @@ class ScieloScreeningPlugin extends GenericPlugin
         }
     }
 
-    public function addToWorkFlow($hookName, $params)
-    {
-        $smarty = &$params[1];
-        $output = &$params[2];
-        $context = Application::get()->getRequest()->getContext();
-        $submission = $smarty->getTemplateVars('submission');
-
-        $documentChecker = $this->getDocumentChecker($submission);
-        $orcidClient = new OrcidClient($this, $context->getId());
-        $screeningExecutor = new ScreeningExecutor($documentChecker, $orcidClient);
-        $dataScreening = $screeningExecutor->getScreeningData($submission);
-
-        $smarty->assign($dataScreening);
-        $output .= sprintf(
-            '<tab id="screeningInfo" label="%s">%s</tab>',
-            __('plugins.generic.scieloScreening.info.name'),
-            $smarty->fetch($this->getTemplateResource('screeningInfo.tpl'))
-        );
-    }
-
-    public function addPdfsWarningToGalleysTab($hookName, $params)
-    {
-        $smarty = & $params[1];
-        $output = & $params[2];
-
-        $output .= sprintf('%s', $smarty->fetch($this->getTemplateResource('addGalleysWarning.tpl')));
-    }
-
     public function listPluginScreeningRules($hookName, $args)
     {
         $rules = & $args[0];
@@ -368,11 +425,16 @@ class ScieloScreeningPlugin extends GenericPlugin
 
     private function getDocumentChecker($submission)
     {
-        $galleys = $submission->getGalleys();
+        $publication = $submission->getCurrentPublication();
+        $galleys = Repo::galley()->getCollector()
+            ->filterByPublicationIds([$publication->getId()])
+            ->getMany()
+            ->toArray();
 
         if (count($galleys) > 0 && $galleys[0]->getFile()) {
             $galley = $galleys[0];
-            $path = \Config::getVar('files', 'files_dir') . DIRECTORY_SEPARATOR . $galley->getFile()->getData('path');
+            $filesDir = \Config::getVar('files', 'files_dir');
+            $path = $filesDir . DIRECTORY_SEPARATOR . $galley->getFile()->getData('path');
 
             return new DocumentChecker($path);
         }
@@ -385,15 +447,19 @@ class ScieloScreeningPlugin extends GenericPlugin
         $currentUser = Application::get()->getRequest()->getUser();
         $currentUserAssignedRoles = [];
         if ($currentUser) {
-            $stageAssignmentDao = DAORegistry::getDAO('StageAssignmentDAO');
-            $stageAssignmentsResult = $stageAssignmentDao->getBySubmissionAndUserIdAndStageId($submission->getId(), $currentUser->getId(), $submission->getData('stageId'));
+            $stageAssignments = StageAssignment::withSubmissionIds([$submission->getId()])
+                ->withStageIds([$submission->getData('stageId')])
+                ->withUserId($currentUser->getId())
+                ->get();
 
-            while ($stageAssignment = $stageAssignmentsResult->next()) {
-                $userGroup = Repo::userGroup()->get($stageAssignment->getUserGroupId(), $submission->getData('contextId'));
-                $currentUserAssignedRoles[] = (int) $userGroup->getRoleId();
+            foreach ($stageAssignments as $stageAssignment) {
+                $userGroup = UserGroup::find($stageAssignment->userGroupId);
+                if ($userGroup) {
+                    $currentUserAssignedRoles[] = (int) $userGroup->roleId;
+                }
             }
         }
 
-        return !empty($currentUserAssignedRoles) and $currentUserAssignedRoles[0] == Role::ROLE_ID_AUTHOR;
+        return !empty($currentUserAssignedRoles) && $currentUserAssignedRoles[0] == Role::ROLE_ID_AUTHOR;
     }
 }

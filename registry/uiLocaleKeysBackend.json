@@ -1,0 +1,20 @@
+[
+  "plugins.generic.scieloScreening.info.affiliationNotOkay",
+  "plugins.generic.scieloScreening.info.affiliationOkay",
+  "plugins.generic.scieloScreening.info.description",
+  "plugins.generic.scieloScreening.info.documentOrcidsNotOkay.body",
+  "plugins.generic.scieloScreening.info.documentOrcidsNotOkay.header",
+  "plugins.generic.scieloScreening.info.documentOrcidsOkay",
+  "plugins.generic.scieloScreening.info.documentOrcidsUnableException",
+  "plugins.generic.scieloScreening.info.documentOrcidsUnableNoFile",
+  "plugins.generic.scieloScreening.info.documentOrcidsUnableNoOrcids",
+  "plugins.generic.scieloScreening.info.manyPDFs.body",
+  "plugins.generic.scieloScreening.info.manyPDFs.header",
+  "plugins.generic.scieloScreening.info.metadataEnglishNotOkay",
+  "plugins.generic.scieloScreening.info.metadataEnglishOkay",
+  "plugins.generic.scieloScreening.info.name",
+  "plugins.generic.scieloScreening.info.noPDFs",
+  "plugins.generic.scieloScreening.info.orcidNotOkay",
+  "plugins.generic.scieloScreening.info.orcidOkay",
+  "plugins.generic.scieloScreening.info.pdfsOkay"
+]
