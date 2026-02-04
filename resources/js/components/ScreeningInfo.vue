@@ -102,11 +102,9 @@
           </span>
         </div>
         <div v-if="screeningData.numPDFs > 1" class="screeningInfoFieldBody">
-          <ul>
-            <li>
-              {{ t("plugins.generic.scieloScreening.info.manyPDFs.body") }}
-            </li>
-          </ul>
+          <ul
+            v-html="t('plugins.generic.scieloScreening.info.manyPDFs.body')"
+          ></ul>
         </div>
       </div>
 
@@ -142,15 +140,11 @@
           v-if="screeningData.statusDocumentOrcids === 'NotOkay'"
           class="screeningInfoFieldBody"
         >
-          <ul>
-            <li>
-              {{
-                t(
-                  "plugins.generic.scieloScreening.info.documentOrcidsNotOkay.body"
-                )
-              }}
-            </li>
-          </ul>
+          <ul
+            v-html="
+              t('plugins.generic.scieloScreening.info.documentOrcidsNotOkay.body')
+            "
+          ></ul>
         </div>
       </div>
     </div>
@@ -276,10 +270,13 @@ watch(
 .screeningInfoFieldBody ul {
   margin: 0;
   padding-left: 1.5rem;
+  list-style-type: disc;
 }
 
-.screeningInfoFieldBody li {
+.screeningInfoFieldBody li,
+.screeningInfoFieldBody :deep(li) {
   margin: 0.25rem 0;
+  list-style-type: disc;
 }
 
 .screeningStatusOkay,
