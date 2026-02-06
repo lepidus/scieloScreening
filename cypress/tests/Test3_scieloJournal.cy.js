@@ -43,8 +43,45 @@ describe('SciELO Screening Plugin - SciELO Journal related features', function()
         };
     });
 
+    it('Creates SciELO Journal role and assigns it to user', function() {
+        cy.login('dbarnes', null, 'publicknowledge');
+        cy.contains('Users & Roles').click();
+        cy.contains('button', 'Roles').click();
+        cy.contains('a', 'Create New Role').click();
+
+        cy.get('#roleId').select('Author');
+        cy.get('input[name="name[en]"]').type('SciELO Journal');
+        cy.contains('label', 'Role Name').click();
+        cy.get('input[name="abbrev[en]"]').type('SciELO');
+        cy.contains('label', 'Abbreviation').click();
+
+        cy.get('#userGroupForm button:contains("OK")').click();
+        cy.waitJQuery();
+
+        cy.contains('span', 'SciELO Journal')
+            .parent().parent().parent()
+            .within(() => {
+                cy.get('input[type="checkbox"]').check();
+            });
+
+        cy.get('#users-button').click();
+        cy.contains('a', 'Search').click();
+        cy.get('input[name="search"]').type('zwoods');
+        cy.contains('button', 'Search').click();
+        cy.waitJQuery();
+        
+        cy.get('.show_extras:visible').click();
+        cy.contains('a', 'Edit User').click();
+
+        cy.get('label:contains("SciELO Journal")').within(() => {
+            cy.get('input').check();
+        });
+
+        cy.get('#userDetailsForm .submitFormButton').click();
+        cy.wait(1500);
+    });
     it ('User with SciELO Journal role creates submission', function () {
-        cy.login('dphillips', null, 'publicknowledge');
+        cy.login('zwoods', null, 'publicknowledge');
         cy.get('div#myQueue a:contains("New Submission")').click();
 
         cy.beginSubmission(submissionData);
@@ -69,7 +106,7 @@ describe('SciELO Screening Plugin - SciELO Journal related features', function()
         cy.contains('h1', 'Submission complete');
     });
     it('SciELO Journal user should not be present in contributors list', function() {
-        cy.login('dphillips', null, 'publicknowledge');
+        cy.login('zwoods', null, 'publicknowledge');
         cy.findSubmission('myQueue', submissionData.title);
 
         cy.contains('button', 'Preprint').click();
@@ -80,4 +117,5 @@ describe('SciELO Screening Plugin - SciELO Journal related features', function()
         cy.get('.listPanel__itemIdentity:contains("George Clooney")');
         cy.get('.listPanel__itemIdentity:contains("Meryl Streep")');
         cy.get('.listPanel__itemIdentity:contains("Bill Murray")');
+    });
 });
