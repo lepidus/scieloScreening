@@ -8,7 +8,7 @@ Cypress.Commands.add('beginSubmission', (submissionData) => {
 });
 
 Cypress.Commands.add('detailsStep', (submissionData, options = {}) => {
-	const { fillKeywords = true } = options;
+	const { fillKeywords = false } = options;
 	
 	cy.setTinyMceContent('titleAbstract-abstract-control-en', submissionData.abstract);
 
