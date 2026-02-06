@@ -85,7 +85,7 @@ describe('SciELO Screening Plugin - SciELO Journal related features', function()
         cy.get('div#myQueue a:contains("New Submission")').click();
 
         cy.beginSubmission(submissionData);
-        cy.detailsStep(submissionData);
+        cy.detailsStep(submissionData, { fillKeywords: true });
         cy.addSubmissionGalleys([pdfFile]);
         cy.contains('button', 'Continue').click();
 

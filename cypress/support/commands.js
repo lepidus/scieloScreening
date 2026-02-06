@@ -7,8 +7,19 @@ Cypress.Commands.add('beginSubmission', (submissionData) => {
 	cy.contains('button', 'Begin Submission').click();
 });
 
-Cypress.Commands.add('detailsStep', (submissionData) => {
+Cypress.Commands.add('detailsStep', (submissionData, options = {}) => {
+	const { fillKeywords = true } = options;
+	
 	cy.setTinyMceContent('titleAbstract-abstract-control-en', submissionData.abstract);
+
+	if (fillKeywords) {
+		submissionData.keywords.forEach(keyword => {
+			cy.get('#titleAbstract-keywords-control-en').type(keyword, {delay: 0});
+			cy.wait(500);
+			cy.get('#titleAbstract-keywords-control-en').type('{enter}', {delay: 0});
+		});
+	}
+
 	cy.contains('button', 'Continue').click();
 });
 
