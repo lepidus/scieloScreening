@@ -1,3 +1,42 @@
+Cypress.Commands.add('beginSubmission', (submissionData) => {
+	cy.get('input[name="locale"][value="en"]').click();
+	cy.setTinyMceContent('startSubmission-title-control', submissionData.title);
+
+	cy.get('input[name="submissionRequirements"]').check();
+	cy.get('input[name="privacyConsent"]').check();
+	cy.contains('button', 'Begin Submission').click();
+});
+
+Cypress.Commands.add('detailsStep', (submissionData) => {
+	cy.setTinyMceContent('titleAbstract-abstract-control-en', submissionData.abstract);
+	cy.contains('button', 'Continue').click();
+});
+
+Cypress.Commands.add('addContributor', (contributorData, options = {}) => {
+	const { toUpperCase = false, fillAffiliation = true } = options;
+
+	let given = toUpperCase ? contributorData.given.toUpperCase() : contributorData.given;
+	let family = toUpperCase ? contributorData.family.toUpperCase() : contributorData.family;
+
+	cy.contains('button', 'Add Contributor').click();
+	cy.get('input[name="givenName-en"]').type(given, {delay: 0});
+	cy.get('input[name="familyName-en"]').type(family, {delay: 0});
+	cy.get('input[name="email"]').type(contributorData.email, {delay: 0});
+	cy.get('select[name="country"]').select(contributorData.country);
+
+	if ('orcid' in contributorData) {
+		cy.get('input[name="orcid"]').type(contributorData.orcid, {delay: 0});
+	}
+
+	if (fillAffiliation) {
+		cy.get('input[name="affiliation-en"]').should('have.attr', 'required');
+		cy.get('input[name="affiliation-en"]').type(contributorData.affiliation, {delay: 0});
+	}
+
+	cy.get('.modal__panel:contains("Add Contributor")').find('button').contains('Save').click();
+	cy.waitJQuery();
+});
+
 Cypress.Commands.add('findSubmission', function(tab, title) {
 	cy.get('#' + tab + '-button').click();
     cy.get('.listPanel__itemSubtitle:visible:contains("' + title + '")').first()

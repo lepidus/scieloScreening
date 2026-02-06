@@ -1,40 +1,5 @@
 import '../support/commands.js';
 
-function beginSubmission(submissionData) {
-    cy.get('input[name="locale"][value="en"]').click();
-    cy.setTinyMceContent('startSubmission-title-control', submissionData.title);
-    
-    cy.get('input[name="submissionRequirements"]').check();
-    cy.get('input[name="privacyConsent"]').check();
-    cy.contains('button', 'Begin Submission').click();
-}
-
-function detailsStep(submissionData) {
-    cy.setTinyMceContent('titleAbstract-abstract-control-en', submissionData.abstract);
-    cy.contains('button', 'Continue').click();
-}
-
-function addContributor(contributorData, toUpperCase = false) {
-    let given = (toUpperCase) ? contributorData.given.toUpperCase() : contributorData.given;
-    let family = (toUpperCase) ? contributorData.family.toUpperCase() : contributorData.family; 
-
-    cy.contains('button', 'Add Contributor').click();
-    cy.get('input[name="givenName-en"]').type(given, {delay: 0});
-    cy.get('input[name="familyName-en"]').type(family, {delay: 0});
-    cy.get('input[name="email"]').type(contributorData.email, {delay: 0});
-    cy.get('select[name="country"]').select(contributorData.country);
-
-    if ('orcid' in contributorData) {
-        cy.get('input[name="orcid"]').type(contributorData.orcid, {delay: 0});
-    }
-
-    cy.get('input[name="affiliation-en"]').should('have.attr', 'required');
-    cy.get('input[name="affiliation-en"]').type(contributorData.affiliation, {delay: 0});
-
-    cy.get('.modal__panel:contains("Add Contributor")').find('button').contains('Save').click();
-    cy.waitJQuery();
-}
-
 describe('SciELO Screening Plugin - Submission wizard tests', function() {
     let submissionData;
     let files;
@@ -96,8 +61,8 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.login('dphillips', null, 'publicknowledge');
         cy.get('div#myQueue a:contains("New Submission")').click();
 
-        beginSubmission(submissionData);
-        detailsStep(submissionData);
+        cy.beginSubmission(submissionData);
+        cy.detailsStep(submissionData);
         cy.contains('button', 'Continue').click();
 
         cy.get('.contributorsListPanel button:contains("Delete")').click();
@@ -108,7 +73,7 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.contains('Please inform the total number of contributors to this publication');
         cy.get('input[name="numberContributors"]').clear().type('5', {delay: 0});
 
-        addContributor(submissionData.contributors[0]);
+        cy.addContributor(submissionData.contributors[0]);
         cy.contains('button', 'Continue').click();
         cy.contains('button', 'Continue').click();
         cy.wait(1000);
@@ -129,7 +94,7 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.contains('button', 'Continue').click();
         cy.contains('button', 'Continue').click();
         
-        addContributor(submissionData.contributors[1], true);
+        cy.addContributor(submissionData.contributors[1], { toUpperCase: true });
         cy.get('input[name="numberContributors"]').clear().type('2', {delay: 0});
         cy.contains('button', 'Continue').click();
         cy.contains('button', 'Continue').click();
@@ -144,7 +109,7 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.contains('button', 'Delete Contributor').click();
         cy.waitJQuery();
 
-        addContributor(submissionData.contributors[1]);
+        cy.addContributor(submissionData.contributors[1]);
         cy.contains('button', 'Continue').click();
         cy.contains('button', 'Continue').click();
         cy.wait(1000);
@@ -162,7 +127,7 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.contains('At least one contributor must have their ORCID confirmed. Please, check your e-mail');
 
         cy.get('.pkpSteps__step button:contains("Contributors")').click();
-        addContributor(submissionData.contributors[2]);
+        cy.addContributor(submissionData.contributors[2]);
         cy.get('input[name="numberContributors"]').clear().type('3', {delay: 0});
         cy.contains('button', 'Continue').click();
         cy.contains('button', 'Continue').click();

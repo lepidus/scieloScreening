@@ -1,30 +1,5 @@
 import '../support/commands.js';
 
-function beginSubmission(submissionData) {
-    cy.get('input[name="locale"][value="en"]').click();
-    cy.setTinyMceContent('startSubmission-title-control', submissionData.title);
-    
-    cy.get('input[name="submissionRequirements"]').check();
-    cy.get('input[name="privacyConsent"]').check();
-    cy.contains('button', 'Begin Submission').click();
-}
-
-function detailsStep(submissionData) {
-    cy.setTinyMceContent('titleAbstract-abstract-control-en', submissionData.abstract);
-    cy.contains('button', 'Continue').click();
-}
-
-function addContributor(contributorData) {
-    cy.contains('button', 'Add Contributor').click();
-    cy.get('input[name="givenName-en"]').type(contributorData.given, {delay: 0});
-    cy.get('input[name="familyName-en"]').type(contributorData.family, {delay: 0});
-    cy.get('input[name="email"]').type(contributorData.email, {delay: 0});
-    cy.get('select[name="country"]').select(contributorData.country);
-
-    cy.get('.modal__panel:contains("Add Contributor")').find('button').contains('Save').click();
-    cy.waitJQuery();
-}
-
 describe('SciELO Screening Plugin - WorkFlow features tests', function() {
     let screenedSubmissionTitle;
     let unscreenedSubmissionData;
@@ -129,12 +104,12 @@ describe('SciELO Screening Plugin - WorkFlow features tests', function() {
         cy.login('dphillips', null, 'publicknowledge');
         cy.get('div#myQueue a:contains("New Submission")').click();
 
-        beginSubmission(unscreenedSubmissionData);
-        detailsStep(unscreenedSubmissionData);
+        cy.beginSubmission(unscreenedSubmissionData);
+        cy.detailsStep(unscreenedSubmissionData);
         cy.addSubmissionGalleys([dummyPdf, dummyPdf]);
         cy.contains('button', 'Continue').click();
-        addContributor(unscreenedSubmissionData.contributors[0]);
-        addContributor(unscreenedSubmissionData.contributors[1]);
+        cy.addContributor(unscreenedSubmissionData.contributors[0], { fillAffiliation: false });
+        cy.addContributor(unscreenedSubmissionData.contributors[1], { fillAffiliation: false });
         cy.contains('button', 'Continue').click();
         cy.contains('button', 'Continue').click();
         cy.wait(1000);
