@@ -26,4 +26,12 @@ class ScieloScreeningDAO extends DAO
 
         return get_object_vars($result)['user_group_id'];
     }
+
+    public function userIsInUserGroup(int $userId, int $userGroupId): bool
+    {
+        return DB::table('user_user_groups')
+            ->where('user_id', $userId)
+            ->where('user_group_id', $userGroupId)
+            ->exists();
+    }
 }

@@ -24,7 +24,7 @@ class FilterAuthorsOnSubmission
         $publication = $submission->getCurrentPublication();
 
         $scieloScreeningDao = new ScieloScreeningDAO();
-        $scieloJournalRoleId = $scieloScreeningDao->getScieloJournalUserGroupId($contextId);
+        $scieloJournalUserGroupId = $scieloScreeningDao->getScieloJournalUserGroupId($contextId);
 
         foreach ($publication->getData('authors') as $author) {
             $user = Repo::user()->getByEmail($author->getData('email'));
@@ -32,7 +32,7 @@ class FilterAuthorsOnSubmission
                 continue;
             }
 
-            if ($user->hasRole($scieloJournalRoleId, $contextId)) {
+            if ($scieloScreeningDao->userIsInUserGroup($user->getId(), $scieloJournalUserGroupId)) {
                 Repo::author()->delete($author);
             }
         }
