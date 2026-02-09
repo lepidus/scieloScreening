@@ -22,6 +22,7 @@ use PKP\linkAction\request\AjaxModal;
 use APP\template\TemplateManager;
 use PKP\core\JSONMessage;
 use APP\pages\submission\SubmissionHandler;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Database\Migrations\Migration;
 use APP\plugins\generic\scieloScreening\classes\components\forms\NumberContributorsForm;
 use APP\plugins\generic\scieloScreening\classes\ScreeningExecutor;
@@ -29,6 +30,7 @@ use APP\plugins\generic\scieloScreening\classes\ScreeningChecker;
 use APP\plugins\generic\scieloScreening\classes\DocumentChecker;
 use APP\plugins\generic\scieloScreening\classes\OrcidClient;
 use APP\plugins\generic\scieloScreening\classes\migration\EncryptLegacyCredentials;
+use APP\plugins\generic\scieloScreening\classes\observers\listeners\FilterAuthorsOnSubmission;
 use APP\plugins\generic\scieloScreening\ScieloScreeningSettingsForm;
 
 class ScieloScreeningPlugin extends GenericPlugin
@@ -53,6 +55,8 @@ class ScieloScreeningPlugin extends GenericPlugin
             Hook::add('Settings::Workflow::listScreeningPlugins', [$this, 'listPluginScreeningRules']);
 
             $this->loadDispatcherClasses();
+
+            Event::subscribe(new FilterAuthorsOnSubmission());
         }
         return $success;
     }
@@ -317,16 +321,16 @@ class ScieloScreeningPlugin extends GenericPlugin
 
     public function addPdfsWarningToGalleysTab($hookName, $params)
     {
-        $smarty = & $params[1];
-        $output = & $params[2];
+        $smarty = &$params[1];
+        $output = &$params[2];
 
         $output .= sprintf('%s', $smarty->fetch($this->getTemplateResource('addGalleysWarning.tpl')));
     }
 
     public function listPluginScreeningRules($hookName, $args)
     {
-        $rules = & $args[0];
-        $ourRulesSuffix = ['affiliation','orcidLeastOne', 'numberContributors', 'uppercaseContributors', 'numPdfs', 'metadataEnglish'];
+        $rules = &$args[0];
+        $ourRulesSuffix = ['affiliation', 'orcidLeastOne', 'numberContributors', 'uppercaseContributors', 'numPdfs', 'metadataEnglish'];
         $ourRulesString = "<p>" . $this->getDisplayName() . "<br><br>" . $this->getDescription() .  "<ul>";
 
         foreach ($ourRulesSuffix as $suffix) {
