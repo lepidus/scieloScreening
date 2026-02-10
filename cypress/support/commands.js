@@ -42,3 +42,15 @@ Cypress.Commands.add('openIncompleteSubmission', function(authorName) {
         cy.get('button').contains('Complete submission').click({force: true});
     });
 });
+
+Cypress.Commands.add('findSubmission', function(dashboardPanel, submissionTitle) {
+    cy.get('div[data-pc-section="panel"]').eq(0).within(() => {
+        cy.get('a').click();
+        cy.wait(500);
+        cy.contains('span', dashboardPanel).click();
+    })
+
+    cy.contains('span', submissionTitle).parent().parent().within(() => {
+        cy.contains('button', 'View').click();
+    });
+});
