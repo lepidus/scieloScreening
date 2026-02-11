@@ -59,3 +59,12 @@ Cypress.Commands.add('openSubmission', function(dashboardPanel, submissionTitle)
     });
     cy.waitJQuery();
 });
+
+Cypress.Commands.add('advanceNSubmissionSteps', function (numberOfSteps) {
+    for (let stepsAdvanced = 0; stepsAdvanced < numberOfSteps; stepsAdvanced++) {
+        cy.get('.submissionWizard__footer').within(() => {
+            cy.contains('button', 'Continue').click();
+        });
+        cy.wait(200);
+    }
+});
