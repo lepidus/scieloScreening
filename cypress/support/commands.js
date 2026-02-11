@@ -43,14 +43,19 @@ Cypress.Commands.add('openIncompleteSubmission', function(authorName) {
     });
 });
 
-Cypress.Commands.add('findSubmission', function(dashboardPanel, submissionTitle) {
-    cy.get('div[data-pc-section="panel"]').eq(0).within(() => {
-        cy.get('a').click();
-        cy.wait(500);
+Cypress.Commands.add('openSubmission', function(dashboardPanel, submissionTitle) {
+    cy.get('div[data-pc-section="panel"]').first().within(() => {
+        cy.get('div').first().then($el => {
+            if ($el.attr('aria-expanded') === 'false') {
+                $el.click();
+                cy.wait(500);
+            }
+        });
         cy.contains('span', dashboardPanel).click();
-    })
+    });
 
     cy.contains('span', submissionTitle).parent().parent().within(() => {
         cy.contains('button', 'View').click();
     });
+    cy.waitJQuery();
 });
