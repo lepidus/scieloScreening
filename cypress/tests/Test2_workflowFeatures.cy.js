@@ -73,8 +73,9 @@ describe('SciELO Screening Plugin - WorkFlow features tests', function() {
         cy.detailsStep(unscreenedSubmissionData);
         cy.addSubmissionGalleys([dummyPdf, dummyPdf]);
         cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.addContributor(unscreenedSubmissionData.contributors[0]);
-        cy.addContributor(unscreenedSubmissionData.contributors[1]);
+        for (const contributor of unscreenedSubmissionData.contributors) {
+            cy.addContributor(contributor);
+        }
         cy.get('.submissionWizard__footer button').contains('Continue').click();
         cy.get('.submissionWizard__footer button').contains('Continue').click();
         cy.wait(1000);
