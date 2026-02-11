@@ -63,7 +63,7 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
 
         cy.beginSubmission(submissionData);
         cy.detailsStep(submissionData);
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
+        cy.advanceNSubmissionSteps(1);
 
         cy.get('.listPanel__item').find('button').contains('Delete').click();
         cy.get('div[role=dialog]').find('button').contains('Delete Contributor').click();
@@ -74,16 +74,14 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.get('input[name="numberContributors"]').clear().type('5', {delay: 0});
 
         cy.addContributor(submissionData.contributors[0]);
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
+        cy.advanceNSubmissionSteps(2);
         cy.wait(1000);
         cy.contains('All submission contributors must have their affiliation filled').should('not.exist');
         cy.contains('The number of contributors entered is not the same as that reported');
 
         cy.get('.pkpSteps__step__label').contains('Contributors').click({force: true});
         cy.get('input[name="numberContributors"]').clear().type('1', {delay: 0});
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
+        cy.advanceNSubmissionSteps(2);
         cy.wait(1000);
         cy.contains('The number of contributors entered is not the same as that reported').should('not.exist');
     });
@@ -92,13 +90,11 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.login('dphillips', null, 'publicknowledge');
         cy.openIncompleteSubmission('Revolori');
 
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
+        cy.advanceNSubmissionSteps(2);
 
         cy.addContributor(submissionData.contributors[1], true);
         cy.get('input[name="numberContributors"]').clear().type('2', {delay: 0});
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
+        cy.advanceNSubmissionSteps(2);
         cy.wait(1000);
         cy.contains('Some contributors have their name in capital letters. We ask that you correct them.');
 
@@ -108,8 +104,7 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.waitJQuery();
 
         cy.addContributor(submissionData.contributors[1]);
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
+        cy.advanceNSubmissionSteps(2);
         cy.wait(1000);
         cy.contains('Some contributors have their name in capital letters. We ask that you correct them.').should('not.exist');
     });
@@ -118,10 +113,7 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.login('dphillips', null, 'publicknowledge');
         cy.openIncompleteSubmission('Revolori');
 
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
+        cy.advanceNSubmissionSteps(4);
         cy.wait(2000);
         cy.contains('At least one contributor must have their ORCID confirmed. Please, check your e-mail');
     });
@@ -130,9 +122,7 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.login('dphillips', null, 'publicknowledge');
         cy.openIncompleteSubmission('Revolori');
 
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
+        cy.advanceNSubmissionSteps(3);
 
         cy.contains('h2', 'License').should('not.be.visible');
         cy.contains('Please select the license to apply to your preprint when it is posted').should('not.be.visible');
@@ -142,15 +132,9 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.login('dphillips', null, 'publicknowledge');
         cy.openIncompleteSubmission('Revolori');
 
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
+        cy.advanceNSubmissionSteps(4);
         cy.reload();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
+        cy.advanceNSubmissionSteps(4);
         cy.wait(2000);
 
         cy.contains('You have not added any PDF documents to this submission');
@@ -158,9 +142,7 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.get('.pkpSteps__step__label').contains('Upload Files').click({force: true});
 
         cy.addSubmissionGalleys([files[0], files[0]]);
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
+        cy.advanceNSubmissionSteps(3);
         cy.wait(1000);
 
         cy.contains('Please send a single PDF file');
@@ -173,9 +155,7 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.get('a.pkp_linkaction_deleteGalley').eq(1).click();
         cy.contains('button','OK').click();
 
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
+        cy.advanceNSubmissionSteps(3);
         cy.wait(1000);
 
         cy.contains('You have not added any PDF documents to this submission').should('not.exist');
@@ -186,10 +166,7 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.login('dphillips', null, 'publicknowledge');
         cy.openIncompleteSubmission('Revolori');
 
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
+        cy.advanceNSubmissionSteps(4);
         cy.contains('The following metadata must be filled in english: Keywords');
 
         cy.get('.pkpSteps__step__label').contains('Details').click({force: true});
@@ -199,10 +176,7 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
             cy.get('#titleAbstract-keywords-control-en').type('{enter}', {delay: 0});
         });
 
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
+        cy.advanceNSubmissionSteps(4);
         cy.wait(1000);
         cy.contains('The following metadata must be filled in english').should('not.exist');
     });
@@ -211,15 +185,9 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.login('dphillips', null, 'publicknowledge');
         cy.openIncompleteSubmission('Revolori');
 
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
+        cy.advanceNSubmissionSteps(4);
         cy.reload();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
+        cy.advanceNSubmissionSteps(4);
         cy.wait(2000);
 
         cy.contains('It was not possible to verify the scientific production of the ORCID records, since the PDF document sent does not have ORCIDs listed');
@@ -230,14 +198,9 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.contains('button','OK').click();
 
         cy.addSubmissionGalleys([files[1]]);
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
+        cy.advanceNSubmissionSteps(3);
         cy.reload();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
+        cy.advanceNSubmissionSteps(4);
         cy.wait(2000);
 
         cy.contains('None of the ORCID records reported in the manuscript have publicly listed works, making it difficult to moderate it');
@@ -249,14 +212,9 @@ describe('SciELO Screening Plugin - Submission wizard tests', function() {
         cy.contains('button','OK').click();
 
         cy.addSubmissionGalleys([files[2]]);
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
+        cy.advanceNSubmissionSteps(3);
         cy.reload();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
+        cy.advanceNSubmissionSteps(4);
 
         cy.contains('The scientific production of the ORCID records has been successfully confirmed');
     });

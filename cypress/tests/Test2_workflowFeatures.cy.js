@@ -72,11 +72,11 @@ describe('SciELO Screening Plugin - WorkFlow features tests', function() {
         cy.beginSubmission(unscreenedSubmissionData);
         cy.detailsStep(unscreenedSubmissionData);
         cy.addSubmissionGalleys([dummyPdf, dummyPdf]);
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.addContributor(unscreenedSubmissionData.contributors[0]);
-        cy.addContributor(unscreenedSubmissionData.contributors[1]);
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
-        cy.get('.submissionWizard__footer button').contains('Continue').click();
+        cy.advanceNSubmissionSteps(1);
+        for (const contributor of unscreenedSubmissionData.contributors) {
+            cy.addContributor(contributor);
+        }
+        cy.advanceNSubmissionSteps(2);
         cy.wait(1000);
 
         cy.contains('button', 'Submit').click();
@@ -99,11 +99,7 @@ describe('SciELO Screening Plugin - WorkFlow features tests', function() {
 
     it("Displays screening info in publication tab for unscreened submission", function () {
         cy.login('dbarnes', null, 'publicknowledge');
-        cy.get('nav').contains('Active submissions').click();
-        cy.contains('table tr', unscreenedSubmissionData.title).within(() => {
-            cy.get('button').click({force: true});
-        });
-        cy.waitJQuery();
+        cy.openSubmission('Active submissions', unscreenedSubmissionData.title);
 
         cy.openWorkflowMenu('SciELO Screening Info');
 
@@ -118,11 +114,7 @@ describe('SciELO Screening Plugin - WorkFlow features tests', function() {
 
     it("Submission with multiple PDFs shows warning in screening info", function () {
         cy.login('dbarnes', null, 'publicknowledge');
-        cy.get('nav').contains('Active submissions').click();
-        cy.contains('table tr', unscreenedSubmissionData.title).within(() => {
-            cy.get('button').click({force: true});
-        });
-        cy.waitJQuery();
+        cy.openSubmission('Active submissions', unscreenedSubmissionData.title);
 
         cy.openWorkflowMenu('SciELO Screening Info');
         cy.contains('Please send a single PDF file');
@@ -130,11 +122,7 @@ describe('SciELO Screening Plugin - WorkFlow features tests', function() {
 
     it("Displays screening rules on submission posting", function () {
         cy.login('dbarnes', null, 'publicknowledge');
-        cy.get('nav').contains('Active submissions').click();
-        cy.contains('table tr', unscreenedSubmissionData.title).within(() => {
-            cy.get('button').click({force: true});
-        });
-        cy.waitJQuery();
+        cy.openSubmission('Active submissions', unscreenedSubmissionData.title);
 
         cy.get('button:contains("Post the preprint")').click();
         cy.contains('button', 'Post').click();
