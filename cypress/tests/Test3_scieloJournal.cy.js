@@ -55,7 +55,6 @@ describe('SciELO Screening Plugin - SciELO Journal related features', function()
         cy.contains('label', 'Role Name').click();
         cy.get('input[name="abbrev[en]"]').type('SciELO');
         cy.contains('label', 'Abbreviation').click();
-
         cy.get('#userGroupForm button:contains("OK")').click();
         cy.waitJQuery();
 
@@ -103,13 +102,7 @@ describe('SciELO Screening Plugin - SciELO Journal related features', function()
             .then(cy.wrap)
             .find('button:contains("Accept And Continue to OPS")').click();
         cy.logout();
-        cy.get('label:contains("SciELO Journal")').within(() => {
-            cy.get('input').check();
-        });
-
-        cy.get('#userDetailsForm .submitFormButton').click();
-        cy.wait(1500);
-
+        
         cy.login('dbarnes', null, 'publicknowledge');
         cy.get('nav').contains('Settings').click();
         cy.get('nav').contains('Users & Roles').click();
