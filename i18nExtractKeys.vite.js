@@ -42,6 +42,13 @@ function extractRegexPlugin({ extraKeys } = {}) {
       // remove dummy key used in the comment examples
       uniqueKeys.delete("key");
 
+      // remove keys with unresolved template literals
+      for (const key of uniqueKeys) {
+        if (key.includes("${")) {
+          uniqueKeys.delete(key);
+        }
+      }
+
       if (uniqueKeys.size) {
         const dir = path.dirname(fileOutput);
 
