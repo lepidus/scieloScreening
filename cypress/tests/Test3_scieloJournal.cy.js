@@ -79,9 +79,11 @@ describe('SciELO Screening Plugin - SciELO Journal related features', function()
         const yyyy = today.getFullYear();
 
         cy.contains('button', 'Add Another Role').click();
-        cy.get('select[name="userGroupId"]').select('SciELO Journal');
-        cy.get('input[name="dateStart"]').type(`${yyyy}-${mm}-${dd}`);
-        cy.get('select[name="masthead"]').select('Does not appear on the masthead');
+        cy.get('select[name="userGroupId"]').parents('tr').within(() => {
+            cy.get('select[name="userGroupId"]').select('SciELO Journal');
+            cy.get('input[name="dateStart"]').type(`${yyyy}-${mm}-${dd}`);
+            cy.get('select[name="masthead"]').select('Does not appear on the masthead');
+        });
         cy.contains('button', 'Save And Continue').click();
         cy.contains('button', 'Invite user to the role').click();
         cy.contains('Invitation Sent');
