@@ -123,13 +123,12 @@ describe('SciELO Screening Plugin - SciELO Journal related features', function()
         cy.get('iframe#preview-html').its('0.contentDocument.body')
             .then(cy.wrap)
             .find('a:contains("Accept Invitation")')
-            .invoke('attr', 'target', '_self')
-            .click();
+            .invoke('attr', 'href')
+            .then((acceptUrl) => {
+                cy.visit(acceptUrl);
+            });
 
-        cy.wait(3000);
-        cy.get('iframe#preview-html').its('0.contentDocument.body', { timeout: 30000 })
-            .then(cy.wrap)
-            .find('button:contains("Accept And Continue to OPS")', { timeout: 30000 })
+        cy.contains('button', 'Accept And Continue to OPS', { timeout: 30000 })
             .should('be.visible')
             .click();
         cy.logout();
