@@ -48,27 +48,32 @@ describe('SciELO Screening Plugin - SciELO Journal related features', function()
         cy.get('nav').contains('Settings').click();
         cy.get('nav').contains('Users & Roles').click();
         cy.contains('button', 'Roles').click();
-        cy.contains('a', 'Create New Role').click();
-
-        cy.get('#roleId').select('Author');
-        cy.get('input[name="name[en]"]').type('SciELO Journal');
-        cy.contains('label', 'Role Name').click();
-        cy.get('input[name="abbrev[en]"]').type('SciELO');
-        cy.contains('label', 'Abbreviation').click();
-        cy.get('#userGroupForm button:contains("OK")').click();
         cy.waitJQuery();
 
-        cy.contains('span', 'SciELO Journal')
-            .parent().parent().parent()
+        cy.get('#roleGridContainer').then(($grid) => {
+            if ($grid.find('span:contains("SciELO Journal")').length === 0) {
+                cy.contains('a', 'Create New Role').click();
+                cy.get('#roleId').select('Author');
+                cy.get('input[name="name[en]"]').type('SciELO Journal');
+                cy.contains('label', 'Role Name').click();
+                cy.get('input[name="abbrev[en]"]').type('SciELO');
+                cy.contains('label', 'Abbreviation').click();
+                cy.get('#userGroupForm button:contains("OK")').click();
+                cy.waitJQuery();
+            }
+        });
+
+        cy.get('#roleGridContainer').contains('span', 'SciELO Journal').first()
+            .parents('tr').first()
             .within(() => {
-                cy.get('input[type="checkbox"]').check();
+                cy.get('input[type="checkbox"]').first().check();
             });
 
         cy.contains('button', 'Users').click();
         cy.get('input[type="search"]').type('zwoods');
         cy.waitJQuery();
         
-        cy.contains('span', 'Zita Woods').parent().parent().within(() => {
+        cy.contains('span', 'Zita Woods').parents('tr').first().within(() => {
             cy.get('button').click();
             cy.contains('button', 'Edit').click();
         });
@@ -79,8 +84,15 @@ describe('SciELO Screening Plugin - SciELO Journal related features', function()
         const yyyy = today.getFullYear();
 
         cy.contains('button', 'Add Another Role').click();
-        cy.get('select[name="userGroupId"]').parents('tr').within(() => {
-            cy.get('select[name="userGroupId"]').select('SciELO Journal');
+        cy.get('select[name="userGroupId"]').last().then(($select) => {
+            const value = $select
+                .find('option')
+                .filter((i, el) => el.textContent.trim() === 'SciELO Journal')
+                .first()
+                .val();
+            cy.wrap($select).select(value);
+        });
+        cy.get('select[name="userGroupId"]').last().parents('tr').first().within(() => {
             cy.get('input[name="dateStart"]').type(`${yyyy}-${mm}-${dd}`);
             cy.get('select[name="masthead"]').select('Does not appear on the masthead');
         });
