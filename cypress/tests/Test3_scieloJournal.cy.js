@@ -48,29 +48,42 @@ describe('SciELO Screening Plugin - SciELO Journal related features', function()
         cy.get('nav').contains('Settings').click();
         cy.get('nav').contains('Users & Roles').click();
         cy.contains('button', 'Roles').click();
-        cy.contains('a', 'Create New Role').click();
-
-        cy.get('#roleId').select('Author');
-        cy.get('input[name="name[en]"]').type('SciELO Journal');
-        cy.contains('label', 'Role Name').click();
-        cy.get('input[name="abbrev[en]"]').type('SciELO');
-        cy.contains('label', 'Abbreviation').click();
-        cy.get('#userGroupForm button:contains("OK")').click();
         cy.waitJQuery();
 
-        cy.contains('span', 'SciELO Journal')
-            .parent().parent().parent()
+        cy.get('#roleGridContainer').then(($grid) => {
+            if ($grid.find('span:contains("SciELO Journal")').length === 0) {
+                cy.contains('a', 'Create New Role').click();
+                cy.get('#roleId').select('Author');
+                cy.get('input[name="name[en]"]').type('SciELO Journal');
+                cy.contains('label', 'Role Name').click();
+                cy.get('input[name="abbrev[en]"]').type('SciELO');
+                cy.contains('label', 'Abbreviation').click();
+                cy.get('#userGroupForm button:contains("OK")').click();
+                cy.waitJQuery();
+            }
+        });
+
+        cy.get('#roleGridContainer').contains('span', 'SciELO Journal').first()
+            .parents('tr').first()
             .within(() => {
-                cy.get('input[type="checkbox"]').check();
+                cy.get('input[type="checkbox"]').first().check();
             });
 
         cy.contains('button', 'Users').click();
         cy.get('input[type="search"]').type('zwoods');
         cy.waitJQuery();
         
-        cy.contains('span', 'Zita Woods').parent().parent().within(() => {
+        cy.contains('span', 'Zita Woods').parents('tr').first().within(() => {
             cy.get('button').click();
             cy.contains('button', 'Edit').click();
+        });
+
+        cy.wait(1500);
+        cy.get('body').then(($body) => {
+            if ($body.find('button:visible:contains("Edit Invitation")').length > 0) {
+                cy.contains('button', 'Edit Invitation').click();
+                cy.wait(500);
+            }
         });
 
         const today = new Date();
@@ -78,10 +91,26 @@ describe('SciELO Screening Plugin - SciELO Journal related features', function()
         const mm = String(today.getMonth() + 1).padStart(2, '0');
         const yyyy = today.getFullYear();
 
-        cy.contains('button', 'Add Another Role').click();
-        cy.get('select[name="userGroupId"]').select('SciELO Journal');
-        cy.get('input[name="dateStart"]').type(`${yyyy}-${mm}-${dd}`);
-        cy.get('select[name="masthead"]').select('Does not appear on the masthead');
+        cy.get('body').then(($body) => {
+            const alreadyAssigned = $body.find('tr').toArray()
+                .some((tr) => tr.textContent.includes('SciELO Journal'));
+
+            if (!alreadyAssigned) {
+                cy.contains('button', 'Add Another Role').click();
+                cy.get('select[name="userGroupId"]').last().then(($select) => {
+                    const value = $select
+                        .find('option')
+                        .filter((i, el) => el.textContent.trim() === 'SciELO Journal')
+                        .first()
+                        .val();
+                    cy.wrap($select).select(value);
+                });
+                cy.get('select[name="userGroupId"]').last().parents('tr').first().within(() => {
+                    cy.get('input[name="dateStart"]').type(`${yyyy}-${mm}-${dd}`);
+                    cy.get('select[name="masthead"]').select('Does not appear on the masthead');
+                });
+            }
+        });
         cy.contains('button', 'Save And Continue').click();
         cy.contains('button', 'Invite user to the role').click();
         cy.contains('Invitation Sent');
@@ -89,18 +118,19 @@ describe('SciELO Screening Plugin - SciELO Journal related features', function()
         
         cy.login('zwoods', null, 'publicknowledge');
         cy.visit('localhost:8025');
-        cy.get('b:contains("You are invited to new roles")').click();
+        cy.get('b:contains("You are invited to new roles")').first().click();
         cy.wait(500);
         cy.get('iframe#preview-html').its('0.contentDocument.body')
             .then(cy.wrap)
             .find('a:contains("Accept Invitation")')
-            .invoke('attr', 'target', '_self')
-            .click();
+            .invoke('attr', 'href')
+            .then((acceptUrl) => {
+                cy.visit(acceptUrl);
+            });
 
-        cy.wait(1000);
-        cy.get('iframe#preview-html').its('0.contentDocument.body')
-            .then(cy.wrap)
-            .find('button:contains("Accept And Continue to OPS")').click();
+        cy.contains('button', 'Accept And Continue to OPS', { timeout: 30000 })
+            .should('be.visible')
+            .click();
         cy.logout();
         
         cy.login('dbarnes', null, 'publicknowledge');
