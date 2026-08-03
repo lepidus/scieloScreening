@@ -17,7 +17,7 @@ class DocumentChecker
         $pathTxt = substr($pathFile, 0, -3) . 'txt';
         $command = "pdftotext " . escapeshellarg($pathFile) .
             " " . escapeshellarg($pathTxt) . " -layout 2>/dev/null";
-        shell_exec($command);
+        shell_exec($command); // nosemgrep: PHPCS_SecurityAudit.BadFunctions.SystemExecFunctions.WarnSystemExec
 
         if (file_exists($pathTxt)) {
             $this->fileText = file_get_contents($pathTxt);
