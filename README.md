@@ -15,7 +15,7 @@ The verifications performed are:
 
 The latest release of this plugin is compatible with the following PKP applications:
 
-* OPS 3.4.0
+* OPS 3.5.0
 
 ## Plugin Download
 
