@@ -11,12 +11,12 @@ include:
 
 .unit_test_template:
   before_script:
-    - apt update && apt install poppler-utils -yqq
+    - apt update && apt install poppler-utils util-linux -yqq
 
 .integration_tests_template:
   before_script:
     - sed -i 's/api_key_secret = ""/api_key_secret = "$API_KEY_SECRET"/' /var/www/$APPLICATION/config.inc.php
-    - apt update && apt install poppler-utils -yqq
+    - apt update && apt install poppler-utils util-linux -yqq
 
 ops_integration_tests:
   rules:
