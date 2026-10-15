@@ -23,6 +23,8 @@ PDF screening requires `pdftotext` (poppler-utils) and `prlimit` (util-linux) on
 
 If conversion fails, exceeds a limit, or another conversion is running, the ORCID check is shown as unavailable. It does not establish that the document has no ORCIDs or that its authors have no public works. Moderators can retry the check later or review the document manually.
 
+ORCID requests accept only the four HTTPS Public/Member production and sandbox endpoints offered in the settings form. Previously stored custom URLs are rejected, and HTTP redirects are disabled to keep credentials and bearer tokens on the selected endpoint.
+
 ## Plugin Download
 
 To download the plugin, go to the [Releases page](https://github.com/lepidus/scieloScreening/releases) and download the tar.gz package of the latest release compatible with your website.
