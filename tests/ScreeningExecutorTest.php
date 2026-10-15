@@ -70,6 +70,17 @@ class ScreeningExecutorTest extends TestCase
         $this->assertEquals('UnableNoFile', $screeningExecutor->getStatusDocumentOrcids());
     }
 
+    public function testFailedExtractionDoesNotQueryOrcid(): void
+    {
+        $documentChecker = $this->createMock(\APP\plugins\generic\scieloScreening\classes\DocumentChecker::class);
+        $documentChecker->method('extractionSucceeded')->willReturn(false);
+        $documentChecker->expects($this->never())->method('checkTextOrcids');
+        $orcidClient = $this->createMock(OrcidClient::class);
+        $orcidClient->expects($this->never())->method('getReadPublicAccessToken');
+        $executor = new ScreeningExecutor($documentChecker, $orcidClient);
+        $this->assertSame('UnableException', $executor->getStatusDocumentOrcids());
+    }
+
     public function testThereAreNoOrcidsOnDocument()
     {
         $noTextOrcids = [];

@@ -109,6 +109,10 @@ class ScreeningExecutor
             return 'UnableNoFile';
         }
 
+        if (!$this->documentChecker->extractionSucceeded()) {
+            return 'UnableException';
+        }
+
         $documentOrcids = $this->documentChecker->checkTextOrcids();
         if (empty($documentOrcids)) {
             return 'UnableNoOrcids';
