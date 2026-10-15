@@ -6,6 +6,7 @@ use Symfony\Component\Process\Process;
 
 class DocumentChecker
 {
+    public const MAX_ORCIDS = 10;
     public const MAX_INPUT_BYTES = 20 * 1024 * 1024;
     public const MAX_TEXT_BYTES = 2 * 1024 * 1024;
     public const EXTRACTION_TIMEOUT = 5;
@@ -85,13 +86,17 @@ class DocumentChecker
                 $orcid = strtolower($orcid);
                 $orcidNumbers = str_replace("-", "", $orcid);
 
-                if (!in_array($orcid, $orcidsDetected) and $this->checksumOrcid($orcidNumbers)) {
-                    $orcidsDetected[] = $orcid;
+                if (!isset($orcidsDetected[$orcid]) and $this->checksumOrcid($orcidNumbers)) {
+                    $orcidsDetected[$orcid] = $orcid;
+                    // Keep one extra identifier to signal that the check would be incomplete.
+                    if (count($orcidsDetected) > self::MAX_ORCIDS) {
+                        break;
+                    }
                 }
             }
         }
 
-        return $orcidsDetected;
+        return array_values($orcidsDetected);
     }
 
     private function checksumOrcid($orcid)

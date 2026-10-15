@@ -54,6 +54,24 @@ class DocumentCheckerTest extends TestCase
         }
     }
 
+    public function testLargeOrcidListsRetainOnlyBudgetAndOverflowMarker(): void
+    {
+        $orcids = [];
+        for ($i = 0; $i < 100; $i++) {
+            $digits = str_pad((string) $i, 15, '0', STR_PAD_LEFT);
+            $total = 0;
+            foreach (str_split($digits) as $digit) {
+                $total = ($total + (int) $digit) * 2;
+            }
+            $checksum = (12 - $total % 11) % 11;
+            $orcids[] = implode('-', str_split($digits . ($checksum === 10 ? 'X' : $checksum), 4));
+        }
+        $checker = (new ReflectionClass(DocumentChecker::class))->newInstanceWithoutConstructor();
+        $text = new ReflectionProperty(DocumentChecker::class, 'fileText');
+        $text->setValue($checker, 'orcid.org/0000-0000-0000-0000 ' . implode(' ', array_map(fn ($orcid) => 'orcid.org/' . $orcid . ' orcid.org/' . strtolower($orcid), $orcids)));
+        $this->assertSame(array_map('strtolower', array_slice($orcids, 0, 11)), $checker->checkTextOrcids());
+    }
+
     public function testOversizedInputIsNotExtracted(): void
     {
         $file = tempnam(sys_get_temp_dir(), 'scielo-large-');
