@@ -17,6 +17,16 @@ The latest release of this plugin is compatible with the following PKP applicati
 
 * OPS 3.5.0
 
+## Document screening limits
+
+PDF screening requires `pdftotext` (poppler-utils) and `prlimit` (util-linux) on Linux, with PHP process execution enabled. Conversion is limited to one process per plugin installation, 20 MiB of input, 2 MiB of extracted text, 5 seconds of wall time, 5 seconds of CPU time, and 256 MiB of address space. Temporary text files are private, unique, and removed after conversion.
+
+If conversion fails, exceeds a limit, or another conversion is running, the ORCID check is shown as unavailable. It does not establish that the document has no ORCIDs or that its authors have no public works. Moderators can retry the check later or review the document manually.
+
+ORCID requests accept only the four HTTPS Public/Member production and sandbox endpoints offered in the settings form. Previously stored custom URLs are rejected, and HTTP redirects are disabled to keep credentials and bearer tokens on the selected endpoint.
+
+Each screening queries at most 10 distinct document ORCIDs, stopping when public works are found. If additional identifiers remain unchecked and no works were found, the result is unavailable rather than a claim that none have works. Token and works requests share a 10-second budget, with a maximum of 2 seconds per request and 1 second to connect.
+
 ## Plugin Download
 
 To download the plugin, go to the [Releases page](https://github.com/lepidus/scieloScreening/releases) and download the tar.gz package of the latest release compatible with your website.
@@ -27,6 +37,16 @@ To download the plugin, go to the [Releases page](https://github.com/lepidus/sci
 2. Navigate to `Settings`>` Website`> `Plugins`> `Upload a new plugin`.
 3. Under __Upload file__ select the file __scieloScreening.tar.gz__.
 4. Click __Save__ and the plugin will be installed on your website.
+
+## Unit tests
+
+From the OPS root, with its Composer dependencies and the document screening tools installed:
+
+```sh
+lib/pkp/lib/vendor/bin/phpunit --no-configuration --bootstrap plugins/generic/scieloScreening/tests/bootstrap.php --do-not-cache-result plugins/generic/scieloScreening/tests
+```
+
+These tests exercise the host authorization policies with repository doubles, local PDF conversion and resource limits, and ORCID requests with a simulated HTTP client. They do not require MySQL or contact ORCID, and do not replace browser or HTTP integration tests.
 
 # License
 

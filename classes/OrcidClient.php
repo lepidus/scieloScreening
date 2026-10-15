@@ -13,9 +13,19 @@ class OrcidClient
     public const ORCID_API_URL_PUBLIC_SANDBOX = 'https://pub.sandbox.orcid.org/';
     public const ORCID_API_URL_MEMBER = 'https://api.orcid.org/';
     public const ORCID_API_URL_MEMBER_SANDBOX = 'https://api.sandbox.orcid.org/';
+    public const API_URLS = [
+        self::ORCID_API_URL_PUBLIC,
+        self::ORCID_API_URL_PUBLIC_SANDBOX,
+        self::ORCID_API_URL_MEMBER,
+        self::ORCID_API_URL_MEMBER_SANDBOX,
+    ];
     public const ORCID_API_SCOPE_PUBLIC = '/authenticate';
     public const ORCID_API_SCOPE_MEMBER = '/activities/update';
 
+    public const MAX_REQUEST_SECONDS = 2;
+    public const TOTAL_REQUEST_SECONDS = 10;
+
+    private ?float $requestDeadline = null;
     private $plugin;
     private $contextId;
 
@@ -38,11 +48,44 @@ class OrcidClient
         return $settingValue;
     }
 
+    public static function isAllowedApiUrl($url): bool
+    {
+        return in_array($url, self::API_URLS, true);
+    }
+
+    private function getApiUrl(): string
+    {
+        $url = $this->getPluginSetting('orcidAPIPath');
+        if (!self::isAllowedApiUrl($url)) {
+            throw new \GuzzleHttp\Exception\TransferException('Invalid ORCID API endpoint');
+        }
+        return $url;
+    }
+
+    protected function getMonotonicTime(): float
+    {
+        return hrtime(true) / 1e9;
+    }
+
+    private function getRequestTimeout(): float
+    {
+        $this->requestDeadline ??= $this->getMonotonicTime() + self::TOTAL_REQUEST_SECONDS;
+        $remaining = $this->requestDeadline - $this->getMonotonicTime();
+        if ($remaining <= 0) {
+            throw new \GuzzleHttp\Exception\TransferException('ORCID screening deadline exceeded');
+        }
+        return min(self::MAX_REQUEST_SECONDS, $remaining);
+    }
+
+    protected function getHttpClient(): \GuzzleHttp\Client
+    {
+        return Application::get()->getHttpClient();
+    }
+
     public function getReadPublicAccessToken(): string
     {
-        $httpClient = Application::get()->getHttpClient();
-
-        $tokenUrl = $this->getPluginSetting('orcidAPIPath') . 'oauth/token';
+        $tokenUrl = $this->getApiUrl() . 'oauth/token';
+        $httpClient = $this->getHttpClient();
         $requestHeaders = ['Accept' => 'application/json'];
         $requestData = [
             'client_id' => $this->getPluginSetting('orcidClientId'),
@@ -55,6 +98,9 @@ class OrcidClient
             'POST',
             $tokenUrl,
             [
+                'timeout' => $this->getRequestTimeout(),
+                'connect_timeout' => 1,
+                'allow_redirects' => false,
                 'headers' => $requestHeaders,
                 'form_params' => $requestData,
             ]
@@ -66,13 +112,15 @@ class OrcidClient
 
     public function getOrcidWorks(string $orcid, string $accessToken): array
     {
-        $httpClient = Application::get()->getHttpClient();
-
-        $worksUrl = $this->getPluginSetting('orcidAPIPath') . 'v3.0/' . urlencode($orcid) . '/works';
+        $worksUrl = $this->getApiUrl() . 'v3.0/' . urlencode($orcid) . '/works';
+        $httpClient = $this->getHttpClient();
         $response = $httpClient->request(
             'GET',
             $worksUrl,
             [
+                'timeout' => $this->getRequestTimeout(),
+                'connect_timeout' => 1,
+                'allow_redirects' => false,
                 'headers' => [
                     'Accept' => 'application/json',
                     'Authorization' => 'Bearer ' . $accessToken,
