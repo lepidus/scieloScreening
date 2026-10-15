@@ -99,6 +99,27 @@ class ScreeningExecutorTest extends TestCase
         $this->assertEquals('NotOkay', $screeningExecutor->getStatusDocumentOrcids());
     }
 
+    public function testDocumentCannotCauseMoreThanTenWorksRequests(): void
+    {
+        $documentChecker = new TestDocumentChecker(array_map('strval', range(1, 100)));
+        $orcidClient = $this->createMock(OrcidClient::class);
+        $orcidClient->expects($this->once())->method('getReadPublicAccessToken')->willReturn('token');
+        $orcidClient->expects($this->exactly(10))->method('getOrcidWorks')->willReturn(['group' => []]);
+        $orcidClient->method('recordHasWorks')->willReturn(false);
+        $executor = new ScreeningExecutor($documentChecker, $orcidClient);
+        $this->assertSame('UnableException', $executor->getStatusDocumentOrcids());
+    }
+
+    public function testExactlyTenEmptyRecordsCanBeReportedAsNotOkay(): void
+    {
+        $documentChecker = new TestDocumentChecker(array_map('strval', range(1, 10)));
+        $orcidClient = $this->createMock(OrcidClient::class);
+        $orcidClient->expects($this->exactly(10))->method('getOrcidWorks')->willReturn(['group' => []]);
+        $orcidClient->method('recordHasWorks')->willReturn(false);
+        $executor = new ScreeningExecutor($documentChecker, $orcidClient);
+        $this->assertSame('NotOkay', $executor->getStatusDocumentOrcids());
+    }
+
     public function testAtLeastOneOrcidOnDocumentHasWorks()
     {
         $documentChecker = new TestDocumentChecker($this->orcids);

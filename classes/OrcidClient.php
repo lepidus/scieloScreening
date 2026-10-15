@@ -22,6 +22,10 @@ class OrcidClient
     public const ORCID_API_SCOPE_PUBLIC = '/authenticate';
     public const ORCID_API_SCOPE_MEMBER = '/activities/update';
 
+    public const MAX_REQUEST_SECONDS = 2;
+    public const TOTAL_REQUEST_SECONDS = 10;
+
+    private ?float $requestDeadline = null;
     private $plugin;
     private $contextId;
 
@@ -58,6 +62,21 @@ class OrcidClient
         return $url;
     }
 
+    protected function getMonotonicTime(): float
+    {
+        return hrtime(true) / 1e9;
+    }
+
+    private function getRequestTimeout(): float
+    {
+        $this->requestDeadline ??= $this->getMonotonicTime() + self::TOTAL_REQUEST_SECONDS;
+        $remaining = $this->requestDeadline - $this->getMonotonicTime();
+        if ($remaining <= 0) {
+            throw new \GuzzleHttp\Exception\TransferException('ORCID screening deadline exceeded');
+        }
+        return min(self::MAX_REQUEST_SECONDS, $remaining);
+    }
+
     protected function getHttpClient(): \GuzzleHttp\Client
     {
         return Application::get()->getHttpClient();
@@ -79,6 +98,8 @@ class OrcidClient
             'POST',
             $tokenUrl,
             [
+                'timeout' => $this->getRequestTimeout(),
+                'connect_timeout' => 1,
                 'allow_redirects' => false,
                 'headers' => $requestHeaders,
                 'form_params' => $requestData,
@@ -97,6 +118,8 @@ class OrcidClient
             'GET',
             $worksUrl,
             [
+                'timeout' => $this->getRequestTimeout(),
+                'connect_timeout' => 1,
                 'allow_redirects' => false,
                 'headers' => [
                     'Accept' => 'application/json',
