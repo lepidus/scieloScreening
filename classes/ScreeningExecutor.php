@@ -109,10 +109,6 @@ class ScreeningExecutor
             return 'UnableNoFile';
         }
 
-        if (!$this->documentChecker->extractionSucceeded()) {
-            return 'UnableException';
-        }
-
         $documentOrcids = $this->documentChecker->checkTextOrcids();
         if (empty($documentOrcids)) {
             return 'UnableNoOrcids';
@@ -120,7 +116,7 @@ class ScreeningExecutor
 
         try {
             $accessToken = $this->orcidClient->getReadPublicAccessToken();
-            foreach (array_slice($documentOrcids, 0, DocumentChecker::MAX_ORCIDS) as $orcid) {
+            foreach ($documentOrcids as $orcid) {
                 $orcidWorks = $this->orcidClient->getOrcidWorks($orcid, $accessToken);
 
                 if ($this->orcidClient->recordHasWorks($orcidWorks)) {
@@ -133,7 +129,7 @@ class ScreeningExecutor
             return 'UnableException';
         }
 
-        return count($documentOrcids) > DocumentChecker::MAX_ORCIDS ? 'UnableException' : 'NotOkay';
+        return 'NotOkay';
     }
 
     public function getScreeningData($submission)

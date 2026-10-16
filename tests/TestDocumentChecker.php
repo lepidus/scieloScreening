@@ -11,11 +11,6 @@ class TestDocumentChecker
         $this->textOrcids = $textOrcids;
     }
 
-    public function extractionSucceeded(): bool
-    {
-        return true;
-    }
-
     public function checkTextOrcids(): array
     {
         return $this->textOrcids;
