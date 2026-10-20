@@ -24,6 +24,7 @@ use PKP\form\validation\FormValidatorCSRF;
 use PKP\form\validation\FormValidatorCustom;
 use APP\plugins\generic\scieloScreening\classes\APIKeyEncryption;
 use APP\plugins\generic\scieloScreening\classes\OrcidClient;
+use APP\plugins\generic\scieloScreening\classes\DocumentChecker;
 
 class ScieloScreeningSettingsForm extends Form
 {
@@ -86,6 +87,7 @@ class ScieloScreeningSettingsForm extends Form
     public function fetch($request, $template = null, $display = false)
     {
         $templateMgr = TemplateManager::getManager($request);
+        $templateMgr->assign('missingDocumentScreeningRequirements', implode(', ', DocumentChecker::getMissingRequirements()));
         $templateMgr->assign('globallyConfigured', $this->orcidIsGloballyConfigured());
         $templateMgr->assign('pluginName', $this->plugin->getName());
         $templateMgr->assign('applicationName', Application::get()->getName());

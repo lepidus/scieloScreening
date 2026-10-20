@@ -210,3 +210,9 @@ msgstr "Invalid client ID"
 
 msgid "plugins.generic.scieloScreening.settings.orcidClientSecretError"
 msgstr "Invalid client secret"
+
+msgid "plugins.generic.scieloScreening.info.documentOrcidsUnableRequirements"
+msgstr "Document ORCID screening is unavailable because server requirements are missing. Contact the administrator or review the document manually."
+
+msgid "plugins.generic.scieloScreening.settings.missingDocumentRequirements"
+msgstr "Document ORCID screening is unavailable. Missing server requirements: {$requirements}. On Linux, install poppler-utils and util-linux and enable proc_open in PHP."

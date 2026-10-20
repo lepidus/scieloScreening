@@ -19,7 +19,7 @@ The latest release of this plugin is compatible with the following PKP applicati
 
 ## Document screening limits
 
-PDF screening requires `pdftotext` (poppler-utils) and `prlimit` (util-linux) on Linux, with PHP process execution enabled. Conversion is limited to one process per plugin installation, 20 MiB of input, 2 MiB of extracted text, 5 seconds of wall time, 5 seconds of CPU time, and 256 MiB of address space. The conversion lock is stored in a private `scielo-screening` directory under the OPS `files_dir`, created with permissions 0700. Temporary text files are private, unique, and removed after conversion.
+The plugin settings report missing server requirements, and document screening displays an unavailable status until they are installed. PDF screening requires `pdftotext` (poppler-utils) and `prlimit` (util-linux) on Linux, with PHP process execution enabled. Conversion is limited to one process per plugin installation, 20 MiB of input, 2 MiB of extracted text, 5 seconds of wall time, 5 seconds of CPU time, and 256 MiB of address space. The conversion lock is stored in a private `scielo-screening` directory under the OPS `files_dir`, created with permissions 0700. Temporary text files are private, unique, and removed after conversion.
 
 Concurrent checks wait up to 5 seconds for the converter lock. If conversion fails, exceeds a limit, or the converter is still busy after that wait, the ORCID check is shown as unavailable. It does not establish that the document has no ORCIDs or that its authors have no public works. Moderators can retry the check later or review the document manually.
 

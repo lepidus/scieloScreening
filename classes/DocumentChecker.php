@@ -3,6 +3,7 @@
 namespace APP\plugins\generic\scieloScreening\classes;
 
 use Symfony\Component\Process\Process;
+use Symfony\Component\Process\ExecutableFinder;
 
 class DocumentChecker
 {
@@ -25,6 +26,11 @@ class DocumentChecker
         }
         if (filesize($pathFile) > self::MAX_INPUT_BYTES) {
             $this->failureStatus = 'UnableSizeLimit';
+            return;
+        }
+
+        if (self::getMissingRequirements()) {
+            $this->failureStatus = 'UnableRequirements';
             return;
         }
 
@@ -81,6 +87,21 @@ class DocumentChecker
             flock($lock, LOCK_UN);
             fclose($lock);
         }
+    }
+
+    public static function getMissingRequirements(): array
+    {
+        $missing = [];
+        if (!function_exists('proc_open')) {
+            $missing[] = 'proc_open';
+        }
+        $finder = new ExecutableFinder();
+        foreach (['prlimit', 'pdftotext'] as $command) {
+            if ($finder->find($command) === null) {
+                $missing[] = $command;
+            }
+        }
+        return $missing;
     }
 
     public function getFailureStatus(): string

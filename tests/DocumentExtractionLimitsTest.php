@@ -46,6 +46,24 @@ class DocumentExtractionLimitsTest extends TestCase
         $this->assertSame($before, glob(sys_get_temp_dir() . '/scielo-text-*'));
     }
 
+    public function testMissingConverterToolsAreReported(): void
+    {
+        putenv('PATH=' . $this->directory);
+        $checker = new DocumentChecker(__DIR__ . '/assets/orcids_document.pdf', $this->directory);
+        $this->assertSame('UnableRequirements', $checker->getFailureStatus());
+    }
+
+    public function testDisabledProcOpenIsReported(): void
+    {
+        $process = new \Symfony\Component\Process\Process([
+            PHP_BINARY, '-d', 'disable_functions=proc_open', '-r',
+            'require $argv[1]; $checker = new \APP\plugins\generic\scieloScreening\classes\DocumentChecker($argv[2], $argv[3]); echo $checker->getFailureStatus();',
+            __DIR__ . '/bootstrap.php', __DIR__ . '/assets/orcids_document.pdf', $this->directory,
+        ]);
+        $process->mustRun();
+        $this->assertSame('UnableRequirements', $process->getOutput());
+    }
+
     public function testOutputLimitAndCleanup(): void
     {
         $this->checkFailure('exec head -c 3145728 /dev/zero > "$3"');

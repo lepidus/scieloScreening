@@ -210,3 +210,9 @@ msgstr "ID de cliente no válido"
 
 msgid "plugins.generic.scieloScreening.settings.orcidClientSecretError"
 msgstr "Secreto de Cliente no válido"
+
+msgid "plugins.generic.scieloScreening.info.documentOrcidsUnableRequirements"
+msgstr "La verificación de los ORCID del documento no está disponible porque faltan requisitos en el servidor. Contacte al administrador o revise el documento manualmente."
+
+msgid "plugins.generic.scieloScreening.settings.missingDocumentRequirements"
+msgstr "La verificación de los ORCID del documento no está disponible. Requisitos ausentes en el servidor: {$requirements}. En Linux, instale poppler-utils y util-linux y habilite proc_open en PHP."

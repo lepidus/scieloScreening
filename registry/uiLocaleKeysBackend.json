@@ -11,6 +11,7 @@
   "plugins.generic.scieloScreening.info.documentOrcidsUnableNoFile",
   "plugins.generic.scieloScreening.info.documentOrcidsUnableNoOrcids",
   "plugins.generic.scieloScreening.info.documentOrcidsUnableOrcidLimit",
+  "plugins.generic.scieloScreening.info.documentOrcidsUnableRequirements",
   "plugins.generic.scieloScreening.info.documentOrcidsUnableSizeLimit",
   "plugins.generic.scieloScreening.info.manyPDFs.body",
   "plugins.generic.scieloScreening.info.manyPDFs.header",
