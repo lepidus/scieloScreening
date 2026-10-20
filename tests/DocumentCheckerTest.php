@@ -106,6 +106,7 @@ class DocumentCheckerTest extends TestCase
         try {
             $checker = new DocumentChecker($file, $this->workingDirectory);
             $this->assertFalse($checker->extractionSucceeded());
+            $this->assertSame('UnableSizeLimit', (new \APP\plugins\generic\scieloScreening\classes\ScreeningExecutor($checker, null))->getStatusDocumentOrcids());
             $this->assertSame([], $checker->checkTextOrcids());
         } finally {
             unlink($file);

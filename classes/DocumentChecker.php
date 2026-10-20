@@ -16,10 +16,15 @@ class DocumentChecker
 
     private $fileText = '';
     private $extractionSucceeded = false;
+    private $failureStatus = 'UnableExtraction';
 
     public function __construct(string $pathFile, string $workingDirectory)
     {
-        if (!is_file($pathFile) || !is_readable($pathFile) || filesize($pathFile) > self::MAX_INPUT_BYTES) {
+        if (!is_file($pathFile) || !is_readable($pathFile)) {
+            return;
+        }
+        if (filesize($pathFile) > self::MAX_INPUT_BYTES) {
+            $this->failureStatus = 'UnableSizeLimit';
             return;
         }
 
@@ -35,6 +40,7 @@ class DocumentChecker
         while (!flock($lock, LOCK_EX | LOCK_NB)) {
             if (hrtime(true) / 1e9 >= $lockDeadline) {
                 fclose($lock);
+                $this->failureStatus = 'UnableBusy';
                 return;
             }
             usleep(50000);
@@ -75,6 +81,11 @@ class DocumentChecker
             flock($lock, LOCK_UN);
             fclose($lock);
         }
+    }
+
+    public function getFailureStatus(): string
+    {
+        return $this->failureStatus;
     }
 
     public function extractionSucceeded(): bool

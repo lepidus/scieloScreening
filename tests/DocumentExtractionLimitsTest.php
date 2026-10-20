@@ -98,6 +98,7 @@ class DocumentExtractionLimitsTest extends TestCase
             $this->assertGreaterThanOrEqual(DocumentChecker::LOCK_WAIT_SECONDS, microtime(true) - $start);
             $this->assertLessThan(DocumentChecker::LOCK_WAIT_SECONDS + 1, microtime(true) - $start);
             $this->assertFalse($checker->extractionSucceeded());
+            $this->assertSame('UnableBusy', (new \APP\plugins\generic\scieloScreening\classes\ScreeningExecutor($checker, null))->getStatusDocumentOrcids());
             $this->assertFileDoesNotExist($this->directory . '/started');
         } finally {
             flock($lock, LOCK_UN);

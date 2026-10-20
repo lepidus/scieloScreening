@@ -74,11 +74,12 @@ class ScreeningExecutorTest extends TestCase
     {
         $documentChecker = $this->createMock(\APP\plugins\generic\scieloScreening\classes\DocumentChecker::class);
         $documentChecker->method('extractionSucceeded')->willReturn(false);
+        $documentChecker->method('getFailureStatus')->willReturn('UnableExtraction');
         $documentChecker->expects($this->never())->method('checkTextOrcids');
         $orcidClient = $this->createMock(OrcidClient::class);
         $orcidClient->expects($this->never())->method('getReadPublicAccessToken');
         $executor = new ScreeningExecutor($documentChecker, $orcidClient);
-        $this->assertSame('UnableException', $executor->getStatusDocumentOrcids());
+        $this->assertSame('UnableExtraction', $executor->getStatusDocumentOrcids());
     }
 
     public function testThereAreNoOrcidsOnDocument()
@@ -107,7 +108,7 @@ class ScreeningExecutorTest extends TestCase
         $orcidClient->expects($this->exactly(10))->method('getOrcidWorks')->willReturn(['group' => []]);
         $orcidClient->method('recordHasWorks')->willReturn(false);
         $executor = new ScreeningExecutor($documentChecker, $orcidClient);
-        $this->assertSame('UnableException', $executor->getStatusDocumentOrcids());
+        $this->assertSame('UnableOrcidLimit', $executor->getStatusDocumentOrcids());
     }
 
     public function testExactlyTenEmptyRecordsCanBeReportedAsNotOkay(): void

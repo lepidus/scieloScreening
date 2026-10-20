@@ -104,7 +104,19 @@ msgid "plugins.generic.scieloScreening.info.documentOrcidsUnableNoOrcids"
 msgstr "No fue posible verificar la producción científica de los registros ORCID, ya que el documento PDF enviado no tiene ORCIDs listados"
 
 msgid "plugins.generic.scieloScreening.info.documentOrcidsUnableException"
-msgstr "No fue posible verificar la producción científica de los registros ORCID, ya que ocurrió un error inesperado"
+msgstr "El servicio ORCID no completó la verificación o se agotó el tiempo de consulta. Inténtelo más tarde o revise el documento manualmente."
+
+msgid "plugins.generic.scieloScreening.info.documentOrcidsUnableBusy"
+msgstr "Otra conversión de PDF sigue en curso. Inténtelo más tarde o revise el documento manualmente."
+
+msgid "plugins.generic.scieloScreening.info.documentOrcidsUnableSizeLimit"
+msgstr "El PDF supera el límite de 20 MiB. Revise el documento manualmente."
+
+msgid "plugins.generic.scieloScreening.info.documentOrcidsUnableOrcidLimit"
+msgstr "El documento contiene más de 10 ORCID y no se confirmó producción científica pública entre los primeros 10. Revise los demás registros manualmente."
+
+msgid "plugins.generic.scieloScreening.info.documentOrcidsUnableExtraction"
+msgstr "No se pudo convertir el PDF o se superaron los límites de tiempo, memoria o texto. Inténtelo más tarde o revise el documento manualmente."
 
 msgid "plugins.generic.scieloScreening.info.documentOrcidsNotOkay.header"
 msgstr "Ninguno de los registros ORCID indicados en el manuscrito tiene obras públicas, lo que dificulta su moderación. "

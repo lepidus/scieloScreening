@@ -110,7 +110,7 @@ class ScreeningExecutor
         }
 
         if (!$this->documentChecker->extractionSucceeded()) {
-            return 'UnableException';
+            return $this->documentChecker->getFailureStatus();
         }
 
         $documentOrcids = $this->documentChecker->checkTextOrcids();
@@ -133,7 +133,7 @@ class ScreeningExecutor
             return 'UnableException';
         }
 
-        return count($documentOrcids) > DocumentChecker::MAX_ORCIDS ? 'UnableException' : 'NotOkay';
+        return count($documentOrcids) > DocumentChecker::MAX_ORCIDS ? 'UnableOrcidLimit' : 'NotOkay';
     }
 
     public function getScreeningData($submission)
