@@ -64,13 +64,39 @@ class DocumentExtractionLimitsTest extends TestCase
         $this->checkFailure('exec php -d memory_limit=-1 -r \'$data = str_repeat("x", 300 * 1024 * 1024);\'');
     }
 
-    public function testConcurrentConversionIsSkipped(): void
+    public function testConcurrentConversionWaitsForThePreviousConverter(): void
+    {
+        $this->fakeConverter('printf "orcid.org/0000-0001-5727-2427" > "$3"');
+        $process = new \Symfony\Component\Process\Process([
+            PHP_BINARY, '-r',
+            '$lock = fopen($argv[1], "c"); flock($lock, LOCK_EX); file_put_contents($argv[2], "ready"); usleep(300000);',
+            $this->directory . '/extraction.lock', $this->directory . '/ready',
+        ]);
+        $process->start();
+        try {
+            $deadline = microtime(true) + 2;
+            while (!file_exists($this->directory . '/ready') && microtime(true) < $deadline) {
+                usleep(10000);
+            }
+            $this->assertFileExists($this->directory . '/ready');
+            $checker = new DocumentChecker(__DIR__ . '/assets/orcids_document.pdf', $this->directory);
+            $this->assertTrue($checker->extractionSucceeded());
+            $this->assertSame(['0000-0001-5727-2427'], $checker->checkTextOrcids());
+        } finally {
+            $process->wait();
+        }
+    }
+
+    public function testConcurrentConversionStopsWaitingAtTheDeadline(): void
     {
         $this->fakeConverter('touch "' . $this->directory . '/started"');
         $lock = fopen($this->directory . '/extraction.lock', 'c');
         $this->assertTrue(flock($lock, LOCK_EX | LOCK_NB));
         try {
+            $start = microtime(true);
             $checker = new DocumentChecker(__DIR__ . '/assets/orcids_document.pdf', $this->directory);
+            $this->assertGreaterThanOrEqual(DocumentChecker::LOCK_WAIT_SECONDS, microtime(true) - $start);
+            $this->assertLessThan(DocumentChecker::LOCK_WAIT_SECONDS + 1, microtime(true) - $start);
             $this->assertFalse($checker->extractionSucceeded());
             $this->assertFileDoesNotExist($this->directory . '/started');
         } finally {

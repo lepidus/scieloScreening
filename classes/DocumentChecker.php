@@ -10,6 +10,7 @@ class DocumentChecker
     public const MAX_INPUT_BYTES = 20 * 1024 * 1024;
     public const MAX_TEXT_BYTES = 2 * 1024 * 1024;
     public const EXTRACTION_TIMEOUT = 5;
+    public const LOCK_WAIT_SECONDS = 5;
     public const EXTRACTION_MEMORY_BYTES = 256 * 1024 * 1024;
     public const EXTRACTION_CPU_SECONDS = 5;
 
@@ -30,9 +31,13 @@ class DocumentChecker
         if (!$lock) {
             return;
         }
-        if (!flock($lock, LOCK_EX | LOCK_NB)) {
-            fclose($lock);
-            return;
+        $lockDeadline = hrtime(true) / 1e9 + self::LOCK_WAIT_SECONDS;
+        while (!flock($lock, LOCK_EX | LOCK_NB)) {
+            if (hrtime(true) / 1e9 >= $lockDeadline) {
+                fclose($lock);
+                return;
+            }
+            usleep(50000);
         }
 
         $pathTxt = false;
