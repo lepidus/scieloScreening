@@ -2,12 +2,16 @@
 
 use APP\plugins\generic\scieloScreening\classes\DocumentChecker;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
 
 class FastDocumentChecker extends DocumentChecker
 {
     public const EXTRACTION_TIMEOUT = 0.3;
 }
 
+#[RunTestsInSeparateProcesses]
+#[PreserveGlobalState(false)]
 class DocumentExtractionLimitsTest extends TestCase
 {
     private $directory;
@@ -32,18 +36,19 @@ class DocumentExtractionLimitsTest extends TestCase
 
     private function fakeConverter(string $body): void
     {
-        file_put_contents($this->directory . '/pdftotext', "#!/bin/sh\n" . $body);
+        $recordOutput = 'printf "%s" "$3" > ' . escapeshellarg($this->directory . '/output-path');
+        file_put_contents($this->directory . '/pdftotext', "#!/bin/sh\n" . $recordOutput . "\n" . $body);
         chmod($this->directory . '/pdftotext', 0700);
     }
 
     private function checkFailure(string $body): void
     {
         $this->fakeConverter($body);
-        $before = glob(sys_get_temp_dir() . '/scielo-text-*');
         $checker = new FastDocumentChecker(__DIR__ . '/assets/orcids_document.pdf', $this->directory);
         $this->assertFalse($checker->extractionSucceeded());
         $this->assertSame([], $checker->checkTextOrcids());
-        $this->assertSame($before, glob(sys_get_temp_dir() . '/scielo-text-*'));
+        $this->assertFileExists($this->directory . '/output-path');
+        $this->assertFileDoesNotExist(file_get_contents($this->directory . '/output-path'));
     }
 
     public function testMissingConverterToolsAreReported(): void
@@ -62,6 +67,19 @@ class DocumentExtractionLimitsTest extends TestCase
         ]);
         $process->mustRun();
         $this->assertSame('UnableRequirements', $process->getOutput());
+    }
+
+    public function testUnrelatedTemporaryFilesDoNotAffectCleanup(): void
+    {
+        $unrelated = sys_get_temp_dir() . '/scielo-text-review-' . bin2hex(random_bytes(6));
+        try {
+            $this->checkFailure('touch ' . escapeshellarg($unrelated) . "\nexit 1");
+            $this->assertFileExists($unrelated);
+        } finally {
+            if (file_exists($unrelated)) {
+                unlink($unrelated);
+            }
+        }
     }
 
     public function testOutputLimitAndCleanup(): void
