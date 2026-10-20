@@ -136,15 +136,20 @@ class ScreeningExecutor
         return count($documentOrcids) > DocumentChecker::MAX_ORCIDS ? 'UnableOrcidLimit' : 'NotOkay';
     }
 
-    public function getScreeningData($submission)
+    public function getSubmissionValidationData($submission)
     {
-        $dataScreening = array_merge(
+        return array_merge(
             $this->getStatusAuthors($submission),
             $this->getStatusMetadataEnglish($submission),
-            $this->getStatusPDFs($submission),
-            ['statusDocumentOrcids' => $this->getStatusDocumentOrcids($submission)]
+            $this->getStatusPDFs($submission)
         );
+    }
 
-        return $dataScreening;
+    public function getScreeningData($submission)
+    {
+        return array_merge(
+            $this->getSubmissionValidationData($submission),
+            ['statusDocumentOrcids' => $this->getStatusDocumentOrcids()]
+        );
     }
 }
