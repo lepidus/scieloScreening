@@ -441,7 +441,7 @@ class ScieloScreeningPlugin extends GenericPlugin
             $filesDir = \Config::getVar('files', 'files_dir');
             $path = $filesDir . DIRECTORY_SEPARATOR . $galley->getFile()->getData('path');
 
-            return new DocumentChecker($path);
+            return new DocumentChecker($path, $filesDir . '/scielo-screening');
         }
 
         return null;

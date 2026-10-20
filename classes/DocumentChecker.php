@@ -16,14 +16,17 @@ class DocumentChecker
     private $fileText = '';
     private $extractionSucceeded = false;
 
-    public function __construct(string $pathFile)
+    public function __construct(string $pathFile, string $workingDirectory)
     {
         if (!is_file($pathFile) || !is_readable($pathFile) || filesize($pathFile) > self::MAX_INPUT_BYTES) {
             return;
         }
 
-        // One converter per plugin installation, including requests for different files.
-        $lock = fopen(sys_get_temp_dir() . '/scielo-screening-' . hash('sha256', __DIR__) . '.lock', 'c');
+        if ((!is_dir($workingDirectory) && !@mkdir($workingDirectory, 0700) && !is_dir($workingDirectory)) ||
+            is_link($workingDirectory) || (fileperms($workingDirectory) & 0077) !== 0) {
+            return;
+        }
+        $lock = @fopen($workingDirectory . '/extraction.lock', 'c');
         if (!$lock) {
             return;
         }

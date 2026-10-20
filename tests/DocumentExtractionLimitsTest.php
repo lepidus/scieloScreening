@@ -40,7 +40,7 @@ class DocumentExtractionLimitsTest extends TestCase
     {
         $this->fakeConverter($body);
         $before = glob(sys_get_temp_dir() . '/scielo-text-*');
-        $checker = new FastDocumentChecker(__DIR__ . '/assets/orcids_document.pdf');
+        $checker = new FastDocumentChecker(__DIR__ . '/assets/orcids_document.pdf', $this->directory);
         $this->assertFalse($checker->extractionSucceeded());
         $this->assertSame([], $checker->checkTextOrcids());
         $this->assertSame($before, glob(sys_get_temp_dir() . '/scielo-text-*'));
@@ -67,11 +67,10 @@ class DocumentExtractionLimitsTest extends TestCase
     public function testConcurrentConversionIsSkipped(): void
     {
         $this->fakeConverter('touch "' . $this->directory . '/started"');
-        $reflection = new ReflectionClass(DocumentChecker::class);
-        $lock = fopen(sys_get_temp_dir() . '/scielo-screening-' . hash('sha256', dirname($reflection->getFileName())) . '.lock', 'c');
+        $lock = fopen($this->directory . '/extraction.lock', 'c');
         $this->assertTrue(flock($lock, LOCK_EX | LOCK_NB));
         try {
-            $checker = new DocumentChecker(__DIR__ . '/assets/orcids_document.pdf');
+            $checker = new DocumentChecker(__DIR__ . '/assets/orcids_document.pdf', $this->directory);
             $this->assertFalse($checker->extractionSucceeded());
             $this->assertFileDoesNotExist($this->directory . '/started');
         } finally {
