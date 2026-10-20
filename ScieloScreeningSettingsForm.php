@@ -94,6 +94,10 @@ class ScieloScreeningSettingsForm extends Form
 
     public function execute(...$functionArgs)
     {
+        if ($this->orcidIsGloballyConfigured()) {
+            return parent::execute(...$functionArgs);
+        }
+
         if (!OrcidClient::isAllowedApiUrl($this->getData('orcidAPIPath'))) {
             throw new \InvalidArgumentException('Invalid ORCID API endpoint');
         }

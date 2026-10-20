@@ -74,7 +74,8 @@ class OrcidEndpointTest extends TestCase
 
     public function testInvalidEndpointCannotBePersisted(): void
     {
-        $form = (new ReflectionClass(\APP\plugins\generic\scieloScreening\ScieloScreeningSettingsForm::class))->newInstanceWithoutConstructor();
+        $form = $this->getMockBuilder(\APP\plugins\generic\scieloScreening\ScieloScreeningSettingsForm::class)->disableOriginalConstructor()->onlyMethods(['orcidIsGloballyConfigured'])->getMock();
+        $form->method('orcidIsGloballyConfigured')->willReturn(false);
         $form->setData('orcidAPIPath', 'http://127.0.0.1/');
         $plugin = $this->createMock(\APP\plugins\generic\scieloScreening\ScieloScreeningPlugin::class);
         $plugin->expects($this->never())->method('updateSetting');
