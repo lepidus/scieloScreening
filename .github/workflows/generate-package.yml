@@ -21,7 +21,8 @@ jobs:
           if [ $application != $PLUGIN_NAME ]; then exit 1; fi
           release=$(xmlstarlet sel -t -v 'version/release' version.xml)
           tag="${GITHUB_REF#refs/tags/v}"
-          if [[ $release != $tag* ]]; then exit 1; fi
+          if [[ ! $tag =~ ^[0-9]+(\.[0-9]+){3}$ ]]; then exit 1; fi
+          if [[ "$release" != "$tag" ]]; then exit 1; fi
           date_version=$(xmlstarlet sel -t -v 'version/date' version.xml)
           current_date=$(date +'%Y-%m-%d')
           if [ $date_version != $current_date ]; then exit 1; fi
