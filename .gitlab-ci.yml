@@ -3,7 +3,7 @@ variables:
 
 include:
   - project: 'documentacao-e-tarefas/modelosparaintegracaocontinua'
-    ref: stable-3_5_0
+    ref: 0c0d0154ed444d4dfc0e83f0ffd10e4127068012 # stable-3_5_0
     file:
       - 'templates/groups/pkp_plugin.yml'
       - 'templates/groups/ops/unit_tests.yml'
