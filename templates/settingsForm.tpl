@@ -10,6 +10,11 @@
 *
 *}
 
+{if $missingDocumentScreeningRequirements}
+    <p role="alert">{translate key="plugins.generic.scieloScreening.settings.missingDocumentRequirements" requirements=$missingDocumentScreeningRequirements|escape}</p>
+{/if}
+
+
 <script>
 $(function() {ldelim}
     // Attach the form handler.

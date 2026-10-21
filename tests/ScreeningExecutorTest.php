@@ -63,11 +63,59 @@ class ScreeningExecutorTest extends TestCase
         return $mockOrcidClient;
     }
 
+    public function testSubmissionValidationDoesNotRunDocumentOrcidChecks(): void
+    {
+        $previousContainer = \Illuminate\Container\Container::getInstance();
+        $container = new \Illuminate\Container\Container();
+        \Illuminate\Container\Container::setInstance($container);
+        try {
+            $collector = $this->createMock(\PKP\galley\Collector::class);
+            $collector->method('filterByPublicationIds')->with([42])->willReturnSelf();
+            $collector->method('getMany')->willReturn(LazyCollection::make([]));
+            $repository = $this->createMock(\PKP\galley\Repository::class);
+            $repository->method('getCollector')->willReturn($collector);
+            $container->instance(\PKP\galley\Repository::class, $repository);
+            $publication = new \APP\publication\Publication();
+            $publication->setId(42);
+            $publication->setData('authors', LazyCollection::make([]));
+            foreach (['title', 'abstract', 'keywords'] as $field) {
+                $publication->setData($field, 'present', 'en');
+            }
+            $submission = $this->createMock(\APP\submission\Submission::class);
+            $submission->method('getCurrentPublication')->willReturn($publication);
+            $document = $this->createMock(\APP\plugins\generic\scieloScreening\classes\DocumentChecker::class);
+            $document->expects($this->never())->method('extractionSucceeded');
+            $orcid = $this->createMock(OrcidClient::class);
+            $orcid->expects($this->never())->method('getReadPublicAccessToken');
+            $executor = new ScreeningExecutor($document, $orcid);
+            $data = $executor->getSubmissionValidationData($submission);
+            $this->assertArrayNotHasKey('statusDocumentOrcids', $data);
+            $this->assertTrue($data['statusMetadataEnglish']);
+            $this->assertFalse($data['statusPDFs']);
+            $this->assertSame(0, $data['numPDFs']);
+            $this->assertArrayHasKey('statusOrcid', $data);
+        } finally {
+            \Illuminate\Container\Container::setInstance($previousContainer);
+        }
+    }
+
     public function testOrcidsOnDocumentCheckingWhenThereIsNoDocument()
     {
         $noDocumentChecker = null;
         $screeningExecutor = new ScreeningExecutor($noDocumentChecker, null);
         $this->assertEquals('UnableNoFile', $screeningExecutor->getStatusDocumentOrcids());
+    }
+
+    public function testFailedExtractionDoesNotQueryOrcid(): void
+    {
+        $documentChecker = $this->createMock(\APP\plugins\generic\scieloScreening\classes\DocumentChecker::class);
+        $documentChecker->method('extractionSucceeded')->willReturn(false);
+        $documentChecker->method('getFailureStatus')->willReturn('UnableExtraction');
+        $documentChecker->expects($this->never())->method('checkTextOrcids');
+        $orcidClient = $this->createMock(OrcidClient::class);
+        $orcidClient->expects($this->never())->method('getReadPublicAccessToken');
+        $executor = new ScreeningExecutor($documentChecker, $orcidClient);
+        $this->assertSame('UnableExtraction', $executor->getStatusDocumentOrcids());
     }
 
     public function testThereAreNoOrcidsOnDocument()
@@ -86,6 +134,27 @@ class ScreeningExecutorTest extends TestCase
         $screeningExecutor = new ScreeningExecutor($documentChecker, $orcidClient);
 
         $this->assertEquals('NotOkay', $screeningExecutor->getStatusDocumentOrcids());
+    }
+
+    public function testDocumentCannotCauseMoreThanTenWorksRequests(): void
+    {
+        $documentChecker = new TestDocumentChecker(array_map('strval', range(1, 100)));
+        $orcidClient = $this->createMock(OrcidClient::class);
+        $orcidClient->expects($this->once())->method('getReadPublicAccessToken')->willReturn('token');
+        $orcidClient->expects($this->exactly(10))->method('getOrcidWorks')->willReturn(['group' => []]);
+        $orcidClient->method('recordHasWorks')->willReturn(false);
+        $executor = new ScreeningExecutor($documentChecker, $orcidClient);
+        $this->assertSame('UnableOrcidLimit', $executor->getStatusDocumentOrcids());
+    }
+
+    public function testExactlyTenEmptyRecordsCanBeReportedAsNotOkay(): void
+    {
+        $documentChecker = new TestDocumentChecker(array_map('strval', range(1, 10)));
+        $orcidClient = $this->createMock(OrcidClient::class);
+        $orcidClient->expects($this->exactly(10))->method('getOrcidWorks')->willReturn(['group' => []]);
+        $orcidClient->method('recordHasWorks')->willReturn(false);
+        $executor = new ScreeningExecutor($documentChecker, $orcidClient);
+        $this->assertSame('NotOkay', $executor->getStatusDocumentOrcids());
     }
 
     public function testAtLeastOneOrcidOnDocumentHasWorks()

@@ -10,4 +10,9 @@
  *
 *}
 
+
+
+{if $missingDocumentScreeningRequirements}
+    <p role="alert">{translate key="plugins.generic.scieloScreening.settings.missingDocumentRequirements" requirements=$missingDocumentScreeningRequirements|escape}</p>
+{/if}
 {translate key="plugins.generic.scieloScreening.settings.emptyApiSecretKey"}

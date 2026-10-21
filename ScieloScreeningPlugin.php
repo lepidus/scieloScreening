@@ -30,6 +30,7 @@ use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use PKP\core\PKPBaseController;
 use PKP\handler\APIHandler;
+use APP\plugins\generic\scieloScreening\classes\ScreeningApiPolicy;
 use APP\plugins\generic\scieloScreening\classes\components\forms\NumberContributorsForm;
 use APP\plugins\generic\scieloScreening\classes\ScreeningExecutor;
 use APP\plugins\generic\scieloScreening\classes\ScreeningChecker;
@@ -106,13 +107,14 @@ class ScieloScreeningPlugin extends GenericPlugin
                 $apiHandler->addRoute(
                     'GET',
                     '{submissionId}/screening',
-                    $this->getScreeningDataHandler(),
+                    $this->getScreeningDataHandler($apiController),
                     'screening.get',
                     [
                         Role::ROLE_ID_SITE_ADMIN,
                         Role::ROLE_ID_MANAGER,
                         Role::ROLE_ID_SUB_EDITOR,
-                    ]
+                    ],
+                    new ScreeningApiPolicy()
                 );
 
                 return false;
@@ -120,11 +122,10 @@ class ScieloScreeningPlugin extends GenericPlugin
         );
     }
 
-    private function getScreeningDataHandler(): callable
+    private function getScreeningDataHandler(PKPBaseController $apiController): callable
     {
-        return function (IlluminateRequest $request): JsonResponse {
-            $submissionId = $request->route('submissionId');
-            $submission = Repo::submission()->get((int) $submissionId);
+        return function (IlluminateRequest $request) use ($apiController): JsonResponse {
+            $submission = $apiController->getAuthorizedContextObject(Application::ASSOC_TYPE_SUBMISSION);
 
             if (!$submission) {
                 return response()->json(
@@ -305,16 +306,13 @@ class ScieloScreeningPlugin extends GenericPlugin
     {
         $errors = &$params[0];
         $submission = $params[1];
-        $context = Application::get()->getRequest()->getContext();
         $publication = $submission->getCurrentPublication();
         $contributorsErrors = $errors['contributors'] ?? [];
         $filesErrors = $errors['files'] ?? [];
 
-        $documentChecker = $this->getDocumentChecker($submission);
-        $orcidClient = new OrcidClient($this, $context->getId());
-        $screeningExecutor = new ScreeningExecutor($documentChecker, $orcidClient);
+        $screeningExecutor = new ScreeningExecutor(null, null);
         $screeningChecker = new ScreeningChecker();
-        $dataScreening = $screeningExecutor->getScreeningData($submission);
+        $dataScreening = $screeningExecutor->getSubmissionValidationData($submission);
 
         if (!$dataScreening['statusAffiliation']) {
             $contributorsErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.affiliation');
@@ -440,7 +438,7 @@ class ScieloScreeningPlugin extends GenericPlugin
             $filesDir = \Config::getVar('files', 'files_dir');
             $path = $filesDir . DIRECTORY_SEPARATOR . $galley->getFile()->getData('path');
 
-            return new DocumentChecker($path);
+            return new DocumentChecker($path, $filesDir . '/scielo-screening');
         }
 
         return null;

@@ -2,28 +2,116 @@
 
 namespace APP\plugins\generic\scieloScreening\classes;
 
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\ExecutableFinder;
+
 class DocumentChecker
 {
-    private $fileText;
+    public const MAX_ORCIDS = 10;
+    public const MAX_INPUT_BYTES = 20 * 1024 * 1024;
+    public const MAX_TEXT_BYTES = 2 * 1024 * 1024;
+    public const EXTRACTION_TIMEOUT = 5;
+    public const LOCK_WAIT_SECONDS = 5;
+    public const EXTRACTION_MEMORY_BYTES = 256 * 1024 * 1024;
+    public const EXTRACTION_CPU_SECONDS = 5;
 
-    public function __construct(string $pathFile)
+    private $fileText = '';
+    private $extractionSucceeded = false;
+    private $failureStatus = 'UnableExtraction';
+
+    public function __construct(string $pathFile, string $workingDirectory)
     {
-        $this->fileText = '';
-
-        if (!file_exists($pathFile)) {
+        if (!is_file($pathFile) || !is_readable($pathFile)) {
+            return;
+        }
+        if (filesize($pathFile) > self::MAX_INPUT_BYTES) {
+            $this->failureStatus = 'UnableSizeLimit';
             return;
         }
 
-        $pathTxt = substr($pathFile, 0, -3) . 'txt';
-        $command = "pdftotext " . escapeshellarg($pathFile) .
-            " " . escapeshellarg($pathTxt) . " -layout 2>/dev/null";
-        shell_exec($command); // nosemgrep: PHPCS_SecurityAudit.BadFunctions.SystemExecFunctions.WarnSystemExec
-
-        if (file_exists($pathTxt)) {
-            $this->fileText = file_get_contents($pathTxt);
-            $this->fileText = str_replace(["\r", "\n"], '', $this->fileText);
-            unlink($pathTxt);
+        if (self::getMissingRequirements()) {
+            $this->failureStatus = 'UnableRequirements';
+            return;
         }
+
+        if ((!is_dir($workingDirectory) && !@mkdir($workingDirectory, 0700) && !is_dir($workingDirectory)) ||
+            is_link($workingDirectory) || (fileperms($workingDirectory) & 0077) !== 0) {
+            return;
+        }
+        $lock = @fopen($workingDirectory . '/extraction.lock', 'c');
+        if (!$lock) {
+            return;
+        }
+        $lockDeadline = hrtime(true) / 1e9 + self::LOCK_WAIT_SECONDS;
+        while (!flock($lock, LOCK_EX | LOCK_NB)) {
+            if (hrtime(true) / 1e9 >= $lockDeadline) {
+                fclose($lock);
+                $this->failureStatus = 'UnableBusy';
+                return;
+            }
+            usleep(50000);
+        }
+
+        $pathTxt = false;
+        try {
+            $pathTxt = tempnam(sys_get_temp_dir(), 'scielo-text-');
+            if ($pathTxt === false) {
+                return;
+            }
+            // prlimit bounds the native parser independently of PHP's memory/time limits.
+            $process = new Process([
+                'prlimit',
+                '--as=' . self::EXTRACTION_MEMORY_BYTES,
+                '--cpu=' . self::EXTRACTION_CPU_SECONDS,
+                '--fsize=' . self::MAX_TEXT_BYTES,
+                '--', 'pdftotext', '-layout', $pathFile, $pathTxt,
+            ]);
+            $process->setTimeout(static::EXTRACTION_TIMEOUT);
+            $process->disableOutput();
+            $process->run();
+            if (!$process->isSuccessful() || filesize($pathTxt) > self::MAX_TEXT_BYTES) {
+                return;
+            }
+            $text = file_get_contents($pathTxt, false, null, 0, self::MAX_TEXT_BYTES + 1);
+            if ($text === false || strlen($text) > self::MAX_TEXT_BYTES) {
+                return;
+            }
+            $this->fileText = str_replace(["\r", "\n"], '', $text);
+            $this->extractionSucceeded = true;
+        } catch (\Symfony\Component\Process\Exception\ExceptionInterface $exception) {
+            // Failed or over-budget conversion leaves the check unavailable.
+        } finally {
+            if ($pathTxt !== false) {
+                unlink($pathTxt);
+            }
+            flock($lock, LOCK_UN);
+            fclose($lock);
+        }
+    }
+
+    public static function getMissingRequirements(): array
+    {
+        $missing = [];
+        if (!function_exists('proc_open')) {
+            $missing[] = 'proc_open';
+        }
+        $finder = new ExecutableFinder();
+        foreach (['prlimit', 'pdftotext'] as $command) {
+            if ($finder->find($command) === null) {
+                $missing[] = $command;
+            }
+        }
+        return $missing;
+    }
+
+    public function getFailureStatus(): string
+    {
+        return $this->failureStatus;
+    }
+
+    public function extractionSucceeded(): bool
+    {
+        return $this->extractionSucceeded;
     }
 
     public function checkTextOrcids(): array
@@ -38,13 +126,17 @@ class DocumentChecker
                 $orcid = strtolower($orcid);
                 $orcidNumbers = str_replace("-", "", $orcid);
 
-                if (!in_array($orcid, $orcidsDetected) and $this->checksumOrcid($orcidNumbers)) {
-                    $orcidsDetected[] = $orcid;
+                if (!isset($orcidsDetected[$orcid]) and $this->checksumOrcid($orcidNumbers)) {
+                    $orcidsDetected[$orcid] = $orcid;
+                    // Keep one extra identifier to signal that the check would be incomplete.
+                    if (count($orcidsDetected) > self::MAX_ORCIDS) {
+                        break;
+                    }
                 }
             }
         }
 
-        return $orcidsDetected;
+        return array_values($orcidsDetected);
     }
 
     private function checksumOrcid($orcid)

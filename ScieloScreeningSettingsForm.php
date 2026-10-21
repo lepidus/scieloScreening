@@ -19,11 +19,12 @@ use PKP\form\Form;
 use APP\template\TemplateManager;
 use APP\core\Application;
 use PKP\config\Config;
-use PKP\form\validation\FormValidator;
 use PKP\form\validation\FormValidatorPost;
 use PKP\form\validation\FormValidatorCSRF;
 use PKP\form\validation\FormValidatorCustom;
 use APP\plugins\generic\scieloScreening\classes\APIKeyEncryption;
+use APP\plugins\generic\scieloScreening\classes\OrcidClient;
+use APP\plugins\generic\scieloScreening\classes\DocumentChecker;
 
 class ScieloScreeningSettingsForm extends Form
 {
@@ -49,7 +50,7 @@ class ScieloScreeningSettingsForm extends Form
         $this->addCheck(new FormValidatorCSRF($this));
 
         if (!$this->orcidIsGloballyConfigured()) {
-            $this->addCheck(new FormValidator($this, 'orcidAPIPath', 'required', 'plugins.generic.scieloScreening.settings.orcidAPIPathRequired'));
+            $this->addCheck(new FormValidatorCustom($this, 'orcidAPIPath', 'required', 'plugins.generic.scieloScreening.settings.orcidAPIPathRequired', [OrcidClient::class, 'isAllowedApiUrl']));
             $this->addCheck(new FormValidatorCustom($this, 'orcidClientId', 'required', 'plugins.generic.scieloScreening.settings.orcidClientIdError', function ($clientId) {
                 return $this->validateClientId($clientId);
             }));
@@ -86,6 +87,7 @@ class ScieloScreeningSettingsForm extends Form
     public function fetch($request, $template = null, $display = false)
     {
         $templateMgr = TemplateManager::getManager($request);
+        $templateMgr->assign('missingDocumentScreeningRequirements', implode(', ', DocumentChecker::getMissingRequirements()));
         $templateMgr->assign('globallyConfigured', $this->orcidIsGloballyConfigured());
         $templateMgr->assign('pluginName', $this->plugin->getName());
         $templateMgr->assign('applicationName', Application::get()->getName());
@@ -94,11 +96,19 @@ class ScieloScreeningSettingsForm extends Form
 
     public function execute(...$functionArgs)
     {
+        if ($this->orcidIsGloballyConfigured()) {
+            return parent::execute(...$functionArgs);
+        }
+
+        if (!OrcidClient::isAllowedApiUrl($this->getData('orcidAPIPath'))) {
+            throw new \InvalidArgumentException('Invalid ORCID API endpoint');
+        }
+
         $plugin = &$this->plugin;
         $contextId = $this->contextId;
         foreach (self::CONFIG_VARS as $configVar => $type) {
             if ($configVar === 'orcidAPIPath') {
-                $plugin->updateSetting($contextId, $configVar, trim($this->getData($configVar), "\"\';"), $type);
+                $plugin->updateSetting($contextId, $configVar, $this->getData($configVar), $type);
             } else {
                 $encryptedValue = $this->encrypter->encryptString($this->getData($configVar));
                 $plugin->updateSetting($contextId, $configVar, $encryptedValue, $type);
