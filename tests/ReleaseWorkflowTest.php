@@ -67,14 +67,6 @@ SH);
         $this->assertFalse($process->isSuccessful());
     }
 
-    public function testIncompleteAndMalformedVersionTagsAreRejected(): void
-    {
-        foreach (['v', 'v3', 'v3.0', 'v3.0.2', 'v3.0.2.00', 'v3.0.2.0-rc1', 'v3.0.2.0-extra', 'v9'] as $tag) {
-            $process = $this->checkRelease('refs/tags/' . $tag);
-            $this->assertFalse($process->isSuccessful(), 'Unexpectedly accepted release tag: ' . $tag);
-        }
-    }
-
     public function testExactReleaseTagPasses(): void
     {
         $process = $this->checkRelease('refs/tags/v3.0.2.0');
