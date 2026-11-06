@@ -4,17 +4,28 @@ namespace APP\plugins\generic\scieloScreening\classes;
 
 class DocumentChecker
 {
-    private $fileText;
+    private $fileText = '';
 
     public function __construct(string $pathFile)
     {
-        $pathTxt = substr($pathFile, 0, -3) . 'txt';
-        shell_exec("pdftotext " . $pathFile . " " . $pathTxt . " -layout 2>/dev/null");
+        if (!is_file($pathFile)) {
+            return;
+        }
 
-        $this->fileText = file_get_contents($pathTxt);
-        $this->fileText = str_replace(["\r", "\n"], '', $this->fileText);
+        // Write the extracted text to a private temporary file, never next to the submission file.
+        $pathTxt = tempnam(sys_get_temp_dir(), 'scielo-text-');
+        if ($pathTxt === false) {
+            return;
+        }
 
-        unlink($pathTxt);
+        try {
+            $command = 'pdftotext -layout ' . escapeshellarg($pathFile) . ' ' . escapeshellarg($pathTxt) . ' 2>/dev/null';
+            shell_exec($command);
+            $text = file_get_contents($pathTxt);
+            $this->fileText = str_replace(["\r", "\n"], '', $text === false ? '' : $text);
+        } finally {
+            unlink($pathTxt);
+        }
     }
 
     public function checkTextOrcids(): array

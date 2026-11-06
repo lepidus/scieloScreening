@@ -34,4 +34,32 @@ class DocumentCheckerTest extends TestCase
 
         $this->assertEquals($expectedOrcids, $documentChecker->checkTextOrcids());
     }
+
+    public function testExtractionDoesNotTouchTheSourceOrSiblingTextFiles(): void
+    {
+        $directory = sys_get_temp_dir() . '/scielo-pdf-' . bin2hex(random_bytes(6));
+        mkdir($directory, 0700);
+        $pdf = $directory . '/document.pdf';
+        $siblingText = $directory . '/document.txt';
+        $galleyStoredAsText = $directory . '/galley.txt';
+        copy($this->orcidsDocumentPath, $pdf);
+        file_put_contents($siblingText, 'must remain intact');
+        file_put_contents($galleyStoredAsText, 'galley stored with a txt extension');
+        try {
+            $checker = new DocumentChecker($pdf);
+            $this->assertNotEmpty($checker->checkTextOrcids());
+            $this->assertSame('must remain intact', file_get_contents($siblingText));
+
+            $checker = new DocumentChecker($galleyStoredAsText);
+            $this->assertSame([], $checker->checkTextOrcids());
+            $this->assertSame('galley stored with a txt extension', file_get_contents($galleyStoredAsText));
+        } finally {
+            foreach ([$pdf, $siblingText, $galleyStoredAsText] as $file) {
+                if (file_exists($file)) {
+                    unlink($file);
+                }
+            }
+            rmdir($directory);
+        }
+    }
 }
