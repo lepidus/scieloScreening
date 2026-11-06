@@ -13,6 +13,12 @@ class OrcidClient
     public const ORCID_API_URL_PUBLIC_SANDBOX = 'https://pub.sandbox.orcid.org/';
     public const ORCID_API_URL_MEMBER = 'https://api.orcid.org/';
     public const ORCID_API_URL_MEMBER_SANDBOX = 'https://api.sandbox.orcid.org/';
+    public const API_URLS = [
+        self::ORCID_API_URL_PUBLIC,
+        self::ORCID_API_URL_PUBLIC_SANDBOX,
+        self::ORCID_API_URL_MEMBER,
+        self::ORCID_API_URL_MEMBER_SANDBOX,
+    ];
     public const ORCID_API_SCOPE_PUBLIC = '/authenticate';
     public const ORCID_API_SCOPE_MEMBER = '/activities/update';
 
@@ -38,11 +44,37 @@ class OrcidClient
         return $settingValue;
     }
 
+    public static function isAllowedApiUrl($url): bool
+    {
+        return in_array($url, self::API_URLS, true);
+    }
+
+    private function getApiUrl(): string
+    {
+        $url = $this->getPluginSetting('orcidAPIPath');
+        if (!self::isAllowedApiUrl($url)) {
+            throw new \GuzzleHttp\Exception\TransferException('Invalid ORCID API endpoint');
+        }
+        return $url;
+    }
+
+    private function assertSuccessfulResponse($response): void
+    {
+        // Redirects are not followed, so any non-200 answer must not be treated as data
+        if ($response->getStatusCode() !== 200) {
+            throw new \GuzzleHttp\Exception\TransferException('Unexpected ORCID response status: ' . $response->getStatusCode());
+        }
+    }
+
+    protected function getHttpClient(): \GuzzleHttp\Client
+    {
+        return Application::get()->getHttpClient();
+    }
+
     public function getReadPublicAccessToken(): string
     {
-        $httpClient = Application::get()->getHttpClient();
-
-        $tokenUrl = $this->getPluginSetting('orcidAPIPath') . 'oauth/token';
+        $tokenUrl = $this->getApiUrl() . 'oauth/token';
+        $httpClient = $this->getHttpClient();
         $requestHeaders = ['Accept' => 'application/json'];
         $requestData = [
             'client_id' => $this->getPluginSetting('orcidClientId'),
@@ -55,10 +87,12 @@ class OrcidClient
             'POST',
             $tokenUrl,
             [
+                'allow_redirects' => false,
                 'headers' => $requestHeaders,
                 'form_params' => $requestData,
             ]
         );
+        $this->assertSuccessfulResponse($response);
 
         $responseJson = json_decode($response->getBody(), true);
         return $responseJson['access_token'];
@@ -66,19 +100,20 @@ class OrcidClient
 
     public function getOrcidWorks(string $orcid, string $accessToken): array
     {
-        $httpClient = Application::get()->getHttpClient();
-
-        $worksUrl = $this->getPluginSetting('orcidAPIPath') . 'v3.0/' . urlencode($orcid) . '/works';
+        $worksUrl = $this->getApiUrl() . 'v3.0/' . urlencode($orcid) . '/works';
+        $httpClient = $this->getHttpClient();
         $response = $httpClient->request(
             'GET',
             $worksUrl,
             [
+                'allow_redirects' => false,
                 'headers' => [
                     'Accept' => 'application/json',
                     'Authorization' => 'Bearer ' . $accessToken,
                 ],
             ]
         );
+        $this->assertSuccessfulResponse($response);
 
         return json_decode($response->getBody(), true);
     }

@@ -17,6 +17,8 @@ The latest release of this plugin is compatible with the following PKP applicati
 
 * OPS 3.4.0
 
+ORCID requests accept only the four HTTPS Public/Member production and sandbox endpoints offered in the settings form. Previously stored custom URLs are rejected, and HTTP redirects are disabled to keep credentials and bearer tokens on the selected endpoint.
+
 ## Plugin Download
 
 To download the plugin, go to the [Releases page](https://github.com/lepidus/scieloScreening/releases) and download the tar.gz package of the latest release compatible with your website.
