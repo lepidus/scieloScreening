@@ -19,6 +19,12 @@ The latest release of this plugin is compatible with the following PKP applicati
 
 ORCID requests accept only the four HTTPS Public/Member production and sandbox endpoints offered in the settings form. Previously stored custom URLs are rejected, and HTTP redirects are disabled to keep credentials and bearer tokens on the selected endpoint.
 
+## Document screening limits
+
+PDF screening requires `pdftotext` (poppler-utils) and `prlimit` (util-linux) on Linux, with PHP process execution enabled. Conversion is limited to one process per plugin installation (later requests wait up to 5 seconds), 20 MiB of input, 2 MiB of extracted text, 5 seconds of wall time, 5 seconds of CPU time, and 256 MiB of address space. Temporary text files are private, unique, and removed after conversion. At most 10 ORCIDs found in the document are queried, each request is limited to 2 seconds and all ORCID requests of a check to 10 seconds. The document check is not run when the submission is validated.
+
+If conversion fails, exceeds a limit, or another conversion is still running, the ORCID check is shown as unavailable. It does not establish that the document has no ORCIDs or that its authors have no public works. Moderators can retry the check later or review the document manually.
+
 ## Plugin Download
 
 To download the plugin, go to the [Releases page](https://github.com/lepidus/scieloScreening/releases) and download the tar.gz package of the latest release compatible with your website.

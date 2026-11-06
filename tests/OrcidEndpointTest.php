@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class OrcidEndpointTest extends TestCase
 {
-    private function client($url, array &$history, ?array $responses = null): OrcidClient
+    private function client($url, array &$history, ?array $responses = null, ?callable $clock = null): OrcidClient
     {
         $plugin = new class ($url) {
             public function __construct(private $url)
@@ -27,7 +27,10 @@ class OrcidEndpointTest extends TestCase
             new Response(200, [], '{"group":[]}'),
         ]));
         $stack->push(Middleware::history($history));
-        $client = $this->getMockBuilder(OrcidClient::class)->setConstructorArgs([$plugin, 1])->onlyMethods(['getHttpClient'])->getMock();
+        $client = $this->getMockBuilder(OrcidClient::class)->setConstructorArgs([$plugin, 1])->onlyMethods($clock ? ['getHttpClient', 'getMonotonicTime'] : ['getHttpClient'])->getMock();
+        if ($clock) {
+            $client->method('getMonotonicTime')->willReturnCallback($clock);
+        }
         $client->method('getHttpClient')->willReturn(new Client(['handler' => $stack]));
         return $client;
     }
@@ -91,6 +94,26 @@ class OrcidEndpointTest extends TestCase
         try {
             $client->getOrcidWorks('0000-0001-5727-2427', 'test-token');
             $this->fail('Redirect accepted as works response');
+        } catch (TransferException $exception) {
+            $this->assertCount(2, $history);
+        }
+    }
+
+    public function testTotalBudgetIncludesTokenAndWorksRequests(): void
+    {
+        $history = [];
+        $times = [0.0, 0.0, 9.5, 10.1];
+        $client = $this->client(OrcidClient::ORCID_API_URL_PUBLIC, $history, null, function () use (&$times) {
+            return array_shift($times);
+        });
+        $client->getReadPublicAccessToken();
+        $client->getOrcidWorks('0000-0001-5727-2427', 'test-token');
+        $this->assertSame(2.0, $history[0]['options']['timeout']);
+        $this->assertSame(0.5, $history[1]['options']['timeout']);
+        $this->assertSame(1, $history[0]['options']['connect_timeout']);
+        try {
+            $client->getOrcidWorks('0000-0002-1648-966X', 'test-token');
+            $this->fail('Total deadline was ignored');
         } catch (TransferException $exception) {
             $this->assertCount(2, $history);
         }

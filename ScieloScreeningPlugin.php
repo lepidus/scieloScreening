@@ -220,16 +220,14 @@ class ScieloScreeningPlugin extends GenericPlugin
     {
         $errors = &$params[0];
         $submission = $params[1];
-        $context = Application::get()->getRequest()->getContext();
         $publication = $submission->getCurrentPublication();
         $contributorsErrors = $errors['contributors'] ?? [];
         $filesErrors = $errors['files'] ?? [];
 
-        $documentChecker = $this->getDocumentChecker($submission);
-        $orcidClient = new OrcidClient($this, $context->getId());
-        $screeningExecutor = new ScreeningExecutor($documentChecker, $orcidClient);
+        // The document ORCID check is informative only; do not run it on every submission validation.
+        $screeningExecutor = new ScreeningExecutor(null, null);
         $screeningChecker = new ScreeningChecker();
-        $dataScreening = $screeningExecutor->getScreeningData($submission);
+        $dataScreening = $screeningExecutor->getSubmissionValidationData($submission);
 
         if (!$dataScreening['statusAffiliation']) {
             $contributorsErrors[] = __('plugins.generic.scieloScreening.reviewStep.error.affiliation');
@@ -376,9 +374,10 @@ class ScieloScreeningPlugin extends GenericPlugin
 
         if (count($galleys) > 0 && $galleys[0]->getFile()) {
             $galley = $galleys[0];
-            $path = \Config::getVar('files', 'files_dir') . DIRECTORY_SEPARATOR . $galley->getFile()->getData('path');
+            $filesDir = \Config::getVar('files', 'files_dir');
+            $path = $filesDir . DIRECTORY_SEPARATOR . $galley->getFile()->getData('path');
 
-            return new DocumentChecker($path);
+            return new DocumentChecker($path, $filesDir . '/scielo-screening');
         }
 
         return null;
