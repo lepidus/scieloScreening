@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class OrcidEndpointTest extends TestCase
 {
-    private function client($url, array &$history, ?callable $clock = null): OrcidClient
+    private function client($url, array &$history, ?callable $clock = null, ?array $responses = null): OrcidClient
     {
         $plugin = new class ($url) {
             public function __construct(private $url)
@@ -22,7 +22,7 @@ class OrcidEndpointTest extends TestCase
                 return $setting === 'orcidAPIPath' ? $this->url : 'test-credential';
             }
         };
-        $stack = HandlerStack::create(new MockHandler([
+        $stack = HandlerStack::create(new MockHandler($responses ?? [
             new Response(200, [], '{"access_token":"test-token"}'),
             new Response(200, [], '{"group":[]}'),
         ]));
@@ -69,6 +69,30 @@ class OrcidEndpointTest extends TestCase
             $this->fail('Total deadline was ignored');
         } catch (TransferException $exception) {
             $this->assertCount(2, $history);
+        }
+    }
+
+    public function testSuccessfulResponsesWithoutUsableJsonAreTransferFailures(): void
+    {
+        foreach (['', '<html>maintenance</html>', '"text"', 'null', '{"token_type":"bearer"}', '{"access_token":null}', '{"access_token":""}', '{"access_token":["test-token"]}'] as $body) {
+            $history = [];
+            $client = $this->client(OrcidClient::ORCID_API_URL_PUBLIC, $history, null, [new Response(200, [], $body)]);
+            try {
+                $client->getReadPublicAccessToken();
+                $this->fail('Token response accepted: ' . $body);
+            } catch (TransferException $exception) {
+                $this->assertCount(1, $history);
+            }
+        }
+        foreach (['', '<html>maintenance</html>', '"text"', 'null'] as $body) {
+            $history = [];
+            $client = $this->client(OrcidClient::ORCID_API_URL_PUBLIC, $history, null, [new Response(200, [], $body)]);
+            try {
+                $client->getOrcidWorks('0000-0001-5727-2427', 'test-token');
+                $this->fail('Works response accepted: ' . $body);
+            } catch (TransferException $exception) {
+                $this->assertCount(1, $history);
+            }
         }
     }
 
