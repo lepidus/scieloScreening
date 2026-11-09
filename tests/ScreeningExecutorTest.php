@@ -1,6 +1,10 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\LazyCollection;
 use APP\plugins\generic\scieloScreening\classes\OrcidClient;
 use APP\plugins\generic\scieloScreening\classes\ScreeningExecutor;
@@ -102,5 +106,97 @@ class ScreeningExecutorTest extends TestCase
         $screeningExecutor = new ScreeningExecutor($documentChecker, $orcidClient);
 
         $this->assertEquals('Okay', $screeningExecutor->getStatusDocumentOrcids());
+    }
+
+    public function testSubmissionValidationDoesNotRunDocumentOrcidChecks(): void
+    {
+        $publication = new class () {
+            public function getData($key, $locale = null)
+            {
+                return $key === 'authors' ? [] : 'present';
+            }
+        };
+        $submission = new class ($publication) {
+            public function __construct(private $publication)
+            {
+            }
+            public function getCurrentPublication()
+            {
+                return $this->publication;
+            }
+            public function getGalleys()
+            {
+                return [];
+            }
+        };
+        $documentChecker = $this->createMock(\APP\plugins\generic\scieloScreening\classes\DocumentChecker::class);
+        $documentChecker->expects($this->never())->method('extractionSucceeded');
+        $documentChecker->expects($this->never())->method('checkTextOrcids');
+        $orcidClient = $this->createMock(OrcidClient::class);
+        $orcidClient->expects($this->never())->method('getReadPublicAccessToken');
+        $executor = new ScreeningExecutor($documentChecker, $orcidClient);
+
+        $data = $executor->getSubmissionValidationData($submission);
+
+        $this->assertArrayNotHasKey('statusDocumentOrcids', $data);
+        $this->assertTrue($data['statusMetadataEnglish']);
+        $this->assertFalse($data['statusPDFs']);
+        $this->assertSame(0, $data['numPDFs']);
+        $this->assertArrayHasKey('statusOrcid', $data);
+    }
+
+    public function testFailedExtractionDoesNotQueryOrcid(): void
+    {
+        $documentChecker = $this->createMock(\APP\plugins\generic\scieloScreening\classes\DocumentChecker::class);
+        $documentChecker->method('extractionSucceeded')->willReturn(false);
+        $documentChecker->expects($this->never())->method('checkTextOrcids');
+        $orcidClient = $this->createMock(OrcidClient::class);
+        $orcidClient->expects($this->never())->method('getReadPublicAccessToken');
+        $executor = new ScreeningExecutor($documentChecker, $orcidClient);
+        $this->assertSame('UnableException', $executor->getStatusDocumentOrcids());
+    }
+
+    public function testDocumentCannotCauseMoreThanTenWorksRequests(): void
+    {
+        $documentChecker = new TestDocumentChecker(array_map('strval', range(1, 100)));
+        $orcidClient = $this->createMock(OrcidClient::class);
+        $orcidClient->expects($this->once())->method('getReadPublicAccessToken')->willReturn('token');
+        $orcidClient->expects($this->exactly(10))->method('getOrcidWorks')->willReturn(['group' => []]);
+        $orcidClient->method('recordHasWorks')->willReturn(false);
+        $executor = new ScreeningExecutor($documentChecker, $orcidClient);
+        $this->assertSame('UnableException', $executor->getStatusDocumentOrcids());
+    }
+
+    public function testUnusableOrcidResponsesAreReportedAsUnavailable(): void
+    {
+        $plugin = new class () {
+            public function getSetting($contextId, $setting)
+            {
+                return $setting === 'orcidAPIPath' ? OrcidClient::ORCID_API_URL_PUBLIC : 'test-credential';
+            }
+        };
+        $responseSequences = [
+            [new Response(200, [], '<html>maintenance</html>')],
+            [new Response(200, [], '{"error":"invalid_client"}')],
+            [new Response(200, [], '{"access_token":"test-token"}'), new Response(200, [], '<html>maintenance</html>')],
+        ];
+        foreach ($responseSequences as $responses) {
+            $orcidClient = $this->getMockBuilder(OrcidClient::class)->setConstructorArgs([$plugin, 1])->onlyMethods(['getHttpClient'])->getMock();
+            $orcidClient->method('getHttpClient')->willReturn(new Client(['handler' => HandlerStack::create(new MockHandler($responses))]));
+            $executor = new ScreeningExecutor(new TestDocumentChecker($this->orcids), $orcidClient);
+
+            $this->assertSame('UnableException', $executor->getStatusDocumentOrcids());
+        }
+    }
+
+    public function testExactlyTenEmptyRecordsCanBeReportedAsNotOkay(): void
+    {
+        $documentChecker = new TestDocumentChecker(array_map('strval', range(1, 10)));
+        $orcidClient = $this->createMock(OrcidClient::class);
+        $orcidClient->method('getReadPublicAccessToken')->willReturn('token');
+        $orcidClient->expects($this->exactly(10))->method('getOrcidWorks')->willReturn(['group' => []]);
+        $orcidClient->method('recordHasWorks')->willReturn(false);
+        $executor = new ScreeningExecutor($documentChecker, $orcidClient);
+        $this->assertSame('NotOkay', $executor->getStatusDocumentOrcids());
     }
 }
