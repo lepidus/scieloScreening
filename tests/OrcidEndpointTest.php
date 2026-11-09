@@ -99,6 +99,30 @@ class OrcidEndpointTest extends TestCase
         }
     }
 
+    public function testSuccessfulResponsesWithoutUsableJsonAreTransferFailures(): void
+    {
+        foreach (['', '<html>maintenance</html>', '"text"', 'null', '{"token_type":"bearer"}', '{"access_token":null}', '{"access_token":""}', '{"access_token":["test-token"]}'] as $body) {
+            $history = [];
+            $client = $this->client(OrcidClient::ORCID_API_URL_PUBLIC, $history, [new Response(200, [], $body)]);
+            try {
+                $client->getReadPublicAccessToken();
+                $this->fail('Token response accepted: ' . $body);
+            } catch (TransferException $exception) {
+                $this->assertCount(1, $history);
+            }
+        }
+        foreach (['', '<html>maintenance</html>', '"text"', 'null'] as $body) {
+            $history = [];
+            $client = $this->client(OrcidClient::ORCID_API_URL_PUBLIC, $history, [new Response(200, [], $body)]);
+            try {
+                $client->getOrcidWorks('0000-0001-5727-2427', 'test-token');
+                $this->fail('Works response accepted: ' . $body);
+            } catch (TransferException $exception) {
+                $this->assertCount(1, $history);
+            }
+        }
+    }
+
     public function testTotalBudgetIncludesTokenAndWorksRequests(): void
     {
         $history = [];

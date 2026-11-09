@@ -85,6 +85,16 @@ class OrcidClient
         }
     }
 
+    private function decodeJsonObject($response): array
+    {
+        // A 200 answer that is not a JSON object (e.g. a maintenance page) is a failed transfer, not data
+        $decoded = json_decode((string) $response->getBody(), true);
+        if (!is_array($decoded)) {
+            throw new \GuzzleHttp\Exception\TransferException('Invalid ORCID response body');
+        }
+        return $decoded;
+    }
+
     protected function getHttpClient(): \GuzzleHttp\Client
     {
         return Application::get()->getHttpClient();
@@ -115,8 +125,11 @@ class OrcidClient
         );
         $this->assertSuccessfulResponse($response);
 
-        $responseJson = json_decode($response->getBody(), true);
-        return $responseJson['access_token'];
+        $accessToken = $this->decodeJsonObject($response)['access_token'] ?? null;
+        if (!is_string($accessToken) || $accessToken === '') {
+            throw new \GuzzleHttp\Exception\TransferException('ORCID token response without an access token');
+        }
+        return $accessToken;
     }
 
     public function getOrcidWorks(string $orcid, string $accessToken): array
@@ -138,7 +151,7 @@ class OrcidClient
         );
         $this->assertSuccessfulResponse($response);
 
-        return json_decode($response->getBody(), true);
+        return $this->decodeJsonObject($response);
     }
 
     public function recordHasWorks(array $worksResponse): bool
