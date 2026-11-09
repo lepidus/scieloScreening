@@ -1,6 +1,10 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\LazyCollection;
 use APP\plugins\generic\scieloScreening\classes\OrcidClient;
 use APP\plugins\generic\scieloScreening\classes\ScreeningExecutor;
@@ -145,6 +149,28 @@ class ScreeningExecutorTest extends TestCase
         $orcidClient->method('recordHasWorks')->willReturn(false);
         $executor = new ScreeningExecutor($documentChecker, $orcidClient);
         $this->assertSame('UnableOrcidLimit', $executor->getStatusDocumentOrcids());
+    }
+
+    public function testUnusableOrcidResponsesAreReportedAsUnavailable(): void
+    {
+        $plugin = new class () {
+            public function getSetting($contextId, $setting)
+            {
+                return $setting === 'orcidAPIPath' ? OrcidClient::ORCID_API_URL_PUBLIC : 'test-credential';
+            }
+        };
+        $responseSequences = [
+            [new Response(200, [], '<html>maintenance</html>')],
+            [new Response(200, [], '{"error":"invalid_client"}')],
+            [new Response(200, [], '{"access_token":"test-token"}'), new Response(200, [], '<html>maintenance</html>')],
+        ];
+        foreach ($responseSequences as $responses) {
+            $orcidClient = $this->getMockBuilder(OrcidClient::class)->setConstructorArgs([$plugin, 1])->onlyMethods(['getHttpClient'])->getMock();
+            $orcidClient->method('getHttpClient')->willReturn(new Client(['handler' => HandlerStack::create(new MockHandler($responses))]));
+            $executor = new ScreeningExecutor(new TestDocumentChecker($this->orcids), $orcidClient);
+
+            $this->assertSame('UnableException', $executor->getStatusDocumentOrcids());
+        }
     }
 
     public function testExactlyTenEmptyRecordsCanBeReportedAsNotOkay(): void
