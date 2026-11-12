@@ -17,6 +17,10 @@ The latest release of this plugin is compatible with the following PKP applicati
 
 * OPS 3.5.0
 
+## Deprecated versions
+
+This plugin is maintained for use in the SciELO Preprints server. Therefore, support for OPS 3.3.0 has been interrupted.
+
 ## Document screening limits
 
 The plugin settings report missing server requirements, and document screening displays an unavailable status until they are installed. PDF screening requires `pdftotext` (poppler-utils) and `prlimit` (util-linux) on Linux, with PHP process execution enabled. Conversion is limited to one process per plugin installation, 20 MiB of input, 2 MiB of extracted text, 5 seconds of wall time, 5 seconds of CPU time, and 256 MiB of address space. The conversion lock is stored in a private `scielo-screening` directory under the OPS `files_dir`, created with permissions 0700. Temporary text files are private, unique, and removed after conversion.
@@ -52,6 +56,6 @@ These tests exercise the host authorization policies with repository doubles, lo
 
 __This plugin is licensed under the GNU General Public License v3.0__
 
-__Copyright (c) 2020-2024 Lepidus Tecnologia__
+__Copyright (c) 2020-2026 Lepidus Tecnologia__
 
-__Copyright (c) 2020-2024 SciELO__
+__Copyright (c) 2020-2026 SciELO__
